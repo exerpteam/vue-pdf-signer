@@ -1,26 +1,40 @@
-import { defineComponent as c, createElementBlock as o, openBlock as s, createElementVNode as p, createCommentVNode as i, toDisplayString as d } from "vue";
-const m = { class: "vue-pdf-signer-container" }, _ = { key: 0 }, l = /* @__PURE__ */ c({
+import { defineComponent as l, createElementBlock as r, openBlock as d, createElementVNode as a } from "vue";
+const p = { class: "vue-pdf-signer-container" }, m = /* @__PURE__ */ l({
   __name: "PdfSigner",
   props: {
-    message: {}
+    pdfData: {},
+    signatureData: {},
+    isDownload: { type: Boolean },
+    translations: {},
+    enableZoom: { type: Boolean }
   },
-  setup(e) {
-    return (t, n) => (s(), o("div", m, [
-      n[0] || (n[0] = p("h1", null, "Vue PDF Signer Component", -1)),
-      t.message ? (s(), o("p", _, d(t.message), 1)) : i("", !0)
+  emits: ["finish"],
+  setup(n, { emit: i }) {
+    const t = i;
+    function o() {
+      console.log("Save button clicked. Emitting a dummy finish event."), t("finish", {
+        signedDocument: { type: "application/pdf", data: "dummy-pdf-base64" },
+        signatureImage: { type: "image/png", data: "dummy-signature-base64" }
+      });
+    }
+    return (s, e) => (d(), r("div", p, [
+      e[0] || (e[0] = a("h2", null, "Vue PDF Signer (Placeholder)", -1)),
+      e[1] || (e[1] = a("p", null, "The PDF viewer and signature functionality will be implemented here.", -1)),
+      e[2] || (e[2] = a("p", null, "Props like `pdfData` and `signatureData` have been received.", -1)),
+      a("button", { onClick: o }, "Simulate Save & Finish")
     ]));
   }
-}), f = (e, t) => {
-  const n = e.__vccOpts || e;
-  for (const [r, a] of t)
-    n[r] = a;
-  return n;
-}, g = /* @__PURE__ */ f(l, [["__scopeId", "data-v-88e7fe2d"]]), v = {
-  install(e) {
-    e.component("PdfSigner", g);
+}), u = (n, i) => {
+  const t = n.__vccOpts || n;
+  for (const [o, s] of i)
+    t[o] = s;
+  return t;
+}, c = /* @__PURE__ */ u(m, [["__scopeId", "data-v-70c58edf"]]), g = {
+  install(n) {
+    n.component("PdfSigner", c);
   }
 };
 export {
-  g as PdfSigner,
-  v as default
+  c as PdfSigner,
+  g as default
 };

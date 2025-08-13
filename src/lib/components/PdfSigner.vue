@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// ✍️ We are defining the full public API for our component to match the
+// We are defining the full public API for our component to match the
 // old component's interface. This makes it a true drop-in replacement.
 // The props are currently unused in the template but are part of the component's contract.
 
@@ -34,7 +34,7 @@ const emit = defineEmits<{
   (e: 'finish', payload: FinishPayload): void
 }>()
 
-// ✍️ A dummy function to show how an event would be emitted.
+// A dummy function to show how an event would be emitted.
 function handleSave() {
   console.log('Save button clicked. Emitting a dummy finish event.')
   // In the future, this will contain the real signed PDF and signature data.

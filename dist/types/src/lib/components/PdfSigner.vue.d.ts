@@ -1,8 +1,37 @@
+interface SignaturePlacement {
+    left: number;
+    top: number;
+    width: number;
+    height: number;
+    page: number;
+}
+interface FinishPayload {
+    signedDocument: {
+        type: 'application/pdf';
+        data: string;
+    };
+    signatureImage: {
+        type: 'image/png';
+        data: string;
+    };
+}
 declare const _default: import('vue').DefineComponent<import('vue').ExtractPropTypes<__VLS_TypePropsToRuntimeProps<{
-    message?: string;
-}>>, {}, {}, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<__VLS_TypePropsToRuntimeProps<{
-    message?: string;
-}>>> & Readonly<{}>, {}, {}, {}, {}, string, import('vue').ComponentProvideOptions, true, {}, any>;
+    pdfData: string;
+    signatureData: SignaturePlacement[];
+    isDownload?: boolean;
+    translations?: Record<string, string>;
+    enableZoom?: boolean;
+}>>, {}, {}, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+    finish: (payload: FinishPayload) => void;
+}, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<__VLS_TypePropsToRuntimeProps<{
+    pdfData: string;
+    signatureData: SignaturePlacement[];
+    isDownload?: boolean;
+    translations?: Record<string, string>;
+    enableZoom?: boolean;
+}>>> & Readonly<{
+    onFinish?: ((payload: FinishPayload) => any) | undefined;
+}>, {}, {}, {}, {}, string, import('vue').ComponentProvideOptions, true, {}, any>;
 export default _default;
 type __VLS_NonUndefinedable<T> = T extends undefined ? never : T;
 type __VLS_TypePropsToRuntimeProps<T> = {

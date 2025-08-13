@@ -15,7 +15,7 @@
       "import": "./dist/vue-pdf-signer.es.js",
       "require": "./dist/vue-pdf-signer.umd.js"
     },
-    "./style.css": "./dist/style.css"
+    "./style.css": "./dist/vue-pdf-signer.css"
   },
   "scripts": {
     "dev": "vite",
