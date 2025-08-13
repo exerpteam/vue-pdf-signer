@@ -8,5 +8,6 @@
     "paths": {
       "@/*": ["./src/demo/*"]
     }
-  }
+  },
+  "references": [{ "path": "./tsconfig.build.json" }]
 }

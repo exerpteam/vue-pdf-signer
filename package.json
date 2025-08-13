@@ -11,9 +11,9 @@
   "types": "./dist/types/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/types/index.d.ts",
       "import": "./dist/vue-pdf-signer.es.js",
-      "require": "./dist/vue-pdf-signer.umd.js",
-      "types": "./dist/types/index.d.ts"
+      "require": "./dist/vue-pdf-signer.umd.js"
     },
     "./style.css": "./dist/style.css"
   },

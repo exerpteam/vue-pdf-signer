@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // ✍️ We import our component directly from the library's source for immediate feedback.
-import { PdfSigner } from '../../lib'
+import { PdfSigner } from '../lib'
 </script>
 
 <template>
