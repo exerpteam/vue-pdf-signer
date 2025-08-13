@@ -1,47 +1,27 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+// ✍️ We import our component directly from the library's source for immediate feedback.
+import { PdfSigner } from '../../lib'
 </script>
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
+    <h1>Component Library Demo</h1>
+    <p>This is a live demonstration of the components being built.</p>
   </header>
 
   <main>
-    <TheWelcome />
+    <h2>PdfSigner Component</h2>
+    <PdfSigner message="This is a test message prop." />
   </main>
 </template>
 
 <style scoped>
 header {
-  line-height: 1.5;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
 }
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+main {
+  padding: 1rem;
 }
 </style>
