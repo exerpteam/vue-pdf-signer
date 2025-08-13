@@ -1,39 +1,47 @@
-# .
+# Vue PDF Signer
 
-This template should help get you started developing with Vue 3 in Vite.
+A robust, reusable Vue 3 component for displaying a PDF and overlaying a user-drawn signature. Built with TypeScript and Vite.
 
-## Recommended IDE Setup
+## Status
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+**In Development.** The component's API is defined, but the core PDF rendering and signature functionality is currently a placeholder.
 
-## Type Support for `.vue` Imports in TS
+## Features (Target)
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+- **PDF Loading:** Renders a multi-page PDF provided as a base64 encoded string.
+- **Signature Capture:** Provides a dedicated interface for drawing a signature.
+- **Signature Placement:** Overlays the captured signature onto predefined locations in the PDF.
+- **Vector-Based Export:** Generates the final signed PDF with the signature embedded as a high-quality vector graphic.
+- **Responsive & Touch-Friendly:** Supports zoom, pan, and scroll gestures on both desktop and mobile.
 
-## Customize configuration
+## Local Development
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+This project includes a self-contained demo application for local development.
 
-## Project Setup
+1.  **Install Dependencies:**
 
-```sh
-pnpm install
-```
+    ```bash
+    pnpm install
+    ```
 
-### Compile and Hot-Reload for Development
+2.  **Run the Demo App:**
+    This command starts the Vite development server and opens the demo app, which imports the library components directly from the `src/lib` folder.
 
-```sh
-pnpm dev
-```
+    ```bash
+    pnpm dev
+    ```
 
-### Type-Check, Compile and Minify for Production
+3.  **Make Changes:**
+    Modify the component source code in `src/lib/components/`. The demo app will hot-reload to reflect your changes instantly.
 
-```sh
+## Building the Library
+
+To build the distributable library files, run the following command. The output will be generated in the `/dist` directory.
+
+```bash
 pnpm build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+## Installation and Usage
 
-```sh
-pnpm lint
-```
+For instructions on how to install and use this library in a consuming application (like `exerp-go`), please see the **[Quick Start Guide](./QUICKSTART.md)**.
