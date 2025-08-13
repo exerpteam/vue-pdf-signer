@@ -1,0 +1,47 @@
+{
+  "name": "vue-pdf-signer",
+  "version": "0.0.1",
+  "private": false,
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/vue-pdf-signer.umd.js",
+  "module": "./dist/vue-pdf-signer.es.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/vue-pdf-signer.es.js",
+      "require": "./dist/vue-pdf-signer.umd.js",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./style.css": "./dist/style.css"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --fix",
+    "format": "prettier --write src/ lib/"
+  },
+  "peerDependencies": {
+    "vue": "^3.4.0"
+  },
+  "devDependencies": {
+    "@tsconfig/node22": "^22.0.2",
+    "@types/node": "^22.16.5",
+    "@vitejs/plugin-vue": "^6.0.1",
+    "@vue/eslint-config-prettier": "^10.2.0",
+    "@vue/eslint-config-typescript": "^14.6.0",
+    "@vue/tsconfig": "^0.7.0",
+    "eslint": "^9.31.0",
+    "eslint-plugin-vue": "~10.3.0",
+    "prettier": "3.6.2",
+    "sass": "^1.77.8",
+    "typescript": "~5.8.0",
+    "vite": "^7.0.6",
+    "vite-plugin-dts": "^3.9.1",
+    "vue": "^3.5.18",
+    "vue-tsc": "^3.0.4"
+  }
+}
