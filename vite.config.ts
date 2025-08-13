@@ -29,6 +29,8 @@ export default defineConfig({
         globals: {
           vue: 'Vue',
         },
+        // ✍️ Add this line to handle mixed named/default exports
+        exports: 'named',
       },
     },
   },
