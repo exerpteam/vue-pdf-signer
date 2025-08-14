@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, watchEffect } from 'vue'
 import * as pdfjsLib from 'pdfjs-dist'
+import { computed } from 'vue'
 
 // Set the worker source for pdfjs-dist. This is crucial for it to work in a Vite/webpack environment.
 // We are pointing to the version of the worker that comes with the installed package.
@@ -37,6 +38,13 @@ const props = defineProps<{
 defineEmits<{
   (e: 'finish', payload: FinishPayload): void
 }>()
+
+const t = computed(() => {
+  return {
+    updateSignature: props.translations?.updateSignature || 'Update Signature',
+    save: props.translations?.save || 'Save',
+  }
+})
 
 // This ref will hold the DOM element where we'll render our PDF pages.
 const pdfContainer = ref<HTMLDivElement | null>(null)
@@ -105,31 +113,117 @@ watchEffect(async () => {
 </script>
 
 <template>
-  <div class="vue-pdf-signer-container">
-    <!-- The ref="pdfContainer" connects this div to our script logic. -->
-    <div ref="pdfContainer" class="pdf-render-view">
-      <!-- PDF pages will be rendered here as canvas elements -->
+  <div class="vue-pdf-signer">
+    <div class="pdf-signer-toolbar">
+      <div class="toolbar-group">
+        <button class="btn btn-secondary">{{ t.updateSignature }}</button>
+        <button class="btn btn-primary">{{ t.save }}</button>
+      </div>
+      <div v-if="props.enableZoom" class="toolbar-group">
+        <button class="btn btn-icon">-</button>
+        <span class="zoom-level">100%</span>
+        <button class="btn btn-icon">+</button>
+      </div>
+    </div>
+
+    <div class="pdf-viewport">
+      <!-- ✍️ The ref is now on this inner container. This will be important for transforms. -->
+      <div ref="pdfContainer" class="pdf-render-view">
+        <!-- PDF pages will be rendered here as canvas elements -->
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.vue-pdf-signer-container {
+.vue-pdf-signer {
   border: 1px solid #ccc;
-  padding: 1rem;
   border-radius: 8px;
-  background-color: #f8f9fa;
+  background-color: #f0f0f0; /* ✍️ Changed background for better contrast */
+  height: 100%;
   min-height: 400px;
-  max-height: 90vh; /* Set a max height to make it scrollable */
-  overflow-y: auto; /* Enable vertical scrolling */
+  max-height: 90vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  overflow: hidden; /* ✍️ Important: overflow is now handled by the viewport */
 }
+
+.pdf-signer-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background-color: #ffffff;
+  border-bottom: 1px solid #ccc;
+  flex-shrink: 0; /* ✍️ Prevent the toolbar from shrinking */
+  position: sticky; /* ✍️ Make the toolbar stick to the top */
+  top: 0;
+  z-index: 10;
+}
+
+.toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.pdf-viewport {
+  flex-grow: 1; /* ✍️ The viewport will take up all available space */
+  overflow: auto; /* ✍️ This is now our main scrollable area */
+  padding: 1rem 0;
+}
+
 .pdf-render-view {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+/* ✍️ Basic button styling */
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+  border-color: #6c757d;
+}
+.btn-secondary:hover {
+  background-color: #5a6268;
+}
+.btn-icon {
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  background-color: #f8f9fa;
+  border-color: #dee2e6;
+  color: #212529;
+}
+.btn-icon:hover {
+  background-color: #e2e6ea;
+}
+.zoom-level {
+  min-width: 4ch;
+  text-align: center;
+  font-weight: 500;
 }
 </style>
