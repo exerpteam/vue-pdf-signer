@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue'
+import { ref, watchEffect, computed, nextTick } from 'vue'
 import * as pdfjsLib from 'pdfjs-dist'
-import { computed } from 'vue'
 import SignaturePadModal from './SignaturePadModal.vue'
 import { useScrollLock } from '@vueuse/core'
 
@@ -49,6 +48,17 @@ defineEmits<{
   (e: 'finish', payload: FinishPayload): void
 }>()
 
+// START: Zoom & Pan State ---
+const scale = ref(1)
+const panX = ref(0)
+const panY = ref(0)
+
+// This computed property will generate the CSS transform string.
+const transformStyle = computed(() => ({
+  transform: `translate(${panX.value}px, ${panY.value}px) scale(${scale.value})`,
+}))
+// --- END: Zoom & Pan State ---
+
 const signatureSvg = ref<string | null>(null)
 const isSignaturePadOpen = ref(false)
 
@@ -91,12 +101,13 @@ watchEffect(async () => {
     return
   }
 
-  // Clear any previously rendered pages.
+  // Reset state when a new PDF is loaded
+  scale.value = 1
+  panX.value = 0
+  panY.value = 0
   pdfContainer.value.innerHTML = ''
 
   try {
-    // The pdfData prop is a base64 string. pdfjsLib needs a Uint8Array.
-    // We decode it by first converting it to a binary string and then to a byte array.
     const pdfBinary = atob(props.pdfData)
     const pdfBytes = new Uint8Array(pdfBinary.length)
     for (let i = 0; i < pdfBinary.length; i++) {
@@ -106,33 +117,22 @@ watchEffect(async () => {
     const loadingTask = pdfjsLib.getDocument({ data: pdfBytes })
     const pdf = await loadingTask.promise
 
-    // Loop through each page of the PDF.
+    const renderScale = 1.5
+
+    // Loop and render all canvases first, without setting state yet.
     for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
       const page = await pdf.getPage(pageNum)
+      const viewport = page.getViewport({ scale: renderScale })
 
-      // Get the viewport at scale 1 to determine the original PDF page width.
-      const unscaledViewport = page.getViewport({ scale: 1 })
-
-      // Get the available width from our container div. We'll leave a little padding.
-      const availableWidth = pdfContainer.value.clientWidth * 0.95
-
-      // Calculate the scale required to make the PDF page fit the available width.
-      const scale = availableWidth / unscaledViewport.width
-
-      const viewport = page.getViewport({ scale }) // Use dynamic scale
-
-      // Create a canvas for each page.
       const canvas = document.createElement('canvas')
       canvas.style.display = 'block'
-      canvas.style.marginBottom = '1rem' // Add some space between pages.
+      canvas.style.margin = '0 auto 1rem auto'
       const context = canvas.getContext('2d')
       canvas.height = viewport.height
       canvas.width = viewport.width
 
-      // Append the canvas to our container div.
       pdfContainer.value.appendChild(canvas)
 
-      // Render the PDF page onto the canvas.
       const renderContext = {
         canvasContext: context!,
         viewport: viewport,
@@ -140,9 +140,22 @@ watchEffect(async () => {
       }
       await page.render(renderContext).promise
     }
+
+    // CRITICAL: Wait for the DOM to update with the new canvases.
+    await nextTick()
+
+    // Now that the DOM is stable, we can safely measure and set state.
+    if (!pdfContainer.value?.firstElementChild) return // Guard against empty container
+
+    const viewportWidth = pdfContainer.value.parentElement!.clientWidth
+    const contentWidth = pdfContainer.value.firstElementChild!.clientWidth
+
+    const initialScale = viewportWidth / contentWidth
+    scale.value = initialScale
+    panX.value = (viewportWidth - contentWidth * initialScale) / 2
+    panY.value = 0 // Ensure panY is reset correctly
   } catch (error) {
     console.error('Failed to render PDF:', error)
-    // Display an error message in the container.
     pdfContainer.value.innerHTML = '<p style="color: red;">Error: Failed to load PDF.</p>'
   }
 })
@@ -165,7 +178,7 @@ watchEffect(async () => {
     </div>
 
     <div class="pdf-viewport">
-      <div ref="pdfContainer" class="pdf-render-view">
+      <div ref="pdfContainer" class="pdf-render-view" :style="transformStyle">
         <!-- PDF pages will be rendered here as canvas elements -->
       </div>
     </div>
@@ -221,9 +234,10 @@ watchEffect(async () => {
 
 .pdf-render-view {
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  /* display: flex; */
+  /* flex-direction: column; */
+  /* align-items: center; */
+  transform-origin: top left; /* CRITICAL: All transforms originate from here */
 }
 
 /* --- Improved Button Styles --- */
