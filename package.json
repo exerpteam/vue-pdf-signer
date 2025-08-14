@@ -45,6 +45,7 @@
     "vue-tsc": "^3.0.4"
   },
   "dependencies": {
+    "@vueuse/core": "^13.6.0",
     "pdfjs-dist": "^5.4.54"
   }
 }

@@ -3,6 +3,7 @@ import { ref, watchEffect } from 'vue'
 import * as pdfjsLib from 'pdfjs-dist'
 import { computed } from 'vue'
 import SignaturePadModal from './SignaturePadModal.vue'
+import { useScrollLock } from '@vueuse/core'
 
 // Set the worker source for pdfjs-dist. This is crucial for it to work in a Vite/webpack environment.
 // We are pointing to the version of the worker that comes with the installed package.
@@ -51,17 +52,24 @@ defineEmits<{
 const signatureSvg = ref<string | null>(null)
 const isSignaturePadOpen = ref(false)
 
+// This composable will lock the body scroll. It's reactive.
+const bodyEl = document.querySelector('body')
+const isLocked = useScrollLock(bodyEl)
+
 function openSignaturePad() {
   isSignaturePadOpen.value = true
+  isLocked.value = true // Lock the scroll
 }
 
 function handleSignatureSave(svg: string) {
   signatureSvg.value = svg
   isSignaturePadOpen.value = false
+  isLocked.value = false // Unlock the scroll
 }
 
 function handleSignatureCancel() {
   isSignaturePadOpen.value = false
+  isLocked.value = false // Unlock the scroll
 }
 
 const t = computed(() => {

@@ -1,16 +1,35 @@
 <script setup lang="ts">
+import { onMounted, onUnmounted, ref } from 'vue'
+
 defineEmits<{
   (e: 'close'): void
   (e: 'save', svg: string): void
 }>()
 
-// This is a hardcoded sample of what a signature's SVG path data might look like.
-// We'll replace this with real data from a canvas library later.
 const sampleSignatureSvg = 'M10 80 C 40 20, 60 20, 90 80 S 150 140, 180 80'
+
+// iOS Scroll Fix ---
+const modalOverlayRef = ref<HTMLDivElement | null>(null)
+
+function preventScroll(event: TouchEvent) {
+  // This stops the browser's default touch-to-scroll behavior.
+  event.preventDefault()
+}
+
+onMounted(() => {
+  // We add the listener when the modal appears.
+  // The `{ passive: false }` is CRITICAL for iOS. It tells the browser we intend to prevent the default action.
+  modalOverlayRef.value?.addEventListener('touchmove', preventScroll, { passive: false })
+})
+
+onUnmounted(() => {
+  // Clean up the listener when the modal is destroyed to prevent memory leaks.
+  modalOverlayRef.value?.removeEventListener('touchmove', preventScroll)
+})
 </script>
 
 <template>
-  <div class="modal-overlay">
+  <div ref="modalOverlayRef" class="modal-overlay">
     <div class="modal-content">
       <h3>Signature Pad</h3>
       <div class="signature-canvas-placeholder">
