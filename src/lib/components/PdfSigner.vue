@@ -2,6 +2,7 @@
 import { ref, watchEffect } from 'vue'
 import * as pdfjsLib from 'pdfjs-dist'
 import { computed } from 'vue'
+import SignaturePadModal from './SignaturePadModal.vue'
 
 // Set the worker source for pdfjs-dist. This is crucial for it to work in a Vite/webpack environment.
 // We are pointing to the version of the worker that comes with the installed package.
@@ -47,9 +48,28 @@ defineEmits<{
   (e: 'finish', payload: FinishPayload): void
 }>()
 
+const signatureSvg = ref<string | null>(null)
+const isSignaturePadOpen = ref(false)
+
+function openSignaturePad() {
+  isSignaturePadOpen.value = true
+}
+
+function handleSignatureSave(svg: string) {
+  signatureSvg.value = svg
+  isSignaturePadOpen.value = false
+}
+
+function handleSignatureCancel() {
+  isSignaturePadOpen.value = false
+}
+
 const t = computed(() => {
+  const hasSignature = !!signatureSvg.value
   return {
-    updateSignature: props.translations?.updateSignature || 'Update Signature',
+    actionButton: hasSignature
+      ? props.translations?.updateSignature || 'Update Signature'
+      : props.translations?.drawSignature || 'Draw Signature',
     save: props.translations?.save || 'Save',
   }
 })
@@ -124,8 +144,10 @@ watchEffect(async () => {
   <div class="vue-pdf-signer">
     <div class="pdf-signer-toolbar">
       <div class="toolbar-group">
-        <button class="btn btn-secondary">{{ t.updateSignature }}</button>
-        <button class="btn btn-primary">{{ t.save }}</button>
+        <!-- Button opens the modal and has dynamic text -->
+        <button @click="openSignaturePad" class="btn btn-secondary">{{ t.actionButton }}</button>
+        <!-- Save button is disabled until a signature is present -->
+        <button class="btn btn-primary" :disabled="!signatureSvg">{{ t.save }}</button>
       </div>
       <div v-if="props.enableZoom" class="toolbar-group">
         <button class="btn btn-icon">-</button>
@@ -135,11 +157,17 @@ watchEffect(async () => {
     </div>
 
     <div class="pdf-viewport">
-      <!-- The ref is on this inner container. This is important for transforms. -->
       <div ref="pdfContainer" class="pdf-render-view">
         <!-- PDF pages will be rendered here as canvas elements -->
       </div>
     </div>
+
+    <!-- The signature pad modal, controlled by our state -->
+    <SignaturePadModal
+      v-if="isSignaturePadOpen"
+      @close="handleSignatureCancel"
+      @save="handleSignatureSave"
+    />
   </div>
 </template>
 
@@ -238,6 +266,12 @@ watchEffect(async () => {
 }
 .btn-icon:hover {
   background-color: #e0e0e0;
+}
+.btn:disabled {
+  background-color: #aeb1b4;
+  border-color: #aeb1b4;
+  color: #e9ecef;
+  cursor: not-allowed;
 }
 
 .zoom-level {
