@@ -43,5 +43,8 @@
     "vite-plugin-dts": "^3.9.1",
     "vue": "^3.5.18",
     "vue-tsc": "^3.0.4"
+  },
+  "dependencies": {
+    "pdfjs-dist": "^5.4.54"
   }
 }

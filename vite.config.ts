@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [
     vue(),
     dts({
-      // ✍️ We'll create this tsconfig in the next step. It will ensure
+      // We'll create this tsconfig in the next step. It will ensure
       // only our library's types are generated.
       tsconfigPath: './tsconfig.build.json',
       outDir: 'dist/types',
@@ -16,24 +16,23 @@ export default defineConfig({
   ],
   build: {
     lib: {
-      // ✍️ The entry point of our library.
+      // The entry point of our library.
       entry: resolve(__dirname, 'src/lib/index.ts'),
       name: 'VuePdfSigner',
       fileName: (format) => `vue-pdf-signer.${format}.js`,
     },
     rollupOptions: {
-      // ✍️ Don't bundle Vue into our library.
+      // Don't bundle Vue into our library.
       external: ['vue'],
       output: {
-        // ✍️ Provide a global variable 'Vue' for the UMD build.
+        // Provide a global variable 'Vue' for the UMD build.
         globals: {
           vue: 'Vue',
         },
-        // ✍️ Add this line to handle mixed named/default exports
         exports: 'named',
       },
     },
   },
-  // ✍️ We remove the resolve alias to prevent ambiguity between lib and demo.
+  // We remove the resolve alias to prevent ambiguity between lib and demo.
   resolve: {},
 })

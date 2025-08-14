@@ -17,7 +17,7 @@ interface FinishPayload {
 }
 declare const _default: import('vue').DefineComponent<import('vue').ExtractPropTypes<__VLS_TypePropsToRuntimeProps<{
     pdfData: string;
-    signatureData: SignaturePlacement[];
+    signatureData?: SignaturePlacement[];
     isDownload?: boolean;
     translations?: Record<string, string>;
     enableZoom?: boolean;
@@ -25,7 +25,7 @@ declare const _default: import('vue').DefineComponent<import('vue').ExtractPropT
     finish: (payload: FinishPayload) => void;
 }, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<__VLS_TypePropsToRuntimeProps<{
     pdfData: string;
-    signatureData: SignaturePlacement[];
+    signatureData?: SignaturePlacement[];
     isDownload?: boolean;
     translations?: Record<string, string>;
     enableZoom?: boolean;
