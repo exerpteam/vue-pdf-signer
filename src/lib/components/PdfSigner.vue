@@ -52,10 +52,10 @@ defineEmits<{
 // --- START: Panzoom & Rendering State ---
 const panzoom = ref<PanzoomObject | null>(null)
 const renderScale = ref(1)
-const cssScale = ref(1) //  Tracks the current CSS scale from Panzoom for the UI.
+const cssScale = ref(1)
 const DPR = Math.min(window.devicePixelRatio || 1, 2)
 const RERENDER_UPPER_THRESHOLD = 2.0
-const RERENDER_LOWER_THRESHOLD = 0.6
+const RERENDER_LOWER_THRESHOLD = 0.7
 // --- END: Panzoom & Rendering State ---
 
 const signatureSvg = ref<string | null>(null)
@@ -87,7 +87,6 @@ const t = computed(() => {
   }
 })
 
-// This computed value will display the zoom level in the toolbar.
 const zoomPercentage = computed(() => Math.round(cssScale.value * 100))
 
 const pdfContainer = ref<HTMLDivElement | null>(null)
@@ -117,7 +116,6 @@ async function renderInitialPdfPages(pdf: pdfjsLib.PDFDocumentProxy, initialScal
     canvas.style.height = `${Math.floor(viewport.height)}px`
 
     pdfContainer.value.appendChild(canvas)
-    // Use markRaw to prevent Vue from making the PDF.js page object reactive.
     pageDetails.value.push({ page: markRaw(page), canvas })
 
     const renderContext = {
@@ -131,8 +129,7 @@ async function renderInitialPdfPages(pdf: pdfjsLib.PDFDocumentProxy, initialScal
 }
 
 /**
- * Re-renders all PDF pages with a new backing scale.
- * This is called when the zoom level crosses a threshold, to ensure clarity.
+ * Re-renders all PDF pages with a new backing scale. Now used again.
  */
 async function updatePagesWithNewScale(newRenderScale: number) {
   renderScale.value = newRenderScale
@@ -157,6 +154,20 @@ async function updatePagesWithNewScale(newRenderScale: number) {
 }
 
 /**
+ * Checks if the content is overflowing the viewport and enables/disables panning.
+ */
+function updatePanState() {
+  if (!panzoom.value || !pdfContainer.value || !viewportRef.value) return
+  const pz = panzoom.value
+  const contentRect = pdfContainer.value.getBoundingClientRect()
+  const viewportRect = viewportRef.value.getBoundingClientRect()
+  // Disable panning if the content is smaller than the viewport in both dimensions.
+  const shouldDisablePan =
+    contentRect.width <= viewportRect.width && contentRect.height <= viewportRect.height
+  pz.setOptions({ disablePan: shouldDisablePan })
+}
+
+/**
  * Initializes Panzoom and attaches event listeners.
  */
 function initPanzoom() {
@@ -166,50 +177,50 @@ function initPanzoom() {
   const pz = Panzoom(pdfContainer.value, {
     maxScale: 10,
     minScale: 0.1,
-    contain: 'outside',
     canvas: true,
   })
 
-  viewportRef.value.addEventListener(
-    'wheel',
-    (event) => {
-      // If the user is holding Ctrl (or Cmd on Mac), we zoom. Otherwise, we let it scroll.
-      if (event.ctrlKey) {
-        pz.zoomWithWheel(event)
-      }
-      // If no ctrlKey, do nothing and let the browser handle the scroll event.
-    },
-    { passive: false },
-  )
+  viewportRef.value.addEventListener('wheel', pz.zoomWithWheel, { passive: false })
 
+  // Prevent gesture "leaking" on mobile by stopping event propagation.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  pdfContainer.value.addEventListener('panzoomzoom', (event: any) => {
-    const newCssScale = event.detail.scale
-    cssScale.value = newCssScale
+  pdfContainer.value.addEventListener('panzoomstart', (e: any) => {
+    e.preventDefault()
+  })
 
-    if (newCssScale <= 1) {
-      pz.setOptions({ panOnlyWhenZoomed: true })
-    } else {
-      pz.setOptions({ panOnlyWhenZoomed: false })
+  // On every zoom, update the UI and check if we should allow panning.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  pdfContainer.value.addEventListener('panzoomzoom', (e: any) => {
+    cssScale.value = e.detail.scale
+    updatePanState()
+  })
+
+  // Re-render for crispness AFTER the user finishes zooming.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  pdfContainer.value.addEventListener('panzoomend', async (e: any) => {
+    const currentCssScale = e.detail.getScale()
+    const effectiveScale = renderScale.value * currentCssScale
+
+    if (effectiveScale > RERENDER_UPPER_THRESHOLD || effectiveScale < RERENDER_LOWER_THRESHOLD) {
+      const newRenderScale = Math.max(0.25, Math.min(4, effectiveScale))
+      await updatePagesWithNewScale(newRenderScale)
+      // Reset the CSS scale to 1 since the canvas has been resized.
+      pz.reset({ silent: true })
+      cssScale.value = 1
+      // Re-check pan state after reset.
+      await nextTick()
+      updatePanState()
     }
   })
 
   panzoom.value = pz
 }
+
 /**
- * Main function to load a PDF from base64 data, render it, and set up interactions.
+ * Main function to load a PDF, render it, and set up interactions.
  */
 async function loadAndRenderPdf(pdfData: string) {
-  console.log(
-    'loadAndRenderPdf: Called. pdfData length:',
-    pdfData?.length,
-    'pdfContainer available:',
-    !!pdfContainer.value,
-  )
-  if (!pdfData || !pdfContainer.value) {
-    console.log('loadAndRenderPdf: Exiting early.')
-    return
-  }
+  if (!pdfData || !pdfContainer.value) return
 
   panzoom.value?.destroy()
   panzoom.value = null
@@ -234,6 +245,7 @@ async function loadAndRenderPdf(pdfData: string) {
 
     await nextTick()
     initPanzoom()
+    updatePanState() // Set initial pan state.
   } catch (error) {
     console.error('Failed to render PDF:', error)
     if (pdfContainer.value) {
@@ -242,23 +254,15 @@ async function loadAndRenderPdf(pdfData: string) {
   }
 }
 
-// --- END: Core Functions ---
-
 // --- START: Lifecycle and Watchers ---
-
-// Use onMounted for the initial load.
 onMounted(() => {
-  console.log('onMounted: Fired. pdfData prop length:', props.pdfData?.length)
   loadAndRenderPdf(props.pdfData)
 })
 
-// Use watch to handle subsequent changes to the pdfData prop.
 watch(
   () => props.pdfData,
   (newPdfData, oldPdfData) => {
-    console.log('watch: Fired. newPdfData length:', newPdfData?.length)
     if (newPdfData !== oldPdfData) {
-      console.log('watch: Prop changed, calling loadAndRenderPdf.')
       loadAndRenderPdf(newPdfData)
     }
   },
@@ -267,8 +271,6 @@ watch(
 onBeforeUnmount(() => {
   panzoom.value?.destroy()
 })
-
-// --- END: Lifecycle and Watchers ---
 </script>
 
 <template>
@@ -279,7 +281,6 @@ onBeforeUnmount(() => {
         <button class="btn btn-primary" :disabled="!signatureSvg">{{ t.save }}</button>
       </div>
       <div v-if="props.enableZoom" class="toolbar-group">
-        <!-- Connect buttons to Panzoom methods -->
         <button @click="panzoom?.zoomOut()" class="btn btn-icon">-</button>
         <span class="zoom-level">{{ zoomPercentage }}%</span>
         <button @click="panzoom?.zoomIn()" class="btn btn-icon">+</button>
@@ -301,7 +302,6 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
-/* Styles remain unchanged from your version. */
 .vue-pdf-signer {
   border: 1px solid #e0e0e0;
   border-radius: 8px;
@@ -342,8 +342,6 @@ onBeforeUnmount(() => {
 }
 
 .pdf-render-view {
-  /* Panzoom works best without flex properties on the pannable element itself. */
-  /* Let Panzoom handle the transform. */
   transform-origin: top left;
 }
 
