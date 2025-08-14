@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import { ref, watchEffect, computed, nextTick, onBeforeUnmount } from 'vue'
+import { ref, watch, computed, nextTick, onBeforeUnmount, onMounted, markRaw } from 'vue'
 import * as pdfjsLib from 'pdfjs-dist'
 import SignaturePadModal from './SignaturePadModal.vue'
 import { useScrollLock } from '@vueuse/core'
 import Panzoom from '@panzoom/panzoom'
 import type { PanzoomObject } from '@panzoom/panzoom'
 
-// Set the worker source for pdfjs-dist. This is crucial for it to work in a Vite/webpack environment.
-// We are pointing to the version of the worker that comes with the installed package.
+// Set the worker source for pdfjs-dist
 import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.mjs?url'
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker
 
@@ -51,42 +50,31 @@ defineEmits<{
 }>()
 
 // --- START: Panzoom & Rendering State ---
-// This ref will hold our Panzoom instance.
 const panzoom = ref<PanzoomObject | null>(null)
-
-// This is the "logical" render scale for PDF.js, not the CSS transform scale.
 const renderScale = ref(1)
-
-// We clamp the device pixel ratio to avoid creating excessively large canvases on high-res screens.
+const cssScale = ref(1) //  Tracks the current CSS scale from Panzoom for the UI.
 const DPR = Math.min(window.devicePixelRatio || 1, 2)
-
-// Re-render thresholds: If Panzoom's CSS scale pushes the effective scale
-// beyond these, we trigger a re-render of the PDF's backing canvas for clarity.
 const RERENDER_UPPER_THRESHOLD = 2.0
 const RERENDER_LOWER_THRESHOLD = 0.6
 // --- END: Panzoom & Rendering State ---
 
 const signatureSvg = ref<string | null>(null)
 const isSignaturePadOpen = ref(false)
-
-// This composable will lock the body scroll. It's reactive.
 const bodyEl = document.querySelector('body')
 const isLocked = useScrollLock(bodyEl)
 
 function openSignaturePad() {
   isSignaturePadOpen.value = true
-  isLocked.value = true // Lock the scroll
+  isLocked.value = true
 }
-
 function handleSignatureSave(svg: string) {
   signatureSvg.value = svg
   isSignaturePadOpen.value = false
-  isLocked.value = false // Unlock the scroll
+  isLocked.value = false
 }
-
 function handleSignatureCancel() {
   isSignaturePadOpen.value = false
-  isLocked.value = false // Unlock the scroll
+  isLocked.value = false
 }
 
 const t = computed(() => {
@@ -99,28 +87,137 @@ const t = computed(() => {
   }
 })
 
-// This ref will hold the DOM element where we'll render our PDF pages.
+// This computed value will display the zoom level in the toolbar.
+const zoomPercentage = computed(() => Math.round(cssScale.value * 100))
+
 const pdfContainer = ref<HTMLDivElement | null>(null)
+const viewportRef = ref<HTMLDivElement | null>(null)
+const pageDetails = ref<Array<{ page: pdfjsLib.PDFPageProxy; canvas: HTMLCanvasElement }>>([])
 
-// Clean up the Panzoom instance when the component is unmounted.
-onBeforeUnmount(() => {
+// --- START: Core Functions ---
+
+/**
+ * Renders the PDF for the first time, creating canvas elements.
+ */
+async function renderInitialPdfPages(pdf: pdfjsLib.PDFDocumentProxy, initialScale: number) {
+  if (!pdfContainer.value) return
+  renderScale.value = initialScale
+
+  for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+    const page = await pdf.getPage(pageNum)
+    const viewport = page.getViewport({ scale: renderScale.value })
+    const canvas = document.createElement('canvas')
+    const context = canvas.getContext('2d')!
+
+    canvas.style.display = 'block'
+    canvas.style.margin = '0 auto 1rem auto'
+    canvas.width = Math.floor(viewport.width * DPR)
+    canvas.height = Math.floor(viewport.height * DPR)
+    canvas.style.width = `${Math.floor(viewport.width)}px`
+    canvas.style.height = `${Math.floor(viewport.height)}px`
+
+    pdfContainer.value.appendChild(canvas)
+    // Use markRaw to prevent Vue from making the PDF.js page object reactive.
+    pageDetails.value.push({ page: markRaw(page), canvas })
+
+    const renderContext = {
+      canvasContext: context,
+      viewport: viewport,
+      transform: DPR !== 1 ? [DPR, 0, 0, DPR, 0, 0] : undefined,
+      canvas: canvas,
+    }
+    await page.render(renderContext).promise
+  }
+}
+
+/**
+ * Re-renders all PDF pages with a new backing scale.
+ * This is called when the zoom level crosses a threshold, to ensure clarity.
+ */
+async function updatePagesWithNewScale(newRenderScale: number) {
+  renderScale.value = newRenderScale
+  for (const detail of pageDetails.value) {
+    const { page, canvas } = detail
+    const viewport = page.getViewport({ scale: renderScale.value })
+    const context = canvas.getContext('2d')!
+
+    canvas.width = Math.floor(viewport.width * DPR)
+    canvas.height = Math.floor(viewport.height * DPR)
+    canvas.style.width = `${Math.floor(viewport.width)}px`
+    canvas.style.height = `${Math.floor(viewport.height)}px`
+
+    const renderContext = {
+      canvasContext: context,
+      viewport: page.getViewport({ scale: renderScale.value, rotation: viewport.rotation }),
+      transform: DPR !== 1 ? [DPR, 0, 0, DPR, 0, 0] : undefined,
+      canvas: canvas,
+    }
+    await page.render(renderContext).promise
+  }
+}
+
+/**
+ * Initializes Panzoom and attaches event listeners.
+ */
+function initPanzoom() {
+  if (!pdfContainer.value || !viewportRef.value) return
   panzoom.value?.destroy()
-})
 
-// watchEffect will re-run whenever its dependencies (like props.pdfData) change.
-watchEffect(async () => {
-  if (!props.pdfData || !pdfContainer.value) {
+  const pz = Panzoom(pdfContainer.value, {
+    maxScale: 10,
+    minScale: 0.1,
+    contain: 'outside',
+    canvas: true,
+  })
+
+  viewportRef.value.addEventListener(
+    'wheel',
+    (event) => {
+      // If the user is holding Ctrl (or Cmd on Mac), we zoom. Otherwise, we let it scroll.
+      if (event.ctrlKey) {
+        pz.zoomWithWheel(event)
+      }
+      // If no ctrlKey, do nothing and let the browser handle the scroll event.
+    },
+    { passive: false },
+  )
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  pdfContainer.value.addEventListener('panzoomzoom', (event: any) => {
+    const newCssScale = event.detail.scale
+    cssScale.value = newCssScale
+
+    if (newCssScale <= 1) {
+      pz.setOptions({ panOnlyWhenZoomed: true })
+    } else {
+      pz.setOptions({ panOnlyWhenZoomed: false })
+    }
+  })
+
+  panzoom.value = pz
+}
+/**
+ * Main function to load a PDF from base64 data, render it, and set up interactions.
+ */
+async function loadAndRenderPdf(pdfData: string) {
+  console.log(
+    'loadAndRenderPdf: Called. pdfData length:',
+    pdfData?.length,
+    'pdfContainer available:',
+    !!pdfContainer.value,
+  )
+  if (!pdfData || !pdfContainer.value) {
+    console.log('loadAndRenderPdf: Exiting early.')
     return
   }
 
-  // Reset state when a new PDF is loaded
-  panzoom.value?.destroy() // Destroy any existing panzoom instance
+  panzoom.value?.destroy()
   panzoom.value = null
-  renderScale.value = 1
   pdfContainer.value.innerHTML = ''
+  pageDetails.value = []
 
   try {
-    const pdfBinary = atob(props.pdfData)
+    const pdfBinary = atob(pdfData)
     const pdfBytes = new Uint8Array(pdfBinary.length)
     for (let i = 0; i < pdfBinary.length; i++) {
       pdfBytes[i] = pdfBinary.charCodeAt(i)
@@ -129,38 +226,72 @@ watchEffect(async () => {
     const loadingTask = pdfjsLib.getDocument({ data: pdfBytes })
     const pdf = await loadingTask.promise
 
-    // This is a placeholder for our new rendering logic, which we will implement in the next step.
-    // For now, it just clears the container.
-    // We will replace this with the multi-page rendering loop.
+    const firstPage = await pdf.getPage(1)
+    const viewportWidth = pdfContainer.value.parentElement!.clientWidth
+    const unscaledViewport = firstPage.getViewport({ scale: 1 })
+    const initialScale = (viewportWidth / unscaledViewport.width) * 0.98
+    await renderInitialPdfPages(pdf, initialScale)
+
+    await nextTick()
+    initPanzoom()
   } catch (error) {
     console.error('Failed to render PDF:', error)
-    pdfContainer.value.innerHTML = '<p style="color: red;">Error: Failed to load PDF.</p>'
+    if (pdfContainer.value) {
+      pdfContainer.value.innerHTML = '<p style="color: red;">Error: Failed to load PDF.</p>'
+    }
   }
+}
+
+// --- END: Core Functions ---
+
+// --- START: Lifecycle and Watchers ---
+
+// Use onMounted for the initial load.
+onMounted(() => {
+  console.log('onMounted: Fired. pdfData prop length:', props.pdfData?.length)
+  loadAndRenderPdf(props.pdfData)
 })
+
+// Use watch to handle subsequent changes to the pdfData prop.
+watch(
+  () => props.pdfData,
+  (newPdfData, oldPdfData) => {
+    console.log('watch: Fired. newPdfData length:', newPdfData?.length)
+    if (newPdfData !== oldPdfData) {
+      console.log('watch: Prop changed, calling loadAndRenderPdf.')
+      loadAndRenderPdf(newPdfData)
+    }
+  },
+)
+
+onBeforeUnmount(() => {
+  panzoom.value?.destroy()
+})
+
+// --- END: Lifecycle and Watchers ---
 </script>
+
 <template>
   <div class="vue-pdf-signer">
     <div class="pdf-signer-toolbar">
       <div class="toolbar-group">
-        <!-- Button opens the modal and has dynamic text -->
         <button @click="openSignaturePad" class="btn btn-secondary">{{ t.actionButton }}</button>
-        <!-- Save button is disabled until a signature is present -->
         <button class="btn btn-primary" :disabled="!signatureSvg">{{ t.save }}</button>
       </div>
       <div v-if="props.enableZoom" class="toolbar-group">
-        <button class="btn btn-icon">-</button>
-        <span class="zoom-level">100%</span>
-        <button class="btn btn-icon">+</button>
+        <!-- Connect buttons to Panzoom methods -->
+        <button @click="panzoom?.zoomOut()" class="btn btn-icon">-</button>
+        <span class="zoom-level">{{ zoomPercentage }}%</span>
+        <button @click="panzoom?.zoomIn()" class="btn btn-icon">+</button>
       </div>
     </div>
 
-    <div class="pdf-viewport">
+    <div ref="viewportRef" class="pdf-viewport">
       <div ref="pdfContainer" class="pdf-render-view">
         <!-- PDF pages will be rendered here as canvas elements -->
       </div>
     </div>
 
-    <!-- The signature pad modal, controlled by our state -->
     <SignaturePadModal
       v-if="isSignaturePadOpen"
       @close="handleSignatureCancel"
@@ -170,6 +301,7 @@ watchEffect(async () => {
 </template>
 
 <style scoped>
+/* Styles remain unchanged from your version. */
 .vue-pdf-signer {
   border: 1px solid #e0e0e0;
   border-radius: 8px;
@@ -200,7 +332,7 @@ watchEffect(async () => {
 .toolbar-group {
   display: flex;
   align-items: center;
-  gap: 0.5rem; /* Reduced gap for a tighter look */
+  gap: 0.5rem;
 }
 
 .pdf-viewport {
@@ -210,20 +342,17 @@ watchEffect(async () => {
 }
 
 .pdf-render-view {
-  width: 100%;
-  /* display: flex; */
-  /* flex-direction: column; */
-  /* align-items: center; */
-  transform-origin: top left; /* CRITICAL: All transforms originate from here */
+  /* Panzoom works best without flex properties on the pannable element itself. */
+  /* Let Panzoom handle the transform. */
+  transform-origin: top left;
 }
 
-/* --- Improved Button Styles --- */
 .btn {
-  padding: 0.4rem 0.8rem; /* Adjusted padding */
+  padding: 0.4rem 0.8rem;
   border-radius: 6px;
   border: 1px solid #ccc;
   font-size: 0.875rem;
-  font-weight: 600; /* Slightly bolder */
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
   background-color: #fff;
@@ -258,7 +387,7 @@ watchEffect(async () => {
   align-items: center;
   justify-content: center;
   font-size: 1.2rem;
-  line-height: 1; /* Ensure consistent line height */
+  line-height: 1;
   background-color: #f0f0f0;
   border-color: #ddd;
   color: #444;
@@ -280,14 +409,13 @@ watchEffect(async () => {
   font-weight: 500;
   font-size: 0.9rem;
   color: #333;
-  user-select: none; /* Prevent accidental selection */
+  user-select: none;
 }
 
-/* --- Mobile Responsive Styles --- */
 @media (max-width: 480px) {
   .pdf-signer-toolbar {
     padding: 0.5rem;
-    flex-wrap: wrap; /* Allow groups to wrap if needed */
+    flex-wrap: wrap;
     gap: 0.5rem;
   }
   .toolbar-group {
