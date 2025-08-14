@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { ref, watchEffect, computed, nextTick } from 'vue'
+import { ref, watchEffect, computed, nextTick, onBeforeUnmount } from 'vue'
 import * as pdfjsLib from 'pdfjs-dist'
 import SignaturePadModal from './SignaturePadModal.vue'
 import { useScrollLock } from '@vueuse/core'
+import Panzoom from '@panzoom/panzoom'
+import type { PanzoomObject } from '@panzoom/panzoom'
 
 // Set the worker source for pdfjs-dist. This is crucial for it to work in a Vite/webpack environment.
 // We are pointing to the version of the worker that comes with the installed package.
@@ -48,16 +50,21 @@ defineEmits<{
   (e: 'finish', payload: FinishPayload): void
 }>()
 
-// START: Zoom & Pan State ---
-const scale = ref(1)
-const panX = ref(0)
-const panY = ref(0)
+// --- START: Panzoom & Rendering State ---
+// This ref will hold our Panzoom instance.
+const panzoom = ref<PanzoomObject | null>(null)
 
-// This computed property will generate the CSS transform string.
-const transformStyle = computed(() => ({
-  transform: `translate(${panX.value}px, ${panY.value}px) scale(${scale.value})`,
-}))
-// --- END: Zoom & Pan State ---
+// This is the "logical" render scale for PDF.js, not the CSS transform scale.
+const renderScale = ref(1)
+
+// We clamp the device pixel ratio to avoid creating excessively large canvases on high-res screens.
+const DPR = Math.min(window.devicePixelRatio || 1, 2)
+
+// Re-render thresholds: If Panzoom's CSS scale pushes the effective scale
+// beyond these, we trigger a re-render of the PDF's backing canvas for clarity.
+const RERENDER_UPPER_THRESHOLD = 2.0
+const RERENDER_LOWER_THRESHOLD = 0.6
+// --- END: Panzoom & Rendering State ---
 
 const signatureSvg = ref<string | null>(null)
 const isSignaturePadOpen = ref(false)
@@ -95,6 +102,11 @@ const t = computed(() => {
 // This ref will hold the DOM element where we'll render our PDF pages.
 const pdfContainer = ref<HTMLDivElement | null>(null)
 
+// Clean up the Panzoom instance when the component is unmounted.
+onBeforeUnmount(() => {
+  panzoom.value?.destroy()
+})
+
 // watchEffect will re-run whenever its dependencies (like props.pdfData) change.
 watchEffect(async () => {
   if (!props.pdfData || !pdfContainer.value) {
@@ -102,9 +114,9 @@ watchEffect(async () => {
   }
 
   // Reset state when a new PDF is loaded
-  scale.value = 1
-  panX.value = 0
-  panY.value = 0
+  panzoom.value?.destroy() // Destroy any existing panzoom instance
+  panzoom.value = null
+  renderScale.value = 1
   pdfContainer.value.innerHTML = ''
 
   try {
@@ -117,50 +129,15 @@ watchEffect(async () => {
     const loadingTask = pdfjsLib.getDocument({ data: pdfBytes })
     const pdf = await loadingTask.promise
 
-    const renderScale = 1.5
-
-    // Loop and render all canvases first, without setting state yet.
-    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-      const page = await pdf.getPage(pageNum)
-      const viewport = page.getViewport({ scale: renderScale })
-
-      const canvas = document.createElement('canvas')
-      canvas.style.display = 'block'
-      canvas.style.margin = '0 auto 1rem auto'
-      const context = canvas.getContext('2d')
-      canvas.height = viewport.height
-      canvas.width = viewport.width
-
-      pdfContainer.value.appendChild(canvas)
-
-      const renderContext = {
-        canvasContext: context!,
-        viewport: viewport,
-        canvas: canvas,
-      }
-      await page.render(renderContext).promise
-    }
-
-    // CRITICAL: Wait for the DOM to update with the new canvases.
-    await nextTick()
-
-    // Now that the DOM is stable, we can safely measure and set state.
-    if (!pdfContainer.value?.firstElementChild) return // Guard against empty container
-
-    const viewportWidth = pdfContainer.value.parentElement!.clientWidth
-    const contentWidth = pdfContainer.value.firstElementChild!.clientWidth
-
-    const initialScale = viewportWidth / contentWidth
-    scale.value = initialScale
-    panX.value = (viewportWidth - contentWidth * initialScale) / 2
-    panY.value = 0 // Ensure panY is reset correctly
+    // This is a placeholder for our new rendering logic, which we will implement in the next step.
+    // For now, it just clears the container.
+    // We will replace this with the multi-page rendering loop.
   } catch (error) {
     console.error('Failed to render PDF:', error)
     pdfContainer.value.innerHTML = '<p style="color: red;">Error: Failed to load PDF.</p>'
   }
 })
 </script>
-
 <template>
   <div class="vue-pdf-signer">
     <div class="pdf-signer-toolbar">
@@ -178,7 +155,7 @@ watchEffect(async () => {
     </div>
 
     <div class="pdf-viewport">
-      <div ref="pdfContainer" class="pdf-render-view" :style="transformStyle">
+      <div ref="pdfContainer" class="pdf-render-view">
         <!-- PDF pages will be rendered here as canvas elements -->
       </div>
     </div>

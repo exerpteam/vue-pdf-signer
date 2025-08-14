@@ -45,6 +45,7 @@
     "vue-tsc": "^3.0.4"
   },
   "dependencies": {
+    "@panzoom/panzoom": "^4.6.0",
     "@vueuse/core": "^13.6.0",
     "pdfjs-dist": "^5.4.54"
   }
