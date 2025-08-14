@@ -178,6 +178,7 @@ function initPanzoom() {
     maxScale: 10,
     minScale: 0.1,
     canvas: true,
+    overflow: 'hidden',
   })
 
   viewportRef.value.addEventListener('wheel', pz.zoomWithWheel, { passive: false })
@@ -188,31 +189,43 @@ function initPanzoom() {
     e.preventDefault()
   })
 
-  // On every zoom, update the UI and check if we should allow panning.
+  // On every zoom, just update the UI.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   pdfContainer.value.addEventListener('panzoomzoom', (e: any) => {
     cssScale.value = e.detail.scale
-    updatePanState()
   })
 
   // Re-render for crispness AFTER the user finishes zooming.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   pdfContainer.value.addEventListener('panzoomend', async (e: any) => {
-    const currentCssScale = e.detail.getScale()
+    const pz = e.detail
+    const currentCssScale = pz.getScale()
     const effectiveScale = renderScale.value * currentCssScale
 
     if (effectiveScale > RERENDER_UPPER_THRESHOLD || effectiveScale < RERENDER_LOWER_THRESHOLD) {
+      // 1. Calculate the new backing scale for the canvas.
       const newRenderScale = Math.max(0.25, Math.min(4, effectiveScale))
+      const scaleRatio = newRenderScale / renderScale.value
+
+      // 2. Get the current pan position BEFORE re-rendering.
+      const oldPan = pz.getPan()
+
+      // 3. Re-render the canvas at the new, higher resolution.
       await updatePagesWithNewScale(newRenderScale)
-      // Reset the CSS scale to 1 since the canvas has been resized.
+
+      // 4. Reset Panzoom's scale and pan.
       pz.reset({ silent: true })
+
+      // 5. Re-apply the pan, scaled to the new canvas size, to keep the user's view centered.
+      pz.pan(oldPan.x * scaleRatio, oldPan.y * scaleRatio, {
+        silent: true,
+        animate: false,
+      })
+
+      // 6. Update the UI scale display.
       cssScale.value = 1
-      // Re-check pan state after reset.
-      await nextTick()
-      updatePanState()
     }
   })
-
   panzoom.value = pz
 }
 
