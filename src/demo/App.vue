@@ -18,7 +18,7 @@ const samplePdfData = ref(
   <main>
     <h2>PdfSigner Component</h2>
     <!-- Pass the sample PDF data to our component. -->
-    <PdfSigner :pdfData="samplePdfData" v-if="samplePdfData" />
+    <PdfSigner :pdfData="samplePdfData" :enableZoom="true" v-if="samplePdfData" />
   </main>
 </template>
 

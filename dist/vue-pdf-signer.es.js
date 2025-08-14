@@ -15543,10 +15543,10 @@ const pZ = "data:text/javascript;base64,LyoqCiAqIEBsaWNzdGFydCBUaGUgZm9sbG93aW5n
   __name: "PdfSigner",
   props: {
     pdfData: {},
-    signatureData: {},
-    isDownload: { type: Boolean },
-    translations: {},
-    enableZoom: { type: Boolean }
+    signatureData: { default: () => [] },
+    isDownload: { type: Boolean, default: !1 },
+    translations: { default: () => ({}) },
+    enableZoom: { type: Boolean, default: !0 }
   },
   emits: ["finish"],
   setup(c) {
@@ -15605,7 +15605,7 @@ const pZ = "data:text/javascript;base64,LyoqCiAqIEBsaWNzdGFydCBUaGUgZm9sbG93aW5n
   for (const [C, A] of I)
     g[C] = A;
   return g;
-}, UZ = /* @__PURE__ */ OZ(jZ, [["__scopeId", "data-v-edc4e6d4"]]), rZ = {
+}, UZ = /* @__PURE__ */ OZ(jZ, [["__scopeId", "data-v-9e4d95e1"]]), rZ = {
   install(c) {
     c.component("PdfSigner", UZ);
   }

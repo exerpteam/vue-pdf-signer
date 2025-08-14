@@ -27,13 +27,21 @@ interface FinishPayload {
   }
 }
 
-const props = defineProps<{
-  pdfData: string
-  signatureData?: SignaturePlacement[]
-  isDownload?: boolean
-  translations?: Record<string, string>
-  enableZoom?: boolean
-}>()
+const props = withDefaults(
+  defineProps<{
+    pdfData: string
+    signatureData?: SignaturePlacement[]
+    isDownload?: boolean
+    translations?: Record<string, string>
+    enableZoom?: boolean
+  }>(),
+  {
+    isDownload: false,
+    enableZoom: true,
+    signatureData: () => [],
+    translations: () => ({}),
+  },
+)
 
 defineEmits<{
   (e: 'finish', payload: FinishPayload): void
@@ -127,7 +135,7 @@ watchEffect(async () => {
     </div>
 
     <div class="pdf-viewport">
-      <!-- ✍️ The ref is now on this inner container. This will be important for transforms. -->
+      <!-- The ref is on this inner container. This is important for transforms. -->
       <div ref="pdfContainer" class="pdf-render-view">
         <!-- PDF pages will be rendered here as canvas elements -->
       </div>
@@ -137,26 +145,28 @@ watchEffect(async () => {
 
 <style scoped>
 .vue-pdf-signer {
-  border: 1px solid #ccc;
+  border: 1px solid #e0e0e0;
   border-radius: 8px;
-  background-color: #f0f0f0; /* ✍️ Changed background for better contrast */
+  background-color: #f5f5f5;
   height: 100%;
   min-height: 400px;
   max-height: 90vh;
   display: flex;
   flex-direction: column;
-  overflow: hidden; /* ✍️ Important: overflow is now handled by the viewport */
+  overflow: hidden;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
 .pdf-signer-toolbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.75rem 1rem;
+  padding: 0.5rem 1rem;
   background-color: #ffffff;
-  border-bottom: 1px solid #ccc;
-  flex-shrink: 0; /* ✍️ Prevent the toolbar from shrinking */
-  position: sticky; /* ✍️ Make the toolbar stick to the top */
+  border-bottom: 1px solid #e0e0e0;
+  flex-shrink: 0;
+  position: sticky;
   top: 0;
   z-index: 10;
 }
@@ -164,12 +174,12 @@ watchEffect(async () => {
 .toolbar-group {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem; /* Reduced gap for a tighter look */
 }
 
 .pdf-viewport {
-  flex-grow: 1; /* ✍️ The viewport will take up all available space */
-  overflow: auto; /* ✍️ This is now our main scrollable area */
+  flex-grow: 1;
+  overflow: auto;
   padding: 1rem 0;
 }
 
@@ -180,23 +190,29 @@ watchEffect(async () => {
   align-items: center;
 }
 
-/* ✍️ Basic button styling */
+/* --- Improved Button Styles --- */
 .btn {
-  padding: 0.5rem 1rem;
+  padding: 0.4rem 0.8rem; /* Adjusted padding */
   border-radius: 6px;
-  border: 1px solid transparent;
+  border: 1px solid #ccc;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 600; /* Slightly bolder */
   cursor: pointer;
   transition: all 0.2s;
+  background-color: #fff;
+  color: #333;
+}
+.btn:hover {
+  border-color: #999;
+  background-color: #f8f8f8;
 }
 .btn-primary {
-  background-color: #007bff;
+  background-color: #007aff;
   color: white;
-  border-color: #007bff;
+  border-color: #007aff;
 }
 .btn-primary:hover {
-  background-color: #0056b3;
+  background-color: #005ecb;
 }
 .btn-secondary {
   background-color: #6c757d;
@@ -206,6 +222,7 @@ watchEffect(async () => {
 .btn-secondary:hover {
   background-color: #5a6268;
 }
+
 .btn-icon {
   width: 2rem;
   height: 2rem;
@@ -213,17 +230,44 @@ watchEffect(async () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.25rem;
-  background-color: #f8f9fa;
-  border-color: #dee2e6;
-  color: #212529;
+  font-size: 1.2rem;
+  line-height: 1; /* Ensure consistent line height */
+  background-color: #f0f0f0;
+  border-color: #ddd;
+  color: #444;
 }
 .btn-icon:hover {
-  background-color: #e2e6ea;
+  background-color: #e0e0e0;
 }
+
 .zoom-level {
   min-width: 4ch;
+  padding: 0 0.25rem;
   text-align: center;
   font-weight: 500;
+  font-size: 0.9rem;
+  color: #333;
+  user-select: none; /* Prevent accidental selection */
+}
+
+/* --- Mobile Responsive Styles --- */
+@media (max-width: 480px) {
+  .pdf-signer-toolbar {
+    padding: 0.5rem;
+    flex-wrap: wrap; /* Allow groups to wrap if needed */
+    gap: 0.5rem;
+  }
+  .toolbar-group {
+    gap: 0.25rem;
+  }
+  .btn {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+  }
+  .btn-icon {
+    width: 1.75rem;
+    height: 1.75rem;
+    font-size: 1rem;
+  }
 }
 </style>
