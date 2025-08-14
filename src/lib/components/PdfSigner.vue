@@ -65,7 +65,17 @@ watchEffect(async () => {
     // Loop through each page of the PDF.
     for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
       const page = await pdf.getPage(pageNum)
-      const viewport = page.getViewport({ scale: 1.5 }) // Using a fixed scale for now.
+
+      // Get the viewport at scale 1 to determine the original PDF page width.
+      const unscaledViewport = page.getViewport({ scale: 1 })
+
+      // Get the available width from our container div. We'll leave a little padding.
+      const availableWidth = pdfContainer.value.clientWidth * 0.95
+
+      // Calculate the scale required to make the PDF page fit the available width.
+      const scale = availableWidth / unscaledViewport.width
+
+      const viewport = page.getViewport({ scale }) // Use dynamic scale
 
       // Create a canvas for each page.
       const canvas = document.createElement('canvas')
@@ -118,5 +128,8 @@ watchEffect(async () => {
 }
 .pdf-render-view {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 </style>

@@ -15558,16 +15558,16 @@ const eZ = "data:text/javascript;base64,LyoqCiAqIEBsaWNzdGFydCBUaGUgZm9sbG93aW5n
             A[i] = C.charCodeAt(i);
           const Z = await aA({ data: A }).promise;
           for (let i = 1; i <= Z.numPages; i++) {
-            const d = await Z.getPage(i), s = d.getViewport({ scale: 1.5 }), G = document.createElement("canvas");
-            G.style.display = "block", G.style.marginBottom = "1rem";
-            const b = G.getContext("2d");
-            G.height = s.height, G.width = s.width, g.value.appendChild(G);
-            const m = {
-              canvasContext: b,
-              viewport: s,
-              canvas: G
+            const d = await Z.getPage(i), s = d.getViewport({ scale: 1 }), b = g.value.clientWidth * 0.95 / s.width, m = d.getViewport({ scale: b }), B = document.createElement("canvas");
+            B.style.display = "block", B.style.marginBottom = "1rem";
+            const o = B.getContext("2d");
+            B.height = m.height, B.width = m.width, g.value.appendChild(B);
+            const W = {
+              canvasContext: o,
+              viewport: m,
+              canvas: B
             };
-            await d.render(m).promise;
+            await d.render(W).promise;
           }
         } catch (C) {
           console.error("Failed to render PDF:", C), g.value.innerHTML = '<p style="color: red;">Error: Failed to load PDF.</p>';
@@ -15586,7 +15586,7 @@ const eZ = "data:text/javascript;base64,LyoqCiAqIEBsaWNzdGFydCBUaGUgZm9sbG93aW5n
   for (const [C, A] of I)
     g[C] = A;
   return g;
-}, FZ = /* @__PURE__ */ pZ(SZ, [["__scopeId", "data-v-1feb225b"]]), kZ = {
+}, FZ = /* @__PURE__ */ pZ(SZ, [["__scopeId", "data-v-c4bc483f"]]), kZ = {
   install(c) {
     c.component("PdfSigner", FZ);
   }
