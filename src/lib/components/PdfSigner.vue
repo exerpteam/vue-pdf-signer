@@ -1,10 +1,20 @@
 <script setup lang="ts">
-import { ref, watch, computed, nextTick, onBeforeUnmount, onMounted, markRaw } from 'vue'
+import {
+  ref,
+  watch,
+  computed,
+  nextTick,
+  onBeforeUnmount,
+  onMounted,
+  markRaw,
+  watchEffect,
+} from 'vue'
 import * as pdfjsLib from 'pdfjs-dist'
 import SignaturePadModal from './SignaturePadModal.vue'
 import { useScrollLock } from '@vueuse/core'
 import Panzoom from '@panzoom/panzoom'
 import type { PanzoomObject } from '@panzoom/panzoom'
+import { isDebug, logger } from '../utils/debug'
 
 // Set the worker source for pdfjs-dist
 import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.mjs?url'
@@ -47,14 +57,20 @@ const props = withDefaults(
     isDownload?: boolean
     translations?: Record<string, string>
     enableZoom?: boolean
+    debug?: boolean
   }>(),
   {
     isDownload: false,
     enableZoom: true,
     signatureData: () => [],
     translations: () => ({}),
+    debug: false,
   },
 )
+
+watchEffect(() => {
+  isDebug.value = props.debug
+})
 
 defineEmits<{
   (e: 'finish', payload: FinishPayload): void
@@ -84,7 +100,7 @@ const PDF_DPI = 72
 const CM_TO_INCH = 1 / 2.54
 const CM_TO_PX = PDF_DPI * CM_TO_INCH // This gives us ~28.346 pixels per cm at 72 DPI
 
-console.log('Conversion factors:', {
+logger.debug('Conversion factors calculated', {
   CM_TO_PX,
   fiveCmInPx: 5 * CM_TO_PX,
   sevenCmInPx: 7 * CM_TO_PX,
@@ -119,10 +135,10 @@ function openSignaturePad() {
   isLocked.value = true
 }
 
-const showDebugBounds = ref(true) // Set to true to see SVG boundaries
+const showDebugBounds = computed(() => isDebug.value)
 
 function handleSignatureSave(svg: string) {
-  console.log('Signature SVG saved:', svg)
+  logger.debug('Signature SVG saved', svg)
 
   // Parse the SVG path to understand its bounds
   const pathParts = svg.match(/[MLCSmhvlcs][^MLCSmhvlcs]*/g) || []
@@ -135,7 +151,7 @@ function handleSignatureSave(svg: string) {
   const yCoords = coords.filter((_, i) => i % 2 === 1)
   const xCoords = coords.filter((_, i) => i % 2 === 0)
 
-  console.log('SVG Path Analysis:', {
+  logger.debug('SVG Path Analysis', {
     path: svg,
     pathParts,
     xRange: xCoords.length ? [Math.min(...xCoords), Math.max(...xCoords)] : [],
@@ -183,7 +199,7 @@ async function renderInitialPdfPages(pdf: pdfjsLib.PDFDocumentProxy, initialScal
   // Store the initial scale for signature positioning
   initialPdfScale.value = initialScale
 
-  console.log('PDF Rendering Debug:', {
+  logger.debug('PDF Rendering', {
     initialScale,
     CM_TO_PX,
     expectedSignaturePosition: {
@@ -227,7 +243,7 @@ async function renderInitialPdfPages(pdf: pdfjsLib.PDFDocumentProxy, initialScal
         height: Math.floor(displayViewport.height),
       }
 
-      console.log('First Page Canvas Debug:', {
+      logger.debug('First Page Canvas Details', {
         displayWidth: Math.floor(displayViewport.width),
         displayHeight: Math.floor(displayViewport.height),
         scale: initialScale,
@@ -254,7 +270,7 @@ async function renderInitialPdfPages(pdf: pdfjsLib.PDFDocumentProxy, initialScal
 
   // Set up resize observer for the container, not the canvas
   if (pdfContainer.value) {
-    console.log('About to set up container resize observer')
+    logger.debug('Setting up container resize observer')
     setupContainerResizeObserver()
 
     // Initialize container dimensions
@@ -269,33 +285,33 @@ async function renderInitialPdfPages(pdf: pdfjsLib.PDFDocumentProxy, initialScal
  * Sets up a ResizeObserver to track container size changes
  */
 function setupContainerResizeObserver() {
-  console.log('setupContainerResizeObserver called', {
+  logger.debug('setupContainerResizeObserver called', {
     hasContainer: !!pdfContainer.value,
     containerElement: pdfContainer.value,
   })
 
   if (!pdfContainer.value) {
-    console.log('No container to observe, returning')
+    logger.debug('No container to observe, returning')
     return
   }
 
   // Clean up existing observer if any
   if (resizeObserver) {
-    console.log('Cleaning up existing ResizeObserver')
+    logger.debug('Cleaning up existing ResizeObserver')
     resizeObserver.disconnect()
     resizeObserver = null
   }
 
-  console.log('Creating new ResizeObserver for container')
+  logger.debug('Creating new ResizeObserver for container')
   resizeObserver = new ResizeObserver((entries) => {
-    console.log('Container ResizeObserver fired!', { entriesCount: entries.length })
+    logger.debug('Container ResizeObserver fired', { entriesCount: entries.length })
 
     for (const entry of entries) {
       const container = entry.target as HTMLElement
       const newWidth = container.clientWidth
       const newHeight = container.clientHeight
 
-      console.log('Container ResizeObserver entry:', {
+      logger.debug('Container ResizeObserver entry', {
         target: container,
         contentRect: entry.contentRect,
         clientWidth: newWidth,
@@ -315,19 +331,19 @@ function setupContainerResizeObserver() {
           height: newHeight,
         }
 
-        console.log('Container dimensions updated:', {
+        logger.debug('Container dimensions updated', {
           old: oldDimensions,
           new: { width: newWidth, height: newHeight },
         })
       } else {
-        console.log('Container dimensions unchanged')
+        logger.debug('Container dimensions unchanged')
       }
     }
   })
 
-  console.log('Starting to observe container:', pdfContainer.value)
+  logger.debug('Observing container', pdfContainer.value)
   resizeObserver.observe(pdfContainer.value)
-  console.log('Container ResizeObserver setup complete')
+  logger.debug('Container ResizeObserver setup complete')
 }
 
 /**
@@ -476,7 +492,7 @@ async function loadAndRenderPdf(pdfData: string) {
     initPanzoom()
     updatePanState()
   } catch (error) {
-    console.error('Failed to render PDF:', error)
+    logger.error('Failed to render PDF', error)
     if (pdfContainer.value) {
       pdfContainer.value.innerHTML = '<p style="color: red;">Error: Failed to load PDF.</p>'
     }
@@ -519,7 +535,7 @@ const signatureStyle = computed(() => {
   const finalTop = signatureTop + containerPadding // Add top padding of container
 
   // Debug logging
-  console.log('Signature Positioning Debug:', {
+  logger.debug('Signature Positioning Calculation', {
     placement: {
       leftCm: placement.left / CM_TO_PX,
       topCm: placement.top / CM_TO_PX,
@@ -589,13 +605,13 @@ onMounted(() => {
 
   // Add window resize listener for debugging
   const handleWindowResize = () => {
-    console.log('Window resized!', {
+    logger.debug('Window resized', {
       innerWidth: window.innerWidth,
       innerHeight: window.innerHeight,
     })
 
     if (firstCanvasRef.value) {
-      console.log('Canvas element on window resize:', {
+      logger.debug('Canvas element on window resize', {
         canvas: firstCanvasRef.value,
         styleWidth: firstCanvasRef.value.style.width,
         styleHeight: firstCanvasRef.value.style.height,
@@ -613,7 +629,7 @@ onMounted(() => {
         newWidth !== currentCanvasDimensions.value.width ||
         newHeight !== currentCanvasDimensions.value.height
       ) {
-        console.log('Manual dimension update on window resize:', {
+        logger.debug('Manual dimension update on window resize', {
           old: currentCanvasDimensions.value,
           new: { width: newWidth, height: newHeight },
         })
@@ -625,7 +641,7 @@ onMounted(() => {
     }
 
     if (pdfContainer.value) {
-      console.log('PDF container on window resize:', {
+      logger.debug('PDF container on window resize', {
         clientWidth: pdfContainer.value.clientWidth,
         clientHeight: pdfContainer.value.clientHeight,
         offsetWidth: pdfContainer.value.offsetWidth,

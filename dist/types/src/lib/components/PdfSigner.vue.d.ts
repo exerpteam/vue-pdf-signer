@@ -21,11 +21,13 @@ declare const _default: import('vue').DefineComponent<import('vue').ExtractPropT
     isDownload?: boolean;
     translations?: Record<string, string>;
     enableZoom?: boolean;
+    debug?: boolean;
 }>, {
     isDownload: boolean;
     enableZoom: boolean;
     signatureData: () => never[];
     translations: () => {};
+    debug: boolean;
 }>>, {}, {}, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
     finish: (payload: FinishPayload) => void;
 }, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
@@ -34,11 +36,13 @@ declare const _default: import('vue').DefineComponent<import('vue').ExtractPropT
     isDownload?: boolean;
     translations?: Record<string, string>;
     enableZoom?: boolean;
+    debug?: boolean;
 }>, {
     isDownload: boolean;
     enableZoom: boolean;
     signatureData: () => never[];
     translations: () => {};
+    debug: boolean;
 }>>> & Readonly<{
     onFinish?: ((payload: FinishPayload) => any) | undefined;
 }>, {
@@ -46,6 +50,7 @@ declare const _default: import('vue').DefineComponent<import('vue').ExtractPropT
     isDownload: boolean;
     translations: Record<string, string>;
     enableZoom: boolean;
+    debug: boolean;
 }, {}, {}, {}, string, import('vue').ComponentProvideOptions, true, {}, any>;
 export default _default;
 type __VLS_NonUndefinedable<T> = T extends undefined ? never : T;
