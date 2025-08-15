@@ -1,11 +1,104 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { PdfSigner } from '../lib'
-import { SAMPLE_PDF_DATA } from './sample-pdf'
+import { PDF_MANIFEST, type PdfManifestEntry } from './pdf-manifest'
 
-// This is a simple, one-page, blank PDF encoded in base64.
-// We'll use it to test our rendering logic.
-const samplePdfData = ref(SAMPLE_PDF_DATA)
+// This interface matches the structure our component's prop expects.
+interface SignaturePlacement {
+  left: number
+  top: number
+  width: number
+  height: number
+  page: number
+}
+
+// --- START: Reactive state for our demo app ---
+const pdfList = ref<PdfManifestEntry[]>(PDF_MANIFEST)
+const selectedPdfFileName = ref<string>(PDF_MANIFEST[0]?.fileName || '')
+const pdfData = ref<string>('')
+const signatureData = ref<SignaturePlacement[]>([])
+const isLoading = ref<boolean>(false)
+// --- END: Reactive state ---
+
+/**
+ * Parses the signature box string from the manifest into the format
+ * our component expects.
+ */
+function parseSignatureData(signatureString: string): SignaturePlacement[] {
+  const signature: Partial<SignaturePlacement> = { page: 1 } // Default to page 1
+  const parts = signatureString.match(/(\w+)=([\d.]+)/g) || []
+
+  parts.forEach((part) => {
+    const [key, value] = part.split('=')
+    if (key && value) {
+      // Use a type assertion here since we are dynamically building the object.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ;(signature as any)[key] = parseFloat(value)
+    }
+  })
+
+  // We return an array, as the prop expects an array of placements.
+  return [signature as SignaturePlacement]
+}
+
+/**
+ * Dynamically imports a PDF from the samples directory, fetches it,
+ * and converts it to a base64 string.
+ */
+async function loadPdfAsBase64(fileName: string): Promise<string> {
+  try {
+    // We ensure the file extension `.pdf` is part of the
+    // static string, which satisfies Vite's static analyzer. The `?url` suffix
+    // must also be part of the static string.
+    const pdfUrlModule = await import(/* @vite-ignore */ `./samples/${fileName}?url`)
+    const pdfUrl = pdfUrlModule.default
+
+    const response = await fetch(pdfUrl)
+    if (!response.ok) {
+      throw new Error(`Failed to fetch PDF: ${response.statusText}`)
+    }
+    const blob = await response.blob()
+
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = () => {
+        const dataUrl = reader.result as string
+        // We need to strip the "data:application/pdf;base64," prefix.
+        const base64 = dataUrl.split(',')[1]
+        resolve(base64)
+      }
+      reader.onerror = (error) => reject(error)
+      reader.readAsDataURL(blob)
+    })
+  } catch (error) {
+    console.error(`Error loading PDF ${fileName}:`, error)
+    return ''
+  }
+}
+
+// Watch for changes in the dropdown selection.
+watch(
+  selectedPdfFileName,
+  async (newFileName) => {
+    if (!newFileName) return
+
+    isLoading.value = true
+    pdfData.value = '' // Clear previous PDF to show loading state
+
+    const selectedPdf = pdfList.value.find((p) => p.fileName === newFileName)
+    if (selectedPdf) {
+      // Load the new PDF and parse its signature data in parallel.
+      const [loadedPdfData, parsedSignatureData] = await Promise.all([
+        loadPdfAsBase64(selectedPdf.fileName),
+        Promise.resolve(parseSignatureData(selectedPdf.signatureBoxCm)),
+      ])
+      pdfData.value = loadedPdfData
+      signatureData.value = parsedSignatureData
+    }
+    isLoading.value = false
+  },
+  { immediate: true }, // `immediate: true` runs the watcher on component mount to load the initial PDF.
+)
 </script>
 
 <template>
@@ -15,9 +108,30 @@ const samplePdfData = ref(SAMPLE_PDF_DATA)
   </header>
 
   <main>
+    <div class="controls">
+      <label for="pdf-selector">Select a Test PDF:</label>
+      <select id="pdf-selector" v-model="selectedPdfFileName">
+        <option v-for="pdf in pdfList" :key="pdf.fileName" :value="pdf.fileName">
+          {{ pdf.name }}
+        </option>
+      </select>
+    </div>
+
     <h2>PdfSigner Component</h2>
-    <!-- Pass the sample PDF data to our component. -->
-    <PdfSigner :pdfData="samplePdfData" :enableZoom="true" :debug="true" v-if="samplePdfData" />
+
+    <!-- Display a loading message while the PDF is being fetched. -->
+    <div v-if="isLoading" class="loading-placeholder">
+      <p>Loading PDF...</p>
+    </div>
+
+    <!-- The component is now bound to our dynamic state. -->
+    <PdfSigner
+      v-if="pdfData && !isLoading"
+      :pdfData="pdfData"
+      :signatureData="signatureData"
+      :enableZoom="true"
+      :debug="true"
+    />
   </main>
 </template>
 
@@ -29,5 +143,32 @@ header {
 }
 main {
   padding: 1rem;
+}
+
+/* styles for the controls and loading state. */
+.controls {
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.controls label {
+  font-weight: 500;
+}
+.controls select {
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  min-width: 300px;
+}
+.loading-placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  background-color: #f9f9f9;
+  border: 1px dashed #ddd;
+  border-radius: 8px;
+  color: #777;
 }
 </style>
