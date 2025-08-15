@@ -72,20 +72,76 @@ const HIGH_RES_SCALE_FACTOR = MAX_ZOOM_LEVEL
 const DPR = Math.min(window.devicePixelRatio || 1, 2)
 // --- END: Panzoom & Rendering State ---
 
+// --- START: Signature State ---
 const signatureSvg = ref<string | null>(null)
 const isSignaturePadOpen = ref(false)
 const bodyEl = document.querySelector('body')
 const isLocked = useScrollLock(bodyEl)
 
+// PDF standard is typically 72 DPI, but web standard is 96 DPI
+// Let's use the PDF standard for more accurate positioning
+const PDF_DPI = 72
+const CM_TO_INCH = 1 / 2.54
+const CM_TO_PX = PDF_DPI * CM_TO_INCH // This gives us ~28.346 pixels per cm at 72 DPI
+
+console.log('Conversion factors:', {
+  CM_TO_PX,
+  fiveCmInPx: 5 * CM_TO_PX,
+  sevenCmInPx: 7 * CM_TO_PX,
+})
+
+// Default signature placement (in cm, then converted to px)
+const defaultSignaturePlacement = computed(() => ({
+  left: 5 * CM_TO_PX, // 5cm
+  top: 7 * CM_TO_PX, // 7cm
+  width: 8 * CM_TO_PX, // 8cm
+  height: 4 * CM_TO_PX, // 4cm
+  page: 1,
+}))
+
+// Store the initial scale of the PDF for proper signature scaling
+const initialPdfScale = ref(1)
+// Store reference to first canvas for positioning
+const firstCanvasRef = ref<HTMLCanvasElement | null>(null)
+// --- END: Signature State ---
+
 function openSignaturePad() {
   isSignaturePadOpen.value = true
   isLocked.value = true
 }
+
+const showDebugBounds = ref(true) // Set to true to see SVG boundaries
+
 function handleSignatureSave(svg: string) {
+  console.log('Signature SVG saved:', svg)
+
+  // Parse the SVG path to understand its bounds
+  const pathParts = svg.match(/[MLCSmhvlcs][^MLCSmhvlcs]*/g) || []
+  const coords: number[] = []
+  pathParts.forEach((part) => {
+    const numbers = part.match(/-?\d+\.?\d*/g) || []
+    coords.push(...numbers.map(Number))
+  })
+
+  const yCoords = coords.filter((_, i) => i % 2 === 1)
+  const xCoords = coords.filter((_, i) => i % 2 === 0)
+
+  console.log('SVG Path Analysis:', {
+    path: svg,
+    pathParts,
+    xRange: xCoords.length ? [Math.min(...xCoords), Math.max(...xCoords)] : [],
+    yRange: yCoords.length ? [Math.min(...yCoords), Math.max(...yCoords)] : [],
+    coords: {
+      x: xCoords,
+      y: yCoords,
+    },
+  })
+
   signatureSvg.value = svg
   isSignaturePadOpen.value = false
   isLocked.value = false
 }
+
 function handleSignatureCancel() {
   isSignaturePadOpen.value = false
   isLocked.value = false
@@ -102,6 +158,7 @@ const t = computed(() => {
 })
 
 const pdfContainer = ref<HTMLDivElement | null>(null)
+const panzoomContainer = ref<HTMLDivElement | null>(null)
 const viewportRef = ref<HTMLDivElement | null>(null)
 const pageDetails = ref<Array<{ page: pdfjsLib.PDFPageProxy; canvas: HTMLCanvasElement }>>([])
 
@@ -113,6 +170,20 @@ const pageDetails = ref<Array<{ page: pdfjsLib.PDFPageProxy; canvas: HTMLCanvasE
  */
 async function renderInitialPdfPages(pdf: pdfjsLib.PDFDocumentProxy, initialScale: number) {
   if (!pdfContainer.value) return
+
+  // Store the initial scale for signature positioning
+  initialPdfScale.value = initialScale
+
+  console.log('PDF Rendering Debug:', {
+    initialScale,
+    CM_TO_PX,
+    expectedSignaturePosition: {
+      leftCm: 5,
+      topCm: 7,
+      leftPx: 5 * CM_TO_PX,
+      topPx: 7 * CM_TO_PX,
+    },
+  })
 
   for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
     const page = await pdf.getPage(pageNum)
@@ -137,6 +208,21 @@ async function renderInitialPdfPages(pdf: pdfjsLib.PDFDocumentProxy, initialScal
     canvas.style.width = `${Math.floor(displayViewport.width)}px`
     canvas.style.height = `${Math.floor(displayViewport.height)}px`
 
+    // Store reference to first canvas for positioning
+    if (pageNum === 1) {
+      firstCanvasRef.value = canvas
+
+      console.log('First Page Canvas Debug:', {
+        displayWidth: Math.floor(displayViewport.width),
+        displayHeight: Math.floor(displayViewport.height),
+        scale: initialScale,
+        viewport: {
+          width: displayViewport.width,
+          height: displayViewport.height,
+        },
+      })
+    }
+
     pdfContainer.value.appendChild(canvas)
     pageDetails.value.push({ page: markRaw(page), canvas })
 
@@ -150,14 +236,13 @@ async function renderInitialPdfPages(pdf: pdfjsLib.PDFDocumentProxy, initialScal
     await page.render(renderContext).promise
   }
 }
-
 /**
  * Checks if the content is overflowing the viewport and enables/disables panning.
  */
 function updatePanState() {
-  if (!panzoom.value || !pdfContainer.value || !viewportRef.value) return
+  if (!panzoom.value || !panzoomContainer.value || !viewportRef.value) return
   const pz = panzoom.value
-  const contentRect = pdfContainer.value.getBoundingClientRect()
+  const contentRect = panzoomContainer.value.getBoundingClientRect()
   const viewportRect = viewportRef.value.getBoundingClientRect()
 
   // Check if content is smaller than viewport in either dimension
@@ -220,10 +305,10 @@ function zoomOut() {
  * Initializes Panzoom and attaches event listeners.
  */
 function initPanzoom() {
-  if (!pdfContainer.value || !viewportRef.value) return
+  if (!panzoomContainer.value || !viewportRef.value) return
   panzoom.value?.destroy()
 
-  const pz = Panzoom(pdfContainer.value, {
+  const pz = Panzoom(panzoomContainer.value, {
     maxScale: MAX_ZOOM_LEVEL,
     minScale: 0.1,
     canvas: true,
@@ -235,18 +320,18 @@ function initPanzoom() {
   viewportRef.value.addEventListener('wheel', pz.zoomWithWheel, { passive: false })
 
   // Prevent gesture "leaking" on mobile by stopping event propagation.
-  pdfContainer.value.addEventListener('panzoomstart', (e) => {
+  panzoomContainer.value.addEventListener('panzoomstart', (e) => {
     e.preventDefault()
   })
 
   // On every zoom, update our reactive state for the UI.
-  pdfContainer.value.addEventListener('panzoomzoom', (e) => {
+  panzoomContainer.value.addEventListener('panzoomzoom', (e) => {
     const event = e as PanzoomEvent
     currentZoom.value = event.detail.scale
   })
 
   // After any interaction, update the pan boundaries.
-  pdfContainer.value.addEventListener('panzoomend', () => {
+  panzoomContainer.value.addEventListener('panzoomend', () => {
     updatePanState()
   })
 
@@ -303,6 +388,100 @@ async function loadAndRenderPdf(pdfData: string) {
     }
   }
 }
+
+// Computed style for signature positioning
+const signatureStyle = computed(() => {
+  if (!firstCanvasRef.value || !pdfContainer.value) {
+    return { display: 'none' }
+  }
+
+  const placement = defaultSignaturePlacement.value
+  const canvas = firstCanvasRef.value
+
+  // Get the canvas dimensions
+  const canvasWidth = parseInt(canvas.style.width)
+  const canvasHeight = parseInt(canvas.style.height)
+
+  // Get container dimensions
+  const containerWidth = pdfContainer.value.clientWidth
+  const containerPadding = 16 // 1rem padding on each side (from .pdf-render-view padding)
+
+  // Calculate the actual left offset of the canvas within the container
+  // The canvas is centered, so we need to account for that
+  const canvasLeftOffset = (containerWidth - canvasWidth) / 2
+
+  // Calculate signature dimensions and position
+  // These should be relative to the PDF page origin (top-left of the canvas)
+  const signatureLeft = placement.left * initialPdfScale.value
+  const signatureTop = placement.top * initialPdfScale.value
+  const signatureWidth = placement.width * initialPdfScale.value
+  const signatureHeight = placement.height * initialPdfScale.value
+
+  // Final position includes canvas offset
+  const finalLeft = canvasLeftOffset + signatureLeft
+  const finalTop = signatureTop + containerPadding // Add top padding of container
+
+  // Debug logging
+  console.log('Signature Positioning Debug:', {
+    placement: {
+      leftCm: placement.left / CM_TO_PX,
+      topCm: placement.top / CM_TO_PX,
+      widthCm: placement.width / CM_TO_PX,
+      heightCm: placement.height / CM_TO_PX,
+    },
+    pixelValues: {
+      left: placement.left,
+      top: placement.top,
+      width: placement.width,
+      height: placement.height,
+    },
+    canvas: {
+      width: canvasWidth,
+      height: canvasHeight,
+    },
+    container: {
+      width: containerWidth,
+      padding: containerPadding,
+    },
+    offsets: {
+      canvasLeftOffset,
+      initialPdfScale: initialPdfScale.value,
+    },
+    scaled: {
+      signatureLeft,
+      signatureTop,
+      signatureWidth,
+      signatureHeight,
+    },
+    final: {
+      left: finalLeft,
+      top: finalTop,
+      width: signatureWidth,
+      height: signatureHeight,
+    },
+    svgInfo: {
+      viewBox: '0 0 200 160',
+      preserveAspectRatio: 'xMidYMid meet',
+      transform: 'translate(10, 0)',
+      description: 'Signature is naturally centered at y=80, viewBox center is also y=80',
+      signatureNaturalBounds: {
+        xRange: [10, 180],
+        yRange: [20, 140],
+        center: { x: 95, y: 80 },
+      },
+    },
+  })
+
+  return {
+    position: 'absolute' as const,
+    left: `${finalLeft}px`,
+    top: `${finalTop}px`,
+    width: `${signatureWidth}px`,
+    height: `${signatureHeight}px`,
+    pointerEvents: 'none' as const,
+  }
+})
+
 // --- START: Lifecycle and Watchers ---
 onMounted(() => {
   loadAndRenderPdf(props.pdfData)
@@ -343,8 +522,64 @@ onBeforeUnmount(() => {
     </div>
 
     <div ref="viewportRef" class="pdf-viewport">
-      <div ref="pdfContainer" class="pdf-render-view">
-        <!-- PDF pages will be rendered here as canvas elements -->
+      <div ref="panzoomContainer" class="panzoom-container">
+        <div ref="pdfContainer" class="pdf-render-view">
+          <!-- PDF pages will be rendered here as canvas elements -->
+        </div>
+
+        <!-- Signature overlay -->
+        <div v-if="signatureSvg" class="signature-overlay">
+          <div :style="signatureStyle" class="signature-wrapper">
+            <svg
+              viewBox="0 0 200 160"
+              preserveAspectRatio="xMidYMid meet"
+              width="100%"
+              height="100%"
+              xmlns="http://www.w3.org/2000/svg"
+              style="display: block"
+            >
+              <!-- Debug: show viewBox boundaries -->
+              <rect
+                x="0"
+                y="0"
+                width="200"
+                height="160"
+                fill="none"
+                stroke="rgba(255,0,0,0.2)"
+                stroke-width="1"
+                stroke-dasharray="2,2"
+                v-if="showDebugBounds"
+              />
+
+              <!-- Debug: show signature center line -->
+              <line
+                x1="0"
+                y1="80"
+                x2="200"
+                y2="80"
+                stroke="rgba(0,255,0,0.2)"
+                stroke-width="0.5"
+                stroke-dasharray="2,2"
+                v-if="showDebugBounds"
+              />
+
+              <!-- The signature path centered in the viewBox -->
+              <!-- Since the signature naturally spans y=20 to y=140 (center at y=80),
+                   and we want it centered at y=80 in our viewBox,
+                   we don't need vertical translation, just horizontal padding -->
+              <g transform="translate(10, 0)">
+                <path
+                  :d="signatureSvg"
+                  fill="none"
+                  stroke="#000080"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </g>
+            </svg>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -396,14 +631,20 @@ onBeforeUnmount(() => {
   padding: 1rem 0;
 }
 
-.pdf-render-view {
+.panzoom-container {
   transform-origin: top left;
+  position: relative;
+  display: inline-block;
+  min-width: 100%;
+}
+
+.pdf-render-view {
   padding: 1rem;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center the canvas elements horizontally */
-  min-width: 100%; /* Ensure the container takes full width */
+  align-items: center;
+  min-width: 100%;
 }
 
 /* Keep the nice shadow for the canvas elements */
@@ -411,7 +652,28 @@ onBeforeUnmount(() => {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
   display: block;
-  margin: 0 auto 1rem auto; /* Center with auto margins and add bottom spacing */
+  margin: 0 auto 1rem auto;
+}
+
+/* Signature overlay styles */
+.signature-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.signature-wrapper {
+  border: 2px dashed rgba(0, 123, 255, 0.5);
+  background-color: rgba(0, 123, 255, 0.05);
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.signature-wrapper svg {
+  display: block;
 }
 
 .btn {
@@ -482,7 +744,7 @@ onBeforeUnmount(() => {
 /* Mobile-specific adjustments */
 @media (max-width: 768px) {
   .pdf-render-view {
-    padding: 1rem 0.5rem; /* Reduce horizontal padding on mobile but keep it symmetric */
+    padding: 1rem 0.5rem;
   }
 }
 
