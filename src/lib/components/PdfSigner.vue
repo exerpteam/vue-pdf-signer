@@ -103,6 +103,15 @@ const defaultSignaturePlacement = computed(() => ({
 const initialPdfScale = ref(1)
 // Store reference to first canvas for positioning
 const firstCanvasRef = ref<HTMLCanvasElement | null>(null)
+
+// Add current canvas dimensions reactive ref
+const currentCanvasDimensions = ref({ width: 0, height: 0 })
+
+// Track container dimensions reactively
+const containerDimensions = ref({ width: 0, height: 0 })
+
+// Add ResizeObserver reference - use let instead of const
+let resizeObserver: ResizeObserver | null = null
 // --- END: Signature State ---
 
 function openSignaturePad() {
@@ -212,6 +221,12 @@ async function renderInitialPdfPages(pdf: pdfjsLib.PDFDocumentProxy, initialScal
     if (pageNum === 1) {
       firstCanvasRef.value = canvas
 
+      // Initialize current canvas dimensions
+      currentCanvasDimensions.value = {
+        width: Math.floor(displayViewport.width),
+        height: Math.floor(displayViewport.height),
+      }
+
       console.log('First Page Canvas Debug:', {
         displayWidth: Math.floor(displayViewport.width),
         displayHeight: Math.floor(displayViewport.height),
@@ -220,6 +235,7 @@ async function renderInitialPdfPages(pdf: pdfjsLib.PDFDocumentProxy, initialScal
           width: displayViewport.width,
           height: displayViewport.height,
         },
+        canvasElement: canvas,
       })
     }
 
@@ -235,7 +251,85 @@ async function renderInitialPdfPages(pdf: pdfjsLib.PDFDocumentProxy, initialScal
     }
     await page.render(renderContext).promise
   }
+
+  // Set up resize observer for the container, not the canvas
+  if (pdfContainer.value) {
+    console.log('About to set up container resize observer')
+    setupContainerResizeObserver()
+
+    // Initialize container dimensions
+    containerDimensions.value = {
+      width: pdfContainer.value.clientWidth,
+      height: pdfContainer.value.clientHeight,
+    }
+  }
 }
+
+/**
+ * Sets up a ResizeObserver to track container size changes
+ */
+function setupContainerResizeObserver() {
+  console.log('setupContainerResizeObserver called', {
+    hasContainer: !!pdfContainer.value,
+    containerElement: pdfContainer.value,
+  })
+
+  if (!pdfContainer.value) {
+    console.log('No container to observe, returning')
+    return
+  }
+
+  // Clean up existing observer if any
+  if (resizeObserver) {
+    console.log('Cleaning up existing ResizeObserver')
+    resizeObserver.disconnect()
+    resizeObserver = null
+  }
+
+  console.log('Creating new ResizeObserver for container')
+  resizeObserver = new ResizeObserver((entries) => {
+    console.log('Container ResizeObserver fired!', { entriesCount: entries.length })
+
+    for (const entry of entries) {
+      const container = entry.target as HTMLElement
+      const newWidth = container.clientWidth
+      const newHeight = container.clientHeight
+
+      console.log('Container ResizeObserver entry:', {
+        target: container,
+        contentRect: entry.contentRect,
+        clientWidth: newWidth,
+        clientHeight: newHeight,
+        currentDimensions: containerDimensions.value,
+      })
+
+      // Only update if dimensions actually changed
+      if (
+        newWidth !== containerDimensions.value.width ||
+        newHeight !== containerDimensions.value.height
+      ) {
+        const oldDimensions = { ...containerDimensions.value }
+
+        containerDimensions.value = {
+          width: newWidth,
+          height: newHeight,
+        }
+
+        console.log('Container dimensions updated:', {
+          old: oldDimensions,
+          new: { width: newWidth, height: newHeight },
+        })
+      } else {
+        console.log('Container dimensions unchanged')
+      }
+    }
+  })
+
+  console.log('Starting to observe container:', pdfContainer.value)
+  resizeObserver.observe(pdfContainer.value)
+  console.log('Container ResizeObserver setup complete')
+}
+
 /**
  * Checks if the content is overflowing the viewport and enables/disables panning.
  */
@@ -396,26 +490,29 @@ const signatureStyle = computed(() => {
   }
 
   const placement = defaultSignaturePlacement.value
-  const canvas = firstCanvasRef.value
 
-  // Get the canvas dimensions
-  const canvasWidth = parseInt(canvas.style.width)
-  const canvasHeight = parseInt(canvas.style.height)
+  // Use the fixed canvas dimensions
+  const canvasWidth = currentCanvasDimensions.value.width
+  const canvasHeight = currentCanvasDimensions.value.height
 
-  // Get container dimensions
-  const containerWidth = pdfContainer.value.clientWidth
+  // Calculate the current scale based on canvas size
+  // The original unscaled width is approximately 595 pixels (A4 at 72 DPI)
+  const ORIGINAL_PDF_WIDTH = 595 // Standard A4 width in points
+  const currentScale = canvasWidth / ORIGINAL_PDF_WIDTH
+
+  // Use the reactive container dimensions
+  const containerWidth = containerDimensions.value.width || pdfContainer.value.clientWidth
   const containerPadding = 16 // 1rem padding on each side (from .pdf-render-view padding)
 
   // Calculate the actual left offset of the canvas within the container
   // The canvas is centered, so we need to account for that
-  const canvasLeftOffset = (containerWidth - canvasWidth) / 2
+  const canvasLeftOffset = Math.max(0, (containerWidth - canvasWidth) / 2)
 
-  // Calculate signature dimensions and position
-  // These should be relative to the PDF page origin (top-left of the canvas)
-  const signatureLeft = placement.left * initialPdfScale.value
-  const signatureTop = placement.top * initialPdfScale.value
-  const signatureWidth = placement.width * initialPdfScale.value
-  const signatureHeight = placement.height * initialPdfScale.value
+  // Calculate signature dimensions and position using current scale
+  const signatureLeft = placement.left * currentScale
+  const signatureTop = placement.top * currentScale
+  const signatureWidth = placement.width * currentScale
+  const signatureHeight = placement.height * currentScale
 
   // Final position includes canvas offset
   const finalLeft = canvasLeftOffset + signatureLeft
@@ -438,14 +535,18 @@ const signatureStyle = computed(() => {
     canvas: {
       width: canvasWidth,
       height: canvasHeight,
+      currentScale,
+      originalWidth: ORIGINAL_PDF_WIDTH,
     },
     container: {
       width: containerWidth,
       padding: containerPadding,
+      reactiveWidth: containerDimensions.value.width,
     },
     offsets: {
       canvasLeftOffset,
       initialPdfScale: initialPdfScale.value,
+      currentScale,
     },
     scaled: {
       signatureLeft,
@@ -485,8 +586,61 @@ const signatureStyle = computed(() => {
 // --- START: Lifecycle and Watchers ---
 onMounted(() => {
   loadAndRenderPdf(props.pdfData)
-})
 
+  // Add window resize listener for debugging
+  const handleWindowResize = () => {
+    console.log('Window resized!', {
+      innerWidth: window.innerWidth,
+      innerHeight: window.innerHeight,
+    })
+
+    if (firstCanvasRef.value) {
+      console.log('Canvas element on window resize:', {
+        canvas: firstCanvasRef.value,
+        styleWidth: firstCanvasRef.value.style.width,
+        styleHeight: firstCanvasRef.value.style.height,
+        offsetWidth: firstCanvasRef.value.offsetWidth,
+        offsetHeight: firstCanvasRef.value.offsetHeight,
+        clientWidth: firstCanvasRef.value.clientWidth,
+        clientHeight: firstCanvasRef.value.clientHeight,
+      })
+
+      // Manually update dimensions to see if this works
+      const newWidth = parseInt(firstCanvasRef.value.style.width)
+      const newHeight = parseInt(firstCanvasRef.value.style.height)
+
+      if (
+        newWidth !== currentCanvasDimensions.value.width ||
+        newHeight !== currentCanvasDimensions.value.height
+      ) {
+        console.log('Manual dimension update on window resize:', {
+          old: currentCanvasDimensions.value,
+          new: { width: newWidth, height: newHeight },
+        })
+        currentCanvasDimensions.value = {
+          width: newWidth,
+          height: newHeight,
+        }
+      }
+    }
+
+    if (pdfContainer.value) {
+      console.log('PDF container on window resize:', {
+        clientWidth: pdfContainer.value.clientWidth,
+        clientHeight: pdfContainer.value.clientHeight,
+        offsetWidth: pdfContainer.value.offsetWidth,
+        offsetHeight: pdfContainer.value.offsetHeight,
+      })
+    }
+  }
+
+  window.addEventListener('resize', handleWindowResize)
+
+  // Store the cleanup function
+  onBeforeUnmount(() => {
+    window.removeEventListener('resize', handleWindowResize)
+  })
+})
 watch(
   () => props.pdfData,
   (newPdfData, oldPdfData) => {
@@ -498,6 +652,11 @@ watch(
 
 onBeforeUnmount(() => {
   panzoom.value?.destroy()
+  // Clean up resize observer
+  if (resizeObserver) {
+    resizeObserver.disconnect()
+    resizeObserver = null
+  }
 })
 </script>
 
