@@ -118,7 +118,7 @@ async function renderInitialPdfPages(pdf: pdfjsLib.PDFDocumentProxy, initialScal
     const context = canvas.getContext('2d')!
 
     canvas.style.display = 'block'
-    canvas.style.margin = '0 auto 1rem auto'
+    canvas.style.margin = '0 auto 1rem auto' // Ensure centering
     canvas.width = Math.floor(viewport.width * DPR)
     canvas.height = Math.floor(viewport.height * DPR)
     canvas.style.width = `${Math.floor(viewport.width)}px`
@@ -130,31 +130,6 @@ async function renderInitialPdfPages(pdf: pdfjsLib.PDFDocumentProxy, initialScal
     const renderContext = {
       canvasContext: context,
       viewport: viewport,
-      transform: DPR !== 1 ? [DPR, 0, 0, DPR, 0, 0] : undefined,
-      canvas: canvas,
-    }
-    await page.render(renderContext).promise
-  }
-}
-
-/**
- * Re-renders all PDF pages with a new backing scale. Now used again.
- */
-async function updatePagesWithNewScale(newRenderScale: number) {
-  renderScale.value = newRenderScale
-  for (const detail of pageDetails.value) {
-    const { page, canvas } = detail
-    const viewport = page.getViewport({ scale: renderScale.value })
-    const context = canvas.getContext('2d')!
-
-    canvas.width = Math.floor(viewport.width * DPR)
-    canvas.height = Math.floor(viewport.height * DPR)
-    canvas.style.width = `${Math.floor(viewport.width)}px`
-    canvas.style.height = `${Math.floor(viewport.height)}px`
-
-    const renderContext = {
-      canvasContext: context,
-      viewport: page.getViewport({ scale: renderScale.value, rotation: viewport.rotation }),
       transform: DPR !== 1 ? [DPR, 0, 0, DPR, 0, 0] : undefined,
       canvas: canvas,
     }
@@ -196,16 +171,28 @@ function zoomIn() {
   const currentScale = panzoom.value.getScale()
   const effectiveScale = renderScale.value * currentScale
 
+  console.log('➕ Zoom In:', {
+    currentScale,
+    renderScale: renderScale.value,
+    effectiveScale,
+  })
+
   // Don't allow zooming beyond 400% effective scale
-  if (effectiveScale >= 4) return
+  if (effectiveScale >= 4) {
+    console.log('⛔ Max zoom reached')
+    return
+  }
 
   const newScale = Math.min(currentScale * 1.25, 4 / renderScale.value)
+
+  console.log('➕ New scale:', newScale)
 
   // Get the center of the viewport as the focal point
   const viewportRect = viewportRef.value.getBoundingClientRect()
   const centerX = viewportRect.width / 2
   const centerY = viewportRect.height / 2
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   panzoom.value.zoomToPoint(newScale, { clientX: centerX, clientY: centerY } as any, {
     animate: true,
   })
@@ -217,13 +204,20 @@ function zoomIn() {
 function zoomOut() {
   if (!panzoom.value || !viewportRef.value) return
   const currentScale = panzoom.value.getScale()
-  const newScale = currentScale * 0.8 // 20% decrease
+  const newScale = currentScale * 0.8
+
+  console.log('➖ Zoom Out:', {
+    currentScale,
+    newScale,
+    renderScale: renderScale.value,
+  })
 
   // Get the center of the viewport as the focal point
   const viewportRect = viewportRef.value.getBoundingClientRect()
   const centerX = viewportRect.width / 2
   const centerY = viewportRect.height / 2
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   panzoom.value.zoomToPoint(newScale, { clientX: centerX, clientY: centerY } as any, {
     animate: true,
   })
@@ -237,11 +231,18 @@ function initPanzoom() {
   panzoom.value?.destroy()
 
   // Calculate max scale based on current render scale
-  const maxAllowedScale = 4 / renderScale.value // This ensures effective scale never exceeds 400%
+  const maxAllowedScale = 4 / renderScale.value
+  const minAllowedScale = 0.1
+
+  console.log('🚀 initPanzoom:', {
+    renderScale: renderScale.value,
+    maxAllowedScale,
+    minAllowedScale,
+  })
 
   const pz = Panzoom(pdfContainer.value, {
     maxScale: maxAllowedScale,
-    minScale: 0.1,
+    minScale: minAllowedScale,
     canvas: true,
     overflow: 'hidden',
     contain: 'outside',
@@ -260,62 +261,38 @@ function initPanzoom() {
     const event = e as PanzoomEvent
     cssScale.value = event.detail.scale
 
-    // Enforce maximum effective scale
     const effectiveScale = renderScale.value * event.detail.scale
-    if (effectiveScale > 4 && panzoom.value) {
-      panzoom.value.zoom(4 / renderScale.value, { animate: false })
+    console.log('🔍 panzoomzoom:', {
+      cssScale: event.detail.scale,
+      renderScale: renderScale.value,
+      effectiveScale,
+    })
+
+    // Enforce maximum effective scale
+    if (effectiveScale > 4.05 && panzoom.value) {
+      // Small buffer to prevent jitter
+      const cappedScale = 4 / renderScale.value
+      console.log('⚠️ Capping scale at max')
+      panzoom.value.zoom(cappedScale, { animate: false })
+      cssScale.value = cappedScale
     }
 
-    // Immediately update pan state after zoom to enforce boundaries
+    // Update pan state after zoom to enforce boundaries
     setTimeout(() => updatePanState(), 0)
   })
 
-  // Re-render for crispness AFTER the user finishes zooming.
-  pdfContainer.value.addEventListener('panzoomend', async (e) => {
+  // Simple end handler - no re-rendering
+  pdfContainer.value.addEventListener('panzoomend', (e) => {
     const event = e as PanzoomEvent
-    // Use the panzoom instance from our ref, not e.detail
-    if (!panzoom.value) return
+    console.log('🏁 panzoomend:', {
+      scale: event.detail.scale,
+      effectiveScale: renderScale.value * event.detail.scale,
+    })
 
-    const currentCssScale = panzoom.value.getScale()
-    const effectiveScale = renderScale.value * currentCssScale
-
-    // Adjust thresholds to prevent re-render loops
-    const shouldRerender = effectiveScale > 3 || effectiveScale < 0.5
-
-    if (shouldRerender) {
-      // 1. Calculate the new backing scale for the canvas, constrained to reasonable values
-      const targetScale = Math.max(0.5, Math.min(2, effectiveScale))
-      const newRenderScale = targetScale
-      const scaleRatio = newRenderScale / renderScale.value
-
-      // 2. Get the current pan position BEFORE re-rendering.
-      const oldPan = panzoom.value.getPan()
-
-      // 3. Re-render the canvas at the new, higher resolution.
-      await updatePagesWithNewScale(newRenderScale)
-
-      // 4. Destroy old panzoom and create new one with updated constraints
-      panzoom.value.destroy()
-      await nextTick()
-
-      // 5. Re-initialize with new scale limits
-      initPanzoom()
-
-      // 6. Apply the adjusted pan to maintain position
-      if (panzoom.value) {
-        panzoom.value.pan(oldPan.x * scaleRatio, oldPan.y * scaleRatio, {
-          silent: true,
-          animate: false,
-        })
-      }
-
-      // 7. Update the UI scale display.
-      cssScale.value = 1
-
-      // 8. Re-check pan state after re-render
-      updatePanState()
-    }
+    // Just update pan constraints, no re-rendering
+    updatePanState()
   })
+
   panzoom.value = pz
 }
 
@@ -458,14 +435,20 @@ onBeforeUnmount(() => {
 
 .pdf-render-view {
   transform-origin: top left;
-  padding: 2rem; /* Add padding inside the render view for additional spacing */
+  padding: 1rem;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center the canvas elements horizontally */
+  min-width: 100%; /* Ensure the container takes full width */
 }
 
-/* Add this new style for the canvas elements */
+/* Keep the nice shadow for the canvas elements */
 .pdf-render-view canvas {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Optional: adds a subtle shadow to make pages stand out */
-  border-radius: 4px; /* Optional: slightly round the corners */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  display: block;
+  margin: 0 auto 1rem auto; /* Center with auto margins and add bottom spacing */
 }
 
 .btn {
@@ -531,6 +514,13 @@ onBeforeUnmount(() => {
   font-size: 0.9rem;
   color: #333;
   user-select: none;
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 768px) {
+  .pdf-render-view {
+    padding: 1rem 0.5rem; /* Reduce horizontal padding on mobile but keep it symmetric */
+  }
 }
 
 @media (max-width: 480px) {
