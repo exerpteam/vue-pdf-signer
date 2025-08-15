@@ -91,6 +91,7 @@ const DPR = Math.min(window.devicePixelRatio || 1, 2)
 // --- START: Signature State ---
 const signatureSvg = ref<string | null>(null)
 const isSignaturePadOpen = ref(false)
+const originalPdfDimensions = ref({ width: 0, height: 0 })
 const bodyEl = document.querySelector('body')
 const isLocked = useScrollLock(bodyEl)
 
@@ -199,19 +200,26 @@ async function renderInitialPdfPages(pdf: pdfjsLib.PDFDocumentProxy, initialScal
   // Store the initial scale for signature positioning
   initialPdfScale.value = initialScale
 
-  logger.debug('PDF Rendering', {
-    initialScale,
-    CM_TO_PX,
-    expectedSignaturePosition: {
-      leftCm: 5,
-      topCm: 7,
-      leftPx: 5 * CM_TO_PX,
-      topPx: 7 * CM_TO_PX,
-    },
-  })
-
   for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
     const page = await pdf.getPage(pageNum)
+
+    // Get the unscaled viewport to store original dimensions
+    const unscaledViewport = page.getViewport({ scale: 1 })
+
+    // Store original dimensions from first page
+    if (pageNum === 1) {
+      originalPdfDimensions.value = {
+        width: unscaledViewport.width,
+        height: unscaledViewport.height,
+      }
+
+      logger.debug('Original PDF Dimensions', {
+        width: unscaledViewport.width,
+        height: unscaledViewport.height,
+        widthCm: (unscaledViewport.width / PDF_DPI) * 2.54,
+        heightCm: (unscaledViewport.height / PDF_DPI) * 2.54,
+      })
+    }
 
     // 1. `highResViewport` for the actual canvas drawing (for crispness).
     // 2. `displayViewport` for the CSS styling (for correct initial size).
@@ -229,7 +237,6 @@ async function renderInitialPdfPages(pdf: pdfjsLib.PDFDocumentProxy, initialScal
     canvas.height = Math.floor(highResViewport.height * DPR)
 
     // Set the canvas *display* size to the standard-resolution dimensions.
-    // The browser will smoothly scale down the high-res drawing.
     canvas.style.width = `${Math.floor(displayViewport.width)}px`
     canvas.style.height = `${Math.floor(displayViewport.height)}px`
 
@@ -247,6 +254,8 @@ async function renderInitialPdfPages(pdf: pdfjsLib.PDFDocumentProxy, initialScal
         displayWidth: Math.floor(displayViewport.width),
         displayHeight: Math.floor(displayViewport.height),
         scale: initialScale,
+        originalPdfWidth: originalPdfDimensions.value.width,
+        originalPdfHeight: originalPdfDimensions.value.height,
         viewport: {
           width: displayViewport.width,
           height: displayViewport.height,
@@ -260,7 +269,6 @@ async function renderInitialPdfPages(pdf: pdfjsLib.PDFDocumentProxy, initialScal
 
     const renderContext = {
       canvasContext: context,
-      // Use the high-resolution viewport for the actual rendering task.
       viewport: highResViewport,
       transform: DPR !== 1 ? [DPR, 0, 0, DPR, 0, 0] : undefined,
       canvas,
@@ -268,7 +276,7 @@ async function renderInitialPdfPages(pdf: pdfjsLib.PDFDocumentProxy, initialScal
     await page.render(renderContext).promise
   }
 
-  // Set up resize observer for the container, not the canvas
+  // Set up resize observer for the container
   if (pdfContainer.value) {
     logger.debug('Setting up container resize observer')
     setupContainerResizeObserver()
@@ -501,7 +509,7 @@ async function loadAndRenderPdf(pdfData: string) {
 
 // Computed style for signature positioning
 const signatureStyle = computed(() => {
-  if (!firstCanvasRef.value || !pdfContainer.value) {
+  if (!firstCanvasRef.value || !pdfContainer.value || originalPdfDimensions.value.width === 0) {
     return { display: 'none' }
   }
 
@@ -511,10 +519,9 @@ const signatureStyle = computed(() => {
   const canvasWidth = currentCanvasDimensions.value.width
   const canvasHeight = currentCanvasDimensions.value.height
 
-  // Calculate the current scale based on canvas size
-  // The original unscaled width is approximately 595 pixels (A4 at 72 DPI)
-  const ORIGINAL_PDF_WIDTH = 595 // Standard A4 width in points
-  const currentScale = canvasWidth / ORIGINAL_PDF_WIDTH
+  // Calculate the current scale based on the ACTUAL original PDF dimensions
+  // Instead of hardcoding 595, use the actual original width
+  const currentScale = canvasWidth / originalPdfDimensions.value.width
 
   // Use the reactive container dimensions
   const containerWidth = containerDimensions.value.width || pdfContainer.value.clientWidth
@@ -552,7 +559,8 @@ const signatureStyle = computed(() => {
       width: canvasWidth,
       height: canvasHeight,
       currentScale,
-      originalWidth: ORIGINAL_PDF_WIDTH,
+      originalWidth: originalPdfDimensions.value.width,
+      originalHeight: originalPdfDimensions.value.height,
     },
     container: {
       width: containerWidth,
