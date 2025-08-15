@@ -62,8 +62,13 @@ defineEmits<{
 
 // --- START: Panzoom & Rendering State ---
 const panzoom = ref<PanzoomObject | null>(null)
-const renderScale = ref(1)
-const cssScale = ref(1)
+const currentZoom = ref(1)
+const zoomPercentage = computed(() => Math.round(currentZoom.value * 100))
+// we'll pre-render the canvas at a higher resolution
+// determined by the max zoom level to keep text crisp.
+const MAX_ZOOM_LEVEL = 4
+const HIGH_RES_SCALE_FACTOR = MAX_ZOOM_LEVEL
+
 const DPR = Math.min(window.devicePixelRatio || 1, 2)
 // --- END: Panzoom & Rendering State ---
 
@@ -96,8 +101,6 @@ const t = computed(() => {
   }
 })
 
-const zoomPercentage = computed(() => Math.round(renderScale.value * cssScale.value * 100))
-
 const pdfContainer = ref<HTMLDivElement | null>(null)
 const viewportRef = ref<HTMLDivElement | null>(null)
 const pageDetails = ref<Array<{ page: pdfjsLib.PDFPageProxy; canvas: HTMLCanvasElement }>>([])
@@ -105,33 +108,44 @@ const pageDetails = ref<Array<{ page: pdfjsLib.PDFPageProxy; canvas: HTMLCanvasE
 // --- START: Core Functions ---
 
 /**
- * Renders the PDF for the first time, creating canvas elements.
+ * Renders the PDF for the first time, creating high-resolution canvas elements
+ * that are visually scaled down.
  */
 async function renderInitialPdfPages(pdf: pdfjsLib.PDFDocumentProxy, initialScale: number) {
   if (!pdfContainer.value) return
-  renderScale.value = initialScale
 
   for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
     const page = await pdf.getPage(pageNum)
-    const viewport = page.getViewport({ scale: renderScale.value })
+
+    // 1. `highResViewport` for the actual canvas drawing (for crispness).
+    // 2. `displayViewport` for the CSS styling (for correct initial size).
+    const highResViewport = page.getViewport({ scale: initialScale * HIGH_RES_SCALE_FACTOR })
+    const displayViewport = page.getViewport({ scale: initialScale })
+
     const canvas = document.createElement('canvas')
     const context = canvas.getContext('2d')!
 
     canvas.style.display = 'block'
     canvas.style.margin = '0 auto 1rem auto' // Ensure centering
-    canvas.width = Math.floor(viewport.width * DPR)
-    canvas.height = Math.floor(viewport.height * DPR)
-    canvas.style.width = `${Math.floor(viewport.width)}px`
-    canvas.style.height = `${Math.floor(viewport.height)}px`
+
+    // Set the canvas *buffer* size to the high-resolution dimensions.
+    canvas.width = Math.floor(highResViewport.width * DPR)
+    canvas.height = Math.floor(highResViewport.height * DPR)
+
+    // Set the canvas *display* size to the standard-resolution dimensions.
+    // The browser will smoothly scale down the high-res drawing.
+    canvas.style.width = `${Math.floor(displayViewport.width)}px`
+    canvas.style.height = `${Math.floor(displayViewport.height)}px`
 
     pdfContainer.value.appendChild(canvas)
     pageDetails.value.push({ page: markRaw(page), canvas })
 
     const renderContext = {
       canvasContext: context,
-      viewport: viewport,
+      // Use the high-resolution viewport for the actual rendering task.
+      viewport: highResViewport,
       transform: DPR !== 1 ? [DPR, 0, 0, DPR, 0, 0] : undefined,
-      canvas: canvas,
+      canvas,
     }
     await page.render(renderContext).promise
   }
@@ -168,26 +182,11 @@ function updatePanState() {
  */
 function zoomIn() {
   if (!panzoom.value || !viewportRef.value) return
-  const currentScale = panzoom.value.getScale()
-  const effectiveScale = renderScale.value * currentScale
 
-  console.log('➕ Zoom In:', {
-    currentScale,
-    renderScale: renderScale.value,
-    effectiveScale,
-  })
+  // since panzoom handles maxScale, we just need to calculate
+  // the target scale and let panzoom apply it. It will automatically clamp at the max.
+  const newScale = panzoom.value.getScale() * 1.25
 
-  // Don't allow zooming beyond 400% effective scale
-  if (effectiveScale >= 4) {
-    console.log('⛔ Max zoom reached')
-    return
-  }
-
-  const newScale = Math.min(currentScale * 1.25, 4 / renderScale.value)
-
-  console.log('➕ New scale:', newScale)
-
-  // Get the center of the viewport as the focal point
   const viewportRect = viewportRef.value.getBoundingClientRect()
   const centerX = viewportRect.width / 2
   const centerY = viewportRect.height / 2
@@ -199,20 +198,14 @@ function zoomIn() {
 }
 
 /**
- * Zoom out by a controlled increment (25% relative to current scale)
+ * Zoom out by a controlled increment (20% relative to current scale)
  */
 function zoomOut() {
   if (!panzoom.value || !viewportRef.value) return
-  const currentScale = panzoom.value.getScale()
-  const newScale = currentScale * 0.8
 
-  console.log('➖ Zoom Out:', {
-    currentScale,
-    newScale,
-    renderScale: renderScale.value,
-  })
+  // Same simplification for zooming out.
+  const newScale = panzoom.value.getScale() * 0.8
 
-  // Get the center of the viewport as the focal point
   const viewportRect = viewportRef.value.getBoundingClientRect()
   const centerX = viewportRect.width / 2
   const centerY = viewportRect.height / 2
@@ -230,19 +223,9 @@ function initPanzoom() {
   if (!pdfContainer.value || !viewportRef.value) return
   panzoom.value?.destroy()
 
-  // Calculate max scale based on current render scale
-  const maxAllowedScale = 4 / renderScale.value
-  const minAllowedScale = 0.1
-
-  console.log('🚀 initPanzoom:', {
-    renderScale: renderScale.value,
-    maxAllowedScale,
-    minAllowedScale,
-  })
-
   const pz = Panzoom(pdfContainer.value, {
-    maxScale: maxAllowedScale,
-    minScale: minAllowedScale,
+    maxScale: MAX_ZOOM_LEVEL,
+    minScale: 0.1,
     canvas: true,
     overflow: 'hidden',
     contain: 'outside',
@@ -256,40 +239,14 @@ function initPanzoom() {
     e.preventDefault()
   })
 
-  // On every zoom, update the UI and check pan boundaries
+  // On every zoom, update our reactive state for the UI.
   pdfContainer.value.addEventListener('panzoomzoom', (e) => {
     const event = e as PanzoomEvent
-    cssScale.value = event.detail.scale
-
-    const effectiveScale = renderScale.value * event.detail.scale
-    console.log('🔍 panzoomzoom:', {
-      cssScale: event.detail.scale,
-      renderScale: renderScale.value,
-      effectiveScale,
-    })
-
-    // Enforce maximum effective scale
-    if (effectiveScale > 4.05 && panzoom.value) {
-      // Small buffer to prevent jitter
-      const cappedScale = 4 / renderScale.value
-      console.log('⚠️ Capping scale at max')
-      panzoom.value.zoom(cappedScale, { animate: false })
-      cssScale.value = cappedScale
-    }
-
-    // Update pan state after zoom to enforce boundaries
-    setTimeout(() => updatePanState(), 0)
+    currentZoom.value = event.detail.scale
   })
 
-  // Simple end handler - no re-rendering
-  pdfContainer.value.addEventListener('panzoomend', (e) => {
-    const event = e as PanzoomEvent
-    console.log('🏁 panzoomend:', {
-      scale: event.detail.scale,
-      effectiveScale: renderScale.value * event.detail.scale,
-    })
-
-    // Just update pan constraints, no re-rendering
+  // After any interaction, update the pan boundaries.
+  pdfContainer.value.addEventListener('panzoomend', () => {
     updatePanState()
   })
 
@@ -366,13 +323,19 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="vue-pdf-signer">
+  <div class="vue-pdf-signer" @touchstart.stop @touchmove.stop @wheel.stop>
     <div class="pdf-signer-toolbar">
       <div class="toolbar-group">
         <button @click="openSignaturePad" class="btn btn-secondary">{{ t.actionButton }}</button>
         <button class="btn btn-primary" :disabled="!signatureSvg">{{ t.save }}</button>
       </div>
-      <div v-if="props.enableZoom" class="toolbar-group">
+      <div
+        v-if="props.enableZoom"
+        class="toolbar-group"
+        @touchstart.stop
+        @touchmove.stop
+        @wheel.stop
+      >
         <button @click="zoomOut" class="btn btn-icon">-</button>
         <span class="zoom-level">{{ zoomPercentage }}%</span>
         <button @click="zoomIn" class="btn btn-icon">+</button>
