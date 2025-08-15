@@ -47,11 +47,9 @@ function parseSignatureData(signatureString: string): SignaturePlacement[] {
  */
 async function loadPdfAsBase64(fileName: string): Promise<string> {
   try {
-    // We ensure the file extension `.pdf` is part of the
-    // static string, which satisfies Vite's static analyzer. The `?url` suffix
-    // must also be part of the static string.
-    const pdfUrlModule = await import(/* @vite-ignore */ `./samples/${fileName}?url`)
-    const pdfUrl = pdfUrlModule.default
+    // This avoids the MIME type error on iOS/Safari which can be overly strict
+    // about importing non-JS assets. The path is relative to the dev server root.
+    const pdfUrl = `/src/demo/samples/${fileName}`
 
     const response = await fetch(pdfUrl)
     if (!response.ok) {
@@ -149,8 +147,9 @@ main {
 .controls {
   margin-bottom: 2rem;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.5rem;
+  flex-direction: column;
 }
 .controls label {
   font-weight: 500;
@@ -159,7 +158,8 @@ main {
   padding: 0.5rem;
   border-radius: 4px;
   border: 1px solid #ccc;
-  min-width: 300px;
+  width: 100%;
+  max-width: 400px; /* Optional: prevent it from becoming too wide on tablets */
 }
 .loading-placeholder {
   display: flex;
@@ -170,5 +170,16 @@ main {
   border: 1px dashed #ddd;
   border-radius: 8px;
   color: #777;
+}
+
+@media (min-width: 768px) {
+  .controls {
+    flex-direction: row;
+    align-items: center;
+  }
+  .controls select {
+    width: auto; /* Allow it to size based on content */
+    min-width: 300px;
+  }
 }
 </style>

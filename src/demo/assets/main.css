@@ -5,7 +5,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   margin: 0;
-  padding: 2rem;
+  padding: 1rem;
   background-color: #f8f9fa;
 }
 
@@ -13,7 +13,17 @@ body {
   max-width: 1280px;
   margin: 0 auto;
   background-color: #fff;
-  padding: 2rem;
+  padding: 1rem;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+@media (min-width: 768px) {
+  body {
+    padding: 2rem;
+  }
+
+  #app {
+    padding: 2rem;
+  }
 }
