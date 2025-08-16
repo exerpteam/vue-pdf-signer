@@ -146,6 +146,8 @@ const currentCanvasDimensions = ref({ width: 0, height: 0 })
 // Track container dimensions reactively
 const containerDimensions = ref({ width: 0, height: 0 })
 
+const signatureSvg = ref<string | null>(null)
+
 // Add ResizeObserver reference - use let instead of const
 let resizeObserver: ResizeObserver | null = null
 // --- END: Signature State ---
@@ -156,58 +158,33 @@ function openSignaturePad() {
 }
 
 function handleSignatureSave(svg: string) {
-  const parser = new DOMParser()
-  const svgDoc = parser.parseFromString(svg, 'image/svg+xml')
-
-  const svgElement = svgDoc.querySelector('svg')
-  if (!svgElement) {
-    logger.error('Could not parse SVG element from signature string.')
-    signatureContent.value = null
+  const doc = new DOMParser().parseFromString(svg, 'image/svg+xml')
+  const el = doc.querySelector('svg')
+  if (!el) {
+    signatureSvg.value = null
     isSignaturePadOpen.value = false
     isLocked.value = false
     return
   }
-  const viewBox = svgElement.getAttribute('viewBox') || '0 0 100 100'
 
-  // his array will hold all drawable data, converted to paths.
-  const finalPaths: string[] = []
+  // Normalize so it scales with our wrapper
+  const w = parseFloat(el.getAttribute('width') || '')
+  const h = parseFloat(el.getAttribute('height') || '')
+  if (!el.hasAttribute('viewBox') && Number.isFinite(w) && Number.isFinite(h)) {
+    el.setAttribute('viewBox', `0 0 ${w} ${h}`)
+  }
+  el.removeAttribute('width')
+  el.removeAttribute('height')
+  el.setAttribute('preserveAspectRatio', 'xMidYMid meet')
 
-  // Step 1: Get all existing <path> elements, as before.
-  const pathNodes = svgDoc.querySelectorAll('path')
-  const existingPaths = Array.from(pathNodes)
-    .map((path) => path.getAttribute('d') || '')
-    .filter(Boolean)
-  finalPaths.push(...existingPaths)
-
-  // Step 2: NEW - Find all <circle> elements and convert them to paths.
-  const circleNodes = svgDoc.querySelectorAll('circle')
-  circleNodes.forEach((circle) => {
-    const cx = parseFloat(circle.getAttribute('cx') || '0')
-    const cy = parseFloat(circle.getAttribute('cy') || '0')
-    const r = parseFloat(circle.getAttribute('r') || '0')
-
-    if (r > 0) {
-      // This is the standard SVG path command string to draw a circle.
-      // It moves to the left edge, draws the top arc, then draws the bottom arc.
-      const circleAsPath = `M ${cx - r},${cy} A ${r},${r} 0 1,1 ${cx + r},${cy} A ${r},${r} 0 1,1 ${
-        cx - r
-      },${cy}`
-      finalPaths.push(circleAsPath)
-    }
+  // Optional: ensure stroke styling is present but DO NOT touch stroke-widths
+  el.querySelectorAll('path').forEach((p) => {
+    if (!p.getAttribute('stroke')) p.setAttribute('stroke', '#000080')
+    if (!p.getAttribute('stroke-linecap')) p.setAttribute('stroke-linecap', 'round')
+    if (!p.getAttribute('stroke-linejoin')) p.setAttribute('stroke-linejoin', 'round')
   })
 
-  if (finalPaths.length === 0) {
-    logger.error('Could not extract any valid path or circle data from signature SVG.')
-    console.log('Raw SVG input that failed parsing:', svg)
-    signatureContent.value = null
-  } else {
-    signatureContent.value = { viewBox, paths: finalPaths }
-    logger.debug(
-      'Signature content parsed successfully (including circles)',
-      signatureContent.value,
-    )
-  }
-
+  signatureSvg.value = new XMLSerializer().serializeToString(el)
   isSignaturePadOpen.value = false
   isLocked.value = false
 }
@@ -755,44 +732,8 @@ onBeforeUnmount(() => {
         </div>
 
         <!-- Signature overlay -->
-        <div v-if="signatureContent" class="signature-overlay">
-          <div :style="signatureWrapperStyle" class="signature-wrapper">
-            <svg
-              :viewBox="signatureContent.viewBox"
-              preserveAspectRatio="xMidYMid meet"
-              width="100%"
-              height="100%"
-              xmlns="http://www.w3.org/2000/svg"
-              style="display: block"
-            >
-              <!-- Debug: show viewBox boundaries -->
-              <rect
-                x="0"
-                y="0"
-                width="100%"
-                height="100%"
-                fill="none"
-                stroke="rgba(255,0,0,0.2)"
-                stroke-width="1"
-                stroke-dasharray="2,2"
-                v-if="showSignatureBounds"
-              />
-
-              <!-- loop through all paths to render the complete signature. -->
-              <g>
-                <path
-                  v-for="(path, index) in signatureContent.paths"
-                  :key="index"
-                  :d="path"
-                  fill="none"
-                  stroke="#000080"
-                  stroke-width="2.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </g>
-            </svg>
-          </div>
+        <div v-if="signatureSvg" class="signature-overlay">
+          <div :style="signatureWrapperStyle" class="signature-wrapper" v-html="signatureSvg"></div>
         </div>
       </div>
     </div>
