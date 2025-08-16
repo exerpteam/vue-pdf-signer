@@ -253,20 +253,40 @@ export function useSignature(
     }
   }
 
-  // This computed property for translations is also part of the signature logic
+  // computed property to handle all component text.
   const t = computed(() => {
+    // This object contains all default English strings for the component.
+    const defaultTranslations = {
+      // Toolbar buttons
+      updateSignature: 'Change Signature',
+      drawSignature: 'Sign Here',
+      save: 'Save',
+      saving: 'Saving...',
+      // SignaturePadModal content
+      modalTitle: 'Draw Signature',
+      modalSubtitle: 'Use your mouse or finger to draw your signature below.',
+      modalCancel: 'Cancel',
+      modalClear: 'Clear',
+      modalDone: 'Done',
+    }
+
+    // We merge the user's translations over our defaults.
+    const merged = { ...defaultTranslations, ...props.translations }
+
     const hasSignature = !!signatureSvg.value
+
+    // The logic now uses the merged object and returns all strings.
     if (isSaving.value) {
       return {
-        actionButton: props.translations?.updateSignature || 'Change Signature',
-        save: props.translations?.saving || 'Saving...',
+        ...merged,
+        actionButton: merged.updateSignature,
+        save: merged.saving,
       }
     }
     return {
-      actionButton: hasSignature
-        ? props.translations?.updateSignature || 'Change Signature'
-        : props.translations?.drawSignature || 'Sign Here',
-      save: props.translations?.save || 'Save',
+      ...merged,
+      actionButton: hasSignature ? merged.updateSignature : merged.drawSignature,
+      save: merged.save,
     }
   })
 

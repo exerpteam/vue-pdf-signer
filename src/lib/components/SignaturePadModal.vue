@@ -2,6 +2,15 @@
 import { onMounted, onUnmounted, ref } from 'vue'
 import SignaturePad from 'signature_pad'
 
+// we define props for all user-facing text in this component.
+const props = defineProps<{
+  title: string
+  subtitle: string
+  cancelText: string
+  clearText: string
+  doneText: string
+}>()
+
 const emit = defineEmits<{
   (e: 'close'): void
   (e: 'save', payload: { svg: string; png: string }): void
@@ -83,8 +92,8 @@ onUnmounted(() => {
   <div class="modal-overlay">
     <div class="modal-content">
       <div class="modal-header">
-        <h3>Draw Signature</h3>
-        <p>Use your mouse or finger to draw your signature below.</p>
+        <h3>{{ props.title }}</h3>
+        <p>{{ props.subtitle }}</p>
       </div>
 
       <div class="signature-pad-wrapper">
@@ -92,106 +101,12 @@ onUnmounted(() => {
       </div>
 
       <div class="modal-actions">
-        <button @click="$emit('close')" class="btn btn-secondary">Cancel</button>
-        <button @click="handleClear" class="btn btn-tertiary">Clear</button>
-        <button @click="handleSave" class="btn btn-primary">Done</button>
+        <button @click="$emit('close')" class="btn btn-secondary">{{ props.cancelText }}</button>
+        <button @click="handleClear" class="btn btn-tertiary">{{ props.clearText }}</button>
+        <button @click="handleSave" class="btn btn-primary">{{ props.doneText }}</button>
       </div>
     </div>
   </div>
 </template>
 
-<style scoped>
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 100;
-}
-
-.modal-content {
-  background-color: white;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  width: 90%;
-  max-width: 500px;
-  display: flex;
-  flex-direction: column;
-}
-
-.modal-header {
-  margin-bottom: 1rem;
-  text-align: center;
-}
-.modal-header h3 {
-  margin: 0 0 0.5rem 0;
-  font-size: 1.25rem;
-}
-.modal-header p {
-  margin: 0;
-  color: #666;
-  font-size: 0.9rem;
-}
-
-.signature-pad-wrapper {
-  /* The border is dashed for a cleaner look. */
-  border: 2px dashed #ccc;
-  border-radius: 4px;
-  margin-bottom: 1rem;
-  touch-action: none; /* Prevents scrolling on touch devices while drawing */
-  position: relative;
-  height: 200px; /* Default height, will be adjusted by flex */
-  flex-grow: 1;
-}
-.signature-canvas {
-  width: 100%;
-  height: 100%;
-  display: block;
-  border-radius: 4px;
-}
-
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.75rem;
-  margin-top: 1rem;
-}
-
-.btn {
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  border: 1px solid transparent;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.btn-primary {
-  background-color: #007aff;
-  color: white;
-}
-.btn-primary:hover {
-  background-color: #005ecb;
-}
-.btn-secondary {
-  background-color: #6c757d;
-  color: white;
-}
-.btn-secondary:hover {
-  background-color: #5a6268;
-}
-.btn-tertiary {
-  background-color: #f0f0f0;
-  color: #333;
-  border-color: #ccc;
-}
-.btn-tertiary:hover {
-  background-color: #e0e0e0;
-}
-</style>
+<style lang="scss" scoped src="./SignaturePadModal.scss"></style>

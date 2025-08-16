@@ -18,6 +18,14 @@ export declare function useSignature(props: {
     t: import('vue').ComputedRef<{
         actionButton: string;
         save: string;
+        updateSignature: string;
+        drawSignature: string;
+        saving: string;
+        modalTitle: string;
+        modalSubtitle: string;
+        modalCancel: string;
+        modalClear: string;
+        modalDone: string;
     }>;
     openSignaturePad: () => void;
     handleSignatureCancel: () => void;

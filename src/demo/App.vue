@@ -14,6 +14,15 @@ const outputSectionRef = ref<HTMLDivElement | null>(null)
 // array to manage multiple signature placements.
 const dynamicSignatureData = ref<SignaturePlacement[]>([])
 
+const customTranslations = ref({
+  drawSignature: 'Sign Here (Custom)',
+  save: 'Save Document',
+  modalTitle: 'Please Draw Your Signature',
+  modalDone: 'Confirm',
+  modalClear: 'Erase',
+  modalCancel: 'Go Back',
+})
+
 // --- END: Reactive state ---
 
 /**
@@ -184,6 +193,7 @@ watch(
       :enableZoom="true"
       :debug="true"
       :showSignatureBounds="true"
+      :translations="customTranslations"
       @finish="handleFinish"
     />
 

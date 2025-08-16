@@ -153,6 +153,11 @@ onBeforeUnmount(() => {
       v-if="isSignaturePadOpen"
       @close="handleSignatureCancel"
       @save="handleSignatureSave"
+      :title="t.modalTitle"
+      :subtitle="t.modalSubtitle"
+      :cancel-text="t.modalCancel"
+      :clear-text="t.modalClear"
+      :done-text="t.modalDone"
     />
   </div>
 </template>
