@@ -58,6 +58,7 @@ const props = withDefaults(
     translations?: Record<string, string>
     enableZoom?: boolean
     debug?: boolean
+    showSignatureBounds?: boolean
   }>(),
   {
     isDownload: false,
@@ -65,6 +66,7 @@ const props = withDefaults(
     signatureData: () => [],
     translations: () => ({}),
     debug: false,
+    showSignatureBounds: false,
   },
 )
 
@@ -89,7 +91,7 @@ const DPR = Math.min(window.devicePixelRatio || 1, 2)
 // --- END: Panzoom & Rendering State ---
 
 // --- START: Signature State ---
-const signatureSvg = ref<string | null>(null)
+const signatureContent = ref<{ viewBox: string; paths: string[] } | null>(null)
 const isSignaturePadOpen = ref(false)
 const originalPdfDimensions = ref({ width: 0, height: 0 })
 const bodyEl = document.querySelector('body')
@@ -116,6 +118,23 @@ const defaultSignaturePlacement = computed(() => ({
   page: 1,
 }))
 
+const signatureWrapperStyle = computed(() => {
+  // Start with the positioning styles from our other computed prop.
+  const baseStyle = signatureStyle.value
+
+  // If the prop is true, merge in the visual bounds styles.
+  if (props.showSignatureBounds) {
+    return {
+      ...baseStyle,
+      border: '2px dashed rgba(0, 123, 255, 0.5)',
+      backgroundColor: 'rgba(0, 123, 255, 0.05)',
+    }
+  }
+
+  // Otherwise, just return the positioning styles.
+  return baseStyle
+})
+
 // Store the initial scale of the PDF for proper signature scaling
 const initialPdfScale = ref(1)
 // Store reference to first canvas for positioning
@@ -136,34 +155,59 @@ function openSignaturePad() {
   isLocked.value = true
 }
 
-const showDebugBounds = computed(() => isDebug.value)
-
 function handleSignatureSave(svg: string) {
-  logger.debug('Signature SVG saved', svg)
+  const parser = new DOMParser()
+  const svgDoc = parser.parseFromString(svg, 'image/svg+xml')
 
-  // Parse the SVG path to understand its bounds
-  const pathParts = svg.match(/[MLCSmhvlcs][^MLCSmhvlcs]*/g) || []
-  const coords: number[] = []
-  pathParts.forEach((part) => {
-    const numbers = part.match(/-?\d+\.?\d*/g) || []
-    coords.push(...numbers.map(Number))
+  const svgElement = svgDoc.querySelector('svg')
+  if (!svgElement) {
+    logger.error('Could not parse SVG element from signature string.')
+    signatureContent.value = null
+    isSignaturePadOpen.value = false
+    isLocked.value = false
+    return
+  }
+  const viewBox = svgElement.getAttribute('viewBox') || '0 0 100 100'
+
+  // his array will hold all drawable data, converted to paths.
+  const finalPaths: string[] = []
+
+  // Step 1: Get all existing <path> elements, as before.
+  const pathNodes = svgDoc.querySelectorAll('path')
+  const existingPaths = Array.from(pathNodes)
+    .map((path) => path.getAttribute('d') || '')
+    .filter(Boolean)
+  finalPaths.push(...existingPaths)
+
+  // Step 2: NEW - Find all <circle> elements and convert them to paths.
+  const circleNodes = svgDoc.querySelectorAll('circle')
+  circleNodes.forEach((circle) => {
+    const cx = parseFloat(circle.getAttribute('cx') || '0')
+    const cy = parseFloat(circle.getAttribute('cy') || '0')
+    const r = parseFloat(circle.getAttribute('r') || '0')
+
+    if (r > 0) {
+      // This is the standard SVG path command string to draw a circle.
+      // It moves to the left edge, draws the top arc, then draws the bottom arc.
+      const circleAsPath = `M ${cx - r},${cy} A ${r},${r} 0 1,1 ${cx + r},${cy} A ${r},${r} 0 1,1 ${
+        cx - r
+      },${cy}`
+      finalPaths.push(circleAsPath)
+    }
   })
 
-  const yCoords = coords.filter((_, i) => i % 2 === 1)
-  const xCoords = coords.filter((_, i) => i % 2 === 0)
+  if (finalPaths.length === 0) {
+    logger.error('Could not extract any valid path or circle data from signature SVG.')
+    console.log('Raw SVG input that failed parsing:', svg)
+    signatureContent.value = null
+  } else {
+    signatureContent.value = { viewBox, paths: finalPaths }
+    logger.debug(
+      'Signature content parsed successfully (including circles)',
+      signatureContent.value,
+    )
+  }
 
-  logger.debug('SVG Path Analysis', {
-    path: svg,
-    pathParts,
-    xRange: xCoords.length ? [Math.min(...xCoords), Math.max(...xCoords)] : [],
-    yRange: yCoords.length ? [Math.min(...yCoords), Math.max(...yCoords)] : [],
-    coords: {
-      x: xCoords,
-      y: yCoords,
-    },
-  })
-
-  signatureSvg.value = svg
   isSignaturePadOpen.value = false
   isLocked.value = false
 }
@@ -174,7 +218,7 @@ function handleSignatureCancel() {
 }
 
 const t = computed(() => {
-  const hasSignature = !!signatureSvg.value
+  const hasSignature = !!signatureContent.value
   return {
     actionButton: hasSignature
       ? props.translations?.updateSignature || 'Update Signature'
@@ -689,7 +733,7 @@ onBeforeUnmount(() => {
     <div class="pdf-signer-toolbar">
       <div class="toolbar-group">
         <button @click="openSignaturePad" class="btn btn-secondary">{{ t.actionButton }}</button>
-        <button class="btn btn-primary" :disabled="!signatureSvg">{{ t.save }}</button>
+        <button class="btn btn-primary" :disabled="!signatureContent">{{ t.save }}</button>
       </div>
       <div
         v-if="props.enableZoom"
@@ -711,10 +755,10 @@ onBeforeUnmount(() => {
         </div>
 
         <!-- Signature overlay -->
-        <div v-if="signatureSvg" class="signature-overlay">
-          <div :style="signatureStyle" class="signature-wrapper">
+        <div v-if="signatureContent" class="signature-overlay">
+          <div :style="signatureWrapperStyle" class="signature-wrapper">
             <svg
-              viewBox="0 0 200 160"
+              :viewBox="signatureContent.viewBox"
               preserveAspectRatio="xMidYMid meet"
               width="100%"
               height="100%"
@@ -725,34 +769,21 @@ onBeforeUnmount(() => {
               <rect
                 x="0"
                 y="0"
-                width="200"
-                height="160"
+                width="100%"
+                height="100%"
                 fill="none"
                 stroke="rgba(255,0,0,0.2)"
                 stroke-width="1"
                 stroke-dasharray="2,2"
-                v-if="showDebugBounds"
+                v-if="showSignatureBounds"
               />
 
-              <!-- Debug: show signature center line -->
-              <line
-                x1="0"
-                y1="80"
-                x2="200"
-                y2="80"
-                stroke="rgba(0,255,0,0.2)"
-                stroke-width="0.5"
-                stroke-dasharray="2,2"
-                v-if="showDebugBounds"
-              />
-
-              <!-- The signature path centered in the viewBox -->
-              <!-- Since the signature naturally spans y=20 to y=140 (center at y=80),
-                   and we want it centered at y=80 in our viewBox,
-                   we don't need vertical translation, just horizontal padding -->
-              <g transform="translate(10, 0)">
+              <!-- loop through all paths to render the complete signature. -->
+              <g>
                 <path
-                  :d="signatureSvg"
+                  v-for="(path, index) in signatureContent.paths"
+                  :key="index"
+                  :d="path"
                   fill="none"
                   stroke="#000080"
                   stroke-width="2.5"
@@ -849,8 +880,6 @@ onBeforeUnmount(() => {
 }
 
 .signature-wrapper {
-  border: 2px dashed rgba(0, 123, 255, 0.5);
-  background-color: rgba(0, 123, 255, 0.05);
   border-radius: 4px;
   box-sizing: border-box;
 }

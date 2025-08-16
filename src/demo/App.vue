@@ -129,6 +129,7 @@ watch(
       :signatureData="signatureData"
       :enableZoom="true"
       :debug="true"
+      :showSignatureBounds="false"
     />
   </main>
 </template>

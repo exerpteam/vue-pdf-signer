@@ -22,12 +22,14 @@ declare const _default: import('vue').DefineComponent<import('vue').ExtractPropT
     translations?: Record<string, string>;
     enableZoom?: boolean;
     debug?: boolean;
+    showSignatureBounds?: boolean;
 }>, {
     isDownload: boolean;
     enableZoom: boolean;
     signatureData: () => never[];
     translations: () => {};
     debug: boolean;
+    showSignatureBounds: boolean;
 }>>, {}, {}, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
     finish: (payload: FinishPayload) => void;
 }, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
@@ -37,12 +39,14 @@ declare const _default: import('vue').DefineComponent<import('vue').ExtractPropT
     translations?: Record<string, string>;
     enableZoom?: boolean;
     debug?: boolean;
+    showSignatureBounds?: boolean;
 }>, {
     isDownload: boolean;
     enableZoom: boolean;
     signatureData: () => never[];
     translations: () => {};
     debug: boolean;
+    showSignatureBounds: boolean;
 }>>> & Readonly<{
     onFinish?: ((payload: FinishPayload) => any) | undefined;
 }>, {
@@ -51,6 +55,7 @@ declare const _default: import('vue').DefineComponent<import('vue').ExtractPropT
     translations: Record<string, string>;
     enableZoom: boolean;
     debug: boolean;
+    showSignatureBounds: boolean;
 }, {}, {}, {}, string, import('vue').ComponentProvideOptions, true, {}, any>;
 export default _default;
 type __VLS_NonUndefinedable<T> = T extends undefined ? never : T;

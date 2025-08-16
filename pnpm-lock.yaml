@@ -17,6 +17,9 @@ importers:
       pdfjs-dist:
         specifier: ^5.4.54
         version: 5.4.54
+      signature_pad:
+        specifier: ^5.0.10
+        version: 5.0.10
     devDependencies:
       '@tsconfig/node22':
         specifier: ^22.0.2
@@ -24,6 +27,9 @@ importers:
       '@types/node':
         specifier: ^22.16.5
         version: 22.17.1
+      '@types/signature_pad':
+        specifier: ^4.0.0
+        version: 4.0.0
       '@vitejs/plugin-vue':
         specifier: ^6.0.1
         version: 6.0.1(vite@7.1.2(@types/node@22.17.1)(jiti@2.5.1)(sass@1.90.0))(vue@3.5.18(typescript@5.8.3))
@@ -626,6 +632,10 @@ packages:
 
   '@types/node@22.17.1':
     resolution: {integrity: sha512-y3tBaz+rjspDTylNjAX37jEC3TETEFGNJL6uQDxwF9/8GLLIjW1rvVHlynyuUKMnMr1Roq8jOv3vkopBjC4/VA==}
+
+  '@types/signature_pad@4.0.0':
+    resolution: {integrity: sha512-uvyInmPxfG4fMz9DN7QSxNcF6O9tOtt98z6sMjP0SSFyiF7RxgfeSww+jVjkQtcvEBqR5bjVinMqxBDRP1nnmg==}
+    deprecated: This is a stub types definition. signature_pad provides its own type definitions, so you do not need this installed.
 
   '@types/web-bluetooth@0.0.21':
     resolution: {integrity: sha512-oIQLCGWtcFZy2JW77j9k8nHzAOpqMHLQejDA48XXMWH6tjCQHz5RCFz1bzsmROyL6PUm+LLnUiI4BCn221inxA==}
@@ -1348,6 +1358,9 @@ packages:
     resolution: {integrity: sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==}
     engines: {node: '>=8'}
 
+  signature_pad@5.0.10:
+    resolution: {integrity: sha512-t7rLjpAtxYAIrTHr7EKfY8ulTWF+G/LFMto502a61KZvZNWZSwhTPeLE6171YMDd2sSYRBwQ17ENK5huAi9Rsg==}
+
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
     engines: {node: '>=0.10.0'}
@@ -1963,6 +1976,10 @@ snapshots:
   '@types/node@22.17.1':
     dependencies:
       undici-types: 6.21.0
+
+  '@types/signature_pad@4.0.0':
+    dependencies:
+      signature_pad: 5.0.10
 
   '@types/web-bluetooth@0.0.21': {}
 
@@ -2753,6 +2770,8 @@ snapshots:
       shebang-regex: 3.0.0
 
   shebang-regex@3.0.0: {}
+
+  signature_pad@5.0.10: {}
 
   source-map-js@1.2.1: {}
 

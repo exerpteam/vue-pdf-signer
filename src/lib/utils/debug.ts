@@ -9,7 +9,7 @@ export const isDebug = ref(import.meta.env.VITE_APP_DEBUG_MODE === 'true')
 // false = log as objects (default), true = log as JSON strings.
 // This is useful for debugging on mobile devices where console output
 // may not show objects properly.
-const logAsString = ref(false)
+const logAsString = ref(true)
 
 /**
  * A simple logger that respects the isDebug flag.
