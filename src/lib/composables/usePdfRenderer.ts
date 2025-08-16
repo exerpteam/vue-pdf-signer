@@ -9,6 +9,17 @@ const HIGH_RES_SCALE_FACTOR = 4
 const DPR = Math.min(window.devicePixelRatio || 1, 2)
 
 /**
+ * interface to create a clear data structure
+ * for each rendered page, which we need in the overlay composable.
+ */
+export interface RenderedPage {
+  pageNum: number
+  canvas: HTMLCanvasElement
+  originalWidth: number
+  originalHeight: number
+}
+
+/**
  * A Vue composable to manage PDF loading and rendering.
  * @param pdfContainer - A ref to the DOM element that will contain the rendered canvas pages.
  * @param viewportRef - A ref to the viewport element, used to calculate the initial scale.
@@ -18,7 +29,7 @@ export function usePdfRenderer(
   viewportRef: Ref<HTMLDivElement | null>,
 ) {
   // --- START: Reactive State ---
-  const pageDetails = ref<Array<{ page: pdfjsLib.PDFPageProxy; canvas: HTMLCanvasElement }>>([])
+  const renderedPages = ref<RenderedPage[]>([])
   const originalPdfDimensions = ref({ width: 0, height: 0 })
   const firstCanvasRef = ref<HTMLCanvasElement | null>(null)
   const initialPdfScale = ref(1)
@@ -62,7 +73,13 @@ export function usePdfRenderer(
       }
 
       pdfContainer.value.appendChild(canvas)
-      pageDetails.value.push({ page: markRaw(page), canvas })
+
+      renderedPages.value.push({
+        pageNum,
+        canvas: markRaw(canvas),
+        originalWidth: unscaledViewport.width,
+        originalHeight: unscaledViewport.height,
+      })
 
       const renderContext = {
         canvasContext: context,
@@ -82,7 +99,7 @@ export function usePdfRenderer(
 
     // Reset state before rendering a new PDF
     pdfContainer.value.innerHTML = ''
-    pageDetails.value = []
+    renderedPages.value = []
     isPdfRendered.value = false
 
     try {
@@ -114,7 +131,7 @@ export function usePdfRenderer(
 
   // Expose the state and methods to be used by the component.
   return {
-    pageDetails,
+    renderedPages,
     originalPdfDimensions,
     firstCanvasRef,
     initialPdfScale,

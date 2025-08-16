@@ -46,10 +46,7 @@ const viewportRef = ref<HTMLDivElement | null>(null)
 // --- START: Using Composables ---
 
 // 1. PDF Rendering Logic
-const { originalPdfDimensions, firstCanvasRef, isPdfRendered, loadAndRenderPdf } = usePdfRenderer(
-  pdfContainer,
-  viewportRef,
-)
+const { isPdfRendered, loadAndRenderPdf, renderedPages } = usePdfRenderer(pdfContainer, viewportRef)
 
 // 2. Pan and Zoom Logic
 const { zoomPercentage, initPanzoom, destroyPanzoom, zoomIn, zoomOut } = usePanZoom(
@@ -73,9 +70,8 @@ const {
 // We use toRefs to pass reactive props to the composable.
 const { signatureData, showSignatureBounds } = toRefs(props)
 const { signatureStyles } = useSignatureOverlay(
-  firstCanvasRef,
+  renderedPages,
   pdfContainer,
-  originalPdfDimensions,
   signatureData,
   showSignatureBounds,
 )
