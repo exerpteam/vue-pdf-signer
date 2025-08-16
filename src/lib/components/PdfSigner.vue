@@ -15,7 +15,7 @@ import { useScrollLock } from '@vueuse/core'
 import Panzoom from '@panzoom/panzoom'
 import type { PanzoomObject } from '@panzoom/panzoom'
 import { isDebug, logger } from '../utils/debug'
-import { PDFDocument, PDFName, PDFNumber, asNumber } from 'pdf-lib'
+import { PDFDocument, PDFName, PDFNumber, asNumber, rgb, LineCapStyle } from 'pdf-lib'
 
 // Set the worker source for pdfjs-dist
 import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.mjs?url'
@@ -85,7 +85,7 @@ const isLocked = useScrollLock(bodyEl)
 // Let's use the PDF standard for more accurate positioning
 const PDF_DPI = 72
 const CM_TO_INCH = 1 / 2.54
-const CM_TO_PX = PDF_DPI * CM_TO_INCH // This gives us ~28.346 pixels per cm at 72 DPI
+const CM_TO_PX = PDF_DPI * CM_TO_INCH // ~28.346 px per cm at 72 DPI
 
 logger.debug('Conversion factors calculated', {
   CM_TO_PX,
@@ -103,10 +103,7 @@ const defaultSignaturePlacement = computed(() => ({
 }))
 
 const signatureWrapperStyle = computed(() => {
-  // Start with the positioning styles from our other computed prop.
   const baseStyle = signatureStyle.value
-
-  // If the prop is true, merge in the visual bounds styles.
   if (props.showSignatureBounds) {
     return {
       ...baseStyle,
@@ -114,8 +111,6 @@ const signatureWrapperStyle = computed(() => {
       backgroundColor: 'rgba(0, 123, 255, 0.05)',
     }
   }
-
-  // Otherwise, just return the positioning styles.
   return baseStyle
 })
 
@@ -142,6 +137,71 @@ function openSignaturePad() {
   isLocked.value = true
 }
 
+/** Convert HEX to pdf-lib Color */
+function hexToPdfRgb(hex: string) {
+  const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex) || []
+  const r = parseInt(m[1] || '00', 16) / 255
+  const g = parseInt(m[2] || '00', 16) / 255
+  const b = parseInt(m[3] || '00', 16) / 255
+  return rgb(r, g, b)
+}
+
+/** Map SVG linecap → pdf-lib enum */
+function toCap(cap?: string): LineCapStyle {
+  switch ((cap || 'round').toLowerCase()) {
+    case 'butt':
+      return LineCapStyle.Butt
+    case 'square':
+    case 'projecting':
+      return LineCapStyle.Projecting
+    default:
+      return LineCapStyle.Round
+  }
+}
+
+/** Compute union BBox of all <path> elements in the SVG coordinate space */
+function getUnionBBox(svgEl: SVGSVGElement, paths: SVGPathElement[]) {
+  const NS = 'http://www.w3.org/2000/svg'
+  const tempSvg = document.createElementNS(NS, 'svg')
+  const vb = svgEl.getAttribute('viewBox') || '0 0 0 0'
+  tempSvg.setAttribute('viewBox', vb)
+  tempSvg.setAttribute('width', '0')
+  tempSvg.setAttribute('height', '0')
+  tempSvg.style.position = 'absolute'
+  tempSvg.style.opacity = '0'
+  document.body.appendChild(tempSvg)
+
+  let minX = Infinity,
+    minY = Infinity,
+    maxX = -Infinity,
+    maxY = -Infinity
+  const bboxes: { idx: number; x: number; y: number; w: number; h: number; len: number }[] = []
+
+  paths.forEach((p, idx) => {
+    const clone = document.createElementNS(NS, 'path')
+    clone.setAttribute('d', p.getAttribute('d') || '')
+    tempSvg.appendChild(clone)
+    try {
+      const bb = clone.getBBox()
+      const len = clone.getTotalLength?.() ?? -1
+      bboxes.push({ idx, x: bb.x, y: bb.y, w: bb.width, h: bb.height, len })
+      minX = Math.min(minX, bb.x)
+      minY = Math.min(minY, bb.y)
+      maxX = Math.max(maxX, bb.x + bb.width)
+      maxY = Math.max(maxY, bb.y + bb.height)
+    } catch (e) {
+      logger.warn('getBBox/getTotalLength failed for path', { idx, e })
+    } finally {
+      tempSvg.removeChild(clone)
+    }
+  })
+
+  document.body.removeChild(tempSvg)
+  const width = Math.max(0, maxX - minX)
+  const height = Math.max(0, maxY - minY)
+  return { minX, minY, width, height, bboxes }
+}
+
 /**
  * Generates the final signed PDF, emits the result, and handles download.
  */
@@ -158,32 +218,40 @@ async function saveDocument() {
   try {
     const pdfDoc = await PDFDocument.load(props.pdfData)
 
-    // Convert PNG data URL to bytes
-    const pngDataUrl = signaturePng.value
-    const pngBase64 = pngDataUrl.split(',')[1]
-    const pngBytes = Uint8Array.from(atob(pngBase64), (c) => c.charCodeAt(0))
+    // Parse the SVG to extract paths and info
+    const svgDoc = new DOMParser().parseFromString(signatureSvg.value, 'image/svg+xml')
+    const svgElement = svgDoc.querySelector('svg') as unknown as SVGSVGElement | null
+    const pathNodeList = Array.from(svgDoc.querySelectorAll('path')) as SVGPathElement[]
 
-    // Embed the PNG image in the PDF
-    const pngImage = await pdfDoc.embedPng(pngBytes)
-    const pngDims = pngImage.scale(1)
+    if (!svgElement || pathNodeList.length === 0) {
+      logger.error('Signature SVG missing <svg> or <path> elements', {
+        hasSvg: !!svgElement,
+        pathCount: pathNodeList.length,
+        svgSnippet: signatureSvg.value?.slice(0, 200),
+      })
+      return
+    }
 
-    // Use props.signatureData if provided, otherwise use default placement
+    const viewBoxRaw = svgElement.getAttribute('viewBox') || '0 0 200 160'
+    const [vbX, vbY, vbW, vbH] = viewBoxRaw.split(/[\s,]+/).map(Number)
+
+    // Analyze ink bounds (actual drawn area) to avoid squeezing tiny strokes
+    const union = getUnionBBox(svgElement, pathNodeList)
+
+    logger.debug('SVG summary', {
+      viewBox: { vbX, vbY, vbW, vbH },
+      pathCount: pathNodeList.length,
+      unionBBox: union,
+      firstPathPreview: (pathNodeList[0].getAttribute('d') || '').slice(0, 120) + '…',
+    })
+
+    // Use props.signatureData if provided, otherwise default placement (in cm)
     const placements =
       props.signatureData.length > 0
         ? props.signatureData
-        : [
-            {
-              left: 5, // 5cm from left
-              top: 7, // 7cm from top
-              width: 8, // 8cm width
-              height: 4, // 4cm height
-              page: 1,
-            },
-          ]
+        : [{ left: 5, top: 7, width: 8, height: 4, page: 1 }]
 
-    logger.debug('Signature placements:', placements)
-
-    const CM_TO_POINTS = 72 / 2.54 // 1cm = 72/2.54 points at standard resolution
+    const CM_TO_POINTS = 72 / 2.54 // 1cm = 28.346 points
 
     for (const placement of placements) {
       const pageIndex = placement.page - 1
@@ -193,109 +261,95 @@ async function saveDocument() {
       }
 
       const page = pdfDoc.getPage(pageIndex)
-      const { height: pageHeight, width: pageWidth } = page.getSize()
+      const { height: pageHeight } = page.getSize()
 
-      // Get the UserUnit for this page (default is 1.0 if not specified)
-      // pdf-lib doesn't expose UserUnit directly, so we need to detect it
-      // by comparing the page size with expected standard sizes
+      // Get the UserUnit for this page
       let userUnit = 1.0
-
-      // Try to detect UserUnit by checking page dimensions
-      // A4 at 72 DPI should be ~595x842 points
-      // If the page reports different dimensions, we can infer the UserUnit
-      // Raw entry is a PDFObject; resolve it to a PDFNumber via context.lookup
       const userUnitEntry = page.node.get(PDFName.of('UserUnit'))
       if (userUnitEntry) {
         const userUnitPdfNum = pdfDoc.context.lookup(userUnitEntry, PDFNumber)
-        if (userUnitPdfNum) {
-          userUnit = asNumber(userUnitPdfNum) || 1.0
-        }
+        if (userUnitPdfNum) userUnit = asNumber(userUnitPdfNum) || 1.0
       }
 
-      // Alternative detection method based on page dimensions
-      // This is a fallback if UserUnit is not explicitly set
-      if (!userUnitEntry) {
-        // Standard A4 dimensions in points (at UserUnit = 1)
-        const A4_WIDTH = 595.276
-        const A4_HEIGHT = 841.89
-
-        // Check if this looks like A4 with a different UserUnit
-        if (Math.abs(pageWidth / A4_WIDTH - Math.round(pageWidth / A4_WIDTH)) < 0.1) {
-          userUnit = pageWidth / A4_WIDTH
-        } else if (Math.abs(pageHeight / A4_HEIGHT - Math.round(pageHeight / A4_HEIGHT)) < 0.1) {
-          userUnit = pageHeight / A4_HEIGHT
-        }
-      }
-
-      logger.debug('Page UserUnit detected:', {
-        page: placement.page,
-        userUnit,
-        pageWidth,
-        pageHeight,
-        expectedA4Width: 595.276,
-        expectedA4Height: 841.89,
-      })
-
-      // Adjust the conversion factor based on UserUnit
-      // When UserUnit is 2, we need to use half the points
-      // When UserUnit is 0.5, we need to use double the points
       const adjustedCmToPoints = CM_TO_POINTS / userUnit
 
       // Convert cm measurements to points, adjusted for UserUnit
       const targetWidth = placement.width * adjustedCmToPoints
       const targetHeight = placement.height * adjustedCmToPoints
       const targetX = placement.left * adjustedCmToPoints
-
-      // PDF coordinates start from bottom-left, so we need to flip Y
       const targetY = pageHeight - placement.top * adjustedCmToPoints - targetHeight
 
-      // Calculate scale to fit signature within the target area while maintaining aspect ratio
-      const scaleX = targetWidth / pngDims.width
-      const scaleY = targetHeight / pngDims.height
+      // Choose fitting box: actual ink (union bbox) to avoid squeezing
+      const useUnionBBox = true
+      const boxW = useUnionBBox ? union.width : vbW - vbX
+      const boxH = useUnionBBox ? union.height : vbH - vbY
+
+      if (!boxW || !boxH) {
+        logger.warn('Zero-sized source box; skipping placement', { boxW, boxH, union, viewBoxRaw })
+        continue
+      }
+
+      const scaleX = targetWidth / boxW
+      const scaleY = targetHeight / boxH
       const scale = Math.min(scaleX, scaleY)
 
-      const scaledWidth = pngDims.width * scale
-      const scaledHeight = pngDims.height * scale
+      const scaledWidth = boxW * scale
+      const scaledHeight = boxH * scale
 
-      // Center the signature within the target area
+      // Center within target rect
       const centeredX = targetX + (targetWidth - scaledWidth) / 2
       const centeredY = targetY + (targetHeight - scaledHeight) / 2
 
-      logger.debug('Drawing signature at:', {
+      logger.debug('Placement math', {
         page: placement.page,
         userUnit,
-        adjustedCmToPoints,
-        placement_cm: {
-          left: placement.left,
-          top: placement.top,
-          width: placement.width,
-          height: placement.height,
-        },
-        target_points: {
-          x: targetX,
-          y: targetY,
-          width: targetWidth,
-          height: targetHeight,
-        },
-        final_position: {
-          x: centeredX,
-          y: centeredY,
-          width: scaledWidth,
-          height: scaledHeight,
-        },
+        targetRect: { x: targetX, y: targetY, w: targetWidth, h: targetHeight },
+        fitBox: useUnionBBox ? 'unionBBox' : 'viewBox',
+        sourceBox: { w: boxW, h: boxH },
+        scale,
+        scaled: { w: scaledWidth, h: scaledHeight },
+        anchor: { x: centeredX, y: centeredY },
       })
 
-      // Draw the PNG image on the page
-      page.drawImage(pngImage, {
-        x: centeredX,
-        y: centeredY,
-        width: scaledWidth,
-        height: scaledHeight,
+      // Draw each <path> as vector with its own styling
+      pathNodeList.forEach((el, idx) => {
+        const d = el.getAttribute('d') || ''
+        if (!d) return
+
+        const stroke = el.getAttribute('stroke') || '#000080'
+        const strokeWidth = parseFloat(el.getAttribute('stroke-width') || '2')
+        const strokeLinecap = el.getAttribute('stroke-linecap') || 'round'
+
+        // Offset so that chosen box's top-left aligns correctly
+        const offX = useUnionBBox ? union.minX : vbX
+        const offY = useUnionBBox ? union.minY : vbY
+
+        // pdf-lib origin is bottom-left; we place baseline at bottom of fitted box
+        const x = centeredX - offX * scale
+        const y = centeredY + scaledHeight + offY * scale
+
+        logger.debug('Draw path', {
+          idx,
+          dLen: d.length,
+          stroke,
+          strokeWidth,
+          strokeLinecap,
+          drawAt: { x, y, scale },
+        })
+
+        page.drawSvgPath(d, {
+          x,
+          y,
+          scale,
+          borderColor: hexToPdfRgb(stroke),
+          borderWidth: strokeWidth * scale,
+          borderLineCap: toCap(strokeLinecap),
+        })
       })
     }
 
     const signedPdfBase64 = await pdfDoc.saveAsBase64()
-    const signaturePngBase64 = pngBase64 // Already extracted above
+    const signaturePngBase64 = signaturePng.value.split(',')[1]
 
     const payload: FinishPayload = {
       signedDocument: {
@@ -573,53 +627,38 @@ function updatePanState() {
     // Content overflows - enable panning with boundaries
     pz.setOptions({
       disablePan: false,
-      contain: 'outside', // Ensure edges can't be dragged past viewport edges
+      contain: 'outside',
     })
   }
 }
 
-/**
- * Zoom in by a controlled increment (25% relative to current scale)
- */
+/** Zoom in by a controlled increment (25% relative to current scale) */
 function zoomIn() {
   if (!panzoom.value || !viewportRef.value) return
-
-  // since panzoom handles maxScale, we just need to calculate
-  // the target scale and let panzoom apply it. It will automatically clamp at the max.
   const newScale = panzoom.value.getScale() * 1.25
-
   const viewportRect = viewportRef.value.getBoundingClientRect()
   const centerX = viewportRect.width / 2
   const centerY = viewportRect.height / 2
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   panzoom.value.zoomToPoint(newScale, { clientX: centerX, clientY: centerY } as any, {
     animate: true,
   })
 }
 
-/**
- * Zoom out by a controlled increment (20% relative to current scale)
- */
+/** Zoom out by a controlled increment (20% relative to current scale) */
 function zoomOut() {
   if (!panzoom.value || !viewportRef.value) return
-
-  // Same simplification for zooming out.
   const newScale = panzoom.value.getScale() * 0.8
-
   const viewportRect = viewportRef.value.getBoundingClientRect()
   const centerX = viewportRect.width / 2
   const centerY = viewportRect.height / 2
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   panzoom.value.zoomToPoint(newScale, { clientX: centerX, clientY: centerY } as any, {
     animate: true,
   })
 }
 
-/**
- * Initializes Panzoom and attaches event listeners.
- */
+/** Initializes Panzoom and attaches event listeners. */
 function initPanzoom() {
   if (!panzoomContainer.value || !viewportRef.value) return
   panzoom.value?.destroy()
@@ -678,7 +717,6 @@ async function loadAndRenderPdf(pdfData: string) {
     const firstPage = await pdf.getPage(1)
 
     // Get the actual available width from the viewport element
-    // This accounts for padding and ensures we're measuring the right container
     const viewportRect = viewportRef.value.getBoundingClientRect()
     const availableWidth = viewportRect.width
 
@@ -686,11 +724,10 @@ async function loadAndRenderPdf(pdfData: string) {
     const unscaledViewport = firstPage.getViewport({ scale: 1 })
 
     // Calculate scale to fit width with some padding (90% of available width)
-    // This ensures margins are visible on both sides
     const fitToWidthScale = (availableWidth * 0.9) / unscaledViewport.width
 
     // Use a reasonable initial scale (not too small, not too large)
-    const initialScale = Math.min(fitToWidthScale, 2) // Cap at 2x to avoid overly large initial renders
+    const initialScale = Math.min(fitToWidthScale, 2)
 
     await renderInitialPdfPages(pdf, initialScale)
 
@@ -705,7 +742,7 @@ async function loadAndRenderPdf(pdfData: string) {
   }
 }
 
-// Computed style for signature positioning
+// Computed style for signature positioning (overlay preview)
 const signatureStyle = computed(() => {
   if (!firstCanvasRef.value || !pdfContainer.value || originalPdfDimensions.value.width === 0) {
     return { display: 'none' }
@@ -718,7 +755,6 @@ const signatureStyle = computed(() => {
   const canvasHeight = currentCanvasDimensions.value.height
 
   // Calculate the current scale based on the ACTUAL original PDF dimensions
-  // Instead of hardcoding 595, use the actual original width
   const currentScale = canvasWidth / originalPdfDimensions.value.width
 
   // Use the reactive container dimensions
@@ -726,7 +762,6 @@ const signatureStyle = computed(() => {
   const containerPadding = 16 // 1rem padding on each side (from .pdf-render-view padding)
 
   // Calculate the actual left offset of the canvas within the container
-  // The canvas is centered, so we need to account for that
   const canvasLeftOffset = Math.max(0, (containerWidth - canvasWidth) / 2)
 
   // Calculate signature dimensions and position using current scale
@@ -739,7 +774,6 @@ const signatureStyle = computed(() => {
   const finalLeft = canvasLeftOffset + signatureLeft
   const finalTop = signatureTop + containerPadding // Add top padding of container
 
-  // Debug logging
   logger.debug('Signature Positioning Calculation', {
     placement: {
       leftCm: placement.left / CM_TO_PX,
@@ -863,6 +897,7 @@ onMounted(() => {
     window.removeEventListener('resize', handleWindowResize)
   })
 })
+
 watch(
   () => props.pdfData,
   (newPdfData, oldPdfData) => {
