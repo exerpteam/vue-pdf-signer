@@ -15,7 +15,7 @@ import { useScrollLock } from '@vueuse/core'
 import Panzoom from '@panzoom/panzoom'
 import type { PanzoomObject } from '@panzoom/panzoom'
 import { isDebug, logger } from '../utils/debug'
-import { PDFDocument, rgb } from 'pdf-lib'
+import { PDFDocument, PDFName, PDFNumber, asNumber } from 'pdf-lib'
 
 // Set the worker source for pdfjs-dist
 import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.mjs?url'
@@ -142,12 +142,6 @@ function openSignaturePad() {
   isLocked.value = true
 }
 
-// Safely extracts the 'd' attribute from our SVG string.
-function extractSvgPathData(svgString: string): string {
-  const match = /<path.*?d="(.*?)"/g.exec(svgString)
-  return match ? match[1] : ''
-}
-
 /**
  * Generates the final signed PDF, emits the result, and handles download.
  */
@@ -163,50 +157,145 @@ async function saveDocument() {
 
   try {
     const pdfDoc = await PDFDocument.load(props.pdfData)
-    const signaturePathData = extractSvgPathData(signatureSvg.value)
-    if (!signaturePathData) {
-      throw new Error('Could not parse SVG path data from signature.')
-    }
-    const CM_TO_POINTS = 72 / 2.54
 
-    for (const placement of props.signatureData) {
+    // Convert PNG data URL to bytes
+    const pngDataUrl = signaturePng.value
+    const pngBase64 = pngDataUrl.split(',')[1]
+    const pngBytes = Uint8Array.from(atob(pngBase64), (c) => c.charCodeAt(0))
+
+    // Embed the PNG image in the PDF
+    const pngImage = await pdfDoc.embedPng(pngBytes)
+    const pngDims = pngImage.scale(1)
+
+    // Use props.signatureData if provided, otherwise use default placement
+    const placements =
+      props.signatureData.length > 0
+        ? props.signatureData
+        : [
+            {
+              left: 5, // 5cm from left
+              top: 7, // 7cm from top
+              width: 8, // 8cm width
+              height: 4, // 4cm height
+              page: 1,
+            },
+          ]
+
+    logger.debug('Signature placements:', placements)
+
+    const CM_TO_POINTS = 72 / 2.54 // 1cm = 72/2.54 points at standard resolution
+
+    for (const placement of placements) {
       const pageIndex = placement.page - 1
       if (pageIndex < 0 || pageIndex >= pdfDoc.getPageCount()) {
         logger.warn(`Invalid page number ${placement.page}. Skipping placement.`)
         continue
       }
+
       const page = pdfDoc.getPage(pageIndex)
-      const { height: pageHeight } = page.getSize()
+      const { height: pageHeight, width: pageWidth } = page.getSize()
 
-      const targetX = placement.left * CM_TO_POINTS
-      const targetY = pageHeight - placement.top * CM_TO_POINTS - placement.height * CM_TO_POINTS
-      const targetWidth = placement.width * CM_TO_POINTS
-      const targetHeight = placement.height * CM_TO_POINTS
+      // Get the UserUnit for this page (default is 1.0 if not specified)
+      // pdf-lib doesn't expose UserUnit directly, so we need to detect it
+      // by comparing the page size with expected standard sizes
+      let userUnit = 1.0
 
-      const svgViewBoxMatch = /viewBox="0 0 ([\d.]+) ([\d.]+)"/.exec(signatureSvg.value)
-      const svgWidth = svgViewBoxMatch ? parseFloat(svgViewBoxMatch[1]) : 200
-      const svgHeight = svgViewBoxMatch ? parseFloat(svgViewBoxMatch[2]) : 100
+      // Try to detect UserUnit by checking page dimensions
+      // A4 at 72 DPI should be ~595x842 points
+      // If the page reports different dimensions, we can infer the UserUnit
+      // Raw entry is a PDFObject; resolve it to a PDFNumber via context.lookup
+      const userUnitEntry = page.node.get(PDFName.of('UserUnit'))
+      if (userUnitEntry) {
+        const userUnitPdfNum = pdfDoc.context.lookup(userUnitEntry, PDFNumber)
+        if (userUnitPdfNum) {
+          userUnit = asNumber(userUnitPdfNum) || 1.0
+        }
+      }
 
-      const scaleX = targetWidth / svgWidth
-      const scaleY = targetHeight / svgHeight
+      // Alternative detection method based on page dimensions
+      // This is a fallback if UserUnit is not explicitly set
+      if (!userUnitEntry) {
+        // Standard A4 dimensions in points (at UserUnit = 1)
+        const A4_WIDTH = 595.276
+        const A4_HEIGHT = 841.89
+
+        // Check if this looks like A4 with a different UserUnit
+        if (Math.abs(pageWidth / A4_WIDTH - Math.round(pageWidth / A4_WIDTH)) < 0.1) {
+          userUnit = pageWidth / A4_WIDTH
+        } else if (Math.abs(pageHeight / A4_HEIGHT - Math.round(pageHeight / A4_HEIGHT)) < 0.1) {
+          userUnit = pageHeight / A4_HEIGHT
+        }
+      }
+
+      logger.debug('Page UserUnit detected:', {
+        page: placement.page,
+        userUnit,
+        pageWidth,
+        pageHeight,
+        expectedA4Width: 595.276,
+        expectedA4Height: 841.89,
+      })
+
+      // Adjust the conversion factor based on UserUnit
+      // When UserUnit is 2, we need to use half the points
+      // When UserUnit is 0.5, we need to use double the points
+      const adjustedCmToPoints = CM_TO_POINTS / userUnit
+
+      // Convert cm measurements to points, adjusted for UserUnit
+      const targetWidth = placement.width * adjustedCmToPoints
+      const targetHeight = placement.height * adjustedCmToPoints
+      const targetX = placement.left * adjustedCmToPoints
+
+      // PDF coordinates start from bottom-left, so we need to flip Y
+      const targetY = pageHeight - placement.top * adjustedCmToPoints - targetHeight
+
+      // Calculate scale to fit signature within the target area while maintaining aspect ratio
+      const scaleX = targetWidth / pngDims.width
+      const scaleY = targetHeight / pngDims.height
       const scale = Math.min(scaleX, scaleY)
 
-      const scaledSignatureWidth = svgWidth * scale
-      const scaledSignatureHeight = svgHeight * scale
-      const centeredX = targetX + (targetWidth - scaledSignatureWidth) / 2
-      const centeredY = targetY + (targetHeight - scaledSignatureHeight) / 2
+      const scaledWidth = pngDims.width * scale
+      const scaledHeight = pngDims.height * scale
 
-      page.drawSvgPath(signaturePathData, {
+      // Center the signature within the target area
+      const centeredX = targetX + (targetWidth - scaledWidth) / 2
+      const centeredY = targetY + (targetHeight - scaledHeight) / 2
+
+      logger.debug('Drawing signature at:', {
+        page: placement.page,
+        userUnit,
+        adjustedCmToPoints,
+        placement_cm: {
+          left: placement.left,
+          top: placement.top,
+          width: placement.width,
+          height: placement.height,
+        },
+        target_points: {
+          x: targetX,
+          y: targetY,
+          width: targetWidth,
+          height: targetHeight,
+        },
+        final_position: {
+          x: centeredX,
+          y: centeredY,
+          width: scaledWidth,
+          height: scaledHeight,
+        },
+      })
+
+      // Draw the PNG image on the page
+      page.drawImage(pngImage, {
         x: centeredX,
         y: centeredY,
-        scale: scale,
-        color: rgb(0, 0, 0.5),
+        width: scaledWidth,
+        height: scaledHeight,
       })
     }
 
     const signedPdfBase64 = await pdfDoc.saveAsBase64()
-    // we must ensure the PNG data URL prefix is removed before creating the payload.
-    const signaturePngBase64 = signaturePng.value.split(',')[1]
+    const signaturePngBase64 = pngBase64 // Already extracted above
 
     const payload: FinishPayload = {
       signedDocument: {
@@ -219,11 +308,9 @@ async function saveDocument() {
       },
     }
 
-    // 8. Emit the final payload
     emit('finish', payload)
     logger.debug('Emitted "finish" event with payload.', payload)
 
-    // 9. Handle automatic download if the prop is set
     if (props.isDownload) {
       const dataUri = `data:application/pdf;base64,${signedPdfBase64}`
       const link = document.createElement('a')
@@ -282,7 +369,7 @@ const t = computed(() => {
   const hasSignature = !!signatureSvg.value
   if (isSaving.value) {
     return {
-      actionButton: props.translations?.updateSignature || 'Update Signature',
+      actionButton: props.translations?.updateSignature || 'Change Signature',
       save: props.translations?.saving || 'Saving...',
     }
   }

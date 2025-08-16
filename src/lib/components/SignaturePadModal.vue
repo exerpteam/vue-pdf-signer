@@ -65,7 +65,7 @@ onMounted(() => {
   // Initialize the SignaturePad instance on our canvas element.
   signaturePadInstance.value = new SignaturePad(canvasRef.value, {
     penColor: '#000080', // A dark navy blue, as requested for the final PDF.
-    backgroundColor: '#ffffff',
+    // backgroundColor: '#ffffff',
   })
 
   // Set up the resize listener to handle orientation changes or window resizing.
