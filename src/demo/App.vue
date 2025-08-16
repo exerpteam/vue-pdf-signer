@@ -11,17 +11,9 @@ const isLoading = ref<boolean>(false)
 const output = ref<FinishPayload | null>(null)
 const outputSectionRef = ref<HTMLDivElement | null>(null)
 
-// This ref holds the editable signature data from our new input fields.
-const dynamicSignatureData = ref<SignaturePlacement>({
-  left: 5,
-  top: 7,
-  width: 8,
-  height: 4,
-  page: 1,
-})
+// array to manage multiple signature placements.
+const dynamicSignatureData = ref<SignaturePlacement[]>([])
 
-// The component's prop expects an array, so we wrap our dynamic object in a computed array.
-const signatureDataForComponent = computed(() => [dynamicSignatureData.value])
 // --- END: Reactive state ---
 
 /**
@@ -82,9 +74,9 @@ watch(
     const selectedPdf = pdfList.value.find((p) => p.fileName === newFileName)
     if (selectedPdf) {
       pdfData.value = await loadPdfAsBase64(selectedPdf.fileName)
-      // When a new PDF is selected, we update our reactive ref with its default placement.
-      // This automatically updates the input fields.
-      dynamicSignatureData.value = { ...selectedPdf.signaturePlacement }
+      // When a new PDF is selected, we do a deep copy of its placement array.
+      // This prevents mutations from affecting our original manifest data.
+      dynamicSignatureData.value = JSON.parse(JSON.stringify(selectedPdf.signaturePlacement))
     }
     isLoading.value = false
   },
@@ -110,50 +102,72 @@ watch(
 
     <!-- START: dynamic signature controls -->
     <fieldset class="signature-controls">
-      <legend>Signature Placement</legend>
-      <div class="signature-controls-grid">
-        <div class="input-group">
-          <label for="sig-left">Left (cm)</label>
-          <input
-            id="sig-left"
-            type="number"
-            step="0.1"
-            v-model.number="dynamicSignatureData.left"
-          />
+      <legend>Signature Placements</legend>
+      <!-- We loop through each placement in the array -->
+      <div
+        v-for="(placement, index) in dynamicSignatureData"
+        :key="index"
+        class="signature-placement-item"
+      >
+        <div class="item-header">
+          <h4>Signature #{{ index + 1 }}</h4>
+          <button @click="dynamicSignatureData.splice(index, 1)" class="remove-btn">Remove</button>
         </div>
-        <div class="input-group">
-          <label for="sig-top">Top (cm)</label>
-          <input id="sig-top" type="number" step="0.1" v-model.number="dynamicSignatureData.top" />
-        </div>
-        <div class="input-group">
-          <label for="sig-width">Width (cm)</label>
-          <input
-            id="sig-width"
-            type="number"
-            step="0.1"
-            v-model.number="dynamicSignatureData.width"
-          />
-        </div>
-        <div class="input-group">
-          <label for="sig-height">Height (cm)</label>
-          <input
-            id="sig-height"
-            type="number"
-            step="0.1"
-            v-model.number="dynamicSignatureData.height"
-          />
-        </div>
-        <div class="input-group">
-          <label for="sig-page">Page</label>
-          <input
-            id="sig-page"
-            type="number"
-            step="1"
-            min="1"
-            v-model.number="dynamicSignatureData.page"
-          />
+        <div class="signature-controls-grid">
+          <div class="input-group">
+            <label :for="`sig-left-${index}`">Left (cm)</label>
+            <input
+              :id="`sig-left-${index}`"
+              type="number"
+              step="0.1"
+              v-model.number="placement.left"
+            />
+          </div>
+          <div class="input-group">
+            <label :for="`sig-top-${index}`">Top (cm)</label>
+            <input
+              :id="`sig-top-${index}`"
+              type="number"
+              step="0.1"
+              v-model.number="placement.top"
+            />
+          </div>
+          <div class="input-group">
+            <label :for="`sig-width-${index}`">Width (cm)</label>
+            <input
+              :id="`sig-width-${index}`"
+              type="number"
+              step="0.1"
+              v-model.number="placement.width"
+            />
+          </div>
+          <div class="input-group">
+            <label :for="`sig-height-${index}`">Height (cm)</label>
+            <input
+              :id="`sig-height-${index}`"
+              type="number"
+              step="0.1"
+              v-model.number="placement.height"
+            />
+          </div>
+          <div class="input-group">
+            <label :for="`sig-page-${index}`">Page</label>
+            <input
+              :id="`sig-page-${index}`"
+              type="number"
+              step="1"
+              min="1"
+              v-model.number="placement.page"
+            />
+          </div>
         </div>
       </div>
+      <button
+        @click="dynamicSignatureData.push({ left: 2, top: 2, width: 8, height: 4, page: 1 })"
+        class="add-btn"
+      >
+        + Add Signature Placement
+      </button>
     </fieldset>
     <!-- END: dynamic signature controls -->
 
@@ -166,7 +180,7 @@ watch(
     <PdfSigner
       v-if="pdfData && !isLoading"
       :pdfData="pdfData"
-      :signatureData="signatureDataForComponent"
+      :signatureData="dynamicSignatureData"
       :enableZoom="true"
       :debug="true"
       :showSignatureBounds="true"
@@ -226,11 +240,52 @@ main {
   padding: 1rem;
   margin-bottom: 2rem;
   background-color: #fdfdfd;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 .signature-controls legend {
   font-weight: 600;
   padding: 0 0.5rem;
 }
+
+.signature-placement-item {
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 1rem;
+  background-color: #fff;
+}
+
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #eee;
+}
+.item-header h4 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+.remove-btn {
+  background: none;
+  border: 1px solid #dc3545;
+  color: #dc3545;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+}
+.remove-btn:hover {
+  background-color: #dc3545;
+  color: white;
+}
+
 .signature-controls-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
@@ -250,6 +305,21 @@ main {
   padding: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 4px;
+}
+
+.add-btn {
+  align-self: flex-start;
+  background-color: #007aff;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.add-btn:hover {
+  background-color: #005ecb;
 }
 /* END: Styles for controls */
 
