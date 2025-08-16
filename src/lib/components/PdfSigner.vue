@@ -91,7 +91,6 @@ const DPR = Math.min(window.devicePixelRatio || 1, 2)
 // --- END: Panzoom & Rendering State ---
 
 // --- START: Signature State ---
-const signatureContent = ref<{ viewBox: string; paths: string[] } | null>(null)
 const isSignaturePadOpen = ref(false)
 const originalPdfDimensions = ref({ width: 0, height: 0 })
 const bodyEl = document.querySelector('body')
@@ -195,7 +194,7 @@ function handleSignatureCancel() {
 }
 
 const t = computed(() => {
-  const hasSignature = !!signatureContent.value
+  const hasSignature = !!signatureSvg.value
   return {
     actionButton: hasSignature
       ? props.translations?.updateSignature || 'Update Signature'
@@ -710,7 +709,7 @@ onBeforeUnmount(() => {
     <div class="pdf-signer-toolbar">
       <div class="toolbar-group">
         <button @click="openSignaturePad" class="btn btn-secondary">{{ t.actionButton }}</button>
-        <button class="btn btn-primary" :disabled="!signatureContent">{{ t.save }}</button>
+        <button class="btn btn-primary" :disabled="!signatureSvg">{{ t.save }}</button>
       </div>
       <div
         v-if="props.enableZoom"

@@ -2,17 +2,17 @@ var mA = (G) => {
   throw TypeError(G);
 };
 var WC = (G, I, g) => I.has(G) || mA("Cannot " + g);
-var q = (G, I, g) => (WC(G, I, "read from private field"), g ? g.call(G) : I.get(G)), FI = (G, I, g) => I.has(G) ? mA("Cannot add the same private member more than once") : I instanceof WeakSet ? I.add(G) : I.set(G, g), XI = (G, I, g, C) => (WC(G, I, "write to private field"), C ? C.call(G, g) : I.set(G, g), g), zI = (G, I, g) => (WC(G, I, "access private method"), g);
+var _ = (G, I, g) => (WC(G, I, "read from private field"), g ? g.call(G) : I.get(G)), FI = (G, I, g) => I.has(G) ? mA("Cannot add the same private member more than once") : I instanceof WeakSet ? I.add(G) : I.set(G, g), eI = (G, I, g, C) => (WC(G, I, "write to private field"), C ? C.call(G, g) : I.set(G, g), g), zI = (G, I, g) => (WC(G, I, "access private method"), g);
 var BA = (G, I, g, C) => ({
   set _(A) {
-    XI(G, I, A, g);
+    eI(G, I, A, g);
   },
   get _() {
-    return q(G, I, C);
+    return _(G, I, C);
   }
 });
-import { defineComponent as TA, ref as mI, onMounted as QA, onUnmounted as ul, createElementBlock as Eg, openBlock as ng, createElementVNode as AI, toRef as Ml, readonly as Dl, customRef as Kl, getCurrentScope as Sl, onScopeDispose as pl, watch as rC, shallowRef as Fl, toValue as gg, computed as fI, unref as zl, watchEffect as jA, onBeforeUnmount as WA, withModifiers as Zg, createBlock as Jl, createCommentVNode as oC, toDisplayString as wC, normalizeStyle as kl, nextTick as Ll, markRaw as Tl } from "vue";
-const nI = typeof process == "object" && process + "" == "[object process]" && !process.versions.nw && !(process.versions.electron && process.type && process.type !== "browser"), pC = [1e-3, 0, 0, 1e-3, 0, 0], YC = 1.35, uI = {
+import { defineComponent as TA, ref as BI, onMounted as QA, onUnmounted as ul, createElementBlock as Eg, openBlock as ng, createElementVNode as CI, toRef as Ml, readonly as Dl, customRef as Kl, getCurrentScope as Sl, onScopeDispose as pl, watch as rC, shallowRef as Fl, toValue as Ig, computed as PI, unref as zl, watchEffect as jA, onBeforeUnmount as WA, withModifiers as Zg, createBlock as Jl, createCommentVNode as oC, toDisplayString as wC, normalizeStyle as kl, nextTick as Ll, markRaw as Tl } from "vue";
+const nI = typeof process == "object" && process + "" == "[object process]" && !process.versions.nw && !(process.versions.electron && process.type && process.type !== "browser"), pC = [1e-3, 0, 0, 1e-3, 0, 0], YC = 1.35, HI = {
   ANY: 1,
   DISPLAY: 2,
   PRINT: 4,
@@ -21,12 +21,12 @@ const nI = typeof process == "object" && process + "" == "[object process]" && !
   ANNOTATIONS_DISABLE: 64,
   IS_EDITING: 128,
   OPLIST: 256
-}, rI = {
+}, UI = {
   DISABLE: 0,
   ENABLE: 1,
   ENABLE_FORMS: 2,
   ENABLE_STORAGE: 3
-}, OA = "pdfjs_internal_editor_", O = {
+}, OA = "pdfjs_internal_editor_", j = {
   DISABLE: -1,
   NONE: 0,
   FREETEXT: 3,
@@ -58,7 +58,7 @@ const nI = typeof process == "object" && process + "" == "[object process]" && !
   COPY_FOR_ACCESSIBILITY: 512,
   ASSEMBLE: 1024,
   PRINT_HIGH_QUALITY: 2048
-}, aI = {
+}, hI = {
   FILL: 0,
   STROKE: 1,
   FILL_STROKE: 2,
@@ -69,7 +69,7 @@ const nI = typeof process == "object" && process + "" == "[object process]" && !
   GRAYSCALE_1BPP: 1,
   RGB_24BPP: 2,
   RGBA_32BPP: 3
-}, dI = {
+}, ZI = {
   TEXT: 1,
   LINK: 2,
   FREETEXT: 3,
@@ -217,14 +217,14 @@ function xl() {
 function dC(G) {
   ZC >= iC.INFOS && console.log(`Info: ${G}`);
 }
-function x(G) {
+function O(G) {
   ZC >= iC.WARNINGS && console.log(`Warning: ${G}`);
 }
-function _(G) {
+function f(G) {
   throw new Error(G);
 }
-function GI(G, I) {
-  G || _(I);
+function sI(G, I) {
+  G || f(I);
 }
 function Ul(G) {
   switch (G?.protocol) {
@@ -253,7 +253,7 @@ function UA(G, I, g = !1) {
   const C = URL.parse(G);
   return C ? (C.hash = I, C.href) : g && xA(G, "http://example.com") ? G.split("#", 1)[0] + `${I ? `#${I}` : ""}` : "";
 }
-function v(G, I, g, C = !1) {
+function r(G, I, g, C = !1) {
   return Object.defineProperty(G, I, {
     value: g,
     enumerable: !C,
@@ -261,44 +261,44 @@ function v(G, I, g, C = !1) {
     writable: !1
   }), g;
 }
-const lg = (function() {
+const Ag = (function() {
   function I(g, C) {
     this.message = g, this.name = C;
   }
   return I.prototype = new Error(), I.constructor = I, I;
 })();
-class oA extends lg {
+class oA extends Ag {
   constructor(I, g) {
     super(I, "PasswordException"), this.code = g;
   }
 }
-class hC extends lg {
+class hC extends Ag {
   constructor(I, g) {
     super(I, "UnknownErrorException"), this.details = g;
   }
 }
-class FC extends lg {
+class FC extends Ag {
   constructor(I) {
     super(I, "InvalidPDFException");
   }
 }
-class IC extends lg {
+class IC extends Ag {
   constructor(I, g, C) {
     super(I, "ResponseException"), this.status = g, this.missing = C;
   }
 }
-class rl extends lg {
+class rl extends Ag {
   constructor(I) {
     super(I, "FormatError");
   }
 }
-class EI extends lg {
+class vI extends Ag {
   constructor(I) {
     super(I, "AbortException");
   }
 }
 function rA(G) {
-  (typeof G != "object" || G?.length === void 0) && _("Invalid argument for bytesToString");
+  (typeof G != "object" || G?.length === void 0) && f("Invalid argument for bytesToString");
   const I = G.length, g = 8192;
   if (I < g)
     return String.fromCharCode.apply(null, G);
@@ -310,7 +310,7 @@ function rA(G) {
   return C.join("");
 }
 function Dg(G) {
-  typeof G != "string" && _("Invalid argument for stringToBytes");
+  typeof G != "string" && f("Invalid argument for stringToBytes");
   const I = G.length, g = new Uint8Array(I);
   for (let C = 0; C < I; ++C)
     g[C] = G.charCodeAt(C) & 255;
@@ -332,23 +332,23 @@ function Pl() {
 }
 class YI {
   static get isLittleEndian() {
-    return v(this, "isLittleEndian", El());
+    return r(this, "isLittleEndian", El());
   }
   static get isEvalSupported() {
-    return v(this, "isEvalSupported", Pl());
+    return r(this, "isEvalSupported", Pl());
   }
   static get isOffscreenCanvasSupported() {
-    return v(this, "isOffscreenCanvasSupported", typeof OffscreenCanvas < "u");
+    return r(this, "isOffscreenCanvasSupported", typeof OffscreenCanvas < "u");
   }
   static get isImageDecoderSupported() {
-    return v(this, "isImageDecoderSupported", typeof ImageDecoder < "u");
+    return r(this, "isImageDecoderSupported", typeof ImageDecoder < "u");
   }
   static get platform() {
     const {
       platform: I,
       userAgent: g
     } = navigator;
-    return v(this, "platform", {
+    return r(this, "platform", {
       isAndroid: g.includes("Android"),
       isLinux: I.includes("Linux"),
       isMac: I.includes("Mac"),
@@ -357,7 +357,7 @@ class YI {
     });
   }
   static get isCSSRoundSupported() {
-    return v(this, "isCSSRoundSupported", globalThis.CSS?.supports?.("width: round(1.5px, 1px)"));
+    return r(this, "isCSSRoundSupported", globalThis.CSS?.supports?.("width: round(1.5px, 1px)"));
   }
 }
 const aC = Array.from(Array(256).keys(), (G) => G.toString(16).padStart(2, "0"));
@@ -391,8 +391,8 @@ class k {
     const A = g[0], l = g[1], i = g[2], Z = g[3], d = g[4], s = g[5], c = I[0], b = I[1], m = I[2], B = I[3];
     let o = A * c + d, W = o, Y = A * m + d, w = Y, a = Z * b + s, h = a, N = Z * B + s, V = N;
     if (l !== 0 || i !== 0) {
-      const n = l * c, t = l * m, u = i * b, e = i * B;
-      o += u, w += u, Y += e, W += e, a += n, V += n, N += t, h += t;
+      const n = l * c, t = l * m, e = i * b, u = i * B;
+      o += e, w += e, Y += u, W += u, a += n, V += n, N += t, h += t;
     }
     C[0] = Math.min(C[0], o, Y, W, w), C[1] = Math.min(C[1], a, N, h, V), C[2] = Math.max(C[2], o, Y, W, w), C[3] = Math.max(C[3], a, N, h, V);
   }
@@ -509,7 +509,7 @@ typeof Promise.try != "function" && (Promise.try = function(G, ...I) {
 typeof Math.sumPrecise != "function" && (Math.sumPrecise = function(G) {
   return G.reduce((I, g) => I + g, 0);
 });
-const OI = "http://www.w3.org/2000/svg";
+const jI = "http://www.w3.org/2000/svg";
 class wg {
   static CSS = 96;
   static PDF = 72;
@@ -585,7 +585,7 @@ class Sg {
   }
   get rawDims() {
     const I = this.viewBox;
-    return v(this, "rawDims", {
+    return r(this, "rawDims", {
       pageWidth: I[2] - I[0],
       pageHeight: I[3] - I[1],
       pageX: I[0],
@@ -624,7 +624,7 @@ class Sg {
     return k.applyInverseTransform(C, this.transform), C;
   }
 }
-class EC extends lg {
+class EC extends Ag {
   constructor(I, g = 0) {
     super(I, "RenderingCancelledException"), this.extraDelay = g;
   }
@@ -646,7 +646,7 @@ function gi(G, I = "document.pdf") {
   if (typeof G != "string")
     return I;
   if (sC(G))
-    return x('getPdfFilenameFromUrl: ignore "data:"-URL for performance reasons.'), I;
+    return O('getPdfFilenameFromUrl: ignore "data:"-URL for performance reasons.'), I;
   const C = ((Z) => {
     try {
       return new URL(Z);
@@ -699,10 +699,10 @@ class YA {
   started = /* @__PURE__ */ Object.create(null);
   times = [];
   time(I) {
-    I in this.started && x(`Timer is already running for ${I}`), this.started[I] = Date.now();
+    I in this.started && O(`Timer is already running for ${I}`), this.started[I] = Date.now();
   }
   timeEnd(I) {
-    I in this.started || x(`Timer has not been started for ${I}`), this.times.push({
+    I in this.started || O(`Timer has not been started for ${I}`), this.times.push({
       name: I,
       start: this.started[I],
       end: Date.now()
@@ -729,10 +729,10 @@ function tg(G, I) {
   const g = I ? URL.parse(G, I) : URL.parse(G);
   return g?.protocol === "http:" || g?.protocol === "https:";
 }
-function SI(G) {
+function KI(G) {
   G.preventDefault();
 }
-function sI(G) {
+function dI(G) {
   G.preventDefault(), G.stopPropagation();
 }
 function Ci(G) {
@@ -787,7 +787,7 @@ function GC(G) {
     const I = parseInt(G.slice(1), 16);
     return [(I & 16711680) >> 16, (I & 65280) >> 8, I & 255];
   }
-  return G.startsWith("rgb(") ? G.slice(4, -1).split(",").map((I) => parseInt(I)) : G.startsWith("rgba(") ? G.slice(5, -1).split(",").map((I) => parseInt(I)).slice(0, 3) : (x(`Not a valid color format: "${G}"`), [0, 0, 0]);
+  return G.startsWith("rgb(") ? G.slice(4, -1).split(",").map((I) => parseInt(I)) : G.startsWith("rgba(") ? G.slice(5, -1).split(",").map((I) => parseInt(I)).slice(0, 3) : (O(`Not a valid color format: "${G}"`), [0, 0, 0]);
 }
 function li(G) {
   const I = document.createElement("span");
@@ -799,7 +799,7 @@ function li(G) {
   }
   I.remove();
 }
-function II(G) {
+function $(G) {
   const {
     a: I,
     b: g,
@@ -821,7 +821,7 @@ function JI(G) {
   } = G.getTransform().invertSelf();
   return [I, g, C, A, l, i];
 }
-function Cg(G, I, g = !1, C = !0) {
+function gg(G, I, g = !1, C = !0) {
   if (I instanceof Sg) {
     const {
       pageWidth: A,
@@ -886,7 +886,7 @@ class Xg {
     const I = this.#I = document.createElement("div");
     I.classList.add("editToolbar", "hidden"), I.setAttribute("role", "toolbar");
     const g = this.#C._uiManager._signal;
-    I.addEventListener("contextmenu", SI, {
+    I.addEventListener("contextmenu", KI, {
       signal: g
     }), I.addEventListener("pointerdown", Xg.#c, {
       signal: g
@@ -909,10 +909,10 @@ class Xg {
     I.stopPropagation();
   }
   #G(I) {
-    this.#C._focusEventsAllowed = !1, sI(I);
+    this.#C._focusEventsAllowed = !1, dI(I);
   }
   #m(I) {
-    this.#C._focusEventsAllowed = !0, sI(I);
+    this.#C._focusEventsAllowed = !0, dI(I);
   }
   #s(I) {
     const g = this.#C._uiManager._signal;
@@ -922,7 +922,7 @@ class Xg {
     }), I.addEventListener("focusout", this.#m.bind(this), {
       capture: !0,
       signal: g
-    }), I.addEventListener("contextmenu", SI, {
+    }), I.addEventListener("contextmenu", KI, {
       signal: g
     });
   }
@@ -1003,7 +1003,7 @@ class ii {
   }
   #A() {
     const I = this.#g = document.createElement("div");
-    I.className = "editToolbar", I.setAttribute("role", "toolbar"), I.addEventListener("contextmenu", SI, {
+    I.className = "editToolbar", I.setAttribute("role", "toolbar"), I.addEventListener("contextmenu", KI, {
       signal: this.#C._signal
     });
     const g = this.#I = document.createElement("div");
@@ -1039,7 +1039,7 @@ class ii {
     const g = document.createElement("span");
     I.append(g), g.className = "visuallyHidden", g.setAttribute("data-l10n-id", "pdfjs-highlight-floating-button-label");
     const C = this.#C._signal;
-    I.addEventListener("contextmenu", SI, {
+    I.addEventListener("contextmenu", KI, {
       signal: C
     }), I.addEventListener("click", () => {
       this.#C.highlightSelection("floating_button");
@@ -1068,7 +1068,7 @@ class fC {
     }), A = new Image();
     A.src = I;
     const l = A.decode().then(() => (C.drawImage(A, 0, 0, 1, 1, 0, 0, 1, 3), new Uint32Array(C.getImageData(0, 0, 1, 1).data.buffer)[0] === 0));
-    return v(this, "_isSVGFittingCanvas", l);
+    return r(this, "_isSVGFittingCanvas", l);
   }
   async #A(I, g) {
     this.#C ||= /* @__PURE__ */ new Map();
@@ -1099,7 +1099,7 @@ class fC {
         C.bitmap = await createImageBitmap(A);
       C.refCounter = 1;
     } catch (A) {
-      x(A), C = null;
+      O(A), C = null;
     }
     return this.#C.set(I, C), C && this.#C.set(C.id, C), C;
   }
@@ -1284,14 +1284,14 @@ class pg {
         checker: Z = null
       }
     } = C;
-    Z && !Z(I, g) || (A.bind(I, ...i, g)(), l || sI(g));
+    Z && !Z(I, g) || (A.bind(I, ...i, g)(), l || dI(g));
   }
 }
 class _C {
   static _colorsMapping = /* @__PURE__ */ new Map([["CanvasText", [0, 0, 0]], ["Canvas", [255, 255, 255]]]);
   get _colors() {
     const I = /* @__PURE__ */ new Map([["CanvasText", null], ["Canvas", null]]);
-    return li(I), v(this, "_colors", I);
+    return li(I), r(this, "_colors", I);
   }
   convert(I) {
     const g = GC(I);
@@ -1307,7 +1307,7 @@ class _C {
     return g ? k.makeHexColor(...g) : I;
   }
 }
-class PI {
+class EI {
   #I = new AbortController();
   #g = null;
   #C = /* @__PURE__ */ new Map();
@@ -1342,7 +1342,7 @@ class PI {
   #J = null;
   #S = null;
   #Q = null;
-  #e = O.NONE;
+  #e = j.NONE;
   #V = /* @__PURE__ */ new Set();
   #k = null;
   #L = null;
@@ -1365,7 +1365,7 @@ class PI {
   static TRANSLATE_SMALL = 1;
   static TRANSLATE_BIG = 10;
   static get _keyboardManager() {
-    const I = PI.prototype, g = (i) => i.#F.contains(document.activeElement) && document.activeElement.tagName !== "BUTTON" && i.hasSomethingToControl(), C = (i, {
+    const I = EI.prototype, g = (i) => i.#F.contains(document.activeElement) && document.activeElement.tagName !== "BUTTON" && i.hasSomethingToControl(), C = (i, {
       target: Z
     }) => {
       if (Z instanceof HTMLInputElement) {
@@ -1376,7 +1376,7 @@ class PI {
       }
       return !0;
     }, A = this.TRANSLATE_SMALL, l = this.TRANSLATE_BIG;
-    return v(this, "_keyboardManager", new pg([[["ctrl+a", "mac+meta+a"], I.selectAll, {
+    return r(this, "_keyboardManager", new pg([[["ctrl+a", "mac+meta+a"], I.selectAll, {
       checker: C
     }], [["ctrl+z", "mac+meta+z"], I.undo, {
       checker: C
@@ -1456,20 +1456,20 @@ class PI {
     return this.#Y;
   }
   get hcmFilter() {
-    return v(this, "hcmFilter", this.#j ? this.#N.addHCMFilter(this.#j.foreground, this.#j.background) : "none");
+    return r(this, "hcmFilter", this.#j ? this.#N.addHCMFilter(this.#j.foreground, this.#j.background) : "none");
   }
   get direction() {
-    return v(this, "direction", getComputedStyle(this.#F).direction);
+    return r(this, "direction", getComputedStyle(this.#F).direction);
   }
   get _highlightColors() {
-    return v(this, "_highlightColors", this.#R ? new Map(this.#R.split(",").map((I) => (I = I.split("=").map((g) => g.trim()), I[1] = I[1].toUpperCase(), I))) : null);
+    return r(this, "_highlightColors", this.#R ? new Map(this.#R.split(",").map((I) => (I = I.split("=").map((g) => g.trim()), I[1] = I[1].toUpperCase(), I))) : null);
   }
   get highlightColors() {
     const {
       _highlightColors: I
     } = this;
     if (!I)
-      return v(this, "highlightColors", null);
+      return r(this, "highlightColors", null);
     const g = /* @__PURE__ */ new Map(), C = !!this.#j;
     for (const [A, l] of I) {
       const i = A.endsWith("_HCM");
@@ -1479,10 +1479,10 @@ class PI {
       }
       !C && !i && g.set(A, l);
     }
-    return v(this, "highlightColors", g);
+    return r(this, "highlightColors", g);
   }
   get highlightColorNames() {
-    return v(this, "highlightColorNames", this.highlightColors ? new Map(Array.from(this.highlightColors, (I) => I.reverse())) : null);
+    return r(this, "highlightColorNames", this.highlightColors ? new Map(Array.from(this.highlightColors, (I) => I.reverse())) : null);
   }
   getNonHCMColor(I) {
     if (!this._highlightColors)
@@ -1615,7 +1615,7 @@ class PI {
     if (!c)
       return;
     g.empty();
-    const b = this.#_(s), m = this.#e === O.NONE, B = () => {
+    const b = this.#_(s), m = this.#e === j.NONE, B = () => {
       b?.createAndAddNewEditor({
         x: 0,
         y: 0
@@ -1630,7 +1630,7 @@ class PI {
       }), m && this.showAllEditors("highlight", !0, !0);
     };
     if (m) {
-      this.switchToMode(O.HIGHLIGHT, B);
+      this.switchToMode(j.HIGHLIGHT, B);
       return;
     }
     B();
@@ -1671,8 +1671,8 @@ class PI {
     }
     if (this.#t?.hide(), this.#k = g, this.#D({
       hasSelectedText: !0
-    }), !(this.#e !== O.HIGHLIGHT && this.#e !== O.NONE) && (this.#e === O.HIGHLIGHT && this.showAllEditors("highlight", !0, !0), this.#u = this.isShiftKeyDown, !this.isShiftKeyDown)) {
-      const l = this.#e === O.HIGHLIGHT ? this.#_(A) : null;
+    }), !(this.#e !== j.HIGHLIGHT && this.#e !== j.NONE) && (this.#e === j.HIGHLIGHT && this.showAllEditors("highlight", !0, !0), this.#u = this.isShiftKeyDown, !this.isShiftKeyDown)) {
+      const l = this.#e === j.HIGHLIGHT ? this.#_(A) : null;
       l?.toggleDrawing();
       const i = new AbortController(), Z = this.combinedSignal(i), d = (s) => {
         s.type === "pointerup" && s.button !== 0 || (i.abort(), l?.toggleDrawing(!0), s.type === "pointerup" && this.#P("main_toolbar"));
@@ -1685,7 +1685,7 @@ class PI {
     }
   }
   #P(I = "") {
-    this.#e === O.HIGHLIGHT ? this.highlightSelection(I) : this.#o && this.#AI();
+    this.#e === j.HIGHLIGHT ? this.highlightSelection(I) : this.#o && this.#AI();
   }
   #iI() {
     document.addEventListener("selectionchange", this.#lI.bind(this), {
@@ -1821,7 +1821,7 @@ class PI {
     try {
       C = JSON.parse(C);
     } catch (l) {
-      x(`paste: "${l.message}".`);
+      O(`paste: "${l.message}".`);
       return;
     }
     if (!Array.isArray(C))
@@ -1850,11 +1850,11 @@ class PI {
         mustExec: !0
       });
     } catch (l) {
-      x(`paste: "${l.message}".`);
+      O(`paste: "${l.message}".`);
     }
   }
   keydown(I) {
-    !this.isShiftKeyDown && I.key === "Shift" && (this.isShiftKeyDown = !0), this.#e !== O.NONE && !this.isEditorHandlingKeyboard && PI._keyboardManager.exec(this, I);
+    !this.isShiftKeyDown && I.key === "Shift" && (this.isShiftKeyDown = !0), this.#e !== j.NONE && !this.isEditorHandlingKeyboard && EI._keyboardManager.exec(this, I);
   }
   keyup(I) {
     this.isShiftKeyDown && I.key === "Shift" && (this.isShiftKeyDown = !1, this.#u && (this.#u = !1, this.#P("main_toolbar")));
@@ -1878,7 +1878,7 @@ class PI {
     Object.entries(I).some(([C, A]) => this.#r[C] !== A) && (this._eventBus.dispatch("annotationeditorstateschanged", {
       source: this,
       details: Object.assign(this.#r, I)
-    }), this.#e === O.HIGHLIGHT && I.hasSelectedEditor === !1 && this.#T([[E.HIGHLIGHT_FREE, !0]]));
+    }), this.#e === j.HIGHLIGHT && I.hasSelectedEditor === !1 && this.#T([[E.HIGHLIGHT_FREE, !0]]));
   }
   #T(I) {
     this._eventBus.dispatch("annotationeditorparamschanged", {
@@ -1888,7 +1888,7 @@ class PI {
   }
   setEditingState(I) {
     I ? (this.#ZI(), this.#$(), this.#D({
-      isEditing: this.#e !== O.NONE,
+      isEditing: this.#e !== j.NONE,
       isEmpty: this.#v(),
       hasSomethingToUndo: this.#d.hasSomethingToUndo(),
       hasSomethingToRedo: this.#d.hasSomethingToRedo(),
@@ -1924,11 +1924,11 @@ class PI {
   }
   async updateMode(I, g = null, C = !1, A = !1, l = !1) {
     if (this.#e !== I && !(this.#z && (await this.#z.promise, !this.#z))) {
-      if (this.#z = Promise.withResolvers(), this.#m?.commitOrRemove(), this.#e = I, I === O.NONE) {
+      if (this.#z = Promise.withResolvers(), this.#m?.commitOrRemove(), this.#e = I, I === j.NONE) {
         this.setEditingState(!1), this.#bI(), this._editorUndoBar?.hide(), this.#z.resolve();
         return;
       }
-      I === O.SIGNATURE && await this.#L?.loadSignatures(), this.setEditingState(!0), await this.#cI(), this.unselectAll();
+      I === j.SIGNATURE && await this.#L?.loadSignatures(), this.setEditingState(!0), await this.#cI(), this.unselectAll();
       for (const i of this.#A.values())
         i.updateMode(I);
       if (!g) {
@@ -2165,7 +2165,7 @@ class PI {
     this.#CI(this.#C.values());
   }
   unselectAll() {
-    if (!(this.#g && (this.#g.commitOrRemove(), this.#e !== O.NONE)) && !this.#m?.commitOrRemove() && this.hasSelection) {
+    if (!(this.#g && (this.#g.commitOrRemove(), this.#e !== j.NONE)) && !this.#m?.commitOrRemove() && this.hasSelection) {
       for (const I of this.#V)
         I.unselect();
       this.#V.clear(), this.#D({
@@ -2274,7 +2274,7 @@ class PI {
     return this.#e;
   }
   get imageManager() {
-    return v(this, "imageManager", new fC());
+    return r(this, "imageManager", new fC());
   }
   getSelectionBoxes(I) {
     if (!I)
@@ -2354,7 +2354,7 @@ class PI {
     if (!g)
       return;
     const C = this.#l.getRawValue(g);
-    C && (this.#e === O.NONE && !C.hasBeenModified || C.renderAnnotationElement(I));
+    C && (this.#e === j.NONE && !C.hasBeenModified || C.renderAnnotationElement(I));
   }
   setMissingCanvas(I, g, C) {
     const A = this.#S?.get(I);
@@ -2398,7 +2398,7 @@ class TI {
     const g = this.#A = document.createElement("span");
     I.append(g), this.#s ? (I.classList.add("new"), I.setAttribute("data-l10n-id", TI.#W.missing), g.setAttribute("data-l10n-id", TI.#W["missing-label"])) : (I.setAttribute("data-l10n-id", "pdfjs-editor-alt-text-button"), g.setAttribute("data-l10n-id", "pdfjs-editor-alt-text-button-label"));
     const C = this.#c._uiManager._signal;
-    I.addEventListener("contextmenu", SI, {
+    I.addEventListener("contextmenu", KI, {
       signal: C
     }), I.addEventListener("pointerdown", (l) => l.stopPropagation(), {
       signal: C
@@ -2549,7 +2549,7 @@ class kg {
     const I = this.#I = document.createElement("button");
     I.className = "comment", I.tabIndex = "0", I.setAttribute("data-l10n-id", "pdfjs-editor-edit-comment-button");
     const g = this.#C._uiManager._signal;
-    I.addEventListener("contextmenu", SI, {
+    I.addEventListener("contextmenu", KI, {
       signal: g
     }), I.addEventListener("pointerdown", (A) => A.stopPropagation(), {
       signal: g
@@ -2660,7 +2660,7 @@ class cC {
         s.pointerType === "touch" && (this.#d?.abort(), this.#d = null);
       };
       i.addEventListener("pointerdown", (s) => {
-        s.pointerType === "touch" && (sI(s), d(s));
+        s.pointerType === "touch" && (dI(s), d(s));
       }, Z), i.addEventListener("pointerup", d, Z), i.addEventListener("pointercancel", d, Z);
       return;
     }
@@ -2673,9 +2673,9 @@ class cC {
       };
       l.addEventListener("touchmove", this.#w.bind(this), i);
       const Z = this.#B.bind(this);
-      l.addEventListener("touchend", Z, i), l.addEventListener("touchcancel", Z, i), i.capture = !0, l.addEventListener("pointerdown", sI, i), l.addEventListener("pointermove", sI, i), l.addEventListener("pointercancel", sI, i), l.addEventListener("pointerup", sI, i), this.#i?.();
+      l.addEventListener("touchend", Z, i), l.addEventListener("touchcancel", Z, i), i.capture = !0, l.addEventListener("pointerdown", dI, i), l.addEventListener("pointermove", dI, i), l.addEventListener("pointercancel", dI, i), l.addEventListener("pointerup", dI, i), this.#i?.();
     }
-    if (sI(I), I.touches.length !== 2 || this.#C?.()) {
+    if (dI(I), I.touches.length !== 2 || this.#C?.()) {
       this.#G = null;
       return;
     }
@@ -2690,7 +2690,7 @@ class cC {
   #w(I) {
     if (!this.#G || I.touches.length !== 2)
       return;
-    sI(I);
+    dI(I);
     let [g, C] = I.touches;
     g.identifier > C.identifier && ([g, C] = [C, g]);
     const {
@@ -2715,7 +2715,7 @@ class cC {
     this.#l?.(h, a, w);
   }
   #B(I) {
-    I.touches.length >= 2 || (this.#s && (this.#s.abort(), this.#s = null, this.#Z?.()), this.#G && (sI(I), this.#G = null, this.#g = !1));
+    I.touches.length >= 2 || (this.#s && (this.#s.abort(), this.#s = null, this.#Z?.()), this.#G && (dI(I), this.#G = null, this.#g = !1));
   }
   destroy() {
     this.#m?.abort(), this.#m = null, this.#d?.abort(), this.#d = null;
@@ -2762,8 +2762,8 @@ class L {
   static _zIndex = 1;
   static _telemetryTimeout = 1e3;
   static get _resizerKeyboardManager() {
-    const I = L.prototype._resizeWithKeyboard, g = PI.TRANSLATE_SMALL, C = PI.TRANSLATE_BIG;
-    return v(this, "_resizerKeyboardManager", new pg([[["ArrowLeft", "mac+ArrowLeft"], I, {
+    const I = L.prototype._resizeWithKeyboard, g = EI.TRANSLATE_SMALL, C = EI.TRANSLATE_BIG;
+    return r(this, "_resizerKeyboardManager", new pg([[["ArrowLeft", "mac+ArrowLeft"], I, {
       args: [-g, 0]
     }], [["ctrl+ArrowLeft", "mac+shift+ArrowLeft"], I, {
       args: [-C, 0]
@@ -2806,7 +2806,7 @@ class L {
     return !1;
   }
   static get _defaultLineColor() {
-    return v(this, "_defaultLineColor", this._colorManager.getHexCode("CanvasText"));
+    return r(this, "_defaultLineColor", this._colorManager.getHexCode("CanvasText"));
   }
   static deleteAnnotationElement(I) {
     const g = new si({
@@ -2840,7 +2840,7 @@ class L {
     return !1;
   }
   static paste(I, g) {
-    _("Not implemented");
+    f("Not implemented");
   }
   get propertiesToUpdate() {
     return [];
@@ -3087,7 +3087,7 @@ class L {
       const A = document.createElement("div");
       this.#c.append(A), A.classList.add("resizer", C), A.setAttribute("data-resizer-name", C), A.addEventListener("pointerdown", this.#K.bind(this, C), {
         signal: g
-      }), A.addEventListener("contextmenu", SI, {
+      }), A.addEventListener("contextmenu", KI, {
         signal: g
       }), A.tabIndex = -1;
     }
@@ -3108,10 +3108,10 @@ class L {
       passive: !0,
       capture: !0,
       signal: i
-    }), window.addEventListener("touchmove", sI, {
+    }), window.addEventListener("touchmove", dI, {
       passive: !1,
       signal: i
-    }), window.addEventListener("contextmenu", SI, {
+    }), window.addEventListener("contextmenu", KI, {
       signal: i
     }), this.#m = {
       savedX: this.x,
@@ -3158,58 +3158,58 @@ class L {
     return Math.round(I * 1e4) / 1e4;
   }
   #Q(I, g) {
-    const [C, A] = this.parentDimensions, l = this.x, i = this.y, Z = this.width, d = this.height, s = L.MIN_SIZE / C, c = L.MIN_SIZE / A, b = this.#y(this.rotation), m = (K, z) => [b[0] * K + b[2] * z, b[1] * K + b[3] * z], B = this.#y(360 - this.rotation), o = (K, z) => [B[0] * K + B[2] * z, B[1] * K + B[3] * z];
+    const [C, A] = this.parentDimensions, l = this.x, i = this.y, Z = this.width, d = this.height, s = L.MIN_SIZE / C, c = L.MIN_SIZE / A, b = this.#y(this.rotation), m = (S, F) => [b[0] * S + b[2] * F, b[1] * S + b[3] * F], B = this.#y(360 - this.rotation), o = (S, F) => [B[0] * S + B[2] * F, B[1] * S + B[3] * F];
     let W, Y, w = !1, a = !1;
     switch (I) {
       case "topLeft":
-        w = !0, W = (K, z) => [0, 0], Y = (K, z) => [K, z];
+        w = !0, W = (S, F) => [0, 0], Y = (S, F) => [S, F];
         break;
       case "topMiddle":
-        W = (K, z) => [K / 2, 0], Y = (K, z) => [K / 2, z];
+        W = (S, F) => [S / 2, 0], Y = (S, F) => [S / 2, F];
         break;
       case "topRight":
-        w = !0, W = (K, z) => [K, 0], Y = (K, z) => [0, z];
+        w = !0, W = (S, F) => [S, 0], Y = (S, F) => [0, F];
         break;
       case "middleRight":
-        a = !0, W = (K, z) => [K, z / 2], Y = (K, z) => [0, z / 2];
+        a = !0, W = (S, F) => [S, F / 2], Y = (S, F) => [0, F / 2];
         break;
       case "bottomRight":
-        w = !0, W = (K, z) => [K, z], Y = (K, z) => [0, 0];
+        w = !0, W = (S, F) => [S, F], Y = (S, F) => [0, 0];
         break;
       case "bottomMiddle":
-        W = (K, z) => [K / 2, z], Y = (K, z) => [K / 2, 0];
+        W = (S, F) => [S / 2, F], Y = (S, F) => [S / 2, 0];
         break;
       case "bottomLeft":
-        w = !0, W = (K, z) => [0, z], Y = (K, z) => [K, 0];
+        w = !0, W = (S, F) => [0, F], Y = (S, F) => [S, 0];
         break;
       case "middleLeft":
-        a = !0, W = (K, z) => [0, z / 2], Y = (K, z) => [K, z / 2];
+        a = !0, W = (S, F) => [0, F / 2], Y = (S, F) => [S, F / 2];
         break;
     }
     const h = W(Z, d), N = Y(Z, d);
     let V = m(...N);
     const n = L._round(l + V[0]), t = L._round(i + V[1]);
-    let u = 1, e = 1, F, D;
+    let e = 1, u = 1, K, z;
     if (g.fromKeyboard)
       ({
-        deltaX: F,
-        deltaY: D
+        deltaX: K,
+        deltaY: z
       } = g);
     else {
       const {
-        screenX: K,
-        screenY: z
-      } = g, [hI, H] = this.#G;
-      [F, D] = this.screenToPageTranslation(K - hI, z - H), this.#G[0] = K, this.#G[1] = z;
+        screenX: S,
+        screenY: F
+      } = g, [WI, M] = this.#G;
+      [K, z] = this.screenToPageTranslation(S - WI, F - M), this.#G[0] = S, this.#G[1] = F;
     }
-    if ([F, D] = o(F / C, D / A), w) {
-      const K = Math.hypot(Z, d);
-      u = e = Math.max(Math.min(Math.hypot(N[0] - h[0] - F, N[1] - h[1] - D) / K, 1 / Z, 1 / d), s / Z, c / d);
-    } else a ? u = tI(Math.abs(N[0] - h[0] - F), s, 1) / Z : e = tI(Math.abs(N[1] - h[1] - D), c, 1) / d;
-    const j = L._round(Z * u), P = L._round(d * e);
-    V = m(...Y(j, P));
-    const r = n - V[0], gI = t - V[1];
-    this.#B ||= [this.x, this.y, this.width, this.height], this.width = j, this.height = P, this.x = r, this.y = gI, this.setDims(C * j, A * P), this.fixAndSetPosition(), this._onResizing();
+    if ([K, z] = o(K / C, z / A), w) {
+      const S = Math.hypot(Z, d);
+      e = u = Math.max(Math.min(Math.hypot(N[0] - h[0] - K, N[1] - h[1] - z) / S, 1 / Z, 1 / d), s / Z, c / d);
+    } else a ? e = tI(Math.abs(N[0] - h[0] - K), s, 1) / Z : u = tI(Math.abs(N[1] - h[1] - z), c, 1) / d;
+    const x = L._round(Z * e), P = L._round(d * u);
+    V = m(...Y(x, P));
+    const U = n - V[0], II = t - V[1];
+    this.#B ||= [this.x, this.y, this.width, this.height], this.width = x, this.height = P, this.x = U, this.y = II, this.setDims(C * x, A * P), this.fixAndSetPosition(), this._onResizing();
   }
   _onResizing() {
   }
@@ -3378,20 +3378,20 @@ class L {
         pointerId: m
       } = s;
       if (m !== this.#l) {
-        sI(s);
+        dI(s);
         return;
       }
       const [B, o] = this.screenToPageTranslation(c - this.#N, b - this.#n);
       this.#N = c, this.#n = b, this._uiManager.dragSelectedEditors(B, o);
-    }, i), window.addEventListener("touchmove", sI, i), window.addEventListener("pointerdown", (s) => {
-      s.pointerType === this.#Z && (this.#R || s.isPrimary) && Z(s), sI(s);
+    }, i), window.addEventListener("touchmove", dI, i), window.addEventListener("pointerdown", (s) => {
+      s.pointerType === this.#Z && (this.#R || s.isPrimary) && Z(s), dI(s);
     }, i));
     const d = (s) => {
       if (!this.#l || this.#l === s.pointerId) {
         Z(s);
         return;
       }
-      sI(s);
+      dI(s);
     };
     window.addEventListener("pointerup", d, {
       signal: l
@@ -3500,7 +3500,7 @@ class L {
     };
   }
   serialize(I = !1, g = null) {
-    _("An editor must be serializable");
+    f("An editor must be serializable");
   }
   static async deserialize(I, g, C) {
     const A = new this.prototype.constructor({
@@ -3730,7 +3730,7 @@ class si extends L {
     return this.serializeDeleted();
   }
 }
-const hA = 3285377520, DI = 4294901760, kI = 65535;
+const hA = 3285377520, MI = 4294901760, kI = 65535;
 class fA {
   constructor(I) {
     this.h1 = I ? I & 4294967295 : hA, this.h2 = I ? I & 4294967295 : hA;
@@ -3751,20 +3751,20 @@ class fA {
     let Z = 0, d = 0, s = this.h1, c = this.h2;
     const b = 3432918353, m = 461845907, B = b & kI, o = m & kI;
     for (let W = 0; W < A; W++)
-      W & 1 ? (Z = i[W], Z = Z * b & DI | Z * B & kI, Z = Z << 15 | Z >>> 17, Z = Z * m & DI | Z * o & kI, s ^= Z, s = s << 13 | s >>> 19, s = s * 5 + 3864292196) : (d = i[W], d = d * b & DI | d * B & kI, d = d << 15 | d >>> 17, d = d * m & DI | d * o & kI, c ^= d, c = c << 13 | c >>> 19, c = c * 5 + 3864292196);
+      W & 1 ? (Z = i[W], Z = Z * b & MI | Z * B & kI, Z = Z << 15 | Z >>> 17, Z = Z * m & MI | Z * o & kI, s ^= Z, s = s << 13 | s >>> 19, s = s * 5 + 3864292196) : (d = i[W], d = d * b & MI | d * B & kI, d = d << 15 | d >>> 17, d = d * m & MI | d * o & kI, c ^= d, c = c << 13 | c >>> 19, c = c * 5 + 3864292196);
     switch (Z = 0, l) {
       case 3:
         Z ^= g[A * 4 + 2] << 16;
       case 2:
         Z ^= g[A * 4 + 1] << 8;
       case 1:
-        Z ^= g[A * 4], Z = Z * b & DI | Z * B & kI, Z = Z << 15 | Z >>> 17, Z = Z * m & DI | Z * o & kI, A & 1 ? s ^= Z : c ^= Z;
+        Z ^= g[A * 4], Z = Z * b & MI | Z * B & kI, Z = Z << 15 | Z >>> 17, Z = Z * m & MI | Z * o & kI, A & 1 ? s ^= Z : c ^= Z;
     }
     this.h1 = s, this.h2 = c;
   }
   hexdigest() {
     let I = this.h1, g = this.h2;
-    return I ^= g >>> 1, I = I * 3981806797 & DI | I * 36045 & kI, g = g * 4283543511 & DI | ((g << 16 | I >>> 16) * 2950163797 & DI) >>> 16, I ^= g >>> 1, I = I * 444984403 & DI | I * 60499 & kI, g = g * 3301882366 & DI | ((g << 16 | I >>> 16) * 3120437893 & DI) >>> 16, I ^= g >>> 1, (I >>> 0).toString(16).padStart(8, "0") + (g >>> 0).toString(16).padStart(8, "0");
+    return I ^= g >>> 1, I = I * 3981806797 & MI | I * 36045 & kI, g = g * 4283543511 & MI | ((g << 16 | I >>> 16) * 2950163797 & MI) >>> 16, I ^= g >>> 1, I = I * 444984403 & MI | I * 60499 & kI, g = g * 3301882366 & MI | ((g << 16 | I >>> 16) * 3120437893 & MI) >>> 16, I ^= g >>> 1, (I >>> 0).toString(16).padStart(8, "0") + (g >>> 0).toString(16).padStart(8, "0");
   }
 }
 const kC = Object.freeze({
@@ -3900,13 +3900,13 @@ class _A extends qC {
     };
   }
   get print() {
-    _("Should not call PrintAnnotationStorage.print");
+    f("Should not call PrintAnnotationStorage.print");
   }
   get serializable() {
     return this.#I;
   }
   get modifiedIds() {
-    return v(this, "modifiedIds", {
+    return r(this, "modifiedIds", {
       ids: /* @__PURE__ */ new Set(),
       hash: ""
     });
@@ -3942,7 +3942,7 @@ class Gi {
     _inspectFont: C
   }) {
     if (!(!I || this.#I.has(I.loadedName))) {
-      if (GI(!g, "loadSystemFont shouldn't be called when `disableFontFace` is set."), this.isFontLoadingAPISupported) {
+      if (sI(!g, "loadSystemFont shouldn't be called when `disableFontFace` is set."), this.isFontLoadingAPISupported) {
         const {
           loadedName: A,
           src: l,
@@ -3952,11 +3952,11 @@ class Gi {
         try {
           await Z.load(), this.#I.add(A), C?.(I);
         } catch {
-          x(`Cannot load system font: ${I.baseFontName}, installing it could help to improve PDF rendering.`), this.removeNativeFontFace(Z);
+          O(`Cannot load system font: ${I.baseFontName}, installing it could help to improve PDF rendering.`), this.removeNativeFontFace(Z);
         }
         return;
       }
-      _("Not implemented: loadSystemFont without the Font Loading API.");
+      f("Not implemented: loadSystemFont without the Font Loading API.");
     }
   }
   async bind(I) {
@@ -3973,7 +3973,7 @@ class Gi {
         try {
           await C.loaded;
         } catch (A) {
-          throw x(`Failed to load font '${C.family}': '${A}'.`), I.disableFontFace = !0, A;
+          throw O(`Failed to load font '${C.family}': '${A}'.`), I.disableFontFace = !0, A;
         }
       }
       return;
@@ -3990,14 +3990,14 @@ class Gi {
   }
   get isFontLoadingAPISupported() {
     const I = !!this._document?.fonts;
-    return v(this, "isFontLoadingAPISupported", I);
+    return r(this, "isFontLoadingAPISupported", I);
   }
   get isSyncFontLoadingSupported() {
-    return v(this, "isSyncFontLoadingSupported", nI || YI.platform.isFirefox);
+    return r(this, "isSyncFontLoadingSupported", nI || YI.platform.isFirefox);
   }
   _queueLoadingCallback(I) {
     function g() {
-      for (GI(!A.done, "completeRequest() cannot be called twice."), A.done = !0; C.length > 0 && C[0].done; ) {
+      for (sI(!A.done, "completeRequest() cannot be called twice."), A.done = !0; C.length > 0 && C[0].done; ) {
         const l = C.shift();
         setTimeout(l.callback, 0);
       }
@@ -4013,15 +4013,15 @@ class Gi {
   }
   get _loadTestFont() {
     const I = atob("T1RUTwALAIAAAwAwQ0ZGIDHtZg4AAAOYAAAAgUZGVE1lkzZwAAAEHAAAABxHREVGABQAFQAABDgAAAAeT1MvMlYNYwkAAAEgAAAAYGNtYXABDQLUAAACNAAAAUJoZWFk/xVFDQAAALwAAAA2aGhlYQdkA+oAAAD0AAAAJGhtdHgD6AAAAAAEWAAAAAZtYXhwAAJQAAAAARgAAAAGbmFtZVjmdH4AAAGAAAAAsXBvc3T/hgAzAAADeAAAACAAAQAAAAEAALZRFsRfDzz1AAsD6AAAAADOBOTLAAAAAM4KHDwAAAAAA+gDIQAAAAgAAgAAAAAAAAABAAADIQAAAFoD6AAAAAAD6AABAAAAAAAAAAAAAAAAAAAAAQAAUAAAAgAAAAQD6AH0AAUAAAKKArwAAACMAooCvAAAAeAAMQECAAACAAYJAAAAAAAAAAAAAQAAAAAAAAAAAAAAAFBmRWQAwAAuAC4DIP84AFoDIQAAAAAAAQAAAAAAAAAAACAAIAABAAAADgCuAAEAAAAAAAAAAQAAAAEAAAAAAAEAAQAAAAEAAAAAAAIAAQAAAAEAAAAAAAMAAQAAAAEAAAAAAAQAAQAAAAEAAAAAAAUAAQAAAAEAAAAAAAYAAQAAAAMAAQQJAAAAAgABAAMAAQQJAAEAAgABAAMAAQQJAAIAAgABAAMAAQQJAAMAAgABAAMAAQQJAAQAAgABAAMAAQQJAAUAAgABAAMAAQQJAAYAAgABWABYAAAAAAAAAwAAAAMAAAAcAAEAAAAAADwAAwABAAAAHAAEACAAAAAEAAQAAQAAAC7//wAAAC7////TAAEAAAAAAAABBgAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAAAAAAD/gwAyAAAAAQAAAAAAAAAAAAAAAAAAAAABAAQEAAEBAQJYAAEBASH4DwD4GwHEAvgcA/gXBIwMAYuL+nz5tQXkD5j3CBLnEQACAQEBIVhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYAAABAQAADwACAQEEE/t3Dov6fAH6fAT+fPp8+nwHDosMCvm1Cvm1DAz6fBQAAAAAAAABAAAAAMmJbzEAAAAAzgTjFQAAAADOBOQpAAEAAAAAAAAADAAUAAQAAAABAAAAAgABAAAAAAAAAAAD6AAAAAAAAA==");
-    return v(this, "_loadTestFont", I);
+    return r(this, "_loadTestFont", I);
   }
   _prepareFontLoadEvent(I, g) {
     function C(N, V) {
       return N.charCodeAt(V) << 24 | N.charCodeAt(V + 1) << 16 | N.charCodeAt(V + 2) << 8 | N.charCodeAt(V + 3) & 255;
     }
     function A(N, V, n, t) {
-      const u = N.substring(0, V), e = N.substring(V + n);
-      return u + t + e;
+      const e = N.substring(0, V), u = N.substring(V + n);
+      return e + t + u;
     }
     let l, i;
     const Z = this._document.createElement("canvas");
@@ -4030,7 +4030,7 @@ class Gi {
     let s = 0;
     function c(N, V) {
       if (++s > 30) {
-        x("Load test font never loaded."), V();
+        O("Load test font never loaded."), V();
         return;
       }
       if (d.font = "30px " + N, d.fillText(".", 0, 20), d.getImageData(0, 0, 1, 1).data[3] > 0) {
@@ -4102,7 +4102,7 @@ class ci {
     try {
       A = I.get(C);
     } catch (i) {
-      x(`getPathGenerator - ignoring character: "${i}".`);
+      O(`getPathGenerator - ignoring character: "${i}".`);
     }
     const l = new Path2D(A || "");
     return this.fontExtraProperties || I.delete(C), this.compiledGlyphs[g] = l;
@@ -4160,7 +4160,7 @@ class oi {
         signal: l
       } = C;
       if (l.aborted) {
-        x("LoopbackPort - cannot use an `aborted` signal.");
+        O("LoopbackPort - cannot use an `aborted` signal.");
         return;
       }
       const i = () => this.removeEventListener(I, g);
@@ -4180,7 +4180,7 @@ class oi {
 const Tg = {
   DATA: 1,
   ERROR: 2
-}, iI = {
+}, lI = {
   CANCEL: 1,
   CANCEL_COMPLETE: 2,
   CLOSE: 3,
@@ -4192,12 +4192,12 @@ const Tg = {
 };
 function aA() {
 }
-function yI(G) {
-  if (G instanceof EI || G instanceof FC || G instanceof oA || G instanceof IC || G instanceof hC)
+function XI(G) {
+  if (G instanceof vI || G instanceof FC || G instanceof oA || G instanceof IC || G instanceof hC)
     return G;
-  switch (G instanceof Error || typeof G == "object" && G !== null || _('wrapReason: Expected "reason" to be a (possibly cloned) Error.'), G.name) {
+  switch (G instanceof Error || typeof G == "object" && G !== null || f('wrapReason: Expected "reason" to be a (possibly cloned) Error.'), G.name) {
     case "AbortException":
-      return new EI(G.message);
+      return new vI(G.message);
     case "InvalidPDFException":
       return new FC(G.message);
     case "PasswordException":
@@ -4232,7 +4232,7 @@ class Rg {
       if (delete this.callbackCapabilities[C], I.callback === Tg.DATA)
         A.resolve(I.data);
       else if (I.callback === Tg.ERROR)
-        A.reject(yI(I.reason));
+        A.reject(XI(I.reason));
       else
         throw new Error("Unexpected callback case");
       return;
@@ -4256,7 +4256,7 @@ class Rg {
           targetName: A,
           callback: Tg.ERROR,
           callbackId: I.callbackId,
-          reason: yI(i)
+          reason: XI(i)
         });
       });
       return;
@@ -4322,20 +4322,20 @@ class Rg {
         return this.streamControllers[l].pullCall = c, d.postMessage({
           sourceName: i,
           targetName: Z,
-          stream: iI.PULL,
+          stream: lI.PULL,
           streamId: l,
           desiredSize: s.desiredSize
         }), c.promise;
       },
       cancel: (s) => {
-        GI(s instanceof Error, "cancel must have a valid reason");
+        sI(s instanceof Error, "cancel must have a valid reason");
         const c = Promise.withResolvers();
         return this.streamControllers[l].cancelCall = c, this.streamControllers[l].isClosed = !0, d.postMessage({
           sourceName: i,
           targetName: Z,
-          stream: iI.CANCEL,
+          stream: lI.CANCEL,
           streamId: l,
-          reason: yI(s)
+          reason: XI(s)
         }), c.promise;
       }
     }, C);
@@ -4349,7 +4349,7 @@ class Rg {
         this.desiredSize -= c, m > 0 && this.desiredSize <= 0 && (this.sinkCapability = Promise.withResolvers(), this.ready = this.sinkCapability.promise), l.postMessage({
           sourceName: C,
           targetName: A,
-          stream: iI.ENQUEUE,
+          stream: lI.ENQUEUE,
           streamId: g,
           chunk: s
         }, b);
@@ -4358,17 +4358,17 @@ class Rg {
         this.isCancelled || (this.isCancelled = !0, l.postMessage({
           sourceName: C,
           targetName: A,
-          stream: iI.CLOSE,
+          stream: lI.CLOSE,
           streamId: g
         }), delete i.streamSinks[g]);
       },
       error(s) {
-        GI(s instanceof Error, "error must have a valid reason"), !this.isCancelled && (this.isCancelled = !0, l.postMessage({
+        sI(s instanceof Error, "error must have a valid reason"), !this.isCancelled && (this.isCancelled = !0, l.postMessage({
           sourceName: C,
           targetName: A,
-          stream: iI.ERROR,
+          stream: lI.ERROR,
           streamId: g,
-          reason: yI(s)
+          reason: XI(s)
         }));
       },
       sinkCapability: Promise.withResolvers(),
@@ -4382,7 +4382,7 @@ class Rg {
       l.postMessage({
         sourceName: C,
         targetName: A,
-        stream: iI.START_COMPLETE,
+        stream: lI.START_COMPLETE,
         streamId: g,
         success: !0
       });
@@ -4390,27 +4390,27 @@ class Rg {
       l.postMessage({
         sourceName: C,
         targetName: A,
-        stream: iI.START_COMPLETE,
+        stream: lI.START_COMPLETE,
         streamId: g,
-        reason: yI(s)
+        reason: XI(s)
       });
     });
   }
   #A(I) {
     const g = I.streamId, C = this.sourceName, A = I.sourceName, l = this.comObj, i = this.streamControllers[g], Z = this.streamSinks[g];
     switch (I.stream) {
-      case iI.START_COMPLETE:
-        I.success ? i.startCall.resolve() : i.startCall.reject(yI(I.reason));
+      case lI.START_COMPLETE:
+        I.success ? i.startCall.resolve() : i.startCall.reject(XI(I.reason));
         break;
-      case iI.PULL_COMPLETE:
-        I.success ? i.pullCall.resolve() : i.pullCall.reject(yI(I.reason));
+      case lI.PULL_COMPLETE:
+        I.success ? i.pullCall.resolve() : i.pullCall.reject(XI(I.reason));
         break;
-      case iI.PULL:
+      case lI.PULL:
         if (!Z) {
           l.postMessage({
             sourceName: C,
             targetName: A,
-            stream: iI.PULL_COMPLETE,
+            stream: lI.PULL_COMPLETE,
             streamId: g,
             success: !0
           });
@@ -4420,7 +4420,7 @@ class Rg {
           l.postMessage({
             sourceName: C,
             targetName: A,
-            stream: iI.PULL_COMPLETE,
+            stream: lI.PULL_COMPLETE,
             streamId: g,
             success: !0
           });
@@ -4428,37 +4428,37 @@ class Rg {
           l.postMessage({
             sourceName: C,
             targetName: A,
-            stream: iI.PULL_COMPLETE,
+            stream: lI.PULL_COMPLETE,
             streamId: g,
-            reason: yI(s)
+            reason: XI(s)
           });
         });
         break;
-      case iI.ENQUEUE:
-        if (GI(i, "enqueue should have stream controller"), i.isClosed)
+      case lI.ENQUEUE:
+        if (sI(i, "enqueue should have stream controller"), i.isClosed)
           break;
         i.controller.enqueue(I.chunk);
         break;
-      case iI.CLOSE:
-        if (GI(i, "close should have stream controller"), i.isClosed)
+      case lI.CLOSE:
+        if (sI(i, "close should have stream controller"), i.isClosed)
           break;
         i.isClosed = !0, i.controller.close(), this.#i(i, g);
         break;
-      case iI.ERROR:
-        GI(i, "error should have stream controller"), i.controller.error(yI(I.reason)), this.#i(i, g);
+      case lI.ERROR:
+        sI(i, "error should have stream controller"), i.controller.error(XI(I.reason)), this.#i(i, g);
         break;
-      case iI.CANCEL_COMPLETE:
-        I.success ? i.cancelCall.resolve() : i.cancelCall.reject(yI(I.reason)), this.#i(i, g);
+      case lI.CANCEL_COMPLETE:
+        I.success ? i.cancelCall.resolve() : i.cancelCall.reject(XI(I.reason)), this.#i(i, g);
         break;
-      case iI.CANCEL:
+      case lI.CANCEL:
         if (!Z)
           break;
-        const d = yI(I.reason);
+        const d = XI(I.reason);
         Promise.try(Z.onCancel || aA, d).then(function() {
           l.postMessage({
             sourceName: C,
             targetName: A,
-            stream: iI.CANCEL_COMPLETE,
+            stream: lI.CANCEL_COMPLETE,
             streamId: g,
             success: !0
           });
@@ -4466,9 +4466,9 @@ class Rg {
           l.postMessage({
             sourceName: C,
             targetName: A,
-            stream: iI.CANCEL_COMPLETE,
+            stream: lI.CANCEL_COMPLETE,
             streamId: g,
-            reason: yI(s)
+            reason: XI(s)
           });
         }), Z.sinkCapability.reject(d), Z.isCancelled = !0, delete this.streamSinks[g];
         break;
@@ -4514,7 +4514,7 @@ class qA {
     I.canvas.width = 0, I.canvas.height = 0, I.canvas = null, I.context = null;
   }
   _createCanvas(I, g) {
-    _("Abstract method `_createCanvas` called.");
+    f("Abstract method `_createCanvas` called.");
   }
 }
 class wi extends qA {
@@ -4554,7 +4554,7 @@ class $A {
     });
   }
   async _fetch(I) {
-    _("Abstract method `_fetch` called.");
+    f("Abstract method `_fetch` called.");
   }
 }
 class VA extends $A {
@@ -4608,8 +4608,8 @@ class Yi extends Il {
         style: g
       } = I;
       g.visibility = "hidden", g.contain = "strict", g.width = g.height = 0, g.position = "absolute", g.top = g.left = 0, g.zIndex = -1;
-      const C = this.#i.createElementNS(OI, "svg");
-      C.setAttribute("width", 0), C.setAttribute("height", 0), this.#C = this.#i.createElementNS(OI, "defs"), I.append(C), C.append(this.#C), this.#i.body.append(I);
+      const C = this.#i.createElementNS(jI, "svg");
+      C.setAttribute("width", 0), C.setAttribute("height", 0), this.#C = this.#i.createElementNS(jI, "defs"), I.append(C), C.append(this.#C), this.#i.body.append(I);
     }
     return this.#C;
   }
@@ -4630,7 +4630,7 @@ class Yi extends Il {
     if (this.#I === void 0) {
       this.#I = "";
       const g = this.#i.URL;
-      g !== this.#i.baseURI && (sC(g) ? x('#createUrl: ignore "data:"-URL for performance reasons.') : this.#I = UA(g, ""));
+      g !== this.#i.baseURI && (sC(g) ? O('#createUrl: ignore "data:"-URL for performance reasons.') : this.#I = UA(g, ""));
     }
     return `url(${this.#I}#${I})`;
   }
@@ -4715,15 +4715,15 @@ class Yi extends Il {
     b < c && ([c, b, m, B] = [b, c, B, m]), this.#G.style.color = "";
     const o = (w, a, h) => {
       const N = new Array(256), V = (b - c) / h, n = w / 255, t = (a - w) / (255 * h);
-      let u = 0;
-      for (let e = 0; e <= h; e++) {
-        const F = Math.round(c + e * V), D = n + e * t;
-        for (let j = u; j <= F; j++)
-          N[j] = D;
-        u = F + 1;
+      let e = 0;
+      for (let u = 0; u <= h; u++) {
+        const K = Math.round(c + u * V), z = n + u * t;
+        for (let x = e; x <= K; x++)
+          N[x] = z;
+        e = K + 1;
       }
-      for (let e = u; e < 256; e++)
-        N[e] = N[u - 1];
+      for (let u = e; u < 256; u++)
+        N[u] = N[e - 1];
       return N.join(",");
     }, W = `g_${this.#A}_hcm_${I}_filter`, Y = Z.filter = this.#B(W);
     return this.#w(Y), this.#o(o(m[0], B[0], 5), o(m[1], B[1], 5), o(m[2], B[2], 5), Y), Z.url = this.#s(W), Z.url;
@@ -4732,27 +4732,27 @@ class Yi extends Il {
     I && this.#l?.size || (this.#C?.parentNode.parentNode.remove(), this.#C = null, this.#g?.clear(), this.#g = null, this.#l?.clear(), this.#l = null, this.#Z = 0);
   }
   #W(I) {
-    const g = this.#i.createElementNS(OI, "feColorMatrix");
+    const g = this.#i.createElementNS(jI, "feColorMatrix");
     g.setAttribute("type", "matrix"), g.setAttribute("values", "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0.59 0.11 0 0"), I.append(g);
   }
   #w(I) {
-    const g = this.#i.createElementNS(OI, "feColorMatrix");
+    const g = this.#i.createElementNS(jI, "feColorMatrix");
     g.setAttribute("type", "matrix"), g.setAttribute("values", "0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0 0 0 1 0"), I.append(g);
   }
   #B(I) {
-    const g = this.#i.createElementNS(OI, "filter");
+    const g = this.#i.createElementNS(jI, "filter");
     return g.setAttribute("color-interpolation-filters", "sRGB"), g.setAttribute("id", I), this.#G.append(g), g;
   }
   #b(I, g, C) {
-    const A = this.#i.createElementNS(OI, g);
+    const A = this.#i.createElementNS(jI, g);
     A.setAttribute("type", "discrete"), A.setAttribute("tableValues", C), I.append(A);
   }
   #o(I, g, C, A) {
-    const l = this.#i.createElementNS(OI, "feComponentTransfer");
+    const l = this.#i.createElementNS(jI, "feComponentTransfer");
     A.append(l), this.#b(l, "feFuncR", I), this.#b(l, "feFuncG", g), this.#b(l, "feFuncB", C);
   }
   #a(I, g) {
-    const C = this.#i.createElementNS(OI, "feComponentTransfer");
+    const C = this.#i.createElementNS(jI, "feComponentTransfer");
     g.append(C), this.#b(C, "feFuncA", I);
   }
   #Y(I) {
@@ -4778,7 +4778,7 @@ class gl {
     });
   }
   async _fetch(I) {
-    _("Abstract method `_fetch` called.");
+    f("Abstract method `_fetch` called.");
   }
 }
 class NA extends gl {
@@ -4806,7 +4806,7 @@ class Cl {
     });
   }
   async _fetch(I) {
-    _("Abstract method `_fetch` called.");
+    f("Abstract method `_fetch` called.");
   }
 }
 class nA extends Cl {
@@ -4815,7 +4815,7 @@ class nA extends Cl {
     return new Uint8Array(g);
   }
 }
-nI && x("Please use the `legacy` build in Node.js environments.");
+nI && O("Please use the `legacy` build in Node.js environments.");
 async function $C(G) {
   const g = await process.getBuiltinModule("fs").promises.readFile(G);
   return new Uint8Array(g);
@@ -4858,7 +4858,7 @@ class IA {
     return !1;
   }
   getPattern() {
-    _("Abstract method `getPattern` called.");
+    f("Abstract method `getPattern` called.");
   }
 }
 class ti extends IA {
@@ -4875,7 +4875,7 @@ class ti extends IA {
   getPattern(I, g, C, A) {
     let l;
     if (A === wI.STROKE || A === wI.FILL) {
-      const i = g.current.getClippedPathBoundingBox(A, II(I)) || [0, 0, 0, 0], Z = Math.ceil(i[2] - i[0]) || 1, d = Math.ceil(i[3] - i[1]) || 1, s = g.cachedCanvases.getCanvas("pattern", Z, d), c = s.context;
+      const i = g.current.getClippedPathBoundingBox(A, $(I)) || [0, 0, 0, 0], Z = Math.ceil(i[2] - i[0]) || 1, d = Math.ceil(i[3] - i[1]) || 1, s = g.cachedCanvases.getCanvas("pattern", Z, d), c = s.context;
       c.clearRect(0, 0, c.canvas.width, c.canvas.height), c.beginPath(), c.rect(0, 0, c.canvas.width, c.canvas.height), c.translate(-i[0], -i[1]), C = k.transform(C, [1, 0, 0, 1, i[0], i[1]]), c.transform(...g.baseTransform), this.matrix && c.transform(...this.matrix), TC(c, this._bbox), c.fillStyle = this._createGradient(c), c.fill(), l = I.createPattern(s.canvas, "no-repeat");
       const b = new DOMMatrix(C);
       l.setTransform(b);
@@ -4891,22 +4891,22 @@ function NC(G, I, g, C, A, l, i, Z) {
   const B = (d[g] + I.offsetX) * I.scaleX, o = (d[g + 1] + I.offsetY) * I.scaleY, W = (d[C] + I.offsetX) * I.scaleX, Y = (d[C + 1] + I.offsetY) * I.scaleY, w = (d[A] + I.offsetX) * I.scaleX, a = (d[A + 1] + I.offsetY) * I.scaleY;
   if (o >= a)
     return;
-  const h = s[l], N = s[l + 1], V = s[l + 2], n = s[i], t = s[i + 1], u = s[i + 2], e = s[Z], F = s[Z + 1], D = s[Z + 2], j = Math.round(o), P = Math.round(a);
-  let r, gI, K, z, hI, H, J, y;
-  for (let X = j; X <= P; X++) {
-    if (X < Y) {
-      const Q = X < o ? 0 : (o - X) / (o - Y);
-      r = B - (B - W) * Q, gI = h - (h - n) * Q, K = N - (N - t) * Q, z = V - (V - u) * Q;
+  const h = s[l], N = s[l + 1], V = s[l + 2], n = s[i], t = s[i + 1], e = s[i + 2], u = s[Z], K = s[Z + 1], z = s[Z + 2], x = Math.round(o), P = Math.round(a);
+  let U, II, S, F, WI, M, X, y;
+  for (let H = x; H <= P; H++) {
+    if (H < Y) {
+      const T = H < o ? 0 : (o - H) / (o - Y);
+      U = B - (B - W) * T, II = h - (h - n) * T, S = N - (N - t) * T, F = V - (V - e) * T;
     } else {
-      let Q;
-      X > a ? Q = 1 : Y === a ? Q = 0 : Q = (Y - X) / (Y - a), r = W - (W - w) * Q, gI = n - (n - e) * Q, K = t - (t - F) * Q, z = u - (u - D) * Q;
+      let T;
+      H > a ? T = 1 : Y === a ? T = 0 : T = (Y - H) / (Y - a), U = W - (W - w) * T, II = n - (n - u) * T, S = t - (t - K) * T, F = e - (e - z) * T;
     }
     let R;
-    X < o ? R = 0 : X > a ? R = 1 : R = (o - X) / (o - a), hI = B - (B - w) * R, H = h - (h - e) * R, J = N - (N - F) * R, y = V - (V - D) * R;
-    const p = Math.round(Math.min(r, hI)), M = Math.round(Math.max(r, hI));
-    let U = b * X + p * 4;
-    for (let Q = p; Q <= M; Q++)
-      R = (r - Q) / (r - hI), R < 0 ? R = 0 : R > 1 && (R = 1), c[U++] = gI - (gI - H) * R | 0, c[U++] = K - (K - J) * R | 0, c[U++] = z - (z - y) * R | 0, c[U++] = 255;
+    H < o ? R = 0 : H > a ? R = 1 : R = (o - H) / (o - a), WI = B - (B - w) * R, M = h - (h - u) * R, X = N - (N - K) * R, y = V - (V - z) * R;
+    const J = Math.round(Math.min(U, WI)), D = Math.round(Math.max(U, WI));
+    let v = b * H + J * 4;
+    for (let T = J; T <= D; T++)
+      R = (U - T) / (U - WI), R < 0 ? R = 0 : R > 1 && (R = 1), c[v++] = II - (II - M) * R | 0, c[v++] = S - (S - X) * R | 0, c[v++] = F - (F - y) * R | 0, c[v++] = 255;
   }
 }
 function Ri(G, I, g) {
@@ -4944,7 +4944,7 @@ class ei extends IA {
     }, Y = b + 4, w = m + 4, a = C.getCanvas("mesh", Y, w), h = a.context, N = h.createImageData(b, m);
     if (g) {
       const n = N.data;
-      for (let t = 0, u = n.length; t < u; t += 4)
+      for (let t = 0, e = n.length; t < e; t += 4)
         n[t] = g[0], n[t + 1] = g[1], n[t + 2] = g[2], n[t + 3] = 255;
     }
     for (const n of this._figures)
@@ -4964,7 +4964,7 @@ class ei extends IA {
     TC(I, this._bbox);
     const l = new Float32Array(2);
     if (A === wI.SHADING)
-      k.singularValueDecompose2dScale(II(I), l);
+      k.singularValueDecompose2dScale($(I), l);
     else if (this.matrix) {
       k.singularValueDecompose2dScale(this.matrix, l);
       const [Z, d] = l;
@@ -5019,29 +5019,29 @@ class gA {
     const [w, a] = Y;
     k.singularValueDecompose2dScale(this.baseTransform, Y);
     const h = w * Y[0], N = a * Y[1];
-    let V = o, n = W, t = !1, u = !1;
-    const e = Math.ceil(d * h), F = Math.ceil(s * N), D = Math.ceil(o * h), j = Math.ceil(W * N);
-    e >= D ? V = d : t = !0, F >= j ? n = s : u = !0;
-    const P = this.getSizeAndScale(V, this.ctx.canvas.width, h), r = this.getSizeAndScale(n, this.ctx.canvas.height, N), gI = I.cachedCanvases.getCanvas("pattern", P.size, r.size), K = gI.context, z = Z.createCanvasGraphics(K);
-    if (z.groupLevel = I.groupLevel, this.setFillAndStrokeStyleToContext(z, A, i), K.translate(-P.scale * c, -r.scale * b), z.transform(P.scale, 0, 0, r.scale, 0, 0), K.save(), this.clipBbox(z, c, b, m, B), z.baseTransform = II(z.ctx), z.executeOperatorList(C), z.endDrawing(), K.restore(), t || u) {
-      const hI = gI.canvas;
-      t && (V = d), u && (n = s);
-      const H = this.getSizeAndScale(V, this.ctx.canvas.width, h), J = this.getSizeAndScale(n, this.ctx.canvas.height, N), y = H.size, X = J.size, R = I.cachedCanvases.getCanvas("pattern-workaround", y, X), p = R.context, M = t ? Math.floor(o / d) : 0, U = u ? Math.floor(W / s) : 0;
-      for (let Q = 0; Q <= M; Q++)
-        for (let f = 0; f <= U; f++)
-          p.drawImage(hI, y * Q, X * f, y, X, 0, 0, y, X);
+    let V = o, n = W, t = !1, e = !1;
+    const u = Math.ceil(d * h), K = Math.ceil(s * N), z = Math.ceil(o * h), x = Math.ceil(W * N);
+    u >= z ? V = d : t = !0, K >= x ? n = s : e = !0;
+    const P = this.getSizeAndScale(V, this.ctx.canvas.width, h), U = this.getSizeAndScale(n, this.ctx.canvas.height, N), II = I.cachedCanvases.getCanvas("pattern", P.size, U.size), S = II.context, F = Z.createCanvasGraphics(S);
+    if (F.groupLevel = I.groupLevel, this.setFillAndStrokeStyleToContext(F, A, i), S.translate(-P.scale * c, -U.scale * b), F.transform(P.scale, 0, 0, U.scale, 0, 0), S.save(), this.clipBbox(F, c, b, m, B), F.baseTransform = $(F.ctx), F.executeOperatorList(C), F.endDrawing(), S.restore(), t || e) {
+      const WI = II.canvas;
+      t && (V = d), e && (n = s);
+      const M = this.getSizeAndScale(V, this.ctx.canvas.width, h), X = this.getSizeAndScale(n, this.ctx.canvas.height, N), y = M.size, H = X.size, R = I.cachedCanvases.getCanvas("pattern-workaround", y, H), J = R.context, D = t ? Math.floor(o / d) : 0, v = e ? Math.floor(W / s) : 0;
+      for (let T = 0; T <= D; T++)
+        for (let mI = 0; mI <= v; mI++)
+          J.drawImage(WI, y * T, H * mI, y, H, 0, 0, y, H);
       return {
         canvas: R.canvas,
-        scaleX: H.scale,
-        scaleY: J.scale,
+        scaleX: M.scale,
+        scaleY: X.scale,
         offsetX: c,
         offsetY: b
       };
     }
     return {
-      canvas: gI.canvas,
+      canvas: II.canvas,
       scaleX: P.scale,
-      scaleY: r.scale,
+      scaleY: U.scale,
       offsetX: c,
       offsetY: b
     };
@@ -5056,7 +5056,7 @@ class gA {
   }
   clipBbox(I, g, C, A, l) {
     const i = A - g, Z = l - C;
-    I.ctx.rect(g, C, i, Z), k.axialAlignedBoundingBox([g, C, A, l], II(I.ctx), I.current.minMax), I.clip(), I.endPath();
+    I.ctx.rect(g, C, i, Z), k.axialAlignedBoundingBox([g, C, A, l], $(I.ctx), I.current.minMax), I.clip(), I.endPath();
   }
   setFillAndStrokeStyleToContext(I, g, C) {
     const A = I.ctx, l = I.current;
@@ -5116,7 +5116,7 @@ function Hi({
     destPos: B
   };
 }
-const RA = 16, eA = 100, ui = 15, XA = 10, HI = 16, nC = new DOMMatrix(), MI = new Float32Array(2), cg = new Float32Array([1 / 0, 1 / 0, -1 / 0, -1 / 0]);
+const RA = 16, eA = 100, ui = 15, XA = 10, yI = 16, nC = new DOMMatrix(), uI = new Float32Array(2), cg = new Float32Array([1 / 0, 1 / 0, -1 / 0, -1 / 0]);
 function Mi(G, I) {
   if (G._removeMirroring)
     throw new Error("Context is already forwarding operations.");
@@ -5173,14 +5173,14 @@ class Di {
   }
 }
 function Qg(G, I, g, C, A, l, i, Z, d, s) {
-  const [c, b, m, B, o, W] = II(G);
+  const [c, b, m, B, o, W] = $(G);
   if (b === 0 && m === 0) {
-    const a = i * c + o, h = Math.round(a), N = Z * B + W, V = Math.round(N), n = (i + d) * c + o, t = Math.abs(Math.round(n) - h) || 1, u = (Z + s) * B + W, e = Math.abs(Math.round(u) - V) || 1;
-    return G.setTransform(Math.sign(c), 0, 0, Math.sign(B), h, V), G.drawImage(I, g, C, A, l, 0, 0, t, e), G.setTransform(c, b, m, B, o, W), [t, e];
+    const a = i * c + o, h = Math.round(a), N = Z * B + W, V = Math.round(N), n = (i + d) * c + o, t = Math.abs(Math.round(n) - h) || 1, e = (Z + s) * B + W, u = Math.abs(Math.round(e) - V) || 1;
+    return G.setTransform(Math.sign(c), 0, 0, Math.sign(B), h, V), G.drawImage(I, g, C, A, l, 0, 0, t, u), G.setTransform(c, b, m, B, o, W), [t, u];
   }
   if (c === 0 && B === 0) {
-    const a = Z * m + o, h = Math.round(a), N = i * b + W, V = Math.round(N), n = (Z + s) * m + o, t = Math.abs(Math.round(n) - h) || 1, u = (i + d) * b + W, e = Math.abs(Math.round(u) - V) || 1;
-    return G.setTransform(0, Math.sign(b), Math.sign(m), 0, h, V), G.drawImage(I, g, C, A, l, 0, 0, e, t), G.setTransform(c, b, m, B, o, W), [e, t];
+    const a = Z * m + o, h = Math.round(a), N = i * b + W, V = Math.round(N), n = (Z + s) * m + o, t = Math.abs(Math.round(n) - h) || 1, e = (i + d) * b + W, u = Math.abs(Math.round(e) - V) || 1;
+    return G.setTransform(0, Math.sign(b), Math.sign(m), 0, h, V), G.drawImage(I, g, C, A, l, 0, 0, u, t), G.setTransform(c, b, m, B, o, W), [u, t];
   }
   G.drawImage(I, g, C, A, l, i, Z, d, s);
   const Y = Math.hypot(c, b), w = Math.hypot(m, B);
@@ -5201,7 +5201,7 @@ class yA {
   charSpacing = 0;
   wordSpacing = 0;
   textHScale = 1;
-  textRenderingMode = aI.FILL;
+  textRenderingMode = hI.FILL;
   textRise = 0;
   fillColor = "#000000";
   strokeColor = "#000000";
@@ -5222,8 +5222,8 @@ class yA {
   getPathBoundingBox(I = wI.FILL, g = null) {
     const C = this.minMax.slice();
     if (I === wI.STROKE) {
-      g || _("Stroke bounding box must include transform."), k.singularValueDecompose2dScale(g, MI);
-      const A = MI[0] * this.lineWidth / 2, l = MI[1] * this.lineWidth / 2;
+      g || f("Stroke bounding box must include transform."), k.singularValueDecompose2dScale(g, uI);
+      const A = uI[0] * this.lineWidth / 2, l = uI[1] * this.lineWidth / 2;
       C[0] -= A, C[1] -= l, C[2] += A, C[3] += l;
     }
     return C;
@@ -5247,36 +5247,36 @@ function HA(G, I) {
     G.putImageData(I, 0, 0);
     return;
   }
-  const g = I.height, C = I.width, A = g % HI, l = (g - A) / HI, i = A === 0 ? l : l + 1, Z = G.createImageData(C, HI);
+  const g = I.height, C = I.width, A = g % yI, l = (g - A) / yI, i = A === 0 ? l : l + 1, Z = G.createImageData(C, yI);
   let d = 0, s;
   const c = I.data, b = Z.data;
   let m, B, o, W;
   if (I.kind === Pg.GRAYSCALE_1BPP) {
     const Y = c.byteLength, w = new Uint32Array(b.buffer, 0, b.byteLength >> 2), a = w.length, h = C + 7 >> 3, N = 4294967295, V = YI.isLittleEndian ? 4278190080 : 255;
     for (m = 0; m < i; m++) {
-      for (o = m < l ? HI : A, s = 0, B = 0; B < o; B++) {
+      for (o = m < l ? yI : A, s = 0, B = 0; B < o; B++) {
         const n = Y - d;
         let t = 0;
-        const u = n > h ? C : n * 8 - 7, e = u & -8;
-        let F = 0, D = 0;
-        for (; t < e; t += 8)
-          D = c[d++], w[s++] = D & 128 ? N : V, w[s++] = D & 64 ? N : V, w[s++] = D & 32 ? N : V, w[s++] = D & 16 ? N : V, w[s++] = D & 8 ? N : V, w[s++] = D & 4 ? N : V, w[s++] = D & 2 ? N : V, w[s++] = D & 1 ? N : V;
-        for (; t < u; t++)
-          F === 0 && (D = c[d++], F = 128), w[s++] = D & F ? N : V, F >>= 1;
+        const e = n > h ? C : n * 8 - 7, u = e & -8;
+        let K = 0, z = 0;
+        for (; t < u; t += 8)
+          z = c[d++], w[s++] = z & 128 ? N : V, w[s++] = z & 64 ? N : V, w[s++] = z & 32 ? N : V, w[s++] = z & 16 ? N : V, w[s++] = z & 8 ? N : V, w[s++] = z & 4 ? N : V, w[s++] = z & 2 ? N : V, w[s++] = z & 1 ? N : V;
+        for (; t < e; t++)
+          K === 0 && (z = c[d++], K = 128), w[s++] = z & K ? N : V, K >>= 1;
       }
       for (; s < a; )
         w[s++] = 0;
-      G.putImageData(Z, 0, m * HI);
+      G.putImageData(Z, 0, m * yI);
     }
   } else if (I.kind === Pg.RGBA_32BPP) {
-    for (B = 0, W = C * HI * 4, m = 0; m < l; m++)
-      b.set(c.subarray(d, d + W)), d += W, G.putImageData(Z, 0, B), B += HI;
+    for (B = 0, W = C * yI * 4, m = 0; m < l; m++)
+      b.set(c.subarray(d, d + W)), d += W, G.putImageData(Z, 0, B), B += yI;
     m < i && (W = C * A * 4, b.set(c.subarray(d, d + W)), G.putImageData(Z, 0, B));
   } else if (I.kind === Pg.RGB_24BPP)
-    for (o = HI, W = C * o, m = 0; m < i; m++) {
+    for (o = yI, W = C * o, m = 0; m < i; m++) {
       for (m >= l && (o = A, W = C * o), s = 0, B = W; B--; )
         b[s++] = c[d++], b[s++] = c[d++], b[s++] = c[d++], b[s++] = 255;
-      G.putImageData(Z, 0, m * HI);
+      G.putImageData(Z, 0, m * yI);
     }
   else
     throw new Error(`bad image kind: ${I.kind}`);
@@ -5286,11 +5286,11 @@ function uA(G, I) {
     G.drawImage(I.bitmap, 0, 0);
     return;
   }
-  const g = I.height, C = I.width, A = g % HI, l = (g - A) / HI, i = A === 0 ? l : l + 1, Z = G.createImageData(C, HI);
+  const g = I.height, C = I.width, A = g % yI, l = (g - A) / yI, i = A === 0 ? l : l + 1, Z = G.createImageData(C, yI);
   let d = 0;
   const s = I.data, c = Z.data;
   for (let b = 0; b < i; b++) {
-    const m = b < l ? HI : A;
+    const m = b < l ? yI : A;
     ({
       srcPos: d
     } = Hi({
@@ -5300,7 +5300,7 @@ function uA(G, I) {
       width: C,
       height: m,
       nonBlackColor: 0
-    })), G.putImageData(Z, 0, b * HI);
+    })), G.putImageData(Z, 0, b * yI);
   }
 }
 function hg(G, I) {
@@ -5319,9 +5319,9 @@ function jg(G) {
 function MA(G, I) {
   if (I)
     return !0;
-  k.singularValueDecompose2dScale(G, MI);
+  k.singularValueDecompose2dScale(G, uI);
   const g = Math.fround(QI.pixelRatio * wg.PDF_TO_CSS_UNITS);
-  return MI[0] <= g && MI[1] <= g;
+  return uI[0] <= g && uI[1] <= g;
 }
 const Ki = ["butt", "round", "square"], Si = ["miter", "round", "bevel"], pi = {}, DA = {};
 class Bg {
@@ -5343,9 +5343,9 @@ class Bg {
     const l = this.ctx.canvas.width, i = this.ctx.canvas.height, Z = this.ctx.fillStyle;
     if (this.ctx.fillStyle = A || "#ffffff", this.ctx.fillRect(0, 0, l, i), this.ctx.fillStyle = Z, C) {
       const d = this.cachedCanvases.getCanvas("transparent", l, i);
-      this.compositeCtx = this.ctx, this.transparentCanvas = d.canvas, this.ctx = d.context, this.ctx.save(), this.ctx.transform(...II(this.compositeCtx));
+      this.compositeCtx = this.ctx, this.transparentCanvas = d.canvas, this.ctx = d.context, this.ctx.save(), this.ctx.transform(...$(this.compositeCtx));
     }
-    this.ctx.save(), jg(this.ctx), I && (this.ctx.transform(...I), this.outputScaleX = I[0], this.outputScaleY = I[0]), this.ctx.transform(...g.transform), this.viewportScale = g.scale, this.baseTransform = II(this.ctx);
+    this.ctx.save(), jg(this.ctx), I && (this.ctx.transform(...I), this.outputScaleX = I[0], this.outputScaleY = I[0]), this.ctx.transform(...g.transform), this.viewportScale = g.scale, this.baseTransform = $(this.ctx);
   }
   executeOperatorList(I, g, C, A) {
     const l = I.argsArray, i = I.fnArray;
@@ -5417,21 +5417,21 @@ class Bg {
     const g = this.ctx, {
       width: C,
       height: A
-    } = I, l = this.current.fillColor, i = this.current.patternFill, Z = II(g);
+    } = I, l = this.current.fillColor, i = this.current.patternFill, Z = $(g);
     let d, s, c, b;
     if ((I.bitmap || I.data) && I.count > 1) {
-      const e = I.bitmap || I.data.buffer;
-      s = JSON.stringify(i ? Z : [Z.slice(0, 4), l]), d = this._cachedBitmapsMap.get(e), d || (d = /* @__PURE__ */ new Map(), this._cachedBitmapsMap.set(e, d));
-      const F = d.get(s);
-      if (F && !i) {
-        const D = Math.round(Math.min(Z[0], Z[2]) + Z[4]), j = Math.round(Math.min(Z[1], Z[3]) + Z[5]);
+      const u = I.bitmap || I.data.buffer;
+      s = JSON.stringify(i ? Z : [Z.slice(0, 4), l]), d = this._cachedBitmapsMap.get(u), d || (d = /* @__PURE__ */ new Map(), this._cachedBitmapsMap.set(u, d));
+      const K = d.get(s);
+      if (K && !i) {
+        const z = Math.round(Math.min(Z[0], Z[2]) + Z[4]), x = Math.round(Math.min(Z[1], Z[3]) + Z[5]);
         return {
-          canvas: F,
-          offsetX: D,
-          offsetY: j
+          canvas: K,
+          offsetX: z,
+          offsetY: x
         };
       }
-      c = F;
+      c = K;
     }
     c || (b = this.cachedCanvases.getCanvas("maskCanvas", C, A), uA(b.context, I));
     let m = k.transform(Z, [1 / C, 0, 0, -1 / A, 0, 0]);
@@ -5439,9 +5439,9 @@ class Bg {
     const B = cg.slice();
     k.axialAlignedBoundingBox([0, 0, C, A], m, B);
     const [o, W, Y, w] = B, a = Math.round(Y - o) || 1, h = Math.round(w - W) || 1, N = this.cachedCanvases.getCanvas("fillCanvas", a, h), V = N.context, n = o, t = W;
-    V.translate(-n, -t), V.transform(...m), c || (c = this._scaleImage(b.canvas, JI(V)), c = c.img, d && i && d.set(s, c)), V.imageSmoothingEnabled = MA(II(V), I.interpolate), Qg(V, c, 0, 0, c.width, c.height, 0, 0, C, A), V.globalCompositeOperation = "source-in";
-    const u = k.transform(JI(V), [1, 0, 0, 1, -n, -t]);
-    return V.fillStyle = i ? l.getPattern(g, this, u, wI.FILL) : l, V.fillRect(0, 0, C, A), d && !i && (this.cachedCanvases.delete("fillCanvas"), d.set(s, N.canvas)), {
+    V.translate(-n, -t), V.transform(...m), c || (c = this._scaleImage(b.canvas, JI(V)), c = c.img, d && i && d.set(s, c)), V.imageSmoothingEnabled = MA($(V), I.interpolate), Qg(V, c, 0, 0, c.width, c.height, 0, 0, C, A), V.globalCompositeOperation = "source-in";
+    const e = k.transform(JI(V), [1, 0, 0, 1, -n, -t]);
+    return V.fillStyle = i ? l.getPattern(g, this, e, wI.FILL) : l, V.fillRect(0, 0, C, A), d && !i && (this.cachedCanvases.delete("fillCanvas"), d.set(s, N.canvas)), {
       canvas: N.canvas,
       offsetX: Math.round(n),
       offsetY: Math.round(t)
@@ -5595,12 +5595,12 @@ class Bg {
             l.closePath();
             break;
           default:
-            x(`Unrecognized drawing path operator: ${A[i - 1]}`);
+            O(`Unrecognized drawing path operator: ${A[i - 1]}`);
             break;
         }
       A = l;
     }
-    k.axialAlignedBoundingBox(C, II(this.ctx), this.current.minMax), this[I](A);
+    k.axialAlignedBoundingBox(C, $(this.ctx), this.current.minMax), this[I](A);
   }
   closePath() {
     this.ctx.closePath();
@@ -5617,7 +5617,7 @@ class Bg {
         this.rescaleAndStroke(I, !1), C.restore();
       } else
         this.rescaleAndStroke(I, !0);
-    g && this.consumePath(I, this.current.getClippedPathBoundingBox(wI.STROKE, II(this.ctx))), C.globalAlpha = this.current.fillAlpha;
+    g && this.consumePath(I, this.current.getClippedPathBoundingBox(wI.STROKE, $(this.ctx))), C.globalAlpha = this.current.fillAlpha;
   }
   closeStroke(I) {
     this.stroke(I);
@@ -5697,7 +5697,7 @@ class Bg {
     const C = this.commonObjs.get(I), A = this.current;
     if (!C)
       throw new Error(`Can't find font for ${I}`);
-    if (A.fontMatrix = C.fontMatrix || pC, (A.fontMatrix[0] === 0 || A.fontMatrix[3] === 0) && x("Invalid font matrix for font " + I), g < 0 ? (g = -g, A.fontDirection = -1) : A.fontDirection = 1, this.current.font = C, this.current.fontSize = g, C.isType3Font)
+    if (A.fontMatrix = C.fontMatrix || pC, (A.fontMatrix[0] === 0 || A.fontMatrix[3] === 0) && O("Invalid font matrix for font " + I), g < 0 ? (g = -g, A.fontDirection = -1) : A.fontDirection = 1, this.current.font = C, this.current.fontSize = g, C.isType3Font)
       return;
     const l = C.loadedName || "sans-serif", i = C.systemFontInfo?.css || `"${l}", ${C.fallbackName}`;
     let Z = "normal";
@@ -5732,12 +5732,12 @@ class Bg {
     return A.addPath(I, new DOMMatrix(C).invertSelf().multiplySelf(g)), A;
   }
   paintChar(I, g, C, A, l) {
-    const i = this.ctx, Z = this.current, d = Z.font, s = Z.textRenderingMode, c = Z.fontSize / Z.fontSizeScale, b = s & aI.FILL_STROKE_MASK, m = !!(s & aI.ADD_TO_PATH_FLAG), B = Z.patternFill && !d.missingFile, o = Z.patternStroke && !d.missingFile;
+    const i = this.ctx, Z = this.current, d = Z.font, s = Z.textRenderingMode, c = Z.fontSize / Z.fontSizeScale, b = s & hI.FILL_STROKE_MASK, m = !!(s & hI.ADD_TO_PATH_FLAG), B = Z.patternFill && !d.missingFile, o = Z.patternStroke && !d.missingFile;
     let W;
     if ((d.disableFontFace || m || B || o) && !d.missingFile && (W = d.getPathGenerator(this.commonObjs, I)), W && (d.disableFontFace || B || o)) {
       i.save(), i.translate(g, C), i.scale(c, -c);
       let Y;
-      if ((b === aI.FILL || b === aI.FILL_STROKE) && (A ? (Y = i.getTransform(), i.setTransform(...A), i.fill(this.#C(W, Y, A))) : i.fill(W)), b === aI.STROKE || b === aI.FILL_STROKE)
+      if ((b === hI.FILL || b === hI.FILL_STROKE) && (A ? (Y = i.getTransform(), i.setTransform(...A), i.fill(this.#C(W, Y, A))) : i.fill(W)), b === hI.STROKE || b === hI.FILL_STROKE)
         if (l) {
           Y ||= i.getTransform(), i.setTransform(...l);
           const {
@@ -5746,14 +5746,14 @@ class Bg {
             c: h,
             d: N
           } = Y, V = k.inverseTransform(l), n = k.transform([w, a, h, N, 0, 0], V);
-          k.singularValueDecompose2dScale(n, MI), i.lineWidth *= Math.max(MI[0], MI[1]) / c, i.stroke(this.#C(W, Y, l));
+          k.singularValueDecompose2dScale(n, uI), i.lineWidth *= Math.max(uI[0], uI[1]) / c, i.stroke(this.#C(W, Y, l));
         } else
           i.lineWidth /= c, i.stroke(W);
       i.restore();
     } else
-      (b === aI.FILL || b === aI.FILL_STROKE) && i.fillText(I, g, C), (b === aI.STROKE || b === aI.FILL_STROKE) && i.strokeText(I, g, C);
+      (b === hI.FILL || b === hI.FILL_STROKE) && i.fillText(I, g, C), (b === hI.STROKE || b === hI.FILL_STROKE) && i.strokeText(I, g, C);
     m && (this.pendingTextPaths ||= []).push({
-      transform: II(i),
+      transform: $(i),
       x: g,
       y: C,
       fontSize: c,
@@ -5772,7 +5772,7 @@ class Bg {
         C = !0;
         break;
       }
-    return v(this, "isFontSubpixelAAEnabled", C);
+    return r(this, "isFontSubpixelAAEnabled", C);
   }
   showText(I) {
     const g = this.current, C = g.font;
@@ -5781,32 +5781,32 @@ class Bg {
     const A = g.fontSize;
     if (A === 0)
       return;
-    const l = this.ctx, i = g.fontSizeScale, Z = g.charSpacing, d = g.wordSpacing, s = g.fontDirection, c = g.textHScale * s, b = I.length, m = C.vertical, B = m ? 1 : -1, o = C.defaultVMetrics, W = A * g.fontMatrix[0], Y = g.textRenderingMode === aI.FILL && !C.disableFontFace && !g.patternFill;
+    const l = this.ctx, i = g.fontSizeScale, Z = g.charSpacing, d = g.wordSpacing, s = g.fontDirection, c = g.textHScale * s, b = I.length, m = C.vertical, B = m ? 1 : -1, o = C.defaultVMetrics, W = A * g.fontMatrix[0], Y = g.textRenderingMode === hI.FILL && !C.disableFontFace && !g.patternFill;
     l.save(), g.textMatrix && l.transform(...g.textMatrix), l.translate(g.x, g.y + g.textRise), s > 0 ? l.scale(c, -1) : l.scale(c, 1);
     let w, a;
     if (g.patternFill) {
       l.save();
       const t = g.fillColor.getPattern(l, this, JI(l), wI.FILL);
-      w = II(l), l.restore(), l.fillStyle = t;
+      w = $(l), l.restore(), l.fillStyle = t;
     }
     if (g.patternStroke) {
       l.save();
       const t = g.strokeColor.getPattern(l, this, JI(l), wI.STROKE);
-      a = II(l), l.restore(), l.strokeStyle = t;
+      a = $(l), l.restore(), l.strokeStyle = t;
     }
     let h = g.lineWidth;
     const N = g.textMatrixScale;
     if (N === 0 || h === 0) {
-      const t = g.textRenderingMode & aI.FILL_STROKE_MASK;
-      (t === aI.STROKE || t === aI.FILL_STROKE) && (h = this.getSinglePixelWidth());
+      const t = g.textRenderingMode & hI.FILL_STROKE_MASK;
+      (t === hI.STROKE || t === hI.FILL_STROKE) && (h = this.getSinglePixelWidth());
     } else
       h /= N;
     if (i !== 1 && (l.scale(i, i), h /= i), l.lineWidth = h, C.isInvalidPDFjsFont) {
       const t = [];
-      let u = 0;
-      for (const e of I)
-        t.push(e.unicode), u += e.width;
-      l.fillText(t.join(""), 0, 0), g.x += u * W * c, l.restore(), this.compose();
+      let e = 0;
+      for (const u of I)
+        t.push(u.unicode), e += u.width;
+      l.fillText(t.join(""), 0, 0), g.x += e * W * c, l.restore(), this.compose();
       return;
     }
     let V = 0, n;
@@ -5816,36 +5816,36 @@ class Bg {
         V += B * t * A / 1e3;
         continue;
       }
-      let u = !1;
-      const e = (t.isSpace ? d : 0) + Z, F = t.fontChar, D = t.accent;
-      let j, P, r = t.width;
+      let e = !1;
+      const u = (t.isSpace ? d : 0) + Z, K = t.fontChar, z = t.accent;
+      let x, P, U = t.width;
       if (m) {
-        const K = t.vmetric || o, z = -(t.vmetric ? K[1] : r * 0.5) * W, hI = K[2] * W;
-        r = K ? -K[0] : r, j = z / i, P = (V + hI) / i;
+        const S = t.vmetric || o, F = -(t.vmetric ? S[1] : U * 0.5) * W, WI = S[2] * W;
+        U = S ? -S[0] : U, x = F / i, P = (V + WI) / i;
       } else
-        j = V / i, P = 0;
-      if (C.remeasure && r > 0) {
-        const K = l.measureText(F).width * 1e3 / A * i;
-        if (r < K && this.isFontSubpixelAAEnabled) {
-          const z = r / K;
-          u = !0, l.save(), l.scale(z, 1), j /= z;
-        } else r !== K && (j += (r - K) / 2e3 * A / i);
+        x = V / i, P = 0;
+      if (C.remeasure && U > 0) {
+        const S = l.measureText(K).width * 1e3 / A * i;
+        if (U < S && this.isFontSubpixelAAEnabled) {
+          const F = U / S;
+          e = !0, l.save(), l.scale(F, 1), x /= F;
+        } else U !== S && (x += (U - S) / 2e3 * A / i);
       }
       if (this.contentVisible && (t.isInFont || C.missingFile)) {
-        if (Y && !D)
-          l.fillText(F, j, P);
-        else if (this.paintChar(F, j, P, w, a), D) {
-          const K = j + A * D.offset.x / i, z = P - A * D.offset.y / i;
-          this.paintChar(D.fontChar, K, z, w, a);
+        if (Y && !z)
+          l.fillText(K, x, P);
+        else if (this.paintChar(K, x, P, w, a), z) {
+          const S = x + A * z.offset.x / i, F = P - A * z.offset.y / i;
+          this.paintChar(z.fontChar, S, F, w, a);
         }
       }
-      const gI = m ? r * W - e * s : r * W + e * s;
-      V += gI, u && l.restore();
+      const II = m ? U * W - u * s : U * W + u * s;
+      V += II, e && l.restore();
     }
     m ? g.y -= V : g.x += V * c, l.restore(), this.compose();
   }
   showType3Text(I) {
-    const g = this.ctx, C = this.current, A = C.font, l = C.fontSize, i = C.fontDirection, Z = A.vertical ? 1 : -1, d = C.charSpacing, s = C.wordSpacing, c = C.textHScale * i, b = C.fontMatrix || pC, m = I.length, B = C.textRenderingMode === aI.INVISIBLE;
+    const g = this.ctx, C = this.current, A = C.font, l = C.fontSize, i = C.fontDirection, Z = A.vertical ? 1 : -1, d = C.charSpacing, s = C.wordSpacing, c = C.textHScale * i, b = C.fontMatrix || pC, m = I.length, B = C.textRenderingMode === hI.INVISIBLE;
     let o, W, Y, w;
     if (!(B || l === 0)) {
       for (this._cachedScaleForStroking[0] = -1, this._cachedGetSinglePixelWidth = null, g.save(), C.textMatrix && g.transform(...C.textMatrix), g.translate(C.x, C.y + C.textRise), g.scale(c, i), o = 0; o < m; ++o) {
@@ -5854,7 +5854,7 @@ class Bg {
           continue;
         }
         const a = (W.isSpace ? s : 0) + d, h = A.charProcOperatorList[W.operatorListId];
-        h ? this.contentVisible && (this.save(), g.scale(l, l), g.transform(...b), this.executeOperatorList(h), this.restore()) : x(`Type3 character "${W.operatorListId}" is not available.`);
+        h ? this.contentVisible && (this.save(), g.scale(l, l), g.transform(...b), this.executeOperatorList(h), this.restore()) : O(`Type3 character "${W.operatorListId}" is not available.`);
         const N = [W.width, 0];
         k.applyTransform(N, b), Y = N[0] * l + a, g.translate(Y, 0), C.x += Y * c;
       }
@@ -5870,7 +5870,7 @@ class Bg {
   getColorN_Pattern(I) {
     let g;
     if (I[0] === "TilingPattern") {
-      const C = this.baseTransform || II(this.ctx), A = {
+      const C = this.baseTransform || $(this.ctx), A = {
         createCanvasGraphics: (l) => new Bg(l, this.commonObjs, this.objs, this.canvasFactory, this.filterFactory, {
           optionalContentConfig: this.optionalContentConfig,
           markedContentStack: this.markedContentStack
@@ -5924,13 +5924,13 @@ class Bg {
     this.compose(this.current.getClippedPathBoundingBox()), this.restore();
   }
   beginInlineImage() {
-    _("Should not call beginInlineImage");
+    f("Should not call beginInlineImage");
   }
   beginImageData() {
-    _("Should not call beginImageData");
+    f("Should not call beginImageData");
   }
   paintFormXObjectBegin(I, g) {
-    if (this.contentVisible && (this.save(), this.baseTransformStack.push(this.baseTransform), I && this.transform(...I), this.baseTransform = II(this.ctx), g)) {
+    if (this.contentVisible && (this.save(), this.baseTransformStack.push(this.baseTransform), I && this.transform(...I), this.baseTransform = $(this.ctx), g)) {
       k.axialAlignedBoundingBox(g, this.baseTransform, this.current.minMax);
       const [C, A, l, i] = g, Z = new Path2D();
       Z.rect(C, A, l - C, i - A), this.ctx.clip(Z), this.endPath();
@@ -5944,12 +5944,12 @@ class Bg {
       return;
     this.save(), this.inSMaskMode && (this.endSMaskMode(), this.current.activeSMask = null);
     const g = this.ctx;
-    I.isolated || dC("TODO: Support non-isolated groups."), I.knockout && x("Knockout groups not supported.");
-    const C = II(g);
+    I.isolated || dC("TODO: Support non-isolated groups."), I.knockout && O("Knockout groups not supported.");
+    const C = $(g);
     if (I.matrix && g.transform(...I.matrix), !I.bbox)
       throw new Error("Bounding box is required.");
     let A = cg.slice();
-    k.axialAlignedBoundingBox(I.bbox, II(g), A);
+    k.axialAlignedBoundingBox(I.bbox, $(g), A);
     const l = [0, 0, g.canvas.width, g.canvas.height];
     A = k.intersect(A, l) || [0, 0, 0, 0];
     const i = Math.floor(A[0]), Z = Math.floor(A[1]), d = Math.max(Math.ceil(A[2]) - i, 1), s = Math.max(Math.ceil(A[3]) - Z, 1);
@@ -5984,7 +5984,7 @@ class Bg {
       this.tempSMask = this.smaskStack.pop(), this.restore();
     else {
       this.ctx.restore();
-      const A = II(this.ctx);
+      const A = $(this.ctx);
       this.restore(), this.ctx.save(), this.ctx.setTransform(...A);
       const l = cg.slice();
       k.axialAlignedBoundingBox([0, 0, g.canvas.width, g.canvas.height], A, l), this.ctx.drawImage(g.canvas, 0, 0), this.ctx.restore(), this.compose(l);
@@ -5994,7 +5994,7 @@ class Bg {
     if (this.#I(), jg(this.ctx), this.ctx.save(), this.save(), this.baseTransform && this.ctx.setTransform(...this.baseTransform), g) {
       const i = g[2] - g[0], Z = g[3] - g[1];
       if (l && this.annotationCanvasMap) {
-        C = C.slice(), C[4] -= g[0], C[5] -= g[1], g = g.slice(), g[0] = g[1] = 0, g[2] = i, g[3] = Z, k.singularValueDecompose2dScale(II(this.ctx), MI);
+        C = C.slice(), C[4] -= g[0], C[5] -= g[1], g = g.slice(), g[0] = g[1] = 0, g[2] = i, g[3] = Z, k.singularValueDecompose2dScale($(this.ctx), uI);
         const {
           viewportScale: d
         } = this, s = Math.ceil(i * this.outputScaleX * d), c = Math.ceil(Z * this.outputScaleY * d);
@@ -6003,7 +6003,7 @@ class Bg {
           canvas: b,
           context: m
         } = this.annotationCanvas;
-        this.annotationCanvasMap.set(I, b), this.annotationCanvas.savedCtx = this.ctx, this.ctx = m, this.ctx.save(), this.ctx.setTransform(MI[0], 0, 0, -MI[1], 0, Z * MI[1]), jg(this.ctx);
+        this.annotationCanvasMap.set(I, b), this.annotationCanvas.savedCtx = this.ctx, this.ctx = m, this.ctx.save(), this.ctx.setTransform(uI[0], 0, 0, -uI[1], 0, Z * uI[1]), jg(this.ctx);
       } else {
         jg(this.ctx), this.endPath();
         const d = new Path2D();
@@ -6029,7 +6029,7 @@ class Bg {
     I = this.getObject(I.data, I);
     const Z = this.ctx;
     Z.save();
-    const d = II(Z);
+    const d = $(Z);
     Z.transform(g, C, A, l, 0, 0);
     const s = this._createMaskCanvas(I);
     Z.setTransform(1, 0, 0, 1, s.offsetX - d[4], s.offsetY - d[5]);
@@ -6061,7 +6061,7 @@ class Bg {
       return;
     const g = this.getObject(I);
     if (!g) {
-      x("Dependent image isn't ready yet");
+      O("Dependent image isn't ready yet");
       return;
     }
     this.paintInlineImageXObject(g);
@@ -6071,7 +6071,7 @@ class Bg {
       return;
     const l = this.getObject(I);
     if (!l) {
-      x("Dependent image isn't ready yet");
+      O("Dependent image isn't ready yet");
       return;
     }
     const i = l.width, Z = l.height, d = [];
@@ -6117,7 +6117,7 @@ class Bg {
       HA(s, I), i = this.applyTransferMapsToCanvas(s);
     }
     const Z = this._scaleImage(i, JI(A));
-    A.imageSmoothingEnabled = MA(II(A), I.interpolate), Qg(A, Z.img, 0, 0, Z.paintWidth, Z.paintHeight, 0, -C, g, C), this.compose(), this.restore();
+    A.imageSmoothingEnabled = MA($(A), I.interpolate), Qg(A, Z.img, 0, 0, Z.paintWidth, Z.paintHeight, 0, -C, g, C), this.compose(), this.restore();
   }
   paintInlineImageXObjectGroup(I, g) {
     if (!this.contentVisible)
@@ -6168,7 +6168,7 @@ class Bg {
   }
   getSinglePixelWidth() {
     if (!this._cachedGetSinglePixelWidth) {
-      const I = II(this.ctx);
+      const I = $(this.ctx);
       if (I[1] === 0 && I[2] === 0)
         this._cachedGetSinglePixelWidth = 1 / Math.min(Math.abs(I[0]), Math.abs(I[3]));
       else {
@@ -6297,7 +6297,7 @@ class zi {
     usage: A,
     rbGroups: l
   }) {
-    this.#I = !!(I & uI.DISPLAY), this.#g = !!(I & uI.PRINT), this.name = g, this.intent = C, this.usage = A, this.rbGroups = l;
+    this.#I = !!(I & HI.DISPLAY), this.#g = !!(I & HI.PRINT), this.name = g, this.intent = C, this.usage = A, this.rbGroups = l;
   }
   get visible() {
     if (this.#C)
@@ -6311,7 +6311,7 @@ class zi {
     return this.#I ? g?.viewState !== "OFF" : this.#g ? I?.printState !== "OFF" : !0;
   }
   _setVisible(I, g, C = !1) {
-    I !== sg && _("Internal method `_setVisible` called."), this.#C = C, this.#A = g;
+    I !== sg && f("Internal method `_setVisible` called."), this.#C = C, this.#A = g;
   }
 }
 class Ji {
@@ -6319,7 +6319,7 @@ class Ji {
   #g = /* @__PURE__ */ new Map();
   #C = null;
   #A = null;
-  constructor(I, g = uI.DISPLAY) {
+  constructor(I, g = HI.DISPLAY) {
     if (this.renderingIntent = g, this.name = null, this.creator = null, I !== null) {
       this.name = I.name, this.creator = I.creator, this.#A = I.order;
       for (const C of I.groups)
@@ -6347,7 +6347,7 @@ class Ji {
       else if (this.#g.has(l))
         i = this.#g.get(l).visible;
       else
-        return x(`Optional content group not found: ${l}`), !0;
+        return O(`Optional content group not found: ${l}`), !0;
       switch (C) {
         case "And":
           if (!i)
@@ -6371,14 +6371,14 @@ class Ji {
     if (!I)
       return dC("Optional content group not defined."), !0;
     if (I.type === "OCG")
-      return this.#g.has(I.id) ? this.#g.get(I.id).visible : (x(`Optional content group not found: ${I.id}`), !0);
+      return this.#g.has(I.id) ? this.#g.get(I.id).visible : (O(`Optional content group not found: ${I.id}`), !0);
     if (I.type === "OCMD") {
       if (I.expression)
         return this.#i(I.expression);
       if (!I.policy || I.policy === "AnyOn") {
         for (const g of I.ids) {
           if (!this.#g.has(g))
-            return x(`Optional content group not found: ${g}`), !0;
+            return O(`Optional content group not found: ${g}`), !0;
           if (this.#g.get(g).visible)
             return !0;
         }
@@ -6386,7 +6386,7 @@ class Ji {
       } else if (I.policy === "AllOn") {
         for (const g of I.ids) {
           if (!this.#g.has(g))
-            return x(`Optional content group not found: ${g}`), !0;
+            return O(`Optional content group not found: ${g}`), !0;
           if (!this.#g.get(g).visible)
             return !1;
         }
@@ -6394,7 +6394,7 @@ class Ji {
       } else if (I.policy === "AnyOff") {
         for (const g of I.ids) {
           if (!this.#g.has(g))
-            return x(`Optional content group not found: ${g}`), !0;
+            return O(`Optional content group not found: ${g}`), !0;
           if (!this.#g.get(g).visible)
             return !0;
         }
@@ -6402,20 +6402,20 @@ class Ji {
       } else if (I.policy === "AllOff") {
         for (const g of I.ids) {
           if (!this.#g.has(g))
-            return x(`Optional content group not found: ${g}`), !0;
+            return O(`Optional content group not found: ${g}`), !0;
           if (this.#g.get(g).visible)
             return !1;
         }
         return !0;
       }
-      return x(`Unknown optional content policy ${I.policy}.`), !0;
+      return O(`Unknown optional content policy ${I.policy}.`), !0;
     }
-    return x(`Unknown group type ${I.type}.`), !0;
+    return O(`Unknown group type ${I.type}.`), !0;
   }
   setVisibility(I, g = !0, C = !0) {
     const A = this.#g.get(I);
     if (!A) {
-      x(`Optional content group not found: ${I}`);
+      O(`Optional content group not found: ${I}`);
       return;
     }
     if (C && g && A.rbGroups.length)
@@ -6479,7 +6479,7 @@ class ki {
     disableRange: g = !1,
     disableStream: C = !1
   }) {
-    GI(I, 'PDFDataTransportStream - missing required "pdfDataRangeTransport" argument.');
+    sI(I, 'PDFDataTransportStream - missing required "pdfDataRangeTransport" argument.');
     const {
       length: A,
       initialData: l,
@@ -6519,7 +6519,7 @@ class ki {
       const A = this._rangeReaders.some(function(l) {
         return l._begin !== I ? !1 : (l._enqueue(C), !0);
       });
-      GI(A, "_onReceiveData - no `PDFDataTransportStreamRangeReader` instance found.");
+      sI(A, "_onReceiveData - no `PDFDataTransportStreamRangeReader` instance found.");
     }
   }
   get _progressiveDataLength() {
@@ -6541,7 +6541,7 @@ class ki {
     g >= 0 && this._rangeReaders.splice(g, 1);
   }
   getFullReader() {
-    GI(!this._fullRequestReader, "PDFDataTransportStream.getFullReader can only be called once.");
+    sI(!this._fullRequestReader, "PDFDataTransportStream.getFullReader can only be called once.");
     const I = this._queuedChunks;
     return this._queuedChunks = null, new Li(this, I, this._progressiveDone, this._contentDispositionFilename);
   }
@@ -6810,7 +6810,7 @@ function dl(G, I, g) {
   };
 }
 function sl(G) {
-  return G instanceof Uint8Array ? G.buffer : G instanceof ArrayBuffer ? G : (x(`getArrayBuffer - unexpected data format: ${G}`), new Uint8Array(G).buffer);
+  return G instanceof Uint8Array ? G.buffer : G instanceof ArrayBuffer ? G : (O(`getArrayBuffer - unexpected data format: ${G}`), new Uint8Array(G).buffer);
 }
 class ji {
   _responseOrigin = null;
@@ -6821,7 +6821,7 @@ class ji {
     return this._fullRequestReader?._loaded ?? 0;
   }
   getFullReader() {
-    return GI(!this._fullRequestReader, "PDFFetchStream.getFullReader can only be called once."), this._fullRequestReader = new Oi(this), this._fullRequestReader;
+    return sI(!this._fullRequestReader, "PDFFetchStream.getFullReader can only be called once."), this._fullRequestReader = new Oi(this), this._fullRequestReader;
   }
   getRangeReader(I, g) {
     if (g <= this._progressiveDataLength)
@@ -6854,7 +6854,7 @@ class Oi {
         rangeChunkSize: this._rangeChunkSize,
         disableRange: this._disableRange
       });
-      this._isRangeSupported = Z, this._contentLength = d || this._contentLength, this._filename = il(i), !this._isStreamingSupported && this._isRangeSupported && this.cancel(new EI("Streaming is disabled."));
+      this._isRangeSupported = Z, this._contentLength = d || this._contentLength, this._filename = il(i), !this._isStreamingSupported && this._isRangeSupported && this.cancel(new vI("Streaming is disabled."));
     }).catch(this._headersCapability.reject), this.onProgress = null;
   }
   get headersReady() {
@@ -6954,7 +6954,7 @@ class ri {
     g.open("GET", this.url), g.withCredentials = this.withCredentials;
     for (const [l, i] of this.headers)
       g.setRequestHeader(l, i);
-    return this.isHttp && "begin" in I && "end" in I ? (g.setRequestHeader("Range", `bytes=${I.begin}-${I.end - 1}`), A.expectedStatus = RC) : A.expectedStatus = tC, g.responseType = "arraybuffer", GI(I.onError, "Expected `onError` callback to be provided."), g.onerror = () => {
+    return this.isHttp && "begin" in I && "end" in I ? (g.setRequestHeader("Range", `bytes=${I.begin}-${I.end - 1}`), A.expectedStatus = RC) : A.expectedStatus = tC, g.responseType = "arraybuffer", sI(I.onError, "Expected `onError` callback to be provided."), g.onerror = () => {
       I.onError(g.status);
     }, g.onreadystatechange = this.onStateChange.bind(this, C), g.onprogress = this.onProgress.bind(this, C), A.onHeadersReceived = I.onHeadersReceived, A.onDone = I.onDone, A.onError = I.onError, A.onProgress = I.onProgress, g.send(null), C;
   }
@@ -6984,7 +6984,7 @@ class ri {
       s ? C.onDone({
         begin: parseInt(s[1], 10),
         chunk: Z
-      }) : (x('Missing or invalid "Content-Range" header.'), C.onError(0));
+      }) : (O('Missing or invalid "Content-Range" header.'), C.onError(0));
     } else Z ? C.onDone({
       begin: 0,
       chunk: Z
@@ -7010,7 +7010,7 @@ class vi {
     g >= 0 && this._rangeRequestReaders.splice(g, 1);
   }
   getFullReader() {
-    return GI(!this._fullRequestReader, "PDFNetworkStream.getFullReader can only be called once."), this._fullRequestReader = new Ei(this._manager, this._source), this._fullRequestReader;
+    return sI(!this._fullRequestReader, "PDFNetworkStream.getFullReader can only be called once."), this._fullRequestReader = new Ei(this._manager, this._source), this._fullRequestReader;
   }
   getRangeReader(I, g) {
     const C = new Pi(this._manager, I, g);
@@ -7196,13 +7196,13 @@ function _i(G) {
 }
 class qi {
   constructor(I) {
-    this.source = I, this.url = _i(I.url), GI(this.url.protocol === "file:", "PDFNodeStream only supports file:// URLs."), this._fullRequestReader = null, this._rangeRequestReaders = [];
+    this.source = I, this.url = _i(I.url), sI(this.url.protocol === "file:", "PDFNodeStream only supports file:// URLs."), this._fullRequestReader = null, this._rangeRequestReaders = [];
   }
   get _progressiveDataLength() {
     return this._fullRequestReader?._loaded ?? 0;
   }
   getFullReader() {
-    return GI(!this._fullRequestReader, "PDFNodeStream.getFullReader can only be called once."), this._fullRequestReader = new $i(this), this._fullRequestReader;
+    return sI(!this._fullRequestReader, "PDFNodeStream.getFullReader can only be called once."), this._fullRequestReader = new $i(this), this._fullRequestReader;
   }
   getRangeReader(I, g) {
     if (g <= this._progressiveDataLength)
@@ -7277,7 +7277,7 @@ class $i {
       I.destroy(), this._done = !0, this._readCapability.resolve();
     }), I.on("error", (g) => {
       this._error(g);
-    }), !this._isStreamingSupported && this._isRangeSupported && this._error(new EI("streaming is disabled")), this._storedError && this._readableStream.destroy(this._storedError);
+    }), !this._isStreamingSupported && this._isRangeSupported && this._error(new vI("streaming is disabled")), this._storedError && this._readableStream.destroy(this._storedError);
   }
 }
 class IZ {
@@ -7430,7 +7430,7 @@ class NI {
       pageX: i,
       pageY: Z
     } = C.rawDims;
-    this.#a = [1, 0, 0, -1, -i, Z + l], this.#d = A, this.#Z = l, NI.#X(), Cg(g, C), this.#I.promise.finally(() => {
+    this.#a = [1, 0, 0, -1, -i, Z + l], this.#d = A, this.#Z = l, NI.#X(), gg(g, C), this.#I.promise.finally(() => {
       NI.#R.delete(this), this.#l = null, this.#W = null;
     }).catch(() => {
     });
@@ -7440,7 +7440,7 @@ class NI {
       isWindows: I,
       isFirefox: g
     } = YI.platform;
-    return v(this, "fontFamilyMap", /* @__PURE__ */ new Map([["sans-serif", `${I && g ? "Calibri, " : ""}sans-serif`], ["monospace", `${I && g ? "Lucida Console, " : ""}monospace`]]));
+    return r(this, "fontFamilyMap", /* @__PURE__ */ new Map([["sans-serif", `${I && g ? "Calibri, " : ""}sans-serif`], ["monospace", `${I && g ? "Lucida Console, " : ""}monospace`]]));
   }
   render() {
     const I = () => {
@@ -7462,7 +7462,7 @@ class NI {
     onBefore: g = null
   }) {
     const C = I.scale * QI.pixelRatio, A = I.rotation;
-    if (A !== this.#m && (g?.(), this.#m = A, Cg(this.#G, {
+    if (A !== this.#m && (g?.(), this.#m = A, gg(this.#G, {
       rotation: A
     })), C !== this.#s) {
       g?.(), this.#s = C;
@@ -7476,7 +7476,7 @@ class NI {
     }
   }
   cancel() {
-    const I = new EI("TextLayer task cancelled.");
+    const I = new vI("TextLayer task cancelled.");
     this.#c?.cancel(I).catch(() => {
     }), this.#c = null, this.#I.reject(I);
   }
@@ -7493,7 +7493,7 @@ class NI {
     const g = this.#b, C = this.#w;
     for (const A of I) {
       if (g.length > gZ) {
-        x("Ignoring additional textDivs for performance reasons."), this.#C = !0;
+        O("Ignoring additional textDivs for performance reasons."), this.#C = !0;
         return;
       }
       if (A.str === void 0) {
@@ -7605,7 +7605,7 @@ class NI {
     const i = l.measureText(""), Z = i.fontBoundingBoxAscent, d = Math.abs(i.fontBoundingBoxDescent);
     l.canvas.width = l.canvas.height = 0;
     let s = 0.8;
-    return Z ? s = Z / (Z + d) : (YI.platform.isFirefox && x("Enable the `dom.textMetrics.fontBoundingBox.enabled` preference in `about:config` to improve TextLayer rendering."), g.ascent ? s = g.ascent : g.descent && (s = 1 + g.descent)), this.#Y.set(I, s), s;
+    return Z ? s = Z / (Z + d) : (YI.platform.isFirefox && O("Enable the `dom.textMetrics.fontBoundingBox.enabled` preference in `about:config` to improve TextLayer rendering."), g.ascent ? s = g.ascent : g.descent && (s = 1 + g.descent)), this.#Y.set(I, s), s;
   }
 }
 class yg {
@@ -7647,25 +7647,25 @@ function cl(G = {}) {
     docId: g
   } = I, C = G.url ? bi(G.url) : null, A = G.data ? mi(G.data) : null, l = G.httpHeaders || null, i = G.withCredentials === !0, Z = G.password ?? null, d = G.range instanceof bl ? G.range : null, s = Number.isInteger(G.rangeChunkSize) && G.rangeChunkSize > 0 ? G.rangeChunkSize : 2 ** 16;
   let c = G.worker instanceof Hg ? G.worker : null;
-  const b = G.verbosity, m = typeof G.docBaseUrl == "string" && !sC(G.docBaseUrl) ? G.docBaseUrl : null, B = Lg(G.cMapUrl), o = G.cMapPacked !== !1, W = G.CMapReaderFactory || (nI ? Vi : VA), Y = Lg(G.iccUrl), w = Lg(G.standardFontDataUrl), a = G.StandardFontDataFactory || (nI ? Ni : NA), h = Lg(G.wasmUrl), N = G.WasmFactory || (nI ? ni : nA), V = G.stopAtErrors !== !0, n = Number.isInteger(G.maxImageSize) && G.maxImageSize > -1 ? G.maxImageSize : -1, t = G.isEvalSupported !== !1, u = typeof G.isOffscreenCanvasSupported == "boolean" ? G.isOffscreenCanvasSupported : !nI, e = typeof G.isImageDecoderSupported == "boolean" ? G.isImageDecoderSupported : !nI && (YI.platform.isFirefox || !globalThis.chrome), F = Number.isInteger(G.canvasMaxAreaInBytes) ? G.canvasMaxAreaInBytes : -1, D = typeof G.disableFontFace == "boolean" ? G.disableFontFace : nI, j = G.fontExtraProperties === !0, P = G.enableXfa === !0, r = G.ownerDocument || globalThis.document, gI = G.disableRange === !0, K = G.disableStream === !0, z = G.disableAutoFetch === !0, hI = G.pdfBug === !0, H = G.CanvasFactory || (nI ? ai : wi), J = G.FilterFactory || (nI ? hi : Yi), y = G.enableHWA === !0, X = G.useWasm !== !1, R = d ? d.length : G.length ?? NaN, p = typeof G.useSystemFonts == "boolean" ? G.useSystemFonts : !nI && !D, M = typeof G.useWorkerFetch == "boolean" ? G.useWorkerFetch : !!(W === VA && a === NA && N === nA && B && w && h && tg(B, document.baseURI) && tg(w, document.baseURI) && tg(h, document.baseURI)), U = null;
+  const b = G.verbosity, m = typeof G.docBaseUrl == "string" && !sC(G.docBaseUrl) ? G.docBaseUrl : null, B = Lg(G.cMapUrl), o = G.cMapPacked !== !1, W = G.CMapReaderFactory || (nI ? Vi : VA), Y = Lg(G.iccUrl), w = Lg(G.standardFontDataUrl), a = G.StandardFontDataFactory || (nI ? Ni : NA), h = Lg(G.wasmUrl), N = G.WasmFactory || (nI ? ni : nA), V = G.stopAtErrors !== !0, n = Number.isInteger(G.maxImageSize) && G.maxImageSize > -1 ? G.maxImageSize : -1, t = G.isEvalSupported !== !1, e = typeof G.isOffscreenCanvasSupported == "boolean" ? G.isOffscreenCanvasSupported : !nI, u = typeof G.isImageDecoderSupported == "boolean" ? G.isImageDecoderSupported : !nI && (YI.platform.isFirefox || !globalThis.chrome), K = Number.isInteger(G.canvasMaxAreaInBytes) ? G.canvasMaxAreaInBytes : -1, z = typeof G.disableFontFace == "boolean" ? G.disableFontFace : nI, x = G.fontExtraProperties === !0, P = G.enableXfa === !0, U = G.ownerDocument || globalThis.document, II = G.disableRange === !0, S = G.disableStream === !0, F = G.disableAutoFetch === !0, WI = G.pdfBug === !0, M = G.CanvasFactory || (nI ? ai : wi), X = G.FilterFactory || (nI ? hi : Yi), y = G.enableHWA === !0, H = G.useWasm !== !1, R = d ? d.length : G.length ?? NaN, J = typeof G.useSystemFonts == "boolean" ? G.useSystemFonts : !nI && !z, D = typeof G.useWorkerFetch == "boolean" ? G.useWorkerFetch : !!(W === VA && a === NA && N === nA && B && w && h && tg(B, document.baseURI) && tg(w, document.baseURI) && tg(h, document.baseURI)), v = null;
   Ol(b);
-  const Q = {
-    canvasFactory: new H({
-      ownerDocument: r,
+  const T = {
+    canvasFactory: new M({
+      ownerDocument: U,
       enableHWA: y
     }),
-    filterFactory: new J({
+    filterFactory: new X({
       docId: g,
-      ownerDocument: r
+      ownerDocument: U
     }),
-    cMapReaderFactory: M ? null : new W({
+    cMapReaderFactory: D ? null : new W({
       baseUrl: B,
       isCompressed: o
     }),
-    standardFontDataFactory: M ? null : new a({
+    standardFontDataFactory: D ? null : new a({
       baseUrl: w
     }),
-    wasmFactory: M ? null : new N({
+    wasmFactory: D ? null : new N({
       baseUrl: h
     })
   };
@@ -7673,39 +7673,39 @@ function cl(G = {}) {
     verbosity: b,
     port: Wg.workerPort
   }), I._worker = c);
-  const f = {
+  const mI = {
     docId: g,
     apiVersion: "5.4.54",
     data: A,
     password: Z,
-    disableAutoFetch: z,
+    disableAutoFetch: F,
     rangeChunkSize: s,
     length: R,
     docBaseUrl: m,
     enableXfa: P,
     evaluatorOptions: {
       maxImageSize: n,
-      disableFontFace: D,
+      disableFontFace: z,
       ignoreErrors: V,
       isEvalSupported: t,
-      isOffscreenCanvasSupported: u,
-      isImageDecoderSupported: e,
-      canvasMaxAreaInBytes: F,
-      fontExtraProperties: j,
-      useSystemFonts: p,
-      useWasm: X,
-      useWorkerFetch: M,
+      isOffscreenCanvasSupported: e,
+      isImageDecoderSupported: u,
+      canvasMaxAreaInBytes: K,
+      fontExtraProperties: x,
+      useSystemFonts: J,
+      useWasm: H,
+      useWorkerFetch: D,
       cMapUrl: B,
       iccUrl: Y,
       standardFontDataUrl: w,
       wasmUrl: h
     }
-  }, eI = {
-    ownerDocument: r,
-    pdfBug: hI,
-    styleElement: U,
+  }, aI = {
+    ownerDocument: U,
+    pdfBug: WI,
+    styleElement: v,
     loadingParams: {
-      disableAutoFetch: z,
+      disableAutoFetch: F,
       enableXfa: P
     }
   };
@@ -7714,34 +7714,34 @@ function cl(G = {}) {
       throw new Error("Loading aborted");
     if (c.destroyed)
       throw new Error("Worker was destroyed");
-    const BI = c.messageHandler.sendWithPromise("GetDocRequest", f, A ? [A.buffer] : null);
-    let WI;
+    const VI = c.messageHandler.sendWithPromise("GetDocRequest", mI, A ? [A.buffer] : null);
+    let GI;
     if (d)
-      WI = new ki(d, {
-        disableRange: gI,
-        disableStream: K
+      GI = new ki(d, {
+        disableRange: II,
+        disableStream: S
       });
     else if (!A) {
       if (!C)
         throw new Error("getDocument - no `url` parameter provided.");
-      const VI = tg(C) ? ji : nI ? qi : vi;
-      WI = new VI({
+      const pI = tg(C) ? ji : nI ? qi : vi;
+      GI = new pI({
         url: C,
         length: R,
         httpHeaders: l,
         withCredentials: i,
         rangeChunkSize: s,
-        disableRange: gI,
-        disableStream: K
+        disableRange: II,
+        disableStream: S
       });
     }
-    return BI.then((VI) => {
+    return VI.then((pI) => {
       if (I.destroyed)
         throw new Error("Loading aborted");
       if (c.destroyed)
         throw new Error("Worker was destroyed");
-      const jI = new Rg(g, VI, c.port), Yg = new iZ(jI, I, WI, eI, Q, y);
-      I._transport = Yg, jI.send("Ready", null);
+      const ig = new Rg(g, pI, c.port), Yg = new iZ(ig, I, GI, aI, T, y);
+      I._transport = Yg, ig.send("Ready", null);
     });
   }).catch(I._capability.reject), I;
 }
@@ -7817,7 +7817,7 @@ class bl {
     this.#I.resolve();
   }
   requestDataRange(I, g) {
-    _("Abstract method PDFDataRangeTransport.requestDataRange");
+    f("Abstract method PDFDataRangeTransport.requestDataRange");
   }
   abort() {
   }
@@ -7842,7 +7842,7 @@ class AZ {
     return this._pdfInfo.fingerprints;
   }
   get isPureXfa() {
-    return v(this, "isPureXfa", !!this._transport._htmlForXfa);
+    return r(this, "isPureXfa", !!this._transport._htmlForXfa);
   }
   get allXfaHtml() {
     return this._transport._htmlForXfa;
@@ -7986,7 +7986,7 @@ class lZ {
     return this._transport.filterFactory;
   }
   get isPureXfa() {
-    return v(this, "isPureXfa", !!this._transport._htmlForXfa);
+    return r(this, "isPureXfa", !!this._transport._htmlForXfa);
   }
   async getXfa() {
     return this._transport._htmlForXfa?.children[this._pageIndex] || null;
@@ -7996,7 +7996,7 @@ class lZ {
     canvas: g = I.canvas,
     viewport: C,
     intent: A = "display",
-    annotationMode: l = rI.ENABLE,
+    annotationMode: l = UI.ENABLE,
     transform: i = null,
     background: Z = null,
     optionalContentConfigPromise: d = null,
@@ -8013,7 +8013,7 @@ class lZ {
     this.#I = !1, d ||= this._transport.getOptionalContentConfig(o);
     let Y = this._intentStates.get(W);
     Y || (Y = /* @__PURE__ */ Object.create(null), this._intentStates.set(W, Y)), Y.streamReaderCancelTimeout && (clearTimeout(Y.streamReaderCancelTimeout), Y.streamReaderCancelTimeout = null);
-    const w = !!(o & uI.PRINT);
+    const w = !!(o & HI.PRINT);
     Y.displayReadyCapability || (Y.displayReadyCapability = Promise.withResolvers(), Y.operatorList = {
       fnArray: [],
       argsArray: [],
@@ -8063,7 +8063,7 @@ class lZ {
   }
   getOperatorList({
     intent: I = "display",
-    annotationMode: g = rI.ENABLE,
+    annotationMode: g = UI.ENABLE,
     printAnnotationStorage: C = null,
     isEditing: A = !1
   } = {}) {
@@ -8232,7 +8232,7 @@ class lZ {
           return;
         }
       }
-      if (I.streamReader.cancel(new EI(g.message)).catch(() => {
+      if (I.streamReader.cancel(new vI(g.message)).catch(() => {
       }), I.streamReader = null, !this._transport.destroyed) {
         for (const [A, l] of this._intentStates)
           if (l === I) {
@@ -8247,45 +8247,45 @@ class lZ {
     return this._stats;
   }
 }
-var vI, pI, UI, qI, lC, $I, Ig, RI, fg, ml, Bl, eg, og, _g;
-const $ = class $ {
+var rI, SI, xI, _I, lC, qI, $I, RI, fg, ml, Bl, eg, og, _g;
+const q = class q {
   constructor({
     name: I = null,
     port: g = null,
     verbosity: C = xl()
   } = {}) {
     FI(this, RI);
-    FI(this, vI, Promise.withResolvers());
-    FI(this, pI, null);
-    FI(this, UI, null);
-    FI(this, qI, null);
+    FI(this, rI, Promise.withResolvers());
+    FI(this, SI, null);
+    FI(this, xI, null);
+    FI(this, _I, null);
     if (this.name = I, this.destroyed = !1, this.verbosity = C, g) {
-      if (q($, Ig).has(g))
+      if (_(q, $I).has(g))
         throw new Error("Cannot use more than one PDFWorker per port.");
-      q($, Ig).set(g, this), zI(this, RI, ml).call(this, g);
+      _(q, $I).set(g, this), zI(this, RI, ml).call(this, g);
     } else
       zI(this, RI, Bl).call(this);
   }
   get promise() {
-    return q(this, vI).promise;
+    return _(this, rI).promise;
   }
   get port() {
-    return q(this, UI);
+    return _(this, xI);
   }
   get messageHandler() {
-    return q(this, pI);
+    return _(this, SI);
   }
   destroy() {
-    this.destroyed = !0, q(this, qI)?.terminate(), XI(this, qI, null), q($, Ig).delete(q(this, UI)), XI(this, UI, null), q(this, pI)?.destroy(), XI(this, pI, null);
+    this.destroyed = !0, _(this, _I)?.terminate(), eI(this, _I, null), _(q, $I).delete(_(this, xI)), eI(this, xI, null), _(this, SI)?.destroy(), eI(this, SI, null);
   }
   static create(I) {
-    const g = q(this, Ig).get(I?.port);
+    const g = _(this, $I).get(I?.port);
     if (g) {
       if (g._pendingDestroy)
         throw new Error("PDFWorker.create - the worker is being destroyed.\nPlease remember to await `PDFDocumentLoadingTask.destroy()`-calls.");
       return g;
     }
-    return new $(I);
+    return new q(I);
   }
   static get workerSrc() {
     if (Wg.workerSrc)
@@ -8293,37 +8293,37 @@ const $ = class $ {
     throw new Error('No "GlobalWorkerOptions.workerSrc" specified.');
   }
   static get _setupFakeWorkerGlobal() {
-    return v(this, "_setupFakeWorkerGlobal", (async () => q(this, og, _g) ? q(this, og, _g) : (await import(
+    return r(this, "_setupFakeWorkerGlobal", (async () => _(this, og, _g) ? _(this, og, _g) : (await import(
       /*webpackIgnore: true*/
       /*@vite-ignore*/
       this.workerSrc
     )).WorkerMessageHandler)());
   }
 };
-vI = new WeakMap(), pI = new WeakMap(), UI = new WeakMap(), qI = new WeakMap(), lC = new WeakMap(), $I = new WeakMap(), Ig = new WeakMap(), RI = new WeakSet(), fg = function() {
-  q(this, vI).resolve(), q(this, pI).send("configure", {
+rI = new WeakMap(), SI = new WeakMap(), xI = new WeakMap(), _I = new WeakMap(), lC = new WeakMap(), qI = new WeakMap(), $I = new WeakMap(), RI = new WeakSet(), fg = function() {
+  _(this, rI).resolve(), _(this, SI).send("configure", {
     verbosity: this.verbosity
   });
 }, ml = function(I) {
-  XI(this, UI, I), XI(this, pI, new Rg("main", "worker", I)), q(this, pI).on("ready", () => {
+  eI(this, xI, I), eI(this, SI, new Rg("main", "worker", I)), _(this, SI).on("ready", () => {
   }), zI(this, RI, fg).call(this);
 }, Bl = function() {
-  if (q($, $I) || q($, og, _g)) {
+  if (_(q, qI) || _(q, og, _g)) {
     zI(this, RI, eg).call(this);
     return;
   }
   let {
     workerSrc: I
-  } = $;
+  } = q;
   try {
-    $._isSameOrigin(window.location, I) || (I = $._createCDNWrapper(new URL(I, window.location).href));
+    q._isSameOrigin(window.location, I) || (I = q._createCDNWrapper(new URL(I, window.location).href));
     const g = new Worker(I, {
       type: "module"
     }), C = new Rg("main", "worker", g), A = () => {
-      l.abort(), C.destroy(), g.terminate(), this.destroyed ? q(this, vI).reject(new Error("Worker was destroyed")) : zI(this, RI, eg).call(this);
+      l.abort(), C.destroy(), g.terminate(), this.destroyed ? _(this, rI).reject(new Error("Worker was destroyed")) : zI(this, RI, eg).call(this);
     }, l = new AbortController();
     g.addEventListener("error", () => {
-      q(this, qI) || A();
+      _(this, _I) || A();
     }, {
       signal: l.signal
     }), C.on("test", (Z) => {
@@ -8331,7 +8331,7 @@ vI = new WeakMap(), pI = new WeakMap(), UI = new WeakMap(), qI = new WeakMap(), 
         A();
         return;
       }
-      XI(this, pI, C), XI(this, UI, g), XI(this, qI, g), zI(this, RI, fg).call(this);
+      eI(this, SI, C), eI(this, xI, g), eI(this, _I, g), zI(this, RI, fg).call(this);
     }), C.on("ready", (Z) => {
       if (l.abort(), this.destroyed) {
         A();
@@ -8354,17 +8354,17 @@ vI = new WeakMap(), pI = new WeakMap(), UI = new WeakMap(), qI = new WeakMap(), 
   }
   zI(this, RI, eg).call(this);
 }, eg = function() {
-  q($, $I) || (x("Setting up fake worker."), XI($, $I, !0)), $._setupFakeWorkerGlobal.then((I) => {
+  _(q, qI) || (O("Setting up fake worker."), eI(q, qI, !0)), q._setupFakeWorkerGlobal.then((I) => {
     if (this.destroyed) {
-      q(this, vI).reject(new Error("Worker was destroyed"));
+      _(this, rI).reject(new Error("Worker was destroyed"));
       return;
     }
     const g = new oi();
-    XI(this, UI, g);
-    const C = `fake${BA($, lC)._++}`, A = new Rg(C + "_worker", C, g);
-    I.setup(A, g), XI(this, pI, new Rg(C, C + "_worker", g)), zI(this, RI, fg).call(this);
+    eI(this, xI, g);
+    const C = `fake${BA(q, lC)._++}`, A = new Rg(C + "_worker", C, g);
+    I.setup(A, g), eI(this, SI, new Rg(C, C + "_worker", g)), zI(this, RI, fg).call(this);
   }).catch((I) => {
-    q(this, vI).reject(new Error(`Setting up fake worker failed: "${I.message}".`));
+    _(this, rI).reject(new Error(`Setting up fake worker failed: "${I.message}".`));
   });
 }, og = new WeakSet(), _g = function() {
   try {
@@ -8372,23 +8372,23 @@ vI = new WeakMap(), pI = new WeakMap(), UI = new WeakMap(), qI = new WeakMap(), 
   } catch {
     return null;
   }
-}, FI($, og), FI($, lC, 0), FI($, $I, !1), FI($, Ig, /* @__PURE__ */ new WeakMap()), nI && (XI($, $I, !0), Wg.workerSrc ||= "./pdf.worker.mjs"), $._isSameOrigin = (I, g) => {
+}, FI(q, og), FI(q, lC, 0), FI(q, qI, !1), FI(q, $I, /* @__PURE__ */ new WeakMap()), nI && (eI(q, qI, !0), Wg.workerSrc ||= "./pdf.worker.mjs"), q._isSameOrigin = (I, g) => {
   const C = URL.parse(I);
   if (!C?.origin || C.origin === "null")
     return !1;
   const A = new URL(g, C);
   return C.origin === A.origin;
-}, $._createCDNWrapper = (I) => {
+}, q._createCDNWrapper = (I) => {
   const g = `await import("${I}");`;
   return URL.createObjectURL(new Blob([g], {
     type: "text/javascript"
   }));
-}, $.fromPort = (I) => {
+}, q.fromPort = (I) => {
   if (Ci("`PDFWorker.fromPort` - please use `PDFWorker.create` instead."), !I?.port)
     throw new Error("PDFWorker.fromPort - invalid method signature.");
-  return $.create(I);
+  return q.create(I);
 };
-let Hg = $;
+let Hg = q;
 class iZ {
   #I = /* @__PURE__ */ new Map();
   #g = /* @__PURE__ */ new Map();
@@ -8409,39 +8409,39 @@ class iZ {
     return this.#I.set(I, A), A;
   }
   get annotationStorage() {
-    return v(this, "annotationStorage", new qC());
+    return r(this, "annotationStorage", new qC());
   }
-  getRenderingIntent(I, g = rI.ENABLE, C = null, A = !1, l = !1) {
-    let i = uI.DISPLAY, Z = kC;
+  getRenderingIntent(I, g = UI.ENABLE, C = null, A = !1, l = !1) {
+    let i = HI.DISPLAY, Z = kC;
     switch (I) {
       case "any":
-        i = uI.ANY;
+        i = HI.ANY;
         break;
       case "display":
         break;
       case "print":
-        i = uI.PRINT;
+        i = HI.PRINT;
         break;
       default:
-        x(`getRenderingIntent - invalid intent: ${I}`);
+        O(`getRenderingIntent - invalid intent: ${I}`);
     }
-    const d = i & uI.PRINT && C instanceof _A ? C : this.annotationStorage;
+    const d = i & HI.PRINT && C instanceof _A ? C : this.annotationStorage;
     switch (g) {
-      case rI.DISABLE:
-        i += uI.ANNOTATIONS_DISABLE;
+      case UI.DISABLE:
+        i += HI.ANNOTATIONS_DISABLE;
         break;
-      case rI.ENABLE:
+      case UI.ENABLE:
         break;
-      case rI.ENABLE_FORMS:
-        i += uI.ANNOTATIONS_FORMS;
+      case UI.ENABLE_FORMS:
+        i += HI.ANNOTATIONS_FORMS;
         break;
-      case rI.ENABLE_STORAGE:
-        i += uI.ANNOTATIONS_STORAGE, Z = d.serializable;
+      case UI.ENABLE_STORAGE:
+        i += HI.ANNOTATIONS_STORAGE, Z = d.serializable;
         break;
       default:
-        x(`getRenderingIntent - invalid annotationMode: ${g}`);
+        O(`getRenderingIntent - invalid annotationMode: ${g}`);
     }
-    A && (i += uI.IS_EDITING), l && (i += uI.OPLIST);
+    A && (i += HI.IS_EDITING), l && (i += HI.OPLIST);
     const {
       ids: s,
       hash: c
@@ -8463,7 +8463,7 @@ class iZ {
     this.#g.clear(), this.#C.clear(), this.#A.clear(), this.hasOwnProperty("annotationStorage") && this.annotationStorage.resetModified();
     const g = this.messageHandler.sendWithPromise("Terminate", null);
     return I.push(g), Promise.all(I).then(() => {
-      this.commonObjs.clear(), this.fontLoader.clear(), this.#I.clear(), this.filterFactory.destroy(), NI.cleanup(), this._networkStream?.cancelAllRequests(new EI("Worker was terminated.")), this.messageHandler?.destroy(), this.messageHandler = null, this.destroyCapability.resolve();
+      this.commonObjs.clear(), this.fontLoader.clear(), this.#I.clear(), this.filterFactory.destroy(), NI.cleanup(), this._networkStream?.cancelAllRequests(new vI("Worker was terminated.")), this.messageHandler?.destroy(), this.messageHandler = null, this.destroyCapability.resolve();
     }, this.destroyCapability.reject), this.destroyCapability.promise;
   }
   setupMessageHandler() {
@@ -8472,7 +8472,7 @@ class iZ {
       loadingTask: g
     } = this;
     I.on("GetReader", (C, A) => {
-      GI(this._networkStream, "GetReader - no `IPDFStream` instance available."), this._fullReader = this._networkStream.getFullReader(), this._fullReader.onProgress = (l) => {
+      sI(this._networkStream, "GetReader - no `IPDFStream` instance available."), this._fullReader = this._networkStream.getFullReader(), this._fullReader.onProgress = (l) => {
         this._lastProgress = {
           loaded: l.loaded,
           total: l.total
@@ -8486,7 +8486,7 @@ class iZ {
             A.close();
             return;
           }
-          GI(l instanceof ArrayBuffer, "GetReader - expected an ArrayBuffer."), A.enqueue(new Uint8Array(l), 1, [l]);
+          sI(l instanceof ArrayBuffer, "GetReader - expected an ArrayBuffer."), A.enqueue(new Uint8Array(l), 1, [l]);
         }).catch((l) => {
           A.error(l);
         });
@@ -8514,7 +8514,7 @@ class iZ {
         contentLength: i
       };
     }), I.on("GetRangeReader", (C, A) => {
-      GI(this._networkStream, "GetRangeReader - no `IPDFStream` instance available.");
+      sI(this._networkStream, "GetRangeReader - no `IPDFStream` instance available.");
       const l = this._networkStream.getRangeReader(C.begin, C.end);
       if (!l) {
         A.close();
@@ -8529,7 +8529,7 @@ class iZ {
             A.close();
             return;
           }
-          GI(i instanceof ArrayBuffer, "GetRangeReader - expected an ArrayBuffer."), A.enqueue(new Uint8Array(i), 1, [i]);
+          sI(i instanceof ArrayBuffer, "GetRangeReader - expected an ArrayBuffer."), A.enqueue(new Uint8Array(i), 1, [i]);
         }).catch((i) => {
           A.error(i);
         });
@@ -8544,12 +8544,12 @@ class iZ {
     }) => {
       this._numPages = C.numPages, this._htmlForXfa = C.htmlForXfa, delete C.htmlForXfa, g._capability.resolve(new AZ(C, this));
     }), I.on("DocException", (C) => {
-      g._capability.reject(yI(C));
+      g._capability.reject(XI(C));
     }), I.on("PasswordRequest", (C) => {
       this.#i = Promise.withResolvers();
       try {
         if (!g.onPassword)
-          throw yI(C);
+          throw XI(C);
         const A = (l) => {
           l instanceof Error ? this.#i.reject(l) : this.#i.resolve({
             password: l
@@ -8576,7 +8576,7 @@ class iZ {
         case "Font":
           if ("error" in l) {
             const s = l.error;
-            x(`Error during font loading: ${s}`), this.commonObjs.resolve(C, s);
+            O(`Error during font loading: ${s}`), this.commonObjs.resolve(C, s);
             break;
           }
           const i = this._params.pdfBug && globalThis.FontInspector?.enabled ? (s, c) => globalThis.FontInspector.fontAdded(s, c) : null, Z = new ci(l, i);
@@ -8590,7 +8590,7 @@ class iZ {
           const {
             imageRef: d
           } = l;
-          GI(d, "The imageRef must be defined.");
+          sI(d, "The imageRef must be defined.");
           for (const s of this.#g.values())
             for (const [, c] of s.objs)
               if (c?.ref === d)
@@ -8641,7 +8641,7 @@ class iZ {
     return this.messageHandler.sendWithPromise("GetData", null);
   }
   saveDocument() {
-    this.annotationStorage.size <= 0 && x("saveDocument called while `annotationStorage` is empty, please use the getData-method instead.");
+    this.annotationStorage.size <= 0 && O("saveDocument called while `annotationStorage` is empty, please use the getData-method instead.");
     const {
       map: I,
       transfer: g
@@ -8873,7 +8873,7 @@ class bg {
   }
 }
 const dZ = "5.4.54", sZ = "295fb3ec4";
-class KI {
+class DI {
   #I = null;
   #g = null;
   #C;
@@ -8886,13 +8886,13 @@ class KI {
   #G = null;
   static #m = null;
   static get _keyboardManager() {
-    return v(this, "_keyboardManager", new pg([[["Escape", "mac+Escape"], KI.prototype._hideDropdownFromKeyboard], [[" ", "mac+ "], KI.prototype._colorSelectFromKeyboard], [["ArrowDown", "ArrowRight", "mac+ArrowDown", "mac+ArrowRight"], KI.prototype._moveToNext], [["ArrowUp", "ArrowLeft", "mac+ArrowUp", "mac+ArrowLeft"], KI.prototype._moveToPrevious], [["Home", "mac+Home"], KI.prototype._moveToBeginning], [["End", "mac+End"], KI.prototype._moveToEnd]]));
+    return r(this, "_keyboardManager", new pg([[["Escape", "mac+Escape"], DI.prototype._hideDropdownFromKeyboard], [[" ", "mac+ "], DI.prototype._colorSelectFromKeyboard], [["ArrowDown", "ArrowRight", "mac+ArrowDown", "mac+ArrowRight"], DI.prototype._moveToNext], [["ArrowUp", "ArrowLeft", "mac+ArrowUp", "mac+ArrowLeft"], DI.prototype._moveToPrevious], [["Home", "mac+Home"], DI.prototype._moveToBeginning], [["End", "mac+End"], DI.prototype._moveToEnd]]));
   }
   constructor({
     editor: I = null,
     uiManager: g = null
   }) {
-    I ? (this.#l = !1, this.#Z = I) : this.#l = !0, this.#G = I?._uiManager || g, this.#d = this.#G._eventBus, this.#C = I?.color?.toUpperCase() || this.#G?.highlightColors.values().next().value || "#FFFF98", KI.#m ||= Object.freeze({
+    I ? (this.#l = !1, this.#Z = I) : this.#l = !0, this.#G = I?._uiManager || g, this.#d = this.#G._eventBus, this.#C = I?.color?.toUpperCase() || this.#G?.highlightColors.values().next().value || "#FFFF98", DI.#m ||= Object.freeze({
       blue: "pdfjs-editor-colorpicker-blue",
       green: "pdfjs-editor-colorpicker-green",
       pink: "pdfjs-editor-colorpicker-pink",
@@ -8918,12 +8918,12 @@ class KI {
   }
   #s() {
     const I = document.createElement("div"), g = this.#G._signal;
-    I.addEventListener("contextmenu", SI, {
+    I.addEventListener("contextmenu", KI, {
       signal: g
     }), I.className = "dropdown", I.role = "listbox", I.ariaMultiSelectable = "false", I.ariaOrientation = "vertical", I.setAttribute("data-l10n-id", "pdfjs-editor-colorpicker-dropdown"), this.#Z && (I.id = `${this.#Z.id}_colorpicker_dropdown`);
     for (const [C, A] of this.#G.highlightColors) {
       const l = document.createElement("button");
-      l.tabIndex = "0", l.role = "option", l.setAttribute("data-color", A), l.title = C, l.setAttribute("data-l10n-id", KI.#m[C]);
+      l.tabIndex = "0", l.role = "option", l.setAttribute("data-color", A), l.title = C, l.setAttribute("data-l10n-id", DI.#m[C]);
       const i = document.createElement("span");
       l.append(i), i.className = "swatch", i.style.backgroundColor = A, l.ariaSelected = A === this.#C, l.addEventListener("click", this.#W.bind(this, A), {
         signal: g
@@ -8981,7 +8981,7 @@ class KI {
     this.#A.lastChild?.focus();
   }
   #w(I) {
-    KI._keyboardManager.exec(this, I);
+    DI._keyboardManager.exec(this, I);
   }
   #B(I) {
     if (this.#o) {
@@ -9129,12 +9129,12 @@ class GZ {
     return this._createSVG(I);
   }
   _createSVG(I) {
-    _("Abstract method `_createSVG` called.");
+    f("Abstract method `_createSVG` called.");
   }
 }
 class gC extends GZ {
   _createSVG(I) {
-    return document.createElementNS(OI, I);
+    return document.createElementNS(jI, I);
   }
 }
 class Wl {
@@ -9286,15 +9286,15 @@ class Wl {
     I.div.style.transform = g, I.div.hidden = !1;
   }
 }
-const cZ = 9, Ag = /* @__PURE__ */ new WeakSet(), bZ = (/* @__PURE__ */ new Date()).getTimezoneOffset() * 60 * 1e3;
+const cZ = 9, Cg = /* @__PURE__ */ new WeakSet(), bZ = (/* @__PURE__ */ new Date()).getTimezoneOffset() * 60 * 1e3;
 class FA {
   static create(I) {
     switch (I.data.annotationType) {
-      case dI.LINK:
+      case ZI.LINK:
         return new AA(I);
-      case dI.TEXT:
+      case ZI.TEXT:
         return new mZ(I);
-      case dI.WIDGET:
+      case ZI.WIDGET:
         switch (I.data.fieldType) {
           case "Tx":
             return new BZ(I);
@@ -9305,43 +9305,43 @@ class FA {
           case "Sig":
             return new WZ(I);
         }
-        return new ig(I);
-      case dI.POPUP:
+        return new lg(I);
+      case ZI.POPUP:
         return new QC(I);
-      case dI.FREETEXT:
+      case ZI.FREETEXT:
         return new wl(I);
-      case dI.LINE:
+      case ZI.LINE:
         return new aZ(I);
-      case dI.SQUARE:
+      case ZI.SQUARE:
         return new VZ(I);
-      case dI.CIRCLE:
+      case ZI.CIRCLE:
         return new NZ(I);
-      case dI.POLYLINE:
+      case ZI.POLYLINE:
         return new Yl(I);
-      case dI.CARET:
+      case ZI.CARET:
         return new tZ(I);
-      case dI.INK:
+      case ZI.INK:
         return new lA(I);
-      case dI.POLYGON:
+      case ZI.POLYGON:
         return new nZ(I);
-      case dI.HIGHLIGHT:
+      case ZI.HIGHLIGHT:
         return new hl(I);
-      case dI.UNDERLINE:
+      case ZI.UNDERLINE:
         return new RZ(I);
-      case dI.SQUIGGLY:
+      case ZI.SQUIGGLY:
         return new eZ(I);
-      case dI.STRIKEOUT:
+      case ZI.STRIKEOUT:
         return new XZ(I);
-      case dI.STAMP:
+      case ZI.STAMP:
         return new al(I);
-      case dI.FILEATTACHMENT:
+      case ZI.FILEATTACHMENT:
         return new yZ(I);
       default:
-        return new lI(I);
+        return new AI(I);
     }
   }
 }
-class lI {
+class AI {
   #I = null;
   #g = !1;
   #C = null;
@@ -9362,7 +9362,7 @@ class lI {
     return this.data.isEditable;
   }
   get hasPopupData() {
-    return lI._hasPopupData(this.data);
+    return AI._hasPopupData(this.data);
   }
   updateEdited(I) {
     if (!this.container)
@@ -9411,7 +9411,7 @@ class lI {
         viewport: A
       }
     } = this, l = document.createElement("section");
-    l.setAttribute("data-annotation-id", g.id), !(this instanceof ig) && !(this instanceof AA) && (l.tabIndex = 0);
+    l.setAttribute("data-annotation-id", g.id), !(this instanceof lg) && !(this instanceof AA) && (l.tabIndex = 0);
     const {
       style: i
     } = l;
@@ -9443,10 +9443,10 @@ class lI {
           i.borderStyle = "dashed";
           break;
         case dg.BEVELED:
-          x("Unimplemented border style: beveled");
+          O("Unimplemented border style: beveled");
           break;
         case dg.INSET:
-          x("Unimplemented border style: inset");
+          O("Unimplemented border style: inset");
           break;
         case dg.UNDERLINE:
           i.borderBottomStyle = "solid";
@@ -9487,7 +9487,7 @@ class lI {
         [C]: pA[`${i}_rgb`](Z)
       });
     };
-    return v(this, "_commonActions", {
+    return r(this, "_commonActions", {
       display: (g) => {
         const {
           display: C
@@ -9610,8 +9610,8 @@ class lI {
     const B = c.createElement("clipPath"), o = `clippath_${this.data.id}`;
     B.setAttribute("id", o), B.setAttribute("clipPathUnits", "objectBoundingBox"), m.append(B);
     for (let W = 2, Y = I.length; W < Y; W += 8) {
-      const w = I[W], a = I[W + 1], h = I[W + 2], N = I[W + 3], V = c.createElement("rect"), n = (h - g) / d, t = (l - a) / s, u = (w - h) / d, e = (a - N) / s;
-      V.setAttribute("x", n), V.setAttribute("y", t), V.setAttribute("width", u), V.setAttribute("height", e), B.append(V), Z?.push(`<rect vector-effect="non-scaling-stroke" x="${n}" y="${t}" width="${u}" height="${e}"/>`);
+      const w = I[W], a = I[W + 1], h = I[W + 2], N = I[W + 3], V = c.createElement("rect"), n = (h - g) / d, t = (l - a) / s, e = (w - h) / d, u = (a - N) / s;
+      V.setAttribute("x", n), V.setAttribute("y", t), V.setAttribute("width", e), V.setAttribute("height", u), B.append(V), Z?.push(`<rect vector-effect="non-scaling-stroke" x="${n}" y="${t}" width="${e}" height="${u}"/>`);
     }
     this.#g && (Z.push("</g></svg>')"), i.backgroundImage = Z.join("")), this.container.append(b), this.container.style.clipPath = `url(#${o})`;
   }
@@ -9646,7 +9646,7 @@ class lI {
     return !!(this.#C || this.popup || this.data.popupRef);
   }
   render() {
-    _("Abstract method `AnnotationElement.render` called");
+    f("Abstract method `AnnotationElement.render` called");
   }
   _getElementsByName(I, g = null) {
     const C = [];
@@ -9661,8 +9661,8 @@ class lI {
           if (l === -1 || i === g)
             continue;
           const d = typeof Z == "string" ? Z : null, s = document.querySelector(`[data-element-id="${i}"]`);
-          if (s && !Ag.has(s)) {
-            x(`_getElementsByName - element not allowed: ${i}`);
+          if (s && !Cg.has(s)) {
+            O(`_getElementsByName - element not allowed: ${i}`);
             continue;
           }
           C.push({
@@ -9677,7 +9677,7 @@ class lI {
       const {
         exportValue: l
       } = A, i = A.getAttribute("data-element-id");
-      i !== g && Ag.has(A) && C.push({
+      i !== g && Cg.has(A) && C.push({
         id: i,
         exportValue: l,
         domElement: A
@@ -9727,7 +9727,7 @@ class lI {
     return this.data.rect[3] - this.data.rect[1];
   }
 }
-class AA extends lI {
+class AA extends AI {
   constructor(I, g = null) {
     super(I, {
       isRenderable: !0,
@@ -9777,7 +9777,7 @@ class AA extends lI {
   _bindResetFormAction(I, g) {
     const C = I.onclick;
     if (C || (I.href = this.linkService.getAnchorUrl("")), this.#I(), !this._fieldObjects) {
-      x('_bindResetFormAction - "resetForm" action not supported, ensure that the `fieldObjects` parameter is provided.'), C || (I.onclick = () => !1);
+      O('_bindResetFormAction - "resetForm" action not supported, ensure that the `fieldObjects` parameter is provided.'), C || (I.onclick = () => !1);
       return;
     }
     I.onclick = () => {
@@ -9836,8 +9836,8 @@ class AA extends lI {
         }
         const m = document.querySelector(`[data-element-id="${b}"]`);
         if (m) {
-          if (!Ag.has(m)) {
-            x(`_bindResetFormAction - element not allowed: ${b}`);
+          if (!Cg.has(m)) {
+            O(`_bindResetFormAction - element not allowed: ${b}`);
             continue;
           }
         } else continue;
@@ -9854,7 +9854,7 @@ class AA extends lI {
     };
   }
 }
-class mZ extends lI {
+class mZ extends AI {
   constructor(I) {
     super(I, {
       isRenderable: !0
@@ -9868,7 +9868,7 @@ class mZ extends lI {
     })), !this.data.popupRef && this.hasPopupData && this._createPopup(), this.container.append(I), this.container;
   }
 }
-class ig extends lI {
+class lg extends AI {
   render() {
     return this.container;
   }
@@ -9939,7 +9939,7 @@ class ig extends lI {
     g ? I.setAttribute("required", !0) : I.removeAttribute("required"), I.setAttribute("aria-required", g);
   }
 }
-class BZ extends ig {
+class BZ extends lg {
   constructor(I) {
     const g = I.renderForms || I.data.hasOwnCanvas || !I.data.hasAppearance && !!I.data.fieldValue;
     super(I, {
@@ -9976,7 +9976,7 @@ class BZ extends ig {
         commitKey: 1,
         focused: !1
       };
-      this.data.multiLine ? (C = document.createElement("textarea"), C.textContent = Z ?? l, this.data.doNotScroll && (C.style.overflowY = "hidden")) : (C = document.createElement("input"), C.type = this.data.password ? "password" : "text", C.setAttribute("value", Z ?? l), this.data.doNotScroll && (C.style.overflowX = "hidden")), this.data.hasOwnCanvas && (C.hidden = !0), Ag.add(C), C.setAttribute("data-element-id", g), C.disabled = this.data.readOnly, C.name = this.data.fieldName, C.tabIndex = 0;
+      this.data.multiLine ? (C = document.createElement("textarea"), C.textContent = Z ?? l, this.data.doNotScroll && (C.style.overflowY = "hidden")) : (C = document.createElement("input"), C.type = this.data.password ? "password" : "text", C.setAttribute("value", Z ?? l), this.data.doNotScroll && (C.style.overflowX = "hidden")), this.data.hasOwnCanvas && (C.hidden = !0), Cg.add(C), C.setAttribute("data-element-id", g), C.disabled = this.data.readOnly, C.name = this.data.fieldName, C.tabIndex = 0;
       const {
         datetimeFormat: s,
         datetimeType: c,
@@ -10169,14 +10169,14 @@ class BZ extends ig {
     return this._setTextStyle(C), this._setBackgroundColor(C), this._setDefaultPropertiesFromJS(C), this.container.append(C), this.container;
   }
 }
-class WZ extends ig {
+class WZ extends lg {
   constructor(I) {
     super(I, {
       isRenderable: !!I.data.hasOwnCanvas
     });
   }
 }
-class oZ extends ig {
+class oZ extends lg {
   constructor(I) {
     super(I, {
       isRenderable: I.renderForms
@@ -10191,7 +10191,7 @@ class oZ extends ig {
       value: A
     })), this.container.classList.add("buttonWidgetAnnotation", "checkBox");
     const l = document.createElement("input");
-    return Ag.add(l), l.setAttribute("data-element-id", C), l.disabled = g.readOnly, this._setRequired(l, this.data.required), l.type = "checkbox", l.name = g.fieldName, A && l.setAttribute("checked", !0), l.setAttribute("exportValue", g.exportValue), l.tabIndex = 0, l.addEventListener("change", (i) => {
+    return Cg.add(l), l.setAttribute("data-element-id", C), l.disabled = g.readOnly, this._setRequired(l, this.data.required), l.type = "checkbox", l.name = g.fieldName, A && l.setAttribute("checked", !0), l.setAttribute("exportValue", g.exportValue), l.tabIndex = 0, l.addEventListener("change", (i) => {
       const {
         name: Z,
         checked: d
@@ -10220,7 +10220,7 @@ class oZ extends ig {
     }), this._setEventListeners(l, null, [["change", "Validate"], ["change", "Action"], ["focus", "Focus"], ["blur", "Blur"], ["mousedown", "Mouse Down"], ["mouseenter", "Mouse Enter"], ["mouseleave", "Mouse Exit"], ["mouseup", "Mouse Up"]], (i) => i.target.checked)), this._setBackgroundColor(l), this._setDefaultPropertiesFromJS(l), this.container.append(l), this.container;
   }
 }
-class ol extends ig {
+class ol extends lg {
   constructor(I) {
     super(I, {
       isRenderable: I.renderForms
@@ -10240,7 +10240,7 @@ class ol extends ig {
           value: !1
         });
     const l = document.createElement("input");
-    if (Ag.add(l), l.setAttribute("data-element-id", C), l.disabled = g.readOnly, this._setRequired(l, this.data.required), l.type = "radio", l.name = g.fieldName, A && l.setAttribute("checked", !0), l.tabIndex = 0, l.addEventListener("change", (i) => {
+    if (Cg.add(l), l.setAttribute("data-element-id", C), l.disabled = g.readOnly, this._setRequired(l, this.data.required), l.type = "radio", l.name = g.fieldName, A && l.setAttribute("checked", !0), l.tabIndex = 0, l.addEventListener("change", (i) => {
       const {
         name: Z,
         checked: d
@@ -10290,7 +10290,7 @@ class wZ extends AA {
     })), I;
   }
 }
-class YZ extends ig {
+class YZ extends lg {
   constructor(I) {
     super(I, {
       isRenderable: I.renderForms
@@ -10301,7 +10301,7 @@ class YZ extends ig {
     const I = this.annotationStorage, g = this.data.id, C = I.getValue(g, {
       value: this.data.fieldValue
     }), A = document.createElement("select");
-    Ag.add(A), A.setAttribute("data-element-id", g), A.disabled = this.data.readOnly, this._setRequired(A, this.data.required), A.name = this.data.fieldName, A.tabIndex = 0;
+    Cg.add(A), A.setAttribute("data-element-id", g), A.disabled = this.data.readOnly, this._setRequired(A, this.data.required), A.name = this.data.fieldName, A.tabIndex = 0;
     let l = this.data.combo && this.data.options.length > 0;
     this.data.combo || (A.size = this.data.options.length, this.data.multiSelect && (A.multiple = !0)), A.addEventListener("resetform", (c) => {
       const b = this.data.defaultFieldValue;
@@ -10429,14 +10429,14 @@ class YZ extends ig {
     }), this.data.combo && this._setTextStyle(A), this._setBackgroundColor(A), this._setDefaultPropertiesFromJS(A), this.container.append(A), this.container;
   }
 }
-class QC extends lI {
+class QC extends AI {
   constructor(I) {
     const {
       data: g,
       elements: C
     } = I;
     super(I, {
-      isRenderable: lI._hasPopupData(g)
+      isRenderable: AI._hasPopupData(g)
     }), this.elements = C, this.popup = null;
   }
   render() {
@@ -10680,12 +10680,12 @@ class hZ {
     return this.#l.hidden === !1;
   }
 }
-class wl extends lI {
+class wl extends AI {
   constructor(I) {
     super(I, {
       isRenderable: !0,
       ignoreBorder: !0
-    }), this.textContent = I.data.textContent, this.textPosition = I.data.textPosition, this.annotationEditorType = O.FREETEXT;
+    }), this.textContent = I.data.textContent, this.textPosition = I.data.textPosition, this.annotationEditorType = j.FREETEXT;
   }
   render() {
     if (this.container.classList.add("freeTextAnnotation"), this.textContent) {
@@ -10700,7 +10700,7 @@ class wl extends lI {
     return !this.data.popupRef && this.hasPopupData && this._createPopup(), this._editOnDoubleClick(), this.container;
   }
 }
-class aZ extends lI {
+class aZ extends AI {
   #I = null;
   constructor(I) {
     super(I, {
@@ -10724,7 +10724,7 @@ class aZ extends lI {
     this.container.classList.add("highlightArea");
   }
 }
-class VZ extends lI {
+class VZ extends AI {
   #I = null;
   constructor(I) {
     super(I, {
@@ -10748,7 +10748,7 @@ class VZ extends lI {
     this.container.classList.add("highlightArea");
   }
 }
-class NZ extends lI {
+class NZ extends AI {
   #I = null;
   constructor(I) {
     super(I, {
@@ -10772,7 +10772,7 @@ class NZ extends lI {
     this.container.classList.add("highlightArea");
   }
 }
-class Yl extends lI {
+class Yl extends AI {
   #I = null;
   constructor(I) {
     super(I, {
@@ -10816,7 +10816,7 @@ class nZ extends Yl {
     super(I), this.containerClassName = "polygonAnnotation", this.svgElementName = "svg:polygon";
   }
 }
-class tZ extends lI {
+class tZ extends AI {
   constructor(I) {
     super(I, {
       isRenderable: !0,
@@ -10827,14 +10827,14 @@ class tZ extends lI {
     return this.container.classList.add("caretAnnotation"), !this.data.popupRef && this.hasPopupData && this._createPopup(), this.container;
   }
 }
-class lA extends lI {
+class lA extends AI {
   #I = null;
   #g = [];
   constructor(I) {
     super(I, {
       isRenderable: !0,
       ignoreBorder: !0
-    }), this.containerClassName = "inkAnnotation", this.svgElementName = "svg:polyline", this.annotationEditorType = this.data.it === "InkHighlight" ? O.HIGHLIGHT : O.INK;
+    }), this.containerClassName = "inkAnnotation", this.svgElementName = "svg:polyline", this.annotationEditorType = this.data.it === "InkHighlight" ? j.HIGHLIGHT : j.INK;
   }
   #C(I, g) {
     switch (I) {
@@ -10912,13 +10912,13 @@ class lA extends lI {
     this.container.classList.add("highlightArea");
   }
 }
-class hl extends lI {
+class hl extends AI {
   constructor(I) {
     super(I, {
       isRenderable: !0,
       ignoreBorder: !0,
       createQuadrilaterals: !0
-    }), this.annotationEditorType = O.HIGHLIGHT;
+    }), this.annotationEditorType = j.HIGHLIGHT;
   }
   render() {
     const {
@@ -10934,7 +10934,7 @@ class hl extends lI {
     return this.container;
   }
 }
-class RZ extends lI {
+class RZ extends AI {
   constructor(I) {
     super(I, {
       isRenderable: !0,
@@ -10956,7 +10956,7 @@ class RZ extends lI {
     return this.container;
   }
 }
-class eZ extends lI {
+class eZ extends AI {
   constructor(I) {
     super(I, {
       isRenderable: !0,
@@ -10978,7 +10978,7 @@ class eZ extends lI {
     return this.container;
   }
 }
-class XZ extends lI {
+class XZ extends AI {
   constructor(I) {
     super(I, {
       isRenderable: !0,
@@ -11000,18 +11000,18 @@ class XZ extends lI {
     return this.container;
   }
 }
-class al extends lI {
+class al extends AI {
   constructor(I) {
     super(I, {
       isRenderable: !0,
       ignoreBorder: !0
-    }), this.annotationEditorType = O.STAMP;
+    }), this.annotationEditorType = j.STAMP;
   }
   render() {
     return this.container.classList.add("stampAnnotation"), this.container.setAttribute("role", "img"), !this.data.popupRef && this.hasPopupData && this._createPopup(), this._editOnDoubleClick(), this.container;
   }
 }
-class yZ extends lI {
+class yZ extends AI {
   #I = null;
   constructor(I) {
     super(I, {
@@ -11080,7 +11080,7 @@ class iA {
     const {
       annotations: g
     } = I, C = this.div;
-    Cg(C, this.viewport);
+    gg(C, this.viewport);
     const A = /* @__PURE__ */ new Map(), l = {
       data: null,
       layer: C,
@@ -11099,7 +11099,7 @@ class iA {
     for (const i of g) {
       if (i.noHTML)
         continue;
-      const Z = i.annotationType === dI.POPUP;
+      const Z = i.annotationType === ZI.POPUP;
       if (Z) {
         const c = A.get(i.id);
         if (!c)
@@ -11141,7 +11141,7 @@ class iA {
     viewport: I
   }) {
     const g = this.div;
-    this.viewport = I, Cg(g, {
+    this.viewport = I, gg(g, {
       rotation: I.rotation
     }), this.#l(), g.hidden = !1;
   }
@@ -11170,7 +11170,7 @@ class iA {
     return this.#C.get(I);
   }
   static get _defaultBorderStyle() {
-    return v(this, "_defaultBorderStyle", Object.freeze({
+    return r(this, "_defaultBorderStyle", Object.freeze({
       width: 1,
       rawWidth: 1,
       style: dg.SOLID,
@@ -11193,8 +11193,8 @@ class cI extends L {
   static _defaultColor = null;
   static _defaultFontSize = 10;
   static get _keyboardManager() {
-    const I = cI.prototype, g = (l) => l.isEmpty(), C = PI.TRANSLATE_SMALL, A = PI.TRANSLATE_BIG;
-    return v(this, "_keyboardManager", new pg([[["ctrl+s", "mac+meta+s", "ctrl+p", "mac+meta+p"], I.commitOrRemove, {
+    const I = cI.prototype, g = (l) => l.isEmpty(), C = EI.TRANSLATE_SMALL, A = EI.TRANSLATE_BIG;
+    return r(this, "_keyboardManager", new pg([[["ctrl+s", "mac+meta+s", "ctrl+p", "mac+meta+p"], I.commitOrRemove, {
       bubbles: !0
     }], [["ctrl+Enter", "mac+meta+Enter", "Escape", "mac+Escape"], I.commitOrRemove], [["ArrowLeft", "mac+ArrowLeft"], I._translateEmpty, {
       args: [-C, 0],
@@ -11223,7 +11223,7 @@ class cI extends L {
     }]]));
   }
   static _type = "freetext";
-  static _editorType = O.FREETEXT;
+  static _editorType = j.FREETEXT;
   constructor(I) {
     super({
       ...I,
@@ -11566,7 +11566,7 @@ class cI extends L {
       if (!B || B.length === 0)
         return null;
       A = I = {
-        annotationType: O.FREETEXT,
+        annotationType: j.FREETEXT,
         color: Array.from(Z),
         fontSize: i,
         value: B.join(`
@@ -11591,7 +11591,7 @@ class cI extends L {
     if (this.deleted)
       return this.serializeDeleted();
     const g = cI._internalPadding * this.parentScale, C = this.getRect(g, g), A = L._colorManager.convert(this.isAttachedToDOM ? getComputedStyle(this.editorDiv).color : this.#I), l = {
-      annotationType: O.FREETEXT,
+      annotationType: j.FREETEXT,
       color: A,
       fontSize: this.#i,
       value: this.#s(),
@@ -11632,16 +11632,16 @@ class cI extends L {
     super.resetAnnotationElement(I), I.resetEdited();
   }
 }
-class S {
+class p {
   static PRECISION = 1e-4;
   toSVGPath() {
-    _("Abstract method `toSVGPath` must be implemented.");
+    f("Abstract method `toSVGPath` must be implemented.");
   }
   get box() {
-    _("Abstract getter `box` must be implemented.");
+    f("Abstract getter `box` must be implemented.");
   }
   serialize(I, g) {
-    _("Abstract method `serialize` must be implemented.");
+    f("Abstract method `serialize` must be implemented.");
   }
   static _rescale(I, g, C, A, l, i) {
     i ||= new Float32Array(I.length);
@@ -11692,7 +11692,7 @@ class S {
     return [(I + 5 * C) / 6, (g + 5 * A) / 6, (5 * C + l) / 6, (5 * A + i) / 6, (C + l) / 2, (A + i) / 2];
   }
 }
-class _I {
+class fI {
   #I;
   #g = [];
   #C;
@@ -11708,12 +11708,12 @@ class _I {
   #W = [];
   static #w = 8;
   static #B = 2;
-  static #b = _I.#w + _I.#B;
+  static #b = fI.#w + fI.#B;
   constructor({
     x: I,
     y: g
   }, C, A, l, i, Z = 0) {
-    this.#I = C, this.#s = l * A, this.#A = i, this.#l.set([NaN, NaN, NaN, NaN, I, g], 6), this.#C = Z, this.#G = _I.#w * A, this.#c = _I.#b * A, this.#m = A, this.#W.push(I, g);
+    this.#I = C, this.#s = l * A, this.#A = i, this.#l.set([NaN, NaN, NaN, NaN, I, g], 6), this.#C = Z, this.#G = fI.#w * A, this.#c = fI.#b * A, this.#m = A, this.#W.push(I, g);
   }
   isEmpty() {
     return isNaN(this.#l[8]);
@@ -11807,7 +11807,7 @@ class _I {
     return I.set([NaN, NaN, NaN, NaN, (C[0] - l) / Z, (C[1] - i) / d, NaN, NaN, NaN, NaN, s, c, NaN, NaN, NaN, NaN, b, m, NaN, NaN, NaN, NaN, (A[0] - l) / Z, (A[1] - i) / d], g), g += 24;
   }
 }
-class Vl extends S {
+class Vl extends p {
   #I;
   #g = new Float32Array(4);
   #C;
@@ -11839,16 +11839,16 @@ class Vl extends S {
     let d, s;
     switch (l) {
       case 0:
-        d = S._rescale(this.#Z, I, A, i, -Z), s = S._rescale(this.#i, I, A, i, -Z);
+        d = p._rescale(this.#Z, I, A, i, -Z), s = p._rescale(this.#i, I, A, i, -Z);
         break;
       case 90:
-        d = S._rescaleAndSwap(this.#Z, I, g, i, Z), s = S._rescaleAndSwap(this.#i, I, g, i, Z);
+        d = p._rescaleAndSwap(this.#Z, I, g, i, Z), s = p._rescaleAndSwap(this.#i, I, g, i, Z);
         break;
       case 180:
-        d = S._rescale(this.#Z, C, g, -i, Z), s = S._rescale(this.#i, C, g, -i, Z);
+        d = p._rescale(this.#Z, C, g, -i, Z), s = p._rescale(this.#i, C, g, -i, Z);
         break;
       case 270:
-        d = S._rescaleAndSwap(this.#Z, C, A, -i, -Z), s = S._rescaleAndSwap(this.#i, C, A, -i, -Z);
+        d = p._rescaleAndSwap(this.#Z, C, A, -i, -Z), s = p._rescaleAndSwap(this.#i, C, A, -i, -Z);
         break;
     }
     return {
@@ -11879,7 +11879,7 @@ class Vl extends S {
     return this.#g;
   }
   newOutliner(I, g, C, A, l, i = 0) {
-    return new _I(I, g, C, A, l, i);
+    return new fI(I, g, C, A, l, i);
   }
   getNewOutline(I, g) {
     const [C, A, l, i] = this.#g, [Z, d, s, c] = this.#I, b = l * s, m = i * c, B = C * s + Z, o = A * c + d, W = this.newOutliner({
@@ -12016,7 +12016,7 @@ class jC {
     return l;
   }
 }
-class HZ extends S {
+class HZ extends p {
   #I;
   #g;
   constructor(I, g, C) {
@@ -12052,7 +12052,7 @@ class HZ extends S {
     return ["highlightOutline"];
   }
 }
-class OC extends _I {
+class OC extends fI {
   newFreeDrawOutline(I, g, C, A, l, i) {
     return new uZ(I, g, C, A, l, i);
   }
@@ -12062,7 +12062,7 @@ class uZ extends Vl {
     return new OC(I, g, C, A, l, i);
   }
 }
-class CI extends L {
+class gI extends L {
   #I = null;
   #g = 0;
   #C;
@@ -12085,13 +12085,13 @@ class CI extends L {
   static _defaultOpacity = 1;
   static _defaultThickness = 12;
   static _type = "highlight";
-  static _editorType = O.HIGHLIGHT;
+  static _editorType = j.HIGHLIGHT;
   static _freeHighlightId = -1;
   static _freeHighlight = null;
   static _freeHighlightClipId = "";
   static get _keyboardManager() {
-    const I = CI.prototype;
-    return v(this, "_keyboardManager", new pg([[["ArrowLeft", "mac+ArrowLeft"], I._moveCaret, {
+    const I = gI.prototype;
+    return r(this, "_keyboardManager", new pg([[["ArrowLeft", "mac+ArrowLeft"], I._moveCaret, {
       args: [0]
     }], [["ArrowRight", "mac+ArrowRight"], I._moveCaret, {
       args: [1]
@@ -12105,7 +12105,7 @@ class CI extends L {
     super({
       ...I,
       name: "highlightEditor"
-    }), this.color = I.color || CI._defaultColor, this.#o = I.thickness || CI._defaultThickness, this.#w = I.opacity || CI._defaultOpacity, this.#C = I.boxes || null, this.#a = I.methodOfCreation || "", this.#b = I.text || "", this._isDraggable = !1, this.defaultL10nId = "pdfjs-editor-highlight-editor", I.highlightId > -1 ? (this.#s = !0, this.#N(I), this.#t()) : this.#C && (this.#I = I.anchorNode, this.#g = I.anchorOffset, this.#Z = I.focusNode, this.#d = I.focusOffset, this.#Y(), this.#t(), this.rotate(this.rotation)), this.annotationElementId || this._uiManager.a11yAlert("pdfjs-editor-highlight-added-alert");
+    }), this.color = I.color || gI._defaultColor, this.#o = I.thickness || gI._defaultThickness, this.#w = I.opacity || gI._defaultOpacity, this.#C = I.boxes || null, this.#a = I.methodOfCreation || "", this.#b = I.text || "", this._isDraggable = !1, this.defaultL10nId = "pdfjs-editor-highlight-editor", I.highlightId > -1 ? (this.#s = !0, this.#N(I), this.#t()) : this.#C && (this.#I = I.anchorNode, this.#g = I.anchorOffset, this.#Z = I.focusNode, this.#d = I.focusOffset, this.#Y(), this.#t(), this.rotate(this.rotation)), this.annotationElementId || this._uiManager.a11yAlert("pdfjs-editor-highlight-added-alert");
   }
   get telemetryInitialData() {
     return {
@@ -12166,12 +12166,12 @@ class CI extends L {
     else if (this.parent) {
       const c = this.parent.viewport.rotation;
       this.parent.drawLayer.updateProperties(this.#m, {
-        bbox: CI.#M(this.#G.box, (c - this.rotation + 360) % 360),
+        bbox: gI.#M(this.#G.box, (c - this.rotation + 360) % 360),
         path: {
           d: I.toSVGPath()
         }
       }), this.parent.drawLayer.updateProperties(this.#B, {
-        bbox: CI.#M(this.#l.box, c),
+        bbox: gI.#M(this.#l.box, c),
         path: {
           d: this.#l.toSVGPath()
         }
@@ -12202,15 +12202,15 @@ class CI extends L {
     this.#W = [(s[0] - l) / Z, (s[1] - i) / d];
   }
   static initialize(I, g) {
-    L.initialize(I, g), CI._defaultColor ||= g.highlightColors?.values().next().value || "#fff066";
+    L.initialize(I, g), gI._defaultColor ||= g.highlightColors?.values().next().value || "#fff066";
   }
   static updateDefaultParams(I, g) {
     switch (I) {
       case E.HIGHLIGHT_COLOR:
-        CI._defaultColor = g;
+        gI._defaultColor = g;
         break;
       case E.HIGHLIGHT_THICKNESS:
-        CI._defaultThickness = g;
+        gI._defaultThickness = g;
         break;
     }
   }
@@ -12230,10 +12230,10 @@ class CI extends L {
     }
   }
   static get defaultPropertiesToUpdate() {
-    return [[E.HIGHLIGHT_COLOR, CI._defaultColor], [E.HIGHLIGHT_THICKNESS, CI._defaultThickness]];
+    return [[E.HIGHLIGHT_COLOR, gI._defaultColor], [E.HIGHLIGHT_THICKNESS, gI._defaultThickness]];
   }
   get propertiesToUpdate() {
-    return [[E.HIGHLIGHT_COLOR, this.color || CI._defaultColor], [E.HIGHLIGHT_THICKNESS, this.#o || CI._defaultThickness], [E.HIGHLIGHT_FREE, this.#s]];
+    return [[E.HIGHLIGHT_COLOR, this.color || gI._defaultColor], [E.HIGHLIGHT_THICKNESS, this.#o || gI._defaultThickness], [E.HIGHLIGHT_FREE, this.#s]];
   }
   #n(I) {
     const g = (l, i) => {
@@ -12245,7 +12245,7 @@ class CI extends L {
       }), this.#i?.updateColor(l);
     }, C = this.color, A = this.#w;
     this.addCommands({
-      cmd: g.bind(this, I, CI._defaultOpacity),
+      cmd: g.bind(this, I, gI._defaultOpacity),
       undo: g.bind(this, C, A),
       post: this._uiManager.updateUI.bind(this._uiManager, this),
       mustExec: !0,
@@ -12275,7 +12275,7 @@ class CI extends L {
     }, !0);
   }
   get toolbarButtons() {
-    return this._uiManager.highlightColors ? [["colorPicker", this.#i = new KI({
+    return this._uiManager.highlightColors ? [["colorPicker", this.#i = new DI({
       editor: this
     })]] : super.toolbarButtons;
   }
@@ -12366,13 +12366,13 @@ class CI extends L {
       drawLayer: g
     } = this.parent;
     let C;
-    this.#s ? (I = (I - this.rotation + 360) % 360, C = CI.#M(this.#G.box, I)) : C = CI.#M([this.x, this.y, this.width, this.height], I), g.updateProperties(this.#m, {
+    this.#s ? (I = (I - this.rotation + 360) % 360, C = gI.#M(this.#G.box, I)) : C = gI.#M([this.x, this.y, this.width, this.height], I), g.updateProperties(this.#m, {
       bbox: C,
       root: {
         "data-main-rotation": I
       }
     }), g.updateProperties(this.#B, {
-      bbox: CI.#M(this.#l.box, I),
+      bbox: gI.#M(this.#l.box, I),
       root: {
         "data-main-rotation": I
       }
@@ -12405,7 +12405,7 @@ class CI extends L {
     });
   }
   #H(I) {
-    CI._keyboardManager.exec(this, I);
+    gI._keyboardManager.exec(this, I);
   }
   _moveCaret(I) {
     switch (this.parent.unselect(this), I) {
@@ -12493,11 +12493,11 @@ class CI extends L {
       signal: b
     }), window.addEventListener("pointerup", m, {
       signal: b
-    }), window.addEventListener("pointerdown", sI, {
+    }), window.addEventListener("pointerdown", dI, {
       capture: !0,
       passive: !1,
       signal: b
-    }), window.addEventListener("contextmenu", SI, {
+    }), window.addEventListener("contextmenu", KI, {
       signal: b
     }), C.addEventListener("pointermove", this.#S.bind(this, I), {
       signal: b
@@ -12559,7 +12559,7 @@ class CI extends L {
         }
       } = I;
       A = I = {
-        annotationType: O.HIGHLIGHT,
+        annotationType: j.HIGHLIGHT,
         color: Array.from(a),
         opacity: h,
         quadPoints: o,
@@ -12594,7 +12594,7 @@ class CI extends L {
         }
       } = I;
       A = I = {
-        annotationType: O.HIGHLIGHT,
+        annotationType: j.HIGHLIGHT,
         color: Array.from(a),
         thickness: h,
         inkLists: o,
@@ -12667,7 +12667,7 @@ class CI extends L {
     if (this.deleted)
       return this.serializeDeleted();
     const g = this.getRect(0, 0), C = L._colorManager.convert(this._uiManager.getNonHCMColor(this.color)), A = {
-      annotationType: O.HIGHLIGHT,
+      annotationType: j.HIGHLIGHT,
       color: C,
       opacity: this.#w,
       thickness: this.#o,
@@ -12722,10 +12722,10 @@ class Nl {
     this.updateProperties(I);
   }
   clone() {
-    _("Not implemented");
+    f("Not implemented");
   }
 }
-class T extends L {
+class Q extends L {
   #I = null;
   #g;
   _colorPicker = null;
@@ -12756,7 +12756,7 @@ class T extends L {
   #m(I, g) {
     const {
       id: C
-    } = g.drawLayer.draw(T._mergeSVGProperties(this._drawingOptions.toSVGProperties(), I.defaultSVGProperties), !1, !1);
+    } = g.drawLayer.draw(Q._mergeSVGProperties(this._drawingOptions.toSVGProperties(), I.defaultSVGProperties), !1, !1);
     return C;
   }
   static _mergeSVGProperties(I, g) {
@@ -12766,10 +12766,10 @@ class T extends L {
     return I;
   }
   static getDefaultDrawingOptions(I) {
-    _("Not implemented");
+    f("Not implemented");
   }
   static get typesMap() {
-    _("Not implemented");
+    f("Not implemented");
   }
   static get isDrawer() {
     return !0;
@@ -12779,7 +12779,7 @@ class T extends L {
   }
   static updateDefaultParams(I, g) {
     const C = this.typesMap.get(I);
-    C && this._defaultDrawingOptions.updateProperty(C, g), this._currentParent && (T.#C.updateProperty(C, g), this._currentParent.drawLayer.updateProperties(this._currentDrawId, this._defaultDrawingOptions.toSVGProperties()));
+    C && this._defaultDrawingOptions.updateProperty(C, g), this._currentParent && (Q.#C.updateProperty(C, g), this._currentParent.drawLayer.updateProperties(this._currentDrawId, this._defaultDrawingOptions.toSVGProperties()));
   }
   updateParams(I, g) {
     const C = this.constructor.typesMap.get(I);
@@ -12816,12 +12816,12 @@ class T extends L {
     });
   }
   _onResizing() {
-    this.parent?.drawLayer.updateProperties(this._drawId, T._mergeSVGProperties(this.#I.getPathResizingSVGProperties(this.#B()), {
+    this.parent?.drawLayer.updateProperties(this._drawId, Q._mergeSVGProperties(this.#I.getPathResizingSVGProperties(this.#B()), {
       bbox: this.#o()
     }));
   }
   _onResized() {
-    this.parent?.drawLayer.updateProperties(this._drawId, T._mergeSVGProperties(this.#I.getPathResizedSVGProperties(this.#B()), {
+    this.parent?.drawLayer.updateProperties(this._drawId, Q._mergeSVGProperties(this.#I.getPathResizedSVGProperties(this.#B()), {
       bbox: this.#o()
     }));
   }
@@ -12831,7 +12831,7 @@ class T extends L {
     });
   }
   _onTranslated() {
-    this.parent?.drawLayer.updateProperties(this._drawId, T._mergeSVGProperties(this.#I.getPathTranslatedSVGProperties(this.#B(), this.parentDimensions), {
+    this.parent?.drawLayer.updateProperties(this._drawId, Q._mergeSVGProperties(this.#I.getPathTranslatedSVGProperties(this.#B(), this.parentDimensions), {
       bbox: this.#o()
     }));
   }
@@ -12979,7 +12979,7 @@ class T extends L {
     }
   }
   rotate() {
-    this.parent && this.parent.drawLayer.updateProperties(this._drawId, T._mergeSVGProperties({
+    this.parent && this.parent.drawLayer.updateProperties(this._drawId, Q._mergeSVGProperties({
       bbox: this.#o()
     }, this.#I.updateRotation((this.parentRotation - this.rotation + 360) % 360)));
   }
@@ -13001,7 +13001,7 @@ class T extends L {
     return this.setDims(this.width * l, this.height * i), this._uiManager.addShouldRescale(this), this.disableEditing(), this._isCopy && this._moveAfterPaste(I, g), C;
   }
   static createDrawerInstance(I, g, C, A, l) {
-    _("Not implemented");
+    f("Not implemented");
   }
   static startDrawing(I, g, C, A) {
     const {
@@ -13011,7 +13011,7 @@ class T extends L {
       pointerId: d,
       pointerType: s
     } = A;
-    if (T.#Z && T.#Z !== s)
+    if (Q.#Z && Q.#Z !== s)
       return;
     const {
       viewport: {
@@ -13020,61 +13020,61 @@ class T extends L {
     } = I, {
       width: b,
       height: m
-    } = l.getBoundingClientRect(), B = T.#A = new AbortController(), o = I.combinedSignal(B);
-    if (T.#l ||= d, T.#Z ??= s, window.addEventListener("pointerup", (W) => {
-      T.#l === W.pointerId ? this._endDraw(W) : T.#d?.delete(W.pointerId);
+    } = l.getBoundingClientRect(), B = Q.#A = new AbortController(), o = I.combinedSignal(B);
+    if (Q.#l ||= d, Q.#Z ??= s, window.addEventListener("pointerup", (W) => {
+      Q.#l === W.pointerId ? this._endDraw(W) : Q.#d?.delete(W.pointerId);
     }, {
       signal: o
     }), window.addEventListener("pointercancel", (W) => {
-      T.#l === W.pointerId ? this._currentParent.endDrawingSession() : T.#d?.delete(W.pointerId);
+      Q.#l === W.pointerId ? this._currentParent.endDrawingSession() : Q.#d?.delete(W.pointerId);
     }, {
       signal: o
     }), window.addEventListener("pointerdown", (W) => {
-      T.#Z === W.pointerType && ((T.#d ||= /* @__PURE__ */ new Set()).add(W.pointerId), T.#C.isCancellable() && (T.#C.removeLastElement(), T.#C.isEmpty() ? this._currentParent.endDrawingSession(!0) : this._endDraw(null)));
+      Q.#Z === W.pointerType && ((Q.#d ||= /* @__PURE__ */ new Set()).add(W.pointerId), Q.#C.isCancellable() && (Q.#C.removeLastElement(), Q.#C.isEmpty() ? this._currentParent.endDrawingSession(!0) : this._endDraw(null)));
     }, {
       capture: !0,
       passive: !1,
       signal: o
-    }), window.addEventListener("contextmenu", SI, {
+    }), window.addEventListener("contextmenu", KI, {
       signal: o
     }), l.addEventListener("pointermove", this._drawMove.bind(this), {
       signal: o
     }), l.addEventListener("touchmove", (W) => {
-      W.timeStamp === T.#c && sI(W);
+      W.timeStamp === Q.#c && dI(W);
     }, {
       signal: o
-    }), I.toggleDrawing(), g._editorUndoBar?.hide(), T.#C) {
-      I.drawLayer.updateProperties(this._currentDrawId, T.#C.startNew(i, Z, b, m, c));
+    }), I.toggleDrawing(), g._editorUndoBar?.hide(), Q.#C) {
+      I.drawLayer.updateProperties(this._currentDrawId, Q.#C.startNew(i, Z, b, m, c));
       return;
     }
-    g.updateUIForDefaultProperties(this), T.#C = this.createDrawerInstance(i, Z, b, m, c), T.#i = this.getDefaultDrawingOptions(), this._currentParent = I, {
+    g.updateUIForDefaultProperties(this), Q.#C = this.createDrawerInstance(i, Z, b, m, c), Q.#i = this.getDefaultDrawingOptions(), this._currentParent = I, {
       id: this._currentDrawId
-    } = I.drawLayer.draw(this._mergeSVGProperties(T.#i.toSVGProperties(), T.#C.defaultSVGProperties), !0, !1);
+    } = I.drawLayer.draw(this._mergeSVGProperties(Q.#i.toSVGProperties(), Q.#C.defaultSVGProperties), !0, !1);
   }
   static _drawMove(I) {
-    if (T.#c = -1, !T.#C)
+    if (Q.#c = -1, !Q.#C)
       return;
     const {
       offsetX: g,
       offsetY: C,
       pointerId: A
     } = I;
-    if (T.#l === A) {
-      if (T.#d?.size >= 1) {
+    if (Q.#l === A) {
+      if (Q.#d?.size >= 1) {
         this._endDraw(I);
         return;
       }
-      this._currentParent.drawLayer.updateProperties(this._currentDrawId, T.#C.add(g, C)), T.#c = I.timeStamp, sI(I);
+      this._currentParent.drawLayer.updateProperties(this._currentDrawId, Q.#C.add(g, C)), Q.#c = I.timeStamp, dI(I);
     }
   }
   static _cleanup(I) {
-    I && (this._currentDrawId = -1, this._currentParent = null, T.#C = null, T.#i = null, T.#Z = null, T.#c = NaN), T.#A && (T.#A.abort(), T.#A = null, T.#l = NaN, T.#d = null);
+    I && (this._currentDrawId = -1, this._currentParent = null, Q.#C = null, Q.#i = null, Q.#Z = null, Q.#c = NaN), Q.#A && (Q.#A.abort(), Q.#A = null, Q.#l = NaN, Q.#d = null);
   }
   static _endDraw(I) {
     const g = this._currentParent;
     if (g) {
-      if (g.toggleDrawing(!0), this._cleanup(!1), I?.target === g.div && g.drawLayer.updateProperties(this._currentDrawId, T.#C.end(I.offsetX, I.offsetY)), this.supportMultipleDrawings) {
-        const C = T.#C, A = this._currentDrawId, l = C.getLastElement();
+      if (g.toggleDrawing(!0), this._cleanup(!1), I?.target === g.div && g.drawLayer.updateProperties(this._currentDrawId, Q.#C.end(I.offsetX, I.offsetY)), this.supportMultipleDrawings) {
+        const C = Q.#C, A = this._currentDrawId, l = C.getLastElement();
         g.addCommands({
           cmd: () => {
             g.drawLayer.updateProperties(A, C.setLastElement(l));
@@ -13094,7 +13094,7 @@ class T extends L {
     const g = this._currentParent;
     if (!g)
       return null;
-    if (g.toggleDrawing(!0), g.cleanUndoStack(E.DRAW_STEP), !T.#C.isEmpty()) {
+    if (g.toggleDrawing(!0), g.cleanUndoStack(E.DRAW_STEP), !Q.#C.isEmpty()) {
       const {
         pageDimensions: [C, A],
         scale: l
@@ -13103,8 +13103,8 @@ class T extends L {
         offsetY: 0
       }, !1, {
         drawId: this._currentDrawId,
-        drawOutlines: T.#C.getOutlines(C * l, A * l, l, this._INNER_MARGIN),
-        drawingOptions: T.#i,
+        drawOutlines: Q.#C.getOutlines(C * l, A * l, l, this._INNER_MARGIN),
+        drawingOptions: Q.#i,
         mustBeCommitted: !I
       });
       return this._cleanup(!0), i;
@@ -13114,7 +13114,7 @@ class T extends L {
   createDrawingOptions(I) {
   }
   static deserializeDraw(I, g, C, A, l, i) {
-    _("Not implemented");
+    f("Not implemented");
   }
   static async deserialize(I, g, C) {
     const {
@@ -13166,7 +13166,7 @@ class MZ {
     I === "stroke-width" && (this.#i = g);
   }
   #s(I, g) {
-    return S._normalizePoint(I, g, this.#G, this.#m, this.#A);
+    return p._normalizePoint(I, g, this.#G, this.#m, this.#A);
   }
   isEmpty() {
     return !this.#C || this.#C.length === 0;
@@ -13181,7 +13181,7 @@ class MZ {
       path: {
         d: this.toSVGPath()
       }
-    }) : (isNaN(this.#I[0]) && this.#g.splice(6, 6), this.#I.set([C, A, l, i, I, g], 0), this.#g.push(...S.createBezierPoints(C, A, l, i, I, g)), {
+    }) : (isNaN(this.#I[0]) && this.#g.splice(6, 6), this.#I.set([C, A, l, i, I, g], 0), this.#g.push(...p.createBezierPoints(C, A, l, i, I, g)), {
       path: {
         d: this.toSVGPath()
       }
@@ -13233,7 +13233,7 @@ class MZ {
     };
   }
   toSVGPath() {
-    const I = S.svgRound(this.#g[4]), g = S.svgRound(this.#g[5]);
+    const I = p.svgRound(this.#g[4]), g = p.svgRound(this.#g[5]);
     if (this.#l.length === 2)
       return this.#Z = `${this.#Z} M ${I} ${g} Z`, this.#Z;
     if (this.#l.length <= 6) {
@@ -13241,13 +13241,13 @@ class MZ {
       this.#Z = `${this.#Z.slice(0, A)} M ${I} ${g}`, this.#d = 6;
     }
     if (this.#l.length === 4) {
-      const A = S.svgRound(this.#g[10]), l = S.svgRound(this.#g[11]);
+      const A = p.svgRound(this.#g[10]), l = p.svgRound(this.#g[11]);
       return this.#Z = `${this.#Z} L ${A} ${l}`, this.#d = 12, this.#Z;
     }
     const C = [];
     this.#d === 0 && (C.push(`M ${I} ${g}`), this.#d = 6);
     for (let A = this.#d, l = this.#g.length; A < l; A += 6) {
-      const [i, Z, d, s, c, b] = this.#g.slice(A, A + 6).map(S.svgRound);
+      const [i, Z, d, s, c, b] = this.#g.slice(A, A + 6).map(p.svgRound);
       C.push(`C${i} ${Z} ${d} ${s} ${c} ${b}`);
     }
     return this.#Z += C.join(" "), this.#d = this.#g.length, this.#Z;
@@ -13268,7 +13268,7 @@ class MZ {
     };
   }
 }
-class zg extends S {
+class zg extends p {
   #I;
   #g = 0;
   #C;
@@ -13303,16 +13303,16 @@ class zg extends S {
     for (const {
       line: g
     } of this.#A) {
-      if (I.push(`M${S.svgRound(g[4])} ${S.svgRound(g[5])}`), g.length === 6) {
+      if (I.push(`M${p.svgRound(g[4])} ${p.svgRound(g[5])}`), g.length === 6) {
         I.push("Z");
         continue;
       }
       if (g.length === 12 && isNaN(g[6])) {
-        I.push(`L${S.svgRound(g[10])} ${S.svgRound(g[11])}`);
+        I.push(`L${p.svgRound(g[10])} ${p.svgRound(g[11])}`);
         continue;
       }
       for (let C = 6, A = g.length; C < A; C += 6) {
-        const [l, i, Z, d, s, c] = g.subarray(C, C + 6).map(S.svgRound);
+        const [l, i, Z, d, s, c] = g.subarray(C, C + 6).map(p.svgRound);
         I.push(`C${l} ${i} ${Z} ${d} ${s} ${c}`);
       }
     }
@@ -13323,16 +13323,16 @@ class zg extends S {
     let m, B, o, W, Y, w, a, h, N;
     switch (this.#d) {
       case 0:
-        N = S._rescale, m = I, B = g + A, o = C, W = -A, Y = I + d * C, w = g + (1 - s - b) * A, a = I + (d + c) * C, h = g + (1 - s) * A;
+        N = p._rescale, m = I, B = g + A, o = C, W = -A, Y = I + d * C, w = g + (1 - s - b) * A, a = I + (d + c) * C, h = g + (1 - s) * A;
         break;
       case 90:
-        N = S._rescaleAndSwap, m = I, B = g, o = C, W = A, Y = I + s * C, w = g + d * A, a = I + (s + b) * C, h = g + (d + c) * A;
+        N = p._rescaleAndSwap, m = I, B = g, o = C, W = A, Y = I + s * C, w = g + d * A, a = I + (s + b) * C, h = g + (d + c) * A;
         break;
       case 180:
-        N = S._rescale, m = I + C, B = g, o = -C, W = A, Y = I + (1 - d - c) * C, w = g + s * A, a = I + (1 - d) * C, h = g + (s + b) * A;
+        N = p._rescale, m = I + C, B = g, o = -C, W = A, Y = I + (1 - d - c) * C, w = g + s * A, a = I + (1 - d) * C, h = g + (s + b) * A;
         break;
       case 270:
-        N = S._rescaleAndSwap, m = I + C, B = g + A, o = -C, W = -A, Y = I + (1 - s - b) * C, w = g + (1 - d - c) * A, a = I + (1 - s) * C, h = g + (1 - d) * A;
+        N = p._rescaleAndSwap, m = I + C, B = g + A, o = -C, W = -A, Y = I + (1 - s - b) * C, w = g + (1 - d - c) * A, a = I + (1 - s) * C, h = g + (1 - d) * A;
         break;
     }
     for (const {
@@ -13358,16 +13358,16 @@ class zg extends S {
     let b, m, B, o, W;
     switch (d) {
       case 0:
-        W = S._rescale, b = -I / C, m = g / A + 1, B = 1 / C, o = -1 / A;
+        W = p._rescale, b = -I / C, m = g / A + 1, B = 1 / C, o = -1 / A;
         break;
       case 90:
-        W = S._rescaleAndSwap, b = -g / A, m = -I / C, B = 1 / A, o = 1 / C;
+        W = p._rescaleAndSwap, b = -g / A, m = -I / C, B = 1 / A, o = 1 / C;
         break;
       case 180:
-        W = S._rescale, b = I / C + 1, m = -g / A, B = -1 / C, o = 1 / A;
+        W = p._rescale, b = I / C + 1, m = -g / A, B = -1 / C, o = 1 / A;
         break;
       case 270:
-        W = S._rescaleAndSwap, b = g / A + 1, m = I / C + 1, B = -1 / A, o = -1 / C;
+        W = p._rescaleAndSwap, b = g / A + 1, m = I / C + 1, B = -1 / A, o = -1 / C;
         break;
     }
     if (!i) {
@@ -13386,9 +13386,9 @@ class zg extends S {
         i.push(h);
         let [N, V, n, t] = w.subarray(0, 4);
         h.set([NaN, NaN, NaN, NaN, N, V], 0);
-        for (let u = 4; u < a; u += 2) {
-          const e = w[u], F = w[u + 1];
-          h.set(S.createBezierPoints(N, V, n, t, e, F), (u - 2) * 3), [N, V, n, t] = [n, t, e, F];
+        for (let e = 4; e < a; e += 2) {
+          const u = w[e], K = w[e + 1];
+          h.set(p.createBezierPoints(N, V, n, t, u, K), (e - 2) * 3), [N, V, n, t] = [n, t, u, K];
         }
       }
     }
@@ -13453,7 +13453,7 @@ class zg extends S {
     };
   }
   get viewBox() {
-    return this.#I.map(S.svgRound).join(" ");
+    return this.#I.map(p.svgRound).join(" ");
   }
   get defaultProperties() {
     const [I, g] = this.#I;
@@ -13462,7 +13462,7 @@ class zg extends S {
         viewBox: this.viewBox
       },
       path: {
-        "transform-origin": `${S.svgRound(I)} ${S.svgRound(g)}`
+        "transform-origin": `${p.svgRound(I)} ${p.svgRound(g)}`
       }
     };
   }
@@ -13482,15 +13482,15 @@ class zg extends S {
       default:
         return "";
     }
-    return `matrix(${C} ${A} ${l} ${i} ${S.svgRound(Z)} ${S.svgRound(d)})`;
+    return `matrix(${C} ${A} ${l} ${i} ${p.svgRound(Z)} ${p.svgRound(d)})`;
   }
   getPathResizingSVGProperties([I, g, C, A]) {
     const [l, i] = this.#G(), [Z, d, s, c] = this.#I;
-    if (Math.abs(s - l) <= S.PRECISION || Math.abs(c - i) <= S.PRECISION) {
+    if (Math.abs(s - l) <= p.PRECISION || Math.abs(c - i) <= p.PRECISION) {
       const W = I + C / 2 - (Z + s / 2), Y = g + A / 2 - (d + c / 2);
       return {
         path: {
-          "transform-origin": `${S.svgRound(I)} ${S.svgRound(g)}`,
+          "transform-origin": `${p.svgRound(I)} ${p.svgRound(g)}`,
           transform: `${this.rotationTransform} translate(${W} ${Y})`
         }
       };
@@ -13498,26 +13498,26 @@ class zg extends S {
     const b = (C - 2 * l) / (s - 2 * l), m = (A - 2 * i) / (c - 2 * i), B = s / C, o = c / A;
     return {
       path: {
-        "transform-origin": `${S.svgRound(Z)} ${S.svgRound(d)}`,
-        transform: `${this.rotationTransform} scale(${B} ${o}) translate(${S.svgRound(l)} ${S.svgRound(i)}) scale(${b} ${m}) translate(${S.svgRound(-l)} ${S.svgRound(-i)})`
+        "transform-origin": `${p.svgRound(Z)} ${p.svgRound(d)}`,
+        transform: `${this.rotationTransform} scale(${B} ${o}) translate(${p.svgRound(l)} ${p.svgRound(i)}) scale(${b} ${m}) translate(${p.svgRound(-l)} ${p.svgRound(-i)})`
       }
     };
   }
   getPathResizedSVGProperties([I, g, C, A]) {
     const [l, i] = this.#G(), Z = this.#I, [d, s, c, b] = Z;
-    if (Z[0] = I, Z[1] = g, Z[2] = C, Z[3] = A, Math.abs(c - l) <= S.PRECISION || Math.abs(b - i) <= S.PRECISION) {
+    if (Z[0] = I, Z[1] = g, Z[2] = C, Z[3] = A, Math.abs(c - l) <= p.PRECISION || Math.abs(b - i) <= p.PRECISION) {
       const Y = I + C / 2 - (d + c / 2), w = g + A / 2 - (s + b / 2);
       for (const {
         line: a,
         points: h
       } of this.#A)
-        S._translate(a, Y, w, a), S._translate(h, Y, w, h);
+        p._translate(a, Y, w, a), p._translate(h, Y, w, h);
       return {
         root: {
           viewBox: this.viewBox
         },
         path: {
-          "transform-origin": `${S.svgRound(I)} ${S.svgRound(g)}`,
+          "transform-origin": `${p.svgRound(I)} ${p.svgRound(g)}`,
           transform: this.rotationTransform || null,
           d: this.toSVGPath()
         }
@@ -13529,13 +13529,13 @@ class zg extends S {
         line: Y,
         points: w
       } of this.#A)
-        S._rescale(Y, o, W, m, B, Y), S._rescale(w, o, W, m, B, w);
+        p._rescale(Y, o, W, m, B, Y), p._rescale(w, o, W, m, B, w);
     return {
       root: {
         viewBox: this.viewBox
       },
       path: {
-        "transform-origin": `${S.svgRound(I)} ${S.svgRound(g)}`,
+        "transform-origin": `${p.svgRound(I)} ${p.svgRound(g)}`,
         transform: this.rotationTransform || null,
         d: this.toSVGPath()
       }
@@ -13548,7 +13548,7 @@ class zg extends S {
         line: s,
         points: c
       } of this.#A)
-        S._translate(s, Z, d, s), S._translate(c, Z, d, c);
+        p._translate(s, Z, d, s), p._translate(c, Z, d, c);
     else {
       const s = this.#i / A, c = this.#l / l;
       this.#i = A, this.#l = l;
@@ -13556,7 +13556,7 @@ class zg extends S {
         line: b,
         points: m
       } of this.#A)
-        S._rescale(b, Z, d, s, c, b), S._rescale(m, Z, d, s, c, m);
+        p._rescale(b, Z, d, s, c, b), p._rescale(m, Z, d, s, c, m);
       i[2] *= s, i[3] *= c;
     }
     return i[0] = I, i[1] = g, {
@@ -13565,7 +13565,7 @@ class zg extends S {
       },
       path: {
         d: this.toSVGPath(),
-        "transform-origin": `${S.svgRound(I)} ${S.svgRound(g)}`
+        "transform-origin": `${p.svgRound(I)} ${p.svgRound(g)}`
       }
     };
   }
@@ -13580,7 +13580,7 @@ class zg extends S {
       },
       path: {
         d: this.toSVGPath(),
-        "transform-origin": `${S.svgRound(I[0])} ${S.svgRound(I[1])}`,
+        "transform-origin": `${p.svgRound(I[0])} ${p.svgRound(I[1])}`,
         transform: this.rotationTransform || null
       },
       bbox: I
@@ -13607,9 +13607,9 @@ class mC extends Nl {
     return I.updateAll(this), I;
   }
 }
-class ZA extends T {
+class ZA extends Q {
   static _type = "ink";
-  static _editorType = O.INK;
+  static _editorType = j.INK;
   static _defaultDrawingOptions = null;
   constructor(I) {
     super({
@@ -13628,7 +13628,7 @@ class ZA extends T {
     return !0;
   }
   static get typesMap() {
-    return v(this, "typesMap", /* @__PURE__ */ new Map([[E.INK_THICKNESS, "stroke-width"], [E.INK_COLOR, "stroke"], [E.INK_OPACITY, "stroke-opacity"]]));
+    return r(this, "typesMap", /* @__PURE__ */ new Map([[E.INK_THICKNESS, "stroke-width"], [E.INK_COLOR, "stroke"], [E.INK_OPACITY, "stroke-opacity"]]));
   }
   static createDrawerInstance(I, g, C, A, l) {
     return new MZ(I, g, C, A, l, this._defaultDrawingOptions["stroke-width"]);
@@ -13660,7 +13660,7 @@ class ZA extends T {
         }
       } = I;
       A = I = {
-        annotationType: O.INK,
+        annotationType: j.INK,
         color: Array.from(c),
         thickness: m,
         opacity: b,
@@ -13732,7 +13732,7 @@ class ZA extends T {
         "stroke-width": Z
       }
     } = this, d = {
-      annotationType: O.INK,
+      annotationType: j.INK,
       color: L._colorManager.convert(l),
       opacity: i,
       thickness: Z,
@@ -13837,9 +13837,9 @@ class Gg {
         };
         s.push(a);
         let h;
-        for (const D of s)
-          if (D.id === d) {
-            h = D;
+        for (const z of s)
+          if (z.id === d) {
+            h = z;
             break;
           }
         h ? h.isHole ? a.parent = w ? h.parent : d : a.parent = w ? d : h.parent : a.parent = w ? d : 0;
@@ -13849,20 +13849,20 @@ class Gg {
           continue;
         }
         let V = this.#C[2 * N], n = this.#C[2 * N + 1];
-        const t = c + V, u = b + n;
-        o = t, W = u;
-        let e = c, F = b;
+        const t = c + V, e = b + n;
+        o = t, W = e;
+        let u = c, K = b;
         for (; ; ) {
-          const D = this.#i(i, g, e, F, o, W, 1);
-          V = this.#C[2 * D], n = this.#C[2 * D + 1];
-          const j = e + V, P = F + n;
-          Y.push(P, j);
-          const r = e * g + F;
-          if (i[r + 1] === 0 ? i[r] = -Z : i[r] === 1 && (i[r] = Z), j === c && P === b && e === t && F === u) {
+          const z = this.#i(i, g, u, K, o, W, 1);
+          V = this.#C[2 * z], n = this.#C[2 * z + 1];
+          const x = u + V, P = K + n;
+          Y.push(P, x);
+          const U = u * g + K;
+          if (i[U + 1] === 0 ? i[U] = -Z : i[U] === 1 && (i[U] = Z), x === c && P === b && u === t && K === e) {
             i[m] !== 1 && (d = Math.abs(i[m]));
             break;
           } else
-            o = e, W = F, e = j, F = P;
+            o = u, W = K, u = x, K = P;
         }
       }
     }
@@ -13877,8 +13877,8 @@ class Gg {
     const l = I[g], i = I[g + 1], Z = I[C - 4] - l, d = I[C - 3] - i, s = Math.hypot(Z, d), c = Z / s, b = d / s, m = c * i - b * l, B = d / Z, o = 1 / s, W = Math.atan(B), Y = Math.cos(W), w = Math.sin(W), a = o * (Math.abs(Y) + Math.abs(w)), h = o * (1 - a + a ** 2), N = Math.max(Math.atan(Math.abs(w + Y) * h), Math.atan(Math.abs(w - Y) * h));
     let V = 0, n = g;
     for (let t = g + 2; t < C - 2; t += 2) {
-      const u = Math.abs(m - c * I[t + 1] + b * I[t]);
-      u > V && (n = t, V = u);
+      const e = Math.abs(m - c * I[t + 1] + b * I[t]);
+      e > V && (n = t, V = e);
     }
     V > (s * N) ** 2 ? (this.#Z(I, g, n + 2, A), this.#Z(I, n, C, A)) : A.push(l, i);
   }
@@ -13904,12 +13904,12 @@ class Gg {
         for (let n = 0; n < i; n++) {
           const t = W + n - s;
           if (!(t < 0 || t >= C))
-            for (let u = 0; u < i; u++) {
-              const e = Y + u - s;
-              if (e < 0 || e >= g)
+            for (let e = 0; e < i; e++) {
+              const u = Y + e - s;
+              if (u < 0 || u >= g)
                 continue;
-              const F = I[t * g + e], D = Z[n * i + u] * c[Math.abs(F - a)];
-              h += F * D, N += D;
+              const K = I[t * g + u], z = Z[n * i + e] * c[Math.abs(K - a)];
+              h += K * z, N += z;
             }
         }
         const V = B[w] = Math.round(h / N);
@@ -13995,10 +13995,10 @@ class Gg {
       alpha: !0,
       willReadFrequently: !0
     }), c.font = m, c.filter = "grayscale(1)", c.fillStyle = "white", c.fillRect(0, 0, V, n), c.fillStyle = "black", c.fillText(I, V * (N - 1) / 2, n * (3 - N) / 2);
-    const t = this.#m(c.getImageData(0, 0, V, n).data), u = this.#G(t), e = this.#s(u), F = this.#l(t, V, n, e);
+    const t = this.#m(c.getImageData(0, 0, V, n).data), e = this.#G(t), u = this.#s(e), K = this.#l(t, V, n, u);
     return this.processDrawnLines({
       lines: {
-        curves: F,
+        curves: K,
         width: V,
         height: n
       },
@@ -14056,11 +14056,11 @@ class Gg {
         V[0] = h[0] * o, V[1] = h[1] * W, n.set([NaN, NaN, NaN, NaN, V[0], V[1]], 0);
         continue;
       }
-      let [t, u, e, F] = h;
-      t *= o, u *= W, e *= o, F *= W, V.set([t, u, e, F], 0), n.set([NaN, NaN, NaN, NaN, t, u], 0);
-      for (let D = 4; D < N; D += 2) {
-        const j = V[D] = h[D] * o, P = V[D + 1] = h[D + 1] * W;
-        n.set(S.createBezierPoints(t, u, e, F, j, P), (D - 2) * 3), [t, u, e, F] = [e, F, j, P];
+      let [t, e, u, K] = h;
+      t *= o, e *= W, u *= o, K *= W, V.set([t, e, u, K], 0), n.set([NaN, NaN, NaN, NaN, t, e], 0);
+      for (let z = 4; z < N; z += 2) {
+        const x = V[z] = h[z] * o, P = V[z + 1] = h[z + 1] * W;
+        n.set(p.createBezierPoints(t, e, u, K, x, P), (z - 2) * 3), [t, e, u, K] = [u, K, x, P];
       }
     }
     if (m.length === 0)
@@ -14156,7 +14156,7 @@ class Gg {
         height: b
       };
     } catch (g) {
-      return x(`decompressSignature: ${g}`), null;
+      return O(`decompressSignature: ${g}`), null;
     }
   }
 }
@@ -14184,13 +14184,13 @@ class sA extends mC {
     return I.updateAll(this), I;
   }
 }
-class LI extends T {
+class LI extends Q {
   #I = !1;
   #g = null;
   #C = null;
   #A = null;
   static _type = "signature";
-  static _editorType = O.SIGNATURE;
+  static _editorType = j.SIGNATURE;
   static _defaultDrawingOptions = null;
   constructor(I) {
     super({
@@ -14210,7 +14210,7 @@ class LI extends T {
     return !1;
   }
   static get typesMap() {
-    return v(this, "typesMap", /* @__PURE__ */ new Map());
+    return r(this, "typesMap", /* @__PURE__ */ new Map());
   }
   static get isDrawer() {
     return !1;
@@ -14406,7 +14406,7 @@ class LI extends T {
         "stroke-width": l
       }
     } = this, i = {
-      annotationType: O.SIGNATURE,
+      annotationType: j.SIGNATURE,
       isSignature: !0,
       areContours: this.#I,
       color: [0, 0, 0],
@@ -14445,7 +14445,7 @@ class DZ extends L {
   #G = !1;
   #m = !1;
   static _type = "stamp";
-  static _editorType = O.STAMP;
+  static _editorType = j.STAMP;
   constructor(I) {
     super({
       ...I,
@@ -14460,7 +14460,7 @@ class DZ extends L {
   }
   static paste(I, g) {
     g.pasteEditor({
-      mode: O.STAMP
+      mode: j.STAMP
     }, {
       bitmapFile: I.getAsFile()
     });
@@ -14771,16 +14771,16 @@ class DZ extends L {
         },
         canvas: t
       } = I;
-      let u, e;
+      let e, u;
       t ? (delete I.canvas, {
-        id: u,
-        bitmap: e
+        id: e,
+        bitmap: u
       } = C.imageManager.getFromCanvas(V.id, t), t.remove()) : (l = !0, I._hasNoCanvas = !0);
-      const F = (await g._structTree.getAriaAttributes(`${vC}${w}`))?.get("aria-label") || "";
+      const K = (await g._structTree.getAriaAttributes(`${vC}${w}`))?.get("aria-label") || "";
       A = I = {
-        annotationType: O.STAMP,
-        bitmapId: u,
-        bitmap: e,
+        annotationType: j.STAMP,
+        bitmapId: e,
+        bitmap: u,
         pageIndex: n - 1,
         rect: W.slice(0),
         rotation: Y,
@@ -14789,7 +14789,7 @@ class DZ extends L {
         deleted: !1,
         accessibilityData: {
           decorative: !1,
-          altText: F
+          altText: K
         },
         isSvg: !1,
         structParent: a,
@@ -14815,7 +14815,7 @@ class DZ extends L {
     if (this.deleted)
       return this.serializeDeleted();
     const C = {
-      annotationType: O.STAMP,
+      annotationType: j.STAMP,
       bitmapId: this.#g,
       pageIndex: this.pageIndex,
       rect: this.getRect(0, 0),
@@ -14872,7 +14872,7 @@ class DZ extends L {
     return this.hasEditedComment && (g.popup = this.comment), I.updateEdited(g), null;
   }
 }
-class xI {
+class OI {
   #I;
   #g = !1;
   #C = null;
@@ -14890,7 +14890,7 @@ class xI {
   #B = -1;
   #b;
   static _initialized = !1;
-  static #o = new Map([cI, ZA, DZ, CI, LI].map((I) => [I._editorType, I]));
+  static #o = new Map([cI, ZA, DZ, gI, LI].map((I) => [I._editorType, I]));
   constructor({
     uiManager: I,
     pageIndex: g,
@@ -14903,9 +14903,9 @@ class xI {
     viewport: s,
     l10n: c
   }) {
-    const b = [...xI.#o.values()];
-    if (!xI._initialized) {
-      xI._initialized = !0;
+    const b = [...OI.#o.values()];
+    if (!OI._initialized) {
+      OI._initialized = !0;
       for (const m of b)
         m.initialize(c, I);
     }
@@ -14915,20 +14915,20 @@ class xI {
     return this.#l.size === 0;
   }
   get isInvisible() {
-    return this.isEmpty && this.#b.getMode() === O.NONE;
+    return this.isEmpty && this.#b.getMode() === j.NONE;
   }
   updateToolbar(I) {
     this.#b.updateToolbar(I);
   }
   updateMode(I = this.#b.getMode()) {
     switch (this.#h(), I) {
-      case O.NONE:
+      case j.NONE:
         this.disableTextSelection(), this.togglePointerEvents(!1), this.toggleAnnotationLayerPointerEvents(!0), this.disableClick();
         return;
-      case O.INK:
+      case j.INK:
         this.disableTextSelection(), this.togglePointerEvents(!0), this.enableClick();
         break;
-      case O.HIGHLIGHT:
+      case j.HIGHLIGHT:
         this.enableTextSelection(), this.togglePointerEvents(!1), this.disableClick();
         break;
       default:
@@ -14938,7 +14938,7 @@ class xI {
     const {
       classList: g
     } = this.div;
-    for (const C of xI.#o.values())
+    for (const C of OI.#o.values())
       g.toggle(`${C._type}Editing`, I === C._editorType);
     this.div.hidden = !1;
   }
@@ -15053,7 +15053,7 @@ class xI {
     const {
       classList: C
     } = this.div;
-    for (const A of xI.#o.values())
+    for (const A of OI.#o.values())
       C.remove(`${A._type}Editing`);
     this.disableTextSelection(), this.toggleAnnotationLayerPointerEvents(!0), this.#d = !1;
   }
@@ -15086,7 +15086,7 @@ class xI {
       } = YI.platform;
       if (I.button !== 0 || I.ctrlKey && C)
         return;
-      this.#b.showAllEditors("highlight", !0, !0), this.#s.div.classList.add("free"), this.toggleDrawing(), CI.startHighlighting(this, this.#b.direction === "ltr", {
+      this.#b.showAllEditors("highlight", !0, !0), this.#s.div.classList.add("free"), this.toggleDrawing(), gI.startHighlighting(this, this.#b.direction === "ltr", {
         target: this.#s.div,
         x: I.x,
         y: I.y
@@ -15173,7 +15173,7 @@ class xI {
     return this.#b.getId();
   }
   get #Y() {
-    return xI.#o.get(this.#b.getMode());
+    return OI.#o.get(this.#b.getMode());
   }
   combinedSignal(I) {
     return this.#b.combinedSignal(I);
@@ -15202,7 +15202,7 @@ class xI {
     i && this.add(i);
   }
   async deserialize(I) {
-    return await xI.#o.get(I.annotationType ?? I.annotationEditorType)?.deserialize(I, this, this.#b) || null;
+    return await OI.#o.get(I.annotationType ?? I.annotationEditorType)?.deserialize(I, this, this.#b) || null;
   }
   createAndAddNewEditor(I, g, C = {}) {
     const A = this.getNextId(), l = this.#N({
@@ -15251,14 +15251,14 @@ class xI {
       return;
     }
     const C = this.#b.getMode();
-    if (C === O.STAMP || C === O.SIGNATURE) {
+    if (C === j.STAMP || C === j.SIGNATURE) {
       this.#b.unselectAll();
       return;
     }
     this.createAndAddNewEditor(I, !1);
   }
   pointerdown(I) {
-    if (this.#b.getMode() === O.HIGHLIGHT && this.enableTextSelection(), this.#Z) {
+    if (this.#b.getMode() === j.HIGHLIGHT && this.enableTextSelection(), this.#Z) {
       this.#Z = !1;
       return;
     }
@@ -15329,7 +15329,7 @@ class xI {
   render({
     viewport: I
   }) {
-    this.viewport = I, Cg(this.div, I);
+    this.viewport = I, gg(this.div, I);
     for (const g of this.#b.getEditors(this.pageIndex))
       this.add(g), g.rebuild();
     this.updateMode();
@@ -15339,7 +15339,7 @@ class xI {
   }) {
     this.#b.commitOrRemove(), this.#h();
     const g = this.viewport.rotation, C = I.rotation;
-    if (this.viewport = I, Cg(this.div, {
+    if (this.viewport = I, gg(this.div, {
       rotation: C
     }), g !== C)
       for (const A of this.#l.values())
@@ -15379,7 +15379,7 @@ class oI {
     }
   }
   static get _svgFactory() {
-    return v(this, "_svgFactory", new gC());
+    return r(this, "_svgFactory", new gC());
   }
   static #i(I, [g, C, A, l]) {
     const {
@@ -15483,16 +15483,16 @@ globalThis._pdfjsTestingUtils = {
   HighlightOutliner: jC
 };
 globalThis.pdfjsLib = {
-  AbortException: EI,
-  AnnotationEditorLayer: xI,
+  AbortException: vI,
+  AnnotationEditorLayer: OI,
   AnnotationEditorParamsType: E,
-  AnnotationEditorType: O,
-  AnnotationEditorUIManager: PI,
+  AnnotationEditorType: j,
+  AnnotationEditorUIManager: EI,
   AnnotationLayer: iA,
-  AnnotationMode: rI,
-  AnnotationType: dI,
+  AnnotationMode: UI,
+  AnnotationType: ZI,
   build: sZ,
-  ColorPicker: KI,
+  ColorPicker: DI,
   createValidAbsoluteUrl: xA,
   DOMSVGFactory: gC,
   DrawLayer: oI,
@@ -15511,7 +15511,7 @@ globalThis.pdfjsLib = {
   isPdfFile: PC,
   isValidExplicitDest: Wi,
   MathClamp: tI,
-  noContextMenu: SI,
+  noContextMenu: KI,
   normalizeUnicode: _l,
   OPS: $g,
   OutputScale: QI,
@@ -15523,10 +15523,10 @@ globalThis.pdfjsLib = {
   PixelsPerInch: wg,
   RenderingCancelledException: EC,
   ResponseException: IC,
-  setLayerDimensions: Cg,
-  shadow: v,
+  setLayerDimensions: gg,
+  shadow: r,
   SignatureExtractor: Gg,
-  stopEvent: sI,
+  stopEvent: dI,
   SupportedImageMimeTypes: JC,
   TextLayer: NI,
   TouchManager: cC,
@@ -15901,7 +15901,7 @@ const pZ = { class: "modal-overlay" }, FZ = { class: "modal-content" }, zZ = { c
   __name: "SignaturePadModal",
   emits: ["close", "save"],
   setup(G, { emit: I }) {
-    const g = I, C = mI(null), A = mI(null);
+    const g = I, C = BI(null), A = BI(null);
     function l() {
       if (A.value?.isEmpty()) {
         g("close");
@@ -15927,28 +15927,28 @@ const pZ = { class: "modal-overlay" }, FZ = { class: "modal-content" }, zZ = { c
     }), ul(() => {
       window.removeEventListener("resize", Z);
     }), (d, s) => (ng(), Eg("div", pZ, [
-      AI("div", FZ, [
-        s[1] || (s[1] = AI("div", { class: "modal-header" }, [
-          AI("h3", null, "Draw Signature"),
-          AI("p", null, "Use your mouse or finger to draw your signature below.")
+      CI("div", FZ, [
+        s[1] || (s[1] = CI("div", { class: "modal-header" }, [
+          CI("h3", null, "Draw Signature"),
+          CI("p", null, "Use your mouse or finger to draw your signature below.")
         ], -1)),
-        AI("div", zZ, [
-          AI("canvas", {
+        CI("div", zZ, [
+          CI("canvas", {
             ref_key: "canvasRef",
             ref: C,
             class: "signature-canvas"
           }, null, 512)
         ]),
-        AI("div", JZ, [
-          AI("button", {
+        CI("div", JZ, [
+          CI("button", {
             onClick: s[0] || (s[0] = (c) => d.$emit("close")),
             class: "btn btn-secondary"
           }, "Cancel"),
-          AI("button", {
+          CI("button", {
             onClick: i,
             class: "btn btn-tertiary"
           }, "Clear"),
-          AI("button", {
+          CI("button", {
             onClick: l,
             class: "btn btn-primary"
           }, "Done")
@@ -15977,7 +15977,7 @@ function xZ(...G) {
   if (G.length !== 1)
     return Ml(...G);
   const I = G[0];
-  return typeof I == "function" ? Dl(Kl(() => ({ get: I, set: jZ }))) : mI(I);
+  return typeof I == "function" ? Dl(Kl(() => ({ get: I, set: jZ }))) : BI(I);
 }
 function eC(G) {
   return Array.isArray(G) ? G : [G];
@@ -15995,24 +15995,24 @@ function UZ(G, I, g) {
 const rZ = Rl ? window : void 0;
 function vZ(G) {
   var I;
-  const g = gg(G);
+  const g = Ig(G);
   return (I = g?.$el) != null ? I : g;
 }
 function EZ(...G) {
   const I = [], g = () => {
     I.forEach((Z) => Z()), I.length = 0;
-  }, C = (Z, d, s, c) => (Z.addEventListener(d, s, c), () => Z.removeEventListener(d, s, c)), A = fI(() => {
-    const Z = eC(gg(G[0])).filter((d) => d != null);
+  }, C = (Z, d, s, c) => (Z.addEventListener(d, s, c), () => Z.removeEventListener(d, s, c)), A = PI(() => {
+    const Z = eC(Ig(G[0])).filter((d) => d != null);
     return Z.every((d) => typeof d != "string") ? Z : void 0;
   }), l = UZ(
     () => {
       var Z, d;
       return [
         (d = (Z = A.value) == null ? void 0 : Z.map((s) => vZ(s))) != null ? d : [rZ].filter((s) => s != null),
-        eC(gg(A.value ? G[1] : G[0])),
+        eC(Ig(A.value ? G[1] : G[0])),
         eC(zl(A.value ? G[2] : G[1])),
         // @ts-expect-error - TypeScript gets the correct types, but somehow still complains
-        gg(A.value ? G[3] : G[2])
+        Ig(A.value ? G[3] : G[2])
       ];
     },
     ([Z, d, s, c]) => {
@@ -16054,7 +16054,7 @@ function fZ(G, I = !1) {
   const g = Fl(I);
   let C = null, A = "";
   rC(xZ(G), (Z) => {
-    const d = XC(gg(Z));
+    const d = XC(Ig(Z));
     if (d) {
       const s = d;
       if (yC.get(s) || yC.set(s, s.style.overflow), s.style.overflow !== "hidden" && (A = s.style.overflow), s.style.overflow === "hidden")
@@ -16066,7 +16066,7 @@ function fZ(G, I = !1) {
     immediate: !0
   });
   const l = () => {
-    const Z = XC(gg(G));
+    const Z = XC(Ig(G));
     !Z || g.value || (zA && (C = EZ(
       Z,
       "touchmove",
@@ -16076,10 +16076,10 @@ function fZ(G, I = !1) {
       { passive: !1 }
     )), Z.style.overflow = "hidden", g.value = !0);
   }, i = () => {
-    const Z = XC(gg(G));
+    const Z = XC(Ig(G));
     !Z || !g.value || (zA && C?.(), Z.style.overflow = A, yC.delete(Z), g.value = !1);
   };
-  return tl(i), fI({
+  return tl(i), PI({
     get() {
       return g.value;
     },
@@ -16310,147 +16310,147 @@ function Hl(G, I) {
   function A() {
     C.style.overflow = "", C.style.userSelect = "", C.style.touchAction = "", C.style.cursor = "", G.style.cursor = "", G.style.userSelect = "", G.style.touchAction = "", mg(G, "transformOrigin", "");
   }
-  function l(H) {
-    H === void 0 && (H = {});
-    for (var J in H)
-      H.hasOwnProperty(J) && (I[J] = H[J]);
-    (H.hasOwnProperty("cursor") || H.hasOwnProperty("canvas")) && (C.style.cursor = G.style.cursor = "", (I.canvas ? C : G).style.cursor = I.cursor), H.hasOwnProperty("overflow") && (C.style.overflow = H.overflow), H.hasOwnProperty("touchAction") && (C.style.touchAction = H.touchAction, G.style.touchAction = H.touchAction);
+  function l(M) {
+    M === void 0 && (M = {});
+    for (var X in M)
+      M.hasOwnProperty(X) && (I[X] = M[X]);
+    (M.hasOwnProperty("cursor") || M.hasOwnProperty("canvas")) && (C.style.cursor = G.style.cursor = "", (I.canvas ? C : G).style.cursor = I.cursor), M.hasOwnProperty("overflow") && (C.style.overflow = M.overflow), M.hasOwnProperty("touchAction") && (C.style.touchAction = M.touchAction, G.style.touchAction = M.touchAction);
   }
   var i = 0, Z = 0, d = 1, s = !1;
   W(I.startScale, { animate: !1, force: !0 }), setTimeout(function() {
     o(I.startX, I.startY, { animate: !1, force: !0 });
   });
-  function c(H, J, y) {
+  function c(M, X, y) {
     if (!y.silent) {
-      var X = new CustomEvent(H, { detail: J });
-      G.dispatchEvent(X);
+      var H = new CustomEvent(M, { detail: X });
+      G.dispatchEvent(H);
     }
   }
-  function b(H, J, y) {
-    var X = { x: i, y: Z, scale: d, isSVG: g, originalEvent: y };
+  function b(M, X, y) {
+    var H = { x: i, y: Z, scale: d, isSVG: g, originalEvent: y };
     return requestAnimationFrame(function() {
-      typeof J.animate == "boolean" && (J.animate ? $Z(G, J) : mg(G, "transition", "none")), J.setTransform(G, X, J), c(H, X, J), c("panzoomchange", X, J);
-    }), X;
+      typeof X.animate == "boolean" && (X.animate ? $Z(G, X) : mg(G, "transition", "none")), X.setTransform(G, H, X), c(M, H, X), c("panzoomchange", H, X);
+    }), H;
   }
-  function m(H, J, y, X) {
-    var R = bI(bI({}, I), X), p = { x: i, y: Z, opts: R };
+  function m(M, X, y, H) {
+    var R = bI(bI({}, I), H), J = { x: i, y: Z, opts: R };
     if (!R.force && (R.disablePan || R.panOnlyWhenZoomed && d === R.startScale))
-      return p;
-    if (H = parseFloat(H), J = parseFloat(J), R.disableXAxis || (p.x = (R.relative ? i : 0) + H), R.disableYAxis || (p.y = (R.relative ? Z : 0) + J), R.contain) {
-      var M = uC(G), U = M.elem.width / d, Q = M.elem.height / d, f = U * y, eI = Q * y, BI = (f - U) / 2, WI = (eI - Q) / 2;
+      return J;
+    if (M = parseFloat(M), X = parseFloat(X), R.disableXAxis || (J.x = (R.relative ? i : 0) + M), R.disableYAxis || (J.y = (R.relative ? Z : 0) + X), R.contain) {
+      var D = uC(G), v = D.elem.width / d, T = D.elem.height / d, mI = v * y, aI = T * y, VI = (mI - v) / 2, GI = (aI - T) / 2;
       if (R.contain === "inside") {
-        var VI = (-M.elem.margin.left - M.parent.padding.left + BI) / y, jI = (M.parent.width - f - M.parent.padding.left - M.elem.margin.left - M.parent.border.left - M.parent.border.right + BI) / y;
-        p.x = Math.max(Math.min(p.x, jI), VI);
-        var Yg = (-M.elem.margin.top - M.parent.padding.top + WI) / y, BC = (M.parent.height - eI - M.parent.padding.top - M.elem.margin.top - M.parent.border.top - M.parent.border.bottom + WI) / y;
-        p.y = Math.max(Math.min(p.y, BC), Yg);
+        var pI = (-D.elem.margin.left - D.parent.padding.left + VI) / y, ig = (D.parent.width - mI - D.parent.padding.left - D.elem.margin.left - D.parent.border.left - D.parent.border.right + VI) / y;
+        J.x = Math.max(Math.min(J.x, ig), pI);
+        var Yg = (-D.elem.margin.top - D.parent.padding.top + GI) / y, BC = (D.parent.height - aI - D.parent.padding.top - D.elem.margin.top - D.parent.border.top - D.parent.border.bottom + GI) / y;
+        J.y = Math.max(Math.min(J.y, BC), Yg);
       } else if (R.contain === "outside") {
-        var VI = (-(f - M.parent.width) - M.parent.padding.left - M.parent.border.left - M.parent.border.right + BI) / y, jI = (BI - M.parent.padding.left) / y;
-        p.x = Math.max(Math.min(p.x, jI), VI);
-        var Yg = (-(eI - M.parent.height) - M.parent.padding.top - M.parent.border.top - M.parent.border.bottom + WI) / y, BC = (WI - M.parent.padding.top) / y;
-        p.y = Math.max(Math.min(p.y, BC), Yg);
+        var pI = (-(mI - D.parent.width) - D.parent.padding.left - D.parent.border.left - D.parent.border.right + VI) / y, ig = (VI - D.parent.padding.left) / y;
+        J.x = Math.max(Math.min(J.x, ig), pI);
+        var Yg = (-(aI - D.parent.height) - D.parent.padding.top - D.parent.border.top - D.parent.border.bottom + GI) / y, BC = (GI - D.parent.padding.top) / y;
+        J.y = Math.max(Math.min(J.y, BC), Yg);
       }
     }
-    return R.roundPixels && (p.x = Math.round(p.x), p.y = Math.round(p.y)), p;
+    return R.roundPixels && (J.x = Math.round(J.x), J.y = Math.round(J.y)), J;
   }
-  function B(H, J) {
-    var y = bI(bI({}, I), J), X = { scale: d, opts: y };
+  function B(M, X) {
+    var y = bI(bI({}, I), X), H = { scale: d, opts: y };
     if (!y.force && y.disableZoom)
-      return X;
-    var R = I.minScale, p = I.maxScale;
+      return H;
+    var R = I.minScale, J = I.maxScale;
     if (y.contain) {
-      var M = uC(G), U = M.elem.width / d, Q = M.elem.height / d;
-      if (U > 1 && Q > 1) {
-        var f = M.parent.width - M.parent.border.left - M.parent.border.right, eI = M.parent.height - M.parent.border.top - M.parent.border.bottom, BI = f / U, WI = eI / Q;
-        I.contain === "inside" ? p = Math.min(p, BI, WI) : I.contain === "outside" && (R = Math.max(R, BI, WI));
+      var D = uC(G), v = D.elem.width / d, T = D.elem.height / d;
+      if (v > 1 && T > 1) {
+        var mI = D.parent.width - D.parent.border.left - D.parent.border.right, aI = D.parent.height - D.parent.border.top - D.parent.border.bottom, VI = mI / v, GI = aI / T;
+        I.contain === "inside" ? J = Math.min(J, VI, GI) : I.contain === "outside" && (R = Math.max(R, VI, GI));
       }
     }
-    return X.scale = Math.min(Math.max(H, R), p), X;
+    return H.scale = Math.min(Math.max(M, R), J), H;
   }
-  function o(H, J, y, X) {
-    var R = m(H, J, d, y);
-    return i !== R.x || Z !== R.y ? (i = R.x, Z = R.y, b("panzoompan", R.opts, X)) : { x: i, y: Z, scale: d, isSVG: g, originalEvent: X };
+  function o(M, X, y, H) {
+    var R = m(M, X, d, y);
+    return i !== R.x || Z !== R.y ? (i = R.x, Z = R.y, b("panzoompan", R.opts, H)) : { x: i, y: Z, scale: d, isSVG: g, originalEvent: H };
   }
-  function W(H, J, y) {
-    var X = B(H, J), R = X.opts;
+  function W(M, X, y) {
+    var H = B(M, X), R = H.opts;
     if (!(!R.force && R.disableZoom)) {
-      H = X.scale;
-      var p = i, M = Z;
+      M = H.scale;
+      var J = i, D = Z;
       if (R.focal) {
-        var U = R.focal;
-        p = (U.x / H - U.x / d + i * H) / H, M = (U.y / H - U.y / d + Z * H) / H;
+        var v = R.focal;
+        J = (v.x / M - v.x / d + i * M) / M, D = (v.y / M - v.y / d + Z * M) / M;
       }
-      var Q = m(p, M, H, { relative: !1, force: !0 });
-      return i = Q.x, Z = Q.y, d = H, b("panzoomzoom", R, y);
+      var T = m(J, D, M, { relative: !1, force: !0 });
+      return i = T.x, Z = T.y, d = M, b("panzoomzoom", R, y);
     }
   }
-  function Y(H, J) {
-    var y = bI(bI(bI({}, I), { animate: !0 }), J);
-    return W(d * Math.exp((H ? 1 : -1) * y.step), y);
+  function Y(M, X) {
+    var y = bI(bI(bI({}, I), { animate: !0 }), X);
+    return W(d * Math.exp((M ? 1 : -1) * y.step), y);
   }
-  function w(H) {
-    return Y(!0, H);
+  function w(M) {
+    return Y(!0, M);
   }
-  function a(H) {
-    return Y(!1, H);
+  function a(M) {
+    return Y(!1, M);
   }
-  function h(H, J, y, X) {
-    var R = uC(G), p = {
+  function h(M, X, y, H) {
+    var R = uC(G), J = {
       width: R.parent.width - R.parent.padding.left - R.parent.padding.right - R.parent.border.left - R.parent.border.right,
       height: R.parent.height - R.parent.padding.top - R.parent.padding.bottom - R.parent.border.top - R.parent.border.bottom
-    }, M = J.clientX - R.parent.left - R.parent.padding.left - R.parent.border.left - R.elem.margin.left, U = J.clientY - R.parent.top - R.parent.padding.top - R.parent.border.top - R.elem.margin.top;
-    g || (M -= R.elem.width / d / 2, U -= R.elem.height / d / 2);
-    var Q = {
-      x: M / p.width * (p.width * H),
-      y: U / p.height * (p.height * H)
+    }, D = X.clientX - R.parent.left - R.parent.padding.left - R.parent.border.left - R.elem.margin.left, v = X.clientY - R.parent.top - R.parent.padding.top - R.parent.border.top - R.elem.margin.top;
+    g || (D -= R.elem.width / d / 2, v -= R.elem.height / d / 2);
+    var T = {
+      x: D / J.width * (J.width * M),
+      y: v / J.height * (J.height * M)
     };
-    return W(H, bI(bI({}, y), { animate: !1, focal: Q }), X);
+    return W(M, bI(bI({}, y), { animate: !1, focal: T }), H);
   }
-  function N(H, J) {
-    H.preventDefault();
-    var y = bI(bI(bI({}, I), J), { animate: !1 }), X = H.deltaY === 0 && H.deltaX ? H.deltaX : H.deltaY, R = X < 0 ? 1 : -1, p = B(d * Math.exp(R * y.step / 3), y).scale;
-    return h(p, H, y, H);
+  function N(M, X) {
+    M.preventDefault();
+    var y = bI(bI(bI({}, I), X), { animate: !1 }), H = M.deltaY === 0 && M.deltaX ? M.deltaX : M.deltaY, R = H < 0 ? 1 : -1, J = B(d * Math.exp(R * y.step / 3), y).scale;
+    return h(J, M, y, M);
   }
-  function V(H) {
-    var J = bI(bI(bI({}, I), { animate: !0, force: !0 }), H);
-    d = B(J.startScale, J).scale;
-    var y = m(J.startX, J.startY, d, J);
-    return i = y.x, Z = y.y, b("panzoomreset", J);
+  function V(M) {
+    var X = bI(bI(bI({}, I), { animate: !0, force: !0 }), M);
+    d = B(X.startScale, X).scale;
+    var y = m(X.startX, X.startY, d, X);
+    return i = y.x, Z = y.y, b("panzoomreset", X);
   }
-  var n, t, u, e, F, D, j = [];
-  function P(H) {
-    if (!id(H.target, I)) {
-      UC(j, H), s = !0, I.handleStartEvent(H), n = i, t = Z, c("panzoomstart", { x: i, y: Z, scale: d, isSVG: g, originalEvent: H }, I);
-      var J = kA(j);
-      u = J.clientX, e = J.clientY, F = d, D = KC(j);
+  var n, t, e, u, K, z, x = [];
+  function P(M) {
+    if (!id(M.target, I)) {
+      UC(x, M), s = !0, I.handleStartEvent(M), n = i, t = Z, c("panzoomstart", { x: i, y: Z, scale: d, isSVG: g, originalEvent: M }, I);
+      var X = kA(x);
+      e = X.clientX, u = X.clientY, K = d, z = KC(x);
     }
   }
-  function r(H) {
-    if (!(!s || n === void 0 || t === void 0 || u === void 0 || e === void 0)) {
-      UC(j, H);
-      var J = kA(j), y = j.length > 1, X = d;
+  function U(M) {
+    if (!(!s || n === void 0 || t === void 0 || e === void 0 || u === void 0)) {
+      UC(x, M);
+      var X = kA(x), y = x.length > 1, H = d;
       if (y) {
-        D === 0 && (D = KC(j));
-        var R = KC(j) - D;
-        X = B(R * I.step / 80 + F).scale, h(X, J, { animate: !1 }, H);
+        z === 0 && (z = KC(x));
+        var R = KC(x) - z;
+        H = B(R * I.step / 80 + K).scale, h(H, X, { animate: !1 }, M);
       }
-      (!y || I.pinchAndPan) && o(n + (J.clientX - u) / X, t + (J.clientY - e) / X, {
+      (!y || I.pinchAndPan) && o(n + (X.clientX - e) / H, t + (X.clientY - u) / H, {
         animate: !1
-      }, H);
+      }, M);
     }
   }
-  function gI(H) {
-    j.length === 1 && c("panzoomend", { x: i, y: Z, scale: d, isSVG: g, originalEvent: H }, I), gd(j, H), s && (s = !1, n = t = u = e = void 0);
+  function II(M) {
+    x.length === 1 && c("panzoomend", { x: i, y: Z, scale: d, isSVG: g, originalEvent: M }, I), gd(x, M), s && (s = !1, n = t = e = u = void 0);
   }
-  var K = !1;
-  function z() {
-    K || (K = !0, MC("down", I.canvas ? C : G, P), MC("move", document, r, { passive: !0 }), MC("up", document, gI, { passive: !0 }));
+  var S = !1;
+  function F() {
+    S || (S = !0, MC("down", I.canvas ? C : G, P), MC("move", document, U, { passive: !0 }), MC("up", document, II, { passive: !0 }));
   }
-  function hI() {
-    K = !1, DC("down", I.canvas ? C : G, P), DC("move", document, r), DC("up", document, gI);
+  function WI() {
+    S = !1, DC("down", I.canvas ? C : G, P), DC("move", document, U), DC("up", document, II);
   }
-  return I.noBind || z(), {
-    bind: z,
-    destroy: hI,
+  return I.noBind || F(), {
+    bind: F,
+    destroy: WI,
     eventNames: Mg,
     getPan: function() {
       return { x: i, y: Z };
@@ -16462,14 +16462,14 @@ function Hl(G, I) {
       return sd(I);
     },
     handleDown: P,
-    handleMove: r,
-    handleUp: gI,
+    handleMove: U,
+    handleUp: II,
     pan: o,
     reset: V,
     resetStyle: A,
     setOptions: l,
-    setStyle: function(H, J) {
-      return mg(G, H, J);
+    setStyle: function(M, X) {
+      return mg(G, M, X);
     },
     zoom: W,
     zoomIn: w,
@@ -16479,7 +16479,7 @@ function Hl(G, I) {
   };
 }
 Hl.defaultOptions = yl;
-const bA = mI(!0), qg = mI(!0);
+const bA = BI(!0), qg = BI(!0);
 function Gd() {
   qg.value = !qg.value, console.log(`[PdfSigner] Log format switched to: ${qg.value ? "JSON String" : "Object"}`);
 }
@@ -16489,7 +16489,7 @@ jA(() => {
     bA.value ? G.togglePdfSignerLogFormat = Gd : G.togglePdfSignerLogFormat && delete G.togglePdfSignerLogFormat;
   }
 });
-const ZI = {
+const iI = {
   debug(G, ...I) {
     if (!bA.value)
       return;
@@ -16549,155 +16549,155 @@ const ZI = {
     jA(() => {
       bA.value = I.debug;
     });
-    const g = mI(null), C = mI(1), A = fI(() => Math.round(C.value * 100)), l = LA, i = Math.min(window.devicePixelRatio || 1, 2), Z = mI(null), d = mI(!1), s = mI({ width: 0, height: 0 }), c = document.querySelector("body"), b = fZ(c), m = SC * Yd;
-    ZI.debug("Conversion factors calculated", {
-      CM_TO_PX: m,
-      fiveCmInPx: 5 * m,
-      sevenCmInPx: 7 * m
+    const g = BI(null), C = BI(1), A = PI(() => Math.round(C.value * 100)), l = LA, i = Math.min(window.devicePixelRatio || 1, 2), Z = BI(!1), d = BI({ width: 0, height: 0 }), s = document.querySelector("body"), c = fZ(s), b = SC * Yd;
+    iI.debug("Conversion factors calculated", {
+      CM_TO_PX: b,
+      fiveCmInPx: 5 * b,
+      sevenCmInPx: 7 * b
     });
-    const B = fI(() => ({
-      left: 5 * m,
+    const m = PI(() => ({
+      left: 5 * b,
       // 5cm
-      top: 7 * m,
+      top: 7 * b,
       // 7cm
-      width: 8 * m,
+      width: 8 * b,
       // 8cm
-      height: 4 * m,
+      height: 4 * b,
       // 4cm
       page: 1
-    })), o = fI(() => {
-      const y = J.value;
+    })), B = PI(() => {
+      const X = M.value;
       return I.showSignatureBounds ? {
-        ...y,
+        ...X,
         border: "2px dashed rgba(0, 123, 255, 0.5)",
         backgroundColor: "rgba(0, 123, 255, 0.05)"
-      } : y;
-    }), W = mI(1), Y = mI(null), w = mI({ width: 0, height: 0 }), a = mI({ width: 0, height: 0 }), h = mI(null);
-    let N = null;
-    function V() {
-      d.value = !0, b.value = !0;
+      } : X;
+    }), o = BI(1), W = BI(null), Y = BI({ width: 0, height: 0 }), w = BI({ width: 0, height: 0 }), a = BI(null);
+    let h = null;
+    function N() {
+      Z.value = !0, c.value = !0;
     }
-    function n(y) {
-      const R = new DOMParser().parseFromString(y, "image/svg+xml").querySelector("svg");
-      if (!R) {
-        h.value = null, d.value = !1, b.value = !1;
+    function V(X) {
+      const H = new DOMParser().parseFromString(X, "image/svg+xml").querySelector("svg");
+      if (!H) {
+        a.value = null, Z.value = !1, c.value = !1;
         return;
       }
-      const p = parseFloat(R.getAttribute("width") || ""), M = parseFloat(R.getAttribute("height") || "");
-      !R.hasAttribute("viewBox") && Number.isFinite(p) && Number.isFinite(M) && R.setAttribute("viewBox", `0 0 ${p} ${M}`), R.removeAttribute("width"), R.removeAttribute("height"), R.setAttribute("preserveAspectRatio", "xMidYMid meet"), R.querySelectorAll("path").forEach((U) => {
-        U.getAttribute("stroke") || U.setAttribute("stroke", "#000080"), U.getAttribute("stroke-linecap") || U.setAttribute("stroke-linecap", "round"), U.getAttribute("stroke-linejoin") || U.setAttribute("stroke-linejoin", "round");
-      }), h.value = new XMLSerializer().serializeToString(R), d.value = !1, b.value = !1;
+      const R = parseFloat(H.getAttribute("width") || ""), J = parseFloat(H.getAttribute("height") || "");
+      !H.hasAttribute("viewBox") && Number.isFinite(R) && Number.isFinite(J) && H.setAttribute("viewBox", `0 0 ${R} ${J}`), H.removeAttribute("width"), H.removeAttribute("height"), H.setAttribute("preserveAspectRatio", "xMidYMid meet"), H.querySelectorAll("path").forEach((D) => {
+        D.getAttribute("stroke") || D.setAttribute("stroke", "#000080"), D.getAttribute("stroke-linecap") || D.setAttribute("stroke-linecap", "round"), D.getAttribute("stroke-linejoin") || D.setAttribute("stroke-linejoin", "round");
+      }), a.value = new XMLSerializer().serializeToString(H), Z.value = !1, c.value = !1;
     }
-    function t() {
-      d.value = !1, b.value = !1;
+    function n() {
+      Z.value = !1, c.value = !1;
     }
-    const u = fI(() => ({
-      actionButton: !!Z.value ? I.translations?.updateSignature || "Update Signature" : I.translations?.drawSignature || "Draw Signature",
+    const t = PI(() => ({
+      actionButton: !!a.value ? I.translations?.updateSignature || "Update Signature" : I.translations?.drawSignature || "Draw Signature",
       save: I.translations?.save || "Save"
-    })), e = mI(null), F = mI(null), D = mI(null), j = mI([]);
-    async function P(y, X) {
+    })), e = BI(null), u = BI(null), K = BI(null), z = BI([]);
+    async function x(X, y) {
       if (e.value) {
-        W.value = X;
-        for (let R = 1; R <= y.numPages; R++) {
-          const p = await y.getPage(R), M = p.getViewport({ scale: 1 });
-          R === 1 && (s.value = {
-            width: M.width,
-            height: M.height
-          }, ZI.debug("Original PDF Dimensions", {
-            width: M.width,
-            height: M.height,
-            widthCm: M.width / SC * 2.54,
-            heightCm: M.height / SC * 2.54
+        o.value = y;
+        for (let H = 1; H <= X.numPages; H++) {
+          const R = await X.getPage(H), J = R.getViewport({ scale: 1 });
+          H === 1 && (d.value = {
+            width: J.width,
+            height: J.height
+          }, iI.debug("Original PDF Dimensions", {
+            width: J.width,
+            height: J.height,
+            widthCm: J.width / SC * 2.54,
+            heightCm: J.height / SC * 2.54
           }));
-          const U = p.getViewport({ scale: X * l }), Q = p.getViewport({ scale: X }), f = document.createElement("canvas"), eI = f.getContext("2d");
-          f.style.display = "block", f.style.margin = "0 auto 1rem auto", f.width = Math.floor(U.width * i), f.height = Math.floor(U.height * i), f.style.width = `${Math.floor(Q.width)}px`, f.style.height = `${Math.floor(Q.height)}px`, R === 1 && (Y.value = f, w.value = {
-            width: Math.floor(Q.width),
-            height: Math.floor(Q.height)
-          }, ZI.debug("First Page Canvas Details", {
-            displayWidth: Math.floor(Q.width),
-            displayHeight: Math.floor(Q.height),
-            scale: X,
-            originalPdfWidth: s.value.width,
-            originalPdfHeight: s.value.height,
+          const D = R.getViewport({ scale: y * l }), v = R.getViewport({ scale: y }), T = document.createElement("canvas"), mI = T.getContext("2d");
+          T.style.display = "block", T.style.margin = "0 auto 1rem auto", T.width = Math.floor(D.width * i), T.height = Math.floor(D.height * i), T.style.width = `${Math.floor(v.width)}px`, T.style.height = `${Math.floor(v.height)}px`, H === 1 && (W.value = T, Y.value = {
+            width: Math.floor(v.width),
+            height: Math.floor(v.height)
+          }, iI.debug("First Page Canvas Details", {
+            displayWidth: Math.floor(v.width),
+            displayHeight: Math.floor(v.height),
+            scale: y,
+            originalPdfWidth: d.value.width,
+            originalPdfHeight: d.value.height,
             viewport: {
-              width: Q.width,
-              height: Q.height
+              width: v.width,
+              height: v.height
             },
-            canvasElement: f
-          })), e.value.appendChild(f), j.value.push({ page: Tl(p), canvas: f });
-          const BI = {
-            canvasContext: eI,
-            viewport: U,
+            canvasElement: T
+          })), e.value.appendChild(T), z.value.push({ page: Tl(R), canvas: T });
+          const aI = {
+            canvasContext: mI,
+            viewport: D,
             transform: i !== 1 ? [i, 0, 0, i, 0, 0] : void 0,
-            canvas: f
+            canvas: T
           };
-          await p.render(BI).promise;
+          await R.render(aI).promise;
         }
-        e.value && (ZI.debug("Setting up container resize observer"), r(), a.value = {
+        e.value && (iI.debug("Setting up container resize observer"), P(), w.value = {
           width: e.value.clientWidth,
           height: e.value.clientHeight
         });
       }
     }
-    function r() {
-      if (ZI.debug("setupContainerResizeObserver called", {
+    function P() {
+      if (iI.debug("setupContainerResizeObserver called", {
         hasContainer: !!e.value,
         containerElement: e.value
       }), !e.value) {
-        ZI.debug("No container to observe, returning");
+        iI.debug("No container to observe, returning");
         return;
       }
-      N && (ZI.debug("Cleaning up existing ResizeObserver"), N.disconnect(), N = null), ZI.debug("Creating new ResizeObserver for container"), N = new ResizeObserver((y) => {
-        ZI.debug("Container ResizeObserver fired", { entriesCount: y.length });
-        for (const X of y) {
-          const R = X.target, p = R.clientWidth, M = R.clientHeight;
-          if (ZI.debug("Container ResizeObserver entry", {
-            target: R,
-            contentRect: X.contentRect,
-            clientWidth: p,
-            clientHeight: M,
-            currentDimensions: a.value
-          }), p !== a.value.width || M !== a.value.height) {
-            const U = { ...a.value };
-            a.value = {
-              width: p,
-              height: M
-            }, ZI.debug("Container dimensions updated", {
-              old: U,
-              new: { width: p, height: M }
+      h && (iI.debug("Cleaning up existing ResizeObserver"), h.disconnect(), h = null), iI.debug("Creating new ResizeObserver for container"), h = new ResizeObserver((X) => {
+        iI.debug("Container ResizeObserver fired", { entriesCount: X.length });
+        for (const y of X) {
+          const H = y.target, R = H.clientWidth, J = H.clientHeight;
+          if (iI.debug("Container ResizeObserver entry", {
+            target: H,
+            contentRect: y.contentRect,
+            clientWidth: R,
+            clientHeight: J,
+            currentDimensions: w.value
+          }), R !== w.value.width || J !== w.value.height) {
+            const D = { ...w.value };
+            w.value = {
+              width: R,
+              height: J
+            }, iI.debug("Container dimensions updated", {
+              old: D,
+              new: { width: R, height: J }
             });
           } else
-            ZI.debug("Container dimensions unchanged");
+            iI.debug("Container dimensions unchanged");
         }
-      }), ZI.debug("Observing container", e.value), N.observe(e.value), ZI.debug("Container ResizeObserver setup complete");
+      }), iI.debug("Observing container", e.value), h.observe(e.value), iI.debug("Container ResizeObserver setup complete");
     }
-    function gI() {
-      if (!g.value || !F.value || !D.value) return;
-      const y = g.value, X = F.value.getBoundingClientRect(), R = D.value.getBoundingClientRect(), p = X.width <= R.width, M = X.height <= R.height;
-      p && M ? (y.setOptions({ disablePan: !0 }), y.pan(0, 0, { animate: !1 })) : y.setOptions({
+    function U() {
+      if (!g.value || !u.value || !K.value) return;
+      const X = g.value, y = u.value.getBoundingClientRect(), H = K.value.getBoundingClientRect(), R = y.width <= H.width, J = y.height <= H.height;
+      R && J ? (X.setOptions({ disablePan: !0 }), X.pan(0, 0, { animate: !1 })) : X.setOptions({
         disablePan: !1,
         contain: "outside"
         // Ensure edges can't be dragged past viewport edges
       });
     }
-    function K() {
-      if (!g.value || !D.value) return;
-      const y = g.value.getScale() * 1.25, X = D.value.getBoundingClientRect(), R = X.width / 2, p = X.height / 2;
-      g.value.zoomToPoint(y, { clientX: R, clientY: p }, {
+    function II() {
+      if (!g.value || !K.value) return;
+      const X = g.value.getScale() * 1.25, y = K.value.getBoundingClientRect(), H = y.width / 2, R = y.height / 2;
+      g.value.zoomToPoint(X, { clientX: H, clientY: R }, {
         animate: !0
       });
     }
-    function z() {
-      if (!g.value || !D.value) return;
-      const y = g.value.getScale() * 0.8, X = D.value.getBoundingClientRect(), R = X.width / 2, p = X.height / 2;
-      g.value.zoomToPoint(y, { clientX: R, clientY: p }, {
+    function S() {
+      if (!g.value || !K.value) return;
+      const X = g.value.getScale() * 0.8, y = K.value.getBoundingClientRect(), H = y.width / 2, R = y.height / 2;
+      g.value.zoomToPoint(X, { clientX: H, clientY: R }, {
         animate: !0
       });
     }
-    function hI() {
-      if (!F.value || !D.value) return;
+    function F() {
+      if (!u.value || !K.value) return;
       g.value?.destroy();
-      const y = Hl(F.value, {
+      const X = Hl(u.value, {
         maxScale: LA,
         minScale: 0.1,
         canvas: !0,
@@ -16705,74 +16705,74 @@ const ZI = {
         contain: "outside",
         startScale: 1
       });
-      D.value.addEventListener("wheel", y.zoomWithWheel, { passive: !1 }), F.value.addEventListener("panzoomstart", (X) => {
-        X.preventDefault();
-      }), F.value.addEventListener("panzoomzoom", (X) => {
-        const R = X;
-        C.value = R.detail.scale;
-      }), F.value.addEventListener("panzoomend", () => {
-        gI();
-      }), g.value = y;
+      K.value.addEventListener("wheel", X.zoomWithWheel, { passive: !1 }), u.value.addEventListener("panzoomstart", (y) => {
+        y.preventDefault();
+      }), u.value.addEventListener("panzoomzoom", (y) => {
+        const H = y;
+        C.value = H.detail.scale;
+      }), u.value.addEventListener("panzoomend", () => {
+        U();
+      }), g.value = X;
     }
-    async function H(y) {
-      if (!(!y || !e.value || !D.value)) {
-        g.value?.destroy(), g.value = null, e.value.innerHTML = "", j.value = [];
+    async function WI(X) {
+      if (!(!X || !e.value || !K.value)) {
+        g.value?.destroy(), g.value = null, e.value.innerHTML = "", z.value = [];
         try {
-          const X = atob(y), R = new Uint8Array(X.length);
-          for (let VI = 0; VI < X.length; VI++)
-            R[VI] = X.charCodeAt(VI);
-          const M = await cl({ data: R }).promise, U = await M.getPage(1), f = D.value.getBoundingClientRect().width, eI = U.getViewport({ scale: 1 }), BI = f * 0.9 / eI.width, WI = Math.min(BI, 2);
-          await P(M, WI), await Ll(), hI(), gI();
-        } catch (X) {
-          ZI.error("Failed to render PDF", X), e.value && (e.value.innerHTML = '<p style="color: red;">Error: Failed to load PDF.</p>');
+          const y = atob(X), H = new Uint8Array(y.length);
+          for (let GI = 0; GI < y.length; GI++)
+            H[GI] = y.charCodeAt(GI);
+          const J = await cl({ data: H }).promise, D = await J.getPage(1), T = K.value.getBoundingClientRect().width, mI = D.getViewport({ scale: 1 }), aI = T * 0.9 / mI.width, VI = Math.min(aI, 2);
+          await x(J, VI), await Ll(), F(), U();
+        } catch (y) {
+          iI.error("Failed to render PDF", y), e.value && (e.value.innerHTML = '<p style="color: red;">Error: Failed to load PDF.</p>');
         }
       }
     }
-    const J = fI(() => {
-      if (!Y.value || !e.value || s.value.width === 0)
+    const M = PI(() => {
+      if (!W.value || !e.value || d.value.width === 0)
         return { display: "none" };
-      const y = B.value, X = w.value.width, R = w.value.height, p = X / s.value.width, M = a.value.width || e.value.clientWidth, U = 16, Q = Math.max(0, (M - X) / 2), f = y.left * p, eI = y.top * p, BI = y.width * p, WI = y.height * p, VI = Q + f, jI = eI + U;
-      return ZI.debug("Signature Positioning Calculation", {
+      const X = m.value, y = Y.value.width, H = Y.value.height, R = y / d.value.width, J = w.value.width || e.value.clientWidth, D = 16, v = Math.max(0, (J - y) / 2), T = X.left * R, mI = X.top * R, aI = X.width * R, VI = X.height * R, GI = v + T, pI = mI + D;
+      return iI.debug("Signature Positioning Calculation", {
         placement: {
-          leftCm: y.left / m,
-          topCm: y.top / m,
-          widthCm: y.width / m,
-          heightCm: y.height / m
+          leftCm: X.left / b,
+          topCm: X.top / b,
+          widthCm: X.width / b,
+          heightCm: X.height / b
         },
         pixelValues: {
-          left: y.left,
-          top: y.top,
-          width: y.width,
-          height: y.height
+          left: X.left,
+          top: X.top,
+          width: X.width,
+          height: X.height
         },
         canvas: {
-          width: X,
-          height: R,
-          currentScale: p,
-          originalWidth: s.value.width,
-          originalHeight: s.value.height
+          width: y,
+          height: H,
+          currentScale: R,
+          originalWidth: d.value.width,
+          originalHeight: d.value.height
         },
         container: {
-          width: M,
-          padding: U,
-          reactiveWidth: a.value.width
+          width: J,
+          padding: D,
+          reactiveWidth: w.value.width
         },
         offsets: {
-          canvasLeftOffset: Q,
-          initialPdfScale: W.value,
-          currentScale: p
+          canvasLeftOffset: v,
+          initialPdfScale: o.value,
+          currentScale: R
         },
         scaled: {
-          signatureLeft: f,
-          signatureTop: eI,
-          signatureWidth: BI,
-          signatureHeight: WI
+          signatureLeft: T,
+          signatureTop: mI,
+          signatureWidth: aI,
+          signatureHeight: VI
         },
         final: {
-          left: VI,
-          top: jI,
-          width: BI,
-          height: WI
+          left: GI,
+          top: pI,
+          width: aI,
+          height: VI
         },
         svgInfo: {
           viewBox: "0 0 200 160",
@@ -16787,128 +16787,128 @@ const ZI = {
         }
       }), {
         position: "absolute",
-        left: `${VI}px`,
-        top: `${jI}px`,
-        width: `${BI}px`,
-        height: `${WI}px`,
+        left: `${GI}px`,
+        top: `${pI}px`,
+        width: `${aI}px`,
+        height: `${VI}px`,
         pointerEvents: "none"
       };
     });
     return QA(() => {
-      H(I.pdfData);
-      const y = () => {
-        if (ZI.debug("Window resized", {
+      WI(I.pdfData);
+      const X = () => {
+        if (iI.debug("Window resized", {
           innerWidth: window.innerWidth,
           innerHeight: window.innerHeight
-        }), Y.value) {
-          ZI.debug("Canvas element on window resize", {
-            canvas: Y.value,
-            styleWidth: Y.value.style.width,
-            styleHeight: Y.value.style.height,
-            offsetWidth: Y.value.offsetWidth,
-            offsetHeight: Y.value.offsetHeight,
-            clientWidth: Y.value.clientWidth,
-            clientHeight: Y.value.clientHeight
+        }), W.value) {
+          iI.debug("Canvas element on window resize", {
+            canvas: W.value,
+            styleWidth: W.value.style.width,
+            styleHeight: W.value.style.height,
+            offsetWidth: W.value.offsetWidth,
+            offsetHeight: W.value.offsetHeight,
+            clientWidth: W.value.clientWidth,
+            clientHeight: W.value.clientHeight
           });
-          const X = parseInt(Y.value.style.width), R = parseInt(Y.value.style.height);
-          (X !== w.value.width || R !== w.value.height) && (ZI.debug("Manual dimension update on window resize", {
-            old: w.value,
-            new: { width: X, height: R }
-          }), w.value = {
-            width: X,
-            height: R
+          const y = parseInt(W.value.style.width), H = parseInt(W.value.style.height);
+          (y !== Y.value.width || H !== Y.value.height) && (iI.debug("Manual dimension update on window resize", {
+            old: Y.value,
+            new: { width: y, height: H }
+          }), Y.value = {
+            width: y,
+            height: H
           });
         }
-        e.value && ZI.debug("PDF container on window resize", {
+        e.value && iI.debug("PDF container on window resize", {
           clientWidth: e.value.clientWidth,
           clientHeight: e.value.clientHeight,
           offsetWidth: e.value.offsetWidth,
           offsetHeight: e.value.offsetHeight
         });
       };
-      window.addEventListener("resize", y), WA(() => {
-        window.removeEventListener("resize", y);
+      window.addEventListener("resize", X), WA(() => {
+        window.removeEventListener("resize", X);
       });
     }), rC(
       () => I.pdfData,
-      (y, X) => {
-        y !== X && H(y);
+      (X, y) => {
+        X !== y && WI(X);
       }
     ), WA(() => {
-      g.value?.destroy(), N && (N.disconnect(), N = null);
-    }), (y, X) => (ng(), Eg("div", {
+      g.value?.destroy(), h && (h.disconnect(), h = null);
+    }), (X, y) => (ng(), Eg("div", {
       class: "vue-pdf-signer",
-      onTouchstart: X[3] || (X[3] = Zg(() => {
+      onTouchstart: y[3] || (y[3] = Zg(() => {
       }, ["stop"])),
-      onTouchmove: X[4] || (X[4] = Zg(() => {
+      onTouchmove: y[4] || (y[4] = Zg(() => {
       }, ["stop"])),
-      onWheel: X[5] || (X[5] = Zg(() => {
+      onWheel: y[5] || (y[5] = Zg(() => {
       }, ["stop"]))
     }, [
-      AI("div", bd, [
-        AI("div", md, [
-          AI("button", {
-            onClick: V,
+      CI("div", bd, [
+        CI("div", md, [
+          CI("button", {
+            onClick: N,
             class: "btn btn-secondary"
-          }, wC(u.value.actionButton), 1),
-          AI("button", {
+          }, wC(t.value.actionButton), 1),
+          CI("button", {
             class: "btn btn-primary",
-            disabled: !Z.value
-          }, wC(u.value.save), 9, Bd)
+            disabled: !a.value
+          }, wC(t.value.save), 9, Bd)
         ]),
         I.enableZoom ? (ng(), Eg("div", {
           key: 0,
           class: "toolbar-group",
-          onTouchstart: X[0] || (X[0] = Zg(() => {
+          onTouchstart: y[0] || (y[0] = Zg(() => {
           }, ["stop"])),
-          onTouchmove: X[1] || (X[1] = Zg(() => {
+          onTouchmove: y[1] || (y[1] = Zg(() => {
           }, ["stop"])),
-          onWheel: X[2] || (X[2] = Zg(() => {
+          onWheel: y[2] || (y[2] = Zg(() => {
           }, ["stop"]))
         }, [
-          AI("button", {
-            onClick: z,
+          CI("button", {
+            onClick: S,
             class: "btn btn-icon"
           }, "-"),
-          AI("span", Wd, wC(A.value) + "%", 1),
-          AI("button", {
-            onClick: K,
+          CI("span", Wd, wC(A.value) + "%", 1),
+          CI("button", {
+            onClick: II,
             class: "btn btn-icon"
           }, "+")
         ], 32)) : oC("", !0)
       ]),
-      AI("div", {
+      CI("div", {
         ref_key: "viewportRef",
-        ref: D,
+        ref: K,
         class: "pdf-viewport"
       }, [
-        AI("div", {
+        CI("div", {
           ref_key: "panzoomContainer",
-          ref: F,
+          ref: u,
           class: "panzoom-container"
         }, [
-          AI("div", {
+          CI("div", {
             ref_key: "pdfContainer",
             ref: e,
             class: "pdf-render-view"
           }, null, 512),
-          h.value ? (ng(), Eg("div", od, [
-            AI("div", {
-              style: kl(o.value),
+          a.value ? (ng(), Eg("div", od, [
+            CI("div", {
+              style: kl(B.value),
               class: "signature-wrapper",
-              innerHTML: h.value
+              innerHTML: a.value
             }, null, 12, wd)
           ])) : oC("", !0)
         ], 512)
       ], 512),
-      d.value ? (ng(), Jl(LZ, {
+      Z.value ? (ng(), Jl(LZ, {
         key: 0,
-        onClose: t,
-        onSave: n
+        onClose: n,
+        onSave: V
       })) : oC("", !0)
     ], 32));
   }
-}), ad = /* @__PURE__ */ nl(hd, [["__scopeId", "data-v-5b0c211c"]]), nd = {
+}), ad = /* @__PURE__ */ nl(hd, [["__scopeId", "data-v-eb7755f1"]]), nd = {
   install(G) {
     G.component("PdfSigner", ad);
   }
