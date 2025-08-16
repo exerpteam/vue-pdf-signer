@@ -78,13 +78,10 @@ onUnmounted(() => {
   // Clean up the listener to prevent memory leaks.
   window.removeEventListener('resize', resizeCanvas)
 })
-
-// The iOS scroll fix is no longer needed here, as the canvas will capture
-// touch events, preventing the background from scrolling.
 </script>
 
 <template>
-  <div class="modal-overlay" @click.self="$emit('close')">
+  <div class="modal-overlay">
     <div class="modal-content">
       <div class="modal-header">
         <h3>Draw Signature</h3>
@@ -143,9 +140,9 @@ onUnmounted(() => {
   font-size: 0.9rem;
 }
 
-/* styles for the signature pad container and canvas. */
 .signature-pad-wrapper {
-  border: 1px solid #ccc;
+  /* The border is dashed for a cleaner look. */
+  border: 2px dashed #ccc;
   border-radius: 4px;
   margin-bottom: 1rem;
   touch-action: none; /* Prevents scrolling on touch devices while drawing */
@@ -167,7 +164,6 @@ onUnmounted(() => {
   margin-top: 1rem;
 }
 
-/* Re-using and extending button styles from the main component. */
 .btn {
   padding: 0.5rem 1rem;
   border-radius: 6px;
