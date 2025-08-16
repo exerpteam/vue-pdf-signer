@@ -6,8 +6,10 @@ import type { FinishPayload, SignaturePlacement } from '../types'
 
 import { usePdfRenderer } from '../composables/usePdfRenderer'
 import { usePanZoom } from '../composables/usePanZoom'
-import { useSignature } from '../composables/useSignature'
+import { useSignaturePad } from '../composables/useSignaturePad'
 import { useSignatureOverlay } from '../composables/useSignatureOverlay'
+import { usePdfDocument } from '../composables/usePdfDocument'
+import { useTranslations } from '../composables/useTranslations'
 
 const props = withDefaults(
   defineProps<{
@@ -54,19 +56,23 @@ const { zoomPercentage, initPanzoom, destroyPanzoom, zoomIn, zoomOut } = usePanZ
   viewportRef,
 )
 
-// 3. Signature Capture and Saving Logic
+// 3. Signature Pad (Modal and Data Capture)
 const {
   isSignaturePadOpen,
-  isSaving,
   signatureSvg,
-  t,
+  signaturePng,
   openSignaturePad,
   handleSignatureCancel,
   handleSignatureSave,
-  saveDocument,
-} = useSignature(props, emit)
+} = useSignaturePad()
 
-// 4. Signature Overlay Positioning Logic
+// 4. PDF Document Generation (Saving Logic)
+const { isSaving, saveDocument } = usePdfDocument(props, emit, signatureSvg, signaturePng)
+
+// 5. UI Text and Translations
+const { t } = useTranslations(props, isSaving, signatureSvg)
+
+// 6. Signature Overlay Positioning Logic
 // We use toRefs to pass reactive props to the composable.
 const { signatureData, showSignatureBounds } = toRefs(props)
 const { signatureStyles } = useSignatureOverlay(

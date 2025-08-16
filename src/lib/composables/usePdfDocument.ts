@@ -1,5 +1,4 @@
-import { ref, computed, nextTick } from 'vue'
-import { useScrollLock } from '@vueuse/core'
+import { ref, nextTick, type Ref } from 'vue'
 import { PDFDocument, PDFName, PDFNumber, asNumber, rgb, LineCapStyle } from 'pdf-lib'
 import { logger } from '../utils/debug'
 import { sleep } from '../utils/sleep'
@@ -68,68 +67,24 @@ function getUnionBBox(svgEl: SVGSVGElement, paths: SVGPathElement[]) {
 }
 
 /**
- * A Vue composable to manage the signature capture and saving process.
+ * A composable to manage the final PDF document generation and saving process.
+ *
  * @param props - The component's props, containing pdfData, signatureData, etc.
  * @param emit - The component's emit function.
+ * @param signatureSvg - A ref to the current signature SVG string.
+ * @param signaturePng - A ref to the current signature PNG string.
  */
-export function useSignature(
-  // We pass props and emit as arguments to the composable
+export function usePdfDocument(
   props: {
     pdfData: string
     signatureData: SignaturePlacement[]
     isDownload?: boolean
-    translations?: Record<string, string>
   },
   emit: (e: 'finish', payload: FinishPayload) => void,
+  signatureSvg: Ref<string | null>,
+  signaturePng: Ref<string | null>,
 ) {
-  // --- START: Reactive State ---
-  const isSignaturePadOpen = ref(false)
   const isSaving = ref(false)
-  const signatureSvg = ref<string | null>(null)
-  const signaturePng = ref<string | null>(null)
-
-  const bodyEl = document.querySelector('body')
-  const isLocked = useScrollLock(bodyEl)
-  // --- END: Reactive State ---
-
-  function openSignaturePad() {
-    isSignaturePadOpen.value = true
-    isLocked.value = true
-  }
-
-  function handleSignatureCancel() {
-    isSignaturePadOpen.value = false
-    isLocked.value = false
-  }
-
-  function handleSignatureSave(payload: { svg: string; png: string }) {
-    const { svg, png } = payload
-    const doc = new DOMParser().parseFromString(svg, 'image/svg+xml')
-    const el = doc.querySelector('svg')
-
-    if (!el) {
-      signatureSvg.value = null
-      signaturePng.value = null
-      isSignaturePadOpen.value = false
-      isLocked.value = false
-      return
-    }
-
-    const w = parseFloat(el.getAttribute('width') || '')
-    const h = parseFloat(el.getAttribute('height') || '')
-    if (!el.hasAttribute('viewBox') && Number.isFinite(w) && Number.isFinite(h)) {
-      el.setAttribute('viewBox', `0 0 ${w} ${h}`)
-    }
-    el.removeAttribute('width')
-    el.removeAttribute('height')
-    el.setAttribute('preserveAspectRatio', 'xMidYMid meet')
-
-    signatureSvg.value = new XMLSerializer().serializeToString(el)
-    signaturePng.value = png
-
-    isSignaturePadOpen.value = false
-    isLocked.value = false
-  }
 
   /**
    * Generates the final signed PDF, emits the result, and handles download.
@@ -253,52 +208,8 @@ export function useSignature(
     }
   }
 
-  // computed property to handle all component text.
-  const t = computed(() => {
-    // This object contains all default English strings for the component.
-    const defaultTranslations = {
-      // Toolbar buttons
-      updateSignature: 'Change Signature',
-      drawSignature: 'Sign Here',
-      save: 'Save',
-      saving: 'Saving...',
-      // SignaturePadModal content
-      modalTitle: 'Draw Signature',
-      modalSubtitle: 'Use your mouse or finger to draw your signature below.',
-      modalCancel: 'Cancel',
-      modalClear: 'Clear',
-      modalDone: 'Done',
-    }
-
-    // We merge the user's translations over our defaults.
-    const merged = { ...defaultTranslations, ...props.translations }
-
-    const hasSignature = !!signatureSvg.value
-
-    // The logic now uses the merged object and returns all strings.
-    if (isSaving.value) {
-      return {
-        ...merged,
-        actionButton: merged.updateSignature,
-        save: merged.saving,
-      }
-    }
-    return {
-      ...merged,
-      actionButton: hasSignature ? merged.updateSignature : merged.drawSignature,
-      save: merged.save,
-    }
-  })
-
   return {
-    isSignaturePadOpen,
     isSaving,
-    signatureSvg,
-    signaturePng,
-    t,
-    openSignaturePad,
-    handleSignatureCancel,
-    handleSignatureSave,
     saveDocument,
   }
 }
