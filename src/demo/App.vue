@@ -1,47 +1,28 @@
 <script setup lang="ts">
 import { ref, watch, computed, nextTick } from 'vue'
 import { PdfSigner, type FinishPayload } from '../lib'
-import { PDF_MANIFEST, type PdfManifestEntry } from './pdf-manifest'
-
-// This interface matches the structure our component's prop expects.
-interface SignaturePlacement {
-  left: number
-  top: number
-  width: number
-  height: number
-  page: number
-}
+import { PDF_MANIFEST, type PdfManifestEntry, type SignaturePlacement } from './pdf-manifest'
 
 // --- START: Reactive state for our demo app ---
 const pdfList = ref<PdfManifestEntry[]>(PDF_MANIFEST)
 const selectedPdfFileName = ref<string>(PDF_MANIFEST[0]?.fileName || '')
 const pdfData = ref<string>('')
-const signatureData = ref<SignaturePlacement[]>([])
 const isLoading = ref<boolean>(false)
 const output = ref<FinishPayload | null>(null)
 const outputSectionRef = ref<HTMLDivElement | null>(null)
+
+// This ref holds the editable signature data from our new input fields.
+const dynamicSignatureData = ref<SignaturePlacement>({
+  left: 5,
+  top: 7,
+  width: 8,
+  height: 4,
+  page: 1,
+})
+
+// The component's prop expects an array, so we wrap our dynamic object in a computed array.
+const signatureDataForComponent = computed(() => [dynamicSignatureData.value])
 // --- END: Reactive state ---
-
-/**
- * Parses the signature box string from the manifest into the format
- * our component expects.
- */
-function parseSignatureData(signatureString: string): SignaturePlacement[] {
-  const signature: Partial<SignaturePlacement> = { page: 1 } // Default to page 1
-  const parts = signatureString.match(/(\w+)=([\d.]+)/g) || []
-
-  parts.forEach((part) => {
-    const [key, value] = part.split('=')
-    if (key && value) {
-      // Use a type assertion here since we are dynamically building the object.
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ;(signature as any)[key] = parseFloat(value)
-    }
-  })
-
-  // We return an array, as the prop expects an array of placements.
-  return [signature as SignaturePlacement]
-}
 
 /**
  * Dynamically imports a PDF from the samples directory, fetches it,
@@ -49,10 +30,7 @@ function parseSignatureData(signatureString: string): SignaturePlacement[] {
  */
 async function loadPdfAsBase64(fileName: string): Promise<string> {
   try {
-    // This avoids the MIME type error on iOS/Safari which can be overly strict
-    // about importing non-JS assets. The path is relative to the dev server root.
     const pdfUrl = `/src/demo/samples/${fileName}`
-
     const response = await fetch(pdfUrl)
     if (!response.ok) {
       throw new Error(`Failed to fetch PDF: ${response.statusText}`)
@@ -63,7 +41,6 @@ async function loadPdfAsBase64(fileName: string): Promise<string> {
       const reader = new FileReader()
       reader.onload = () => {
         const dataUrl = reader.result as string
-        // We need to strip the "data:application/pdf;base64," prefix.
         const base64 = dataUrl.split(',')[1]
         resolve(base64)
       }
@@ -76,13 +53,10 @@ async function loadPdfAsBase64(fileName: string): Promise<string> {
   }
 }
 
-// Replace the existing handleFinish function
 async function handleFinish(payload: FinishPayload) {
   console.log('Demo App received "finish" event:', payload)
   output.value = payload
-
   await nextTick()
-
   outputSectionRef.value?.scrollIntoView({ behavior: 'smooth' })
 }
 
@@ -103,21 +77,18 @@ watch(
     if (!newFileName) return
 
     isLoading.value = true
-    pdfData.value = '' // Clear previous PDF to show loading state
+    pdfData.value = ''
 
     const selectedPdf = pdfList.value.find((p) => p.fileName === newFileName)
     if (selectedPdf) {
-      // Load the new PDF and parse its signature data in parallel.
-      const [loadedPdfData, parsedSignatureData] = await Promise.all([
-        loadPdfAsBase64(selectedPdf.fileName),
-        Promise.resolve(parseSignatureData(selectedPdf.signatureBoxCm)),
-      ])
-      pdfData.value = loadedPdfData
-      signatureData.value = parsedSignatureData
+      pdfData.value = await loadPdfAsBase64(selectedPdf.fileName)
+      // When a new PDF is selected, we update our reactive ref with its default placement.
+      // This automatically updates the input fields.
+      dynamicSignatureData.value = { ...selectedPdf.signaturePlacement }
     }
     isLoading.value = false
   },
-  { immediate: true }, // `immediate: true` runs the watcher on component mount to load the initial PDF.
+  { immediate: true },
 )
 </script>
 
@@ -137,25 +108,71 @@ watch(
       </select>
     </div>
 
+    <!-- START: dynamic signature controls -->
+    <fieldset class="signature-controls">
+      <legend>Signature Placement</legend>
+      <div class="signature-controls-grid">
+        <div class="input-group">
+          <label for="sig-left">Left (cm)</label>
+          <input
+            id="sig-left"
+            type="number"
+            step="0.1"
+            v-model.number="dynamicSignatureData.left"
+          />
+        </div>
+        <div class="input-group">
+          <label for="sig-top">Top (cm)</label>
+          <input id="sig-top" type="number" step="0.1" v-model.number="dynamicSignatureData.top" />
+        </div>
+        <div class="input-group">
+          <label for="sig-width">Width (cm)</label>
+          <input
+            id="sig-width"
+            type="number"
+            step="0.1"
+            v-model.number="dynamicSignatureData.width"
+          />
+        </div>
+        <div class="input-group">
+          <label for="sig-height">Height (cm)</label>
+          <input
+            id="sig-height"
+            type="number"
+            step="0.1"
+            v-model.number="dynamicSignatureData.height"
+          />
+        </div>
+        <div class="input-group">
+          <label for="sig-page">Page</label>
+          <input
+            id="sig-page"
+            type="number"
+            step="1"
+            min="1"
+            v-model.number="dynamicSignatureData.page"
+          />
+        </div>
+      </div>
+    </fieldset>
+    <!-- END: dynamic signature controls -->
+
     <h2>PdfSigner Component</h2>
 
-    <!-- Display a loading message while the PDF is being fetched. -->
     <div v-if="isLoading" class="loading-placeholder">
       <p>Loading PDF...</p>
     </div>
 
-    <!-- The component is now bound to our dynamic state. -->
     <PdfSigner
       v-if="pdfData && !isLoading"
       :pdfData="pdfData"
-      :signatureData="signatureData"
+      :signatureData="signatureDataForComponent"
       :enableZoom="true"
       :debug="true"
-      :showSignatureBounds="false"
+      :showSignatureBounds="true"
       @finish="handleFinish"
     />
 
-    <!-- START: Output Section -->
     <div v-if="output" ref="outputSectionRef" class="output-section">
       <h2>Output</h2>
       <div class="output-grid">
@@ -171,7 +188,6 @@ watch(
         </div>
       </div>
     </div>
-    <!-- END: Output Section -->
   </main>
 </template>
 
@@ -185,9 +201,8 @@ main {
   padding: 1rem;
 }
 
-/* styles for the controls and loading state. */
 .controls {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   display: flex;
   align-items: flex-start;
   gap: 0.5rem;
@@ -201,8 +216,43 @@ main {
   border-radius: 4px;
   border: 1px solid #ccc;
   width: 100%;
-  max-width: 400px; /* Optional: prevent it from becoming too wide on tablets */
+  max-width: 400px;
 }
+
+/* START: Styles for controls */
+.signature-controls {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  background-color: #fdfdfd;
+}
+.signature-controls legend {
+  font-weight: 600;
+  padding: 0 0.5rem;
+}
+.signature-controls-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1rem;
+}
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.input-group label {
+  font-size: 0.875rem;
+  color: #555;
+}
+.input-group input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+/* END: Styles for controls */
+
 .loading-placeholder {
   display: flex;
   justify-content: center;
@@ -214,46 +264,29 @@ main {
   color: #777;
 }
 
-@media (min-width: 768px) {
-  .controls {
-    flex-direction: row;
-    align-items: center;
-  }
-  .controls select {
-    width: auto; /* Allow it to size based on content */
-    min-width: 300px;
-  }
-}
-
-/* START: Output Section Styles */
 .output-section {
   margin-top: 3rem;
   padding-top: 2rem;
   border-top: 1px solid #eee;
 }
-
 .output-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 2rem;
 }
-
 .output-item h3 {
   margin-top: 0;
 }
-
 .output-item p {
   color: #555;
   font-size: 0.9rem;
 }
-
 .output-item iframe {
   width: 100%;
   height: 600px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-
 .output-item img {
   max-width: 100%;
   height: auto;
@@ -262,11 +295,17 @@ main {
   background-color: #f9f9f9;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
+  .controls {
+    flex-direction: row;
+    align-items: center;
+  }
+  .controls select {
+    width: auto;
+    min-width: 300px;
+  }
   .output-grid {
-    /* On larger screens, show side-by-side */
     grid-template-columns: 2fr 1fr;
   }
 }
-/* END: Output Section Styles */
 </style>
