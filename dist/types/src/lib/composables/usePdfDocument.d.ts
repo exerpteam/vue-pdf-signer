@@ -12,7 +12,6 @@ import { FinishPayload, SignaturePlacement } from '../types';
 export declare function usePdfDocument(props: {
     pdfData: string;
     signatureData: SignaturePlacement[];
-    isDownload?: boolean;
 }, emit: (e: 'finish', payload: FinishPayload) => void, signatureSvg: Ref<string | null>, signaturePng: Ref<string | null>): {
     isSaving: Ref<boolean, boolean>;
     saveDocument: () => Promise<void>;

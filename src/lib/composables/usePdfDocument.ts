@@ -78,7 +78,6 @@ export function usePdfDocument(
   props: {
     pdfData: string
     signatureData: SignaturePlacement[]
-    isDownload?: boolean
   },
   emit: (e: 'finish', payload: FinishPayload) => void,
   signatureSvg: Ref<string | null>,
@@ -191,16 +190,6 @@ export function usePdfDocument(
       }
 
       emit('finish', payload)
-
-      if (props.isDownload) {
-        const dataUri = `data:application/pdf;base64,${signedPdfBase64}`
-        const link = document.createElement('a')
-        link.href = dataUri
-        link.download = 'signed-document.pdf'
-        document.body.appendChild(link)
-        link.click()
-        document.body.removeChild(link)
-      }
     } catch (error) {
       logger.error('Failed to save document:', error)
     } finally {

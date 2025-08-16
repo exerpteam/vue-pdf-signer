@@ -15,15 +15,11 @@ const props = withDefaults(
   defineProps<{
     pdfData: string
     signatureData?: SignaturePlacement[]
-    isDownload?: boolean
     translations?: Record<string, string>
-    enableZoom?: boolean
     debug?: boolean
     showSignatureBounds?: boolean
   }>(),
   {
-    isDownload: false,
-    enableZoom: true,
     signatureData: () => [],
     translations: () => ({}),
     debug: false,
@@ -122,13 +118,7 @@ onBeforeUnmount(() => {
           {{ t.save }}
         </button>
       </div>
-      <div
-        v-if="props.enableZoom"
-        class="toolbar-group"
-        @touchstart.stop
-        @touchmove.stop
-        @wheel.stop
-      >
+      <div class="toolbar-group" @touchstart.stop @touchmove.stop @wheel.stop>
         <button @click="zoomOut" class="btn btn-icon">-</button>
         <span class="zoom-level">{{ zoomPercentage }}%</span>
         <button @click="zoomIn" class="btn btn-icon">+</button>

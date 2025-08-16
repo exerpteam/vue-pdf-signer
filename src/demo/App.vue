@@ -190,7 +190,6 @@ watch(
       v-if="pdfData && !isLoading"
       :pdfData="pdfData"
       :signatureData="dynamicSignatureData"
-      :enableZoom="true"
       :debug="true"
       :showSignatureBounds="true"
       :translations="customTranslations"

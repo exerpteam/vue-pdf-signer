@@ -94,10 +94,8 @@ This example demonstrates how to replace the legacy `draw-sign-pdf` component wi
       v-if="document.signable && document.signaturesConfigurationData"
       :pdfData="getPdfData(document)"
       :signatureData="getSignatureData(document)"
-      :isDownload="false"
       :translations="pdfTranslation"
       @finish="getSignedData"
-      :enableZoom="true"
     />
     ```
 

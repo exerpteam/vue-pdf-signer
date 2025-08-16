@@ -3,14 +3,10 @@ import { FinishPayload, SignaturePlacement } from '../types';
 declare const _default: import('vue').DefineComponent<import('vue').ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
     pdfData: string;
     signatureData?: SignaturePlacement[];
-    isDownload?: boolean;
     translations?: Record<string, string>;
-    enableZoom?: boolean;
     debug?: boolean;
     showSignatureBounds?: boolean;
 }>, {
-    isDownload: boolean;
-    enableZoom: boolean;
     signatureData: () => never[];
     translations: () => {};
     debug: boolean;
@@ -20,14 +16,10 @@ declare const _default: import('vue').DefineComponent<import('vue').ExtractPropT
 }, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
     pdfData: string;
     signatureData?: SignaturePlacement[];
-    isDownload?: boolean;
     translations?: Record<string, string>;
-    enableZoom?: boolean;
     debug?: boolean;
     showSignatureBounds?: boolean;
 }>, {
-    isDownload: boolean;
-    enableZoom: boolean;
     signatureData: () => never[];
     translations: () => {};
     debug: boolean;
@@ -36,9 +28,7 @@ declare const _default: import('vue').DefineComponent<import('vue').ExtractPropT
     onFinish?: ((payload: FinishPayload) => any) | undefined;
 }>, {
     signatureData: SignaturePlacement[];
-    isDownload: boolean;
     translations: Record<string, string>;
-    enableZoom: boolean;
     debug: boolean;
     showSignatureBounds: boolean;
 }, {}, {}, {}, string, import('vue').ComponentProvideOptions, true, {}, any>;
