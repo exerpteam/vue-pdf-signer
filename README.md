@@ -1,18 +1,33 @@
 # Vue PDF Signer
 
-A robust, reusable Vue 3 component for displaying a PDF and overlaying a user-drawn signature. Built with TypeScript and Vite.
+A robust, reusable Vue 3 component for displaying a PDF and overlaying a user-drawn signature. Built with TypeScript and Vite, it provides a seamless, responsive signing experience on both desktop and mobile devices.
 
-## Status
+## Features
 
-**In Development.** The component's API is defined, but the core PDF rendering and signature functionality is currently a placeholder.
-
-## Features (Target)
-
-- **PDF Loading:** Renders a multi-page PDF provided as a base64 encoded string.
-- **Signature Capture:** Provides a dedicated interface for drawing a signature.
-- **Signature Placement:** Overlays the captured signature onto predefined locations in the PDF.
-- **Vector-Based Export:** Generates the final signed PDF with the signature embedded as a high-quality vector graphic.
+- **PDF Loading:** Renders multi-page PDFs provided as a base64 encoded string.
 - **Responsive & Touch-Friendly:** Supports zoom, pan, and scroll gestures on both desktop and mobile.
+- **Signature Capture:** Provides a dedicated, clean interface for drawing a signature.
+- **Dynamic Signature Placement:** Overlays the captured signature onto one or more predefined locations within the PDF.
+- **Vector-Based Export:** Generates the final signed PDF with the signature embedded as a high-quality vector graphic, ensuring clarity at any zoom level.
+- **Customizable UI:** All user-facing text can be customized through a `translations` prop.
+
+## Quick API Reference
+
+### Props
+
+| Prop            | Type            | Required | Description                                                            |
+| --------------- | --------------- | :------: | ---------------------------------------------------------------------- |
+| `pdfData`       | `String`        |   Yes    | The PDF document, encoded as a base64 string.                          |
+| `signatureData` | `Array<Object>` |   Yes    | An array of objects defining the position and size for each signature. |
+| `translations`  | `Object`        |    No    | An object for customizing UI text.                                     |
+
+### Events
+
+| Event    | Payload  | Description                                                                    |
+| -------- | -------- | ------------------------------------------------------------------------------ |
+| `finish` | `Object` | Emitted when the user saves. Contains the signed PDF and signature image data. |
+
+_(For detailed API information, please refer to the specification document.)_
 
 ## Local Development
 
