@@ -34,7 +34,7 @@ export function useTranslations(
 
     const hasSignature = !!signatureSvg.value
 
-    // The logic now uses the merged object and returns all strings.
+    // The logic uses the merged object and returns all strings.
     if (isSaving.value) {
       return {
         ...merged,

@@ -1,33 +1,28 @@
-import { FinishPayload, SignaturePlacement } from '../types';
+import { FinishPayload, SignableDocument } from '../types';
 
 declare const _default: import('vue').DefineComponent<import('vue').ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
-    pdfData: string;
-    signatureData?: SignaturePlacement[];
+    document: SignableDocument;
     translations?: Record<string, string>;
     debug?: boolean;
     showSignatureBounds?: boolean;
 }>, {
-    signatureData: () => never[];
     translations: () => {};
     debug: boolean;
     showSignatureBounds: boolean;
 }>>, {}, {}, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
     finish: (payload: FinishPayload) => void;
 }, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
-    pdfData: string;
-    signatureData?: SignaturePlacement[];
+    document: SignableDocument;
     translations?: Record<string, string>;
     debug?: boolean;
     showSignatureBounds?: boolean;
 }>, {
-    signatureData: () => never[];
     translations: () => {};
     debug: boolean;
     showSignatureBounds: boolean;
 }>>> & Readonly<{
     onFinish?: ((payload: FinishPayload) => any) | undefined;
 }>, {
-    signatureData: SignaturePlacement[];
     translations: Record<string, string>;
     debug: boolean;
     showSignatureBounds: boolean;

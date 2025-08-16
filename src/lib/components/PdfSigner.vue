@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref, watch, onMounted, onBeforeUnmount, watchEffect, toRefs } from 'vue'
+import { ref, watch, onMounted, onBeforeUnmount, watchEffect, toRefs, computed } from 'vue'
 import SignaturePadModal from './SignaturePadModal.vue'
 import { isDebug } from '../utils/debug'
-import type { FinishPayload, SignaturePlacement } from '../types'
+import type { FinishPayload, SignableDocument } from '../types'
 
 import { usePdfRenderer } from '../composables/usePdfRenderer'
 import { usePanZoom } from '../composables/usePanZoom'
@@ -13,19 +13,20 @@ import { useTranslations } from '../composables/useTranslations'
 
 const props = withDefaults(
   defineProps<{
-    pdfData: string
-    signatureData?: SignaturePlacement[]
+    document: SignableDocument
     translations?: Record<string, string>
     debug?: boolean
     showSignatureBounds?: boolean
   }>(),
   {
-    signatureData: () => [],
     translations: () => ({}),
     debug: false,
     showSignatureBounds: false,
   },
 )
+
+const pdfData = computed(() => props.document.data)
+const signatureData = computed(() => props.document.placements)
 
 watchEffect(() => {
   isDebug.value = props.debug
@@ -63,14 +64,21 @@ const {
 } = useSignaturePad()
 
 // 4. PDF Document Generation (Saving Logic)
-const { isSaving, saveDocument } = usePdfDocument(props, emit, signatureSvg, signaturePng)
+// We pass our computed refs to the composable.
+const { isSaving, saveDocument } = usePdfDocument(
+  pdfData,
+  signatureData,
+  emit,
+  signatureSvg,
+  signaturePng,
+)
 
 // 5. UI Text and Translations
 const { t } = useTranslations(props, isSaving, signatureSvg)
 
 // 6. Signature Overlay Positioning Logic
-// We use toRefs to pass reactive props to the composable.
-const { signatureData, showSignatureBounds } = toRefs(props)
+// We pass the computed ref here as well.
+const { showSignatureBounds } = toRefs(props)
 const { signatureStyles } = useSignatureOverlay(
   renderedPages,
   pdfContainer,
@@ -82,20 +90,17 @@ const { signatureStyles } = useSignatureOverlay(
 // --- START: Lifecycle and Watchers ---
 
 onMounted(() => {
-  loadAndRenderPdf(props.pdfData)
+  loadAndRenderPdf(pdfData.value)
 })
 
 // When a new PDF is loaded, re-render it.
-watch(
-  () => props.pdfData,
-  (newPdfData, oldPdfData) => {
-    if (newPdfData !== oldPdfData) {
-      // Destroy the old panzoom instance before loading the new PDF
-      destroyPanzoom()
-      loadAndRenderPdf(newPdfData)
-    }
-  },
-)
+watch(pdfData, (newPdfData, oldPdfData) => {
+  if (newPdfData !== oldPdfData) {
+    // Destroy the old panzoom instance before loading the new PDF
+    destroyPanzoom()
+    loadAndRenderPdf(newPdfData)
+  }
+})
 
 // When the PDF has finished rendering, initialize the panzoom functionality.
 watch(isPdfRendered, (isRendered) => {
@@ -105,7 +110,7 @@ watch(isPdfRendered, (isRendered) => {
 })
 
 onBeforeUnmount(() => {
-  // The panzoom cleanup is now handled within its own composable.
+  // The panzoom cleanup is handled within its own composable.
 })
 </script>
 
@@ -131,9 +136,9 @@ onBeforeUnmount(() => {
           <!-- PDF pages will be rendered here as canvas elements -->
         </div>
 
-        <!-- The signature overlay is now more robust -->
+        <!-- The signature overlay -->
         <div v-if="signatureSvg" class="signature-overlay">
-          <!-- We now loop through the calculated styles to render multiple overlays -->
+          <!-- We loop through the calculated styles to render multiple overlays -->
           <div
             v-for="(style, index) in signatureStyles"
             :key="index"

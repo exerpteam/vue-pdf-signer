@@ -69,16 +69,15 @@ function getUnionBBox(svgEl: SVGSVGElement, paths: SVGPathElement[]) {
 /**
  * A composable to manage the final PDF document generation and saving process.
  *
- * @param props - The component's props, containing pdfData, signatureData, etc.
+ * @param pdfData - A ref to the base64 PDF string.
+ * @param signatureData - A ref to the array of signature placements.
  * @param emit - The component's emit function.
  * @param signatureSvg - A ref to the current signature SVG string.
  * @param signaturePng - A ref to the current signature PNG string.
  */
 export function usePdfDocument(
-  props: {
-    pdfData: string
-    signatureData: SignaturePlacement[]
-  },
+  pdfData: Ref<string>,
+  signatureData: Ref<SignaturePlacement[]>,
   emit: (e: 'finish', payload: FinishPayload) => void,
   signatureSvg: Ref<string | null>,
   signaturePng: Ref<string | null>,
@@ -99,7 +98,7 @@ export function usePdfDocument(
     await sleep(500)
 
     try {
-      const pdfDoc = await PDFDocument.load(props.pdfData)
+      const pdfDoc = await PDFDocument.load(pdfData.value)
       const svgDoc = new DOMParser().parseFromString(signatureSvg.value, 'image/svg+xml')
       const svgElement = svgDoc.querySelector('svg') as SVGSVGElement | null
       const pathNodeList = Array.from(svgDoc.querySelectorAll('path')) as SVGPathElement[]
@@ -114,8 +113,8 @@ export function usePdfDocument(
       const union = getUnionBBox(svgElement, pathNodeList)
 
       const placements =
-        props.signatureData.length > 0
-          ? props.signatureData
+        signatureData.value.length > 0
+          ? signatureData.value
           : [{ left: 5, top: 7, width: 8, height: 4, page: 1 }]
 
       const CM_TO_POINTS = 72 / 2.54

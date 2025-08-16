@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch, computed, nextTick } from 'vue'
-import { PdfSigner, type FinishPayload } from '../lib'
+import { PdfSigner, type FinishPayload, type SignableDocument } from '../lib'
 import { PDF_MANIFEST, type PdfManifestEntry, type SignaturePlacement } from './pdf-manifest'
 
 // --- START: Reactive state for our demo app ---
@@ -24,6 +24,17 @@ const customTranslations = ref({
 })
 
 // --- END: Reactive state ---
+
+const signableDocument = computed<SignableDocument | null>(() => {
+  if (!pdfData.value) {
+    return null
+  }
+  return {
+    name: selectedPdfFileName.value,
+    data: pdfData.value,
+    placements: dynamicSignatureData.value,
+  }
+})
 
 /**
  * Dynamically imports a PDF from the samples directory, fetches it,
@@ -187,9 +198,8 @@ watch(
     </div>
 
     <PdfSigner
-      v-if="pdfData && !isLoading"
-      :pdfData="pdfData"
-      :signatureData="dynamicSignatureData"
+      v-if="signableDocument && !isLoading"
+      :document="signableDocument"
       :debug="true"
       :showSignatureBounds="true"
       :translations="customTranslations"

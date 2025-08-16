@@ -6,6 +6,12 @@ export interface SignaturePlacement {
   page: number
 }
 
+export interface SignableDocument {
+  name?: string
+  data: string // The PDF document as a base64 string.
+  placements: SignaturePlacement[]
+}
+
 export interface FinishPayload {
   signedDocument: {
     type: 'application/pdf'
