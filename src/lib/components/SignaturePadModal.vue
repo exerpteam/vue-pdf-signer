@@ -4,7 +4,7 @@ import SignaturePad from 'signature_pad'
 
 const emit = defineEmits<{
   (e: 'close'): void
-  (e: 'save', svg: string): void
+  (e: 'save', payload: { svg: string; png: string }): void
 }>()
 
 // Refs for the canvas element and the SignaturePad instance.
@@ -15,17 +15,16 @@ const signaturePadInstance = ref<SignaturePad | null>(null)
 
 function handleSave() {
   if (signaturePadInstance.value?.isEmpty()) {
-    // We can add a more user-friendly notification later if needed.
-    // For now, just closing on empty is fine.
     emit('close')
     return
   }
 
-  // exporting the signature as a clean SVG string.
-  // This provides the vector data we need for the PDF modification step.
+  // we capture both SVG for vector embedding and PNG for the event payload.
   const signatureSVG = signaturePadInstance.value?.toSVG()
-  if (signatureSVG) {
-    emit('save', signatureSVG)
+  const signaturePNG = signaturePadInstance.value?.toDataURL('image/png') // Defaults to PNG
+
+  if (signatureSVG && signaturePNG) {
+    emit('save', { svg: signatureSVG, png: signaturePNG })
   }
 }
 

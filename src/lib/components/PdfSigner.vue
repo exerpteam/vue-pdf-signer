@@ -15,9 +15,12 @@ import { useScrollLock } from '@vueuse/core'
 import Panzoom from '@panzoom/panzoom'
 import type { PanzoomObject } from '@panzoom/panzoom'
 import { isDebug, logger } from '../utils/debug'
+import { PDFDocument, rgb } from 'pdf-lib'
 
 // Set the worker source for pdfjs-dist
 import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.mjs?url'
+import { sleep } from '../utils/sleep'
+import type { FinishPayload, SignaturePlacement } from '../types'
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker
 
 interface PanzoomEventDetail {
@@ -29,25 +32,6 @@ interface PanzoomEventDetail {
 
 interface PanzoomEvent extends CustomEvent {
   detail: PanzoomEventDetail
-}
-
-interface SignaturePlacement {
-  left: number
-  top: number
-  width: number
-  height: number
-  page: number
-}
-
-interface FinishPayload {
-  signedDocument: {
-    type: 'application/pdf'
-    data: string
-  }
-  signatureImage: {
-    type: 'image/png'
-    data: string
-  }
 }
 
 const props = withDefaults(
@@ -74,7 +58,7 @@ watchEffect(() => {
   isDebug.value = props.debug
 })
 
-defineEmits<{
+const emit = defineEmits<{
   (e: 'finish', payload: FinishPayload): void
 }>()
 
@@ -92,6 +76,7 @@ const DPR = Math.min(window.devicePixelRatio || 1, 2)
 
 // --- START: Signature State ---
 const isSignaturePadOpen = ref(false)
+const isSaving = ref(false)
 const originalPdfDimensions = ref({ width: 0, height: 0 })
 const bodyEl = document.querySelector('body')
 const isLocked = useScrollLock(bodyEl)
@@ -146,6 +131,7 @@ const currentCanvasDimensions = ref({ width: 0, height: 0 })
 const containerDimensions = ref({ width: 0, height: 0 })
 
 const signatureSvg = ref<string | null>(null)
+const signaturePng = ref<string | null>(null)
 
 // Add ResizeObserver reference - use let instead of const
 let resizeObserver: ResizeObserver | null = null
@@ -156,17 +142,120 @@ function openSignaturePad() {
   isLocked.value = true
 }
 
-function handleSignatureSave(svg: string) {
+// Safely extracts the 'd' attribute from our SVG string.
+function extractSvgPathData(svgString: string): string {
+  const match = /<path.*?d="(.*?)"/g.exec(svgString)
+  return match ? match[1] : ''
+}
+
+/**
+ * Generates the final signed PDF, emits the result, and handles download.
+ */
+async function saveDocument() {
+  if (!signatureSvg.value || !signaturePng.value || !pageDetails.value.length) {
+    logger.warn('Save called without a signature or rendered PDF.')
+    return
+  }
+
+  isSaving.value = true
+  await nextTick()
+  await sleep(500)
+
+  try {
+    const pdfDoc = await PDFDocument.load(props.pdfData)
+    const signaturePathData = extractSvgPathData(signatureSvg.value)
+    if (!signaturePathData) {
+      throw new Error('Could not parse SVG path data from signature.')
+    }
+    const CM_TO_POINTS = 72 / 2.54
+
+    for (const placement of props.signatureData) {
+      const pageIndex = placement.page - 1
+      if (pageIndex < 0 || pageIndex >= pdfDoc.getPageCount()) {
+        logger.warn(`Invalid page number ${placement.page}. Skipping placement.`)
+        continue
+      }
+      const page = pdfDoc.getPage(pageIndex)
+      const { height: pageHeight } = page.getSize()
+
+      const targetX = placement.left * CM_TO_POINTS
+      const targetY = pageHeight - placement.top * CM_TO_POINTS - placement.height * CM_TO_POINTS
+      const targetWidth = placement.width * CM_TO_POINTS
+      const targetHeight = placement.height * CM_TO_POINTS
+
+      const svgViewBoxMatch = /viewBox="0 0 ([\d.]+) ([\d.]+)"/.exec(signatureSvg.value)
+      const svgWidth = svgViewBoxMatch ? parseFloat(svgViewBoxMatch[1]) : 200
+      const svgHeight = svgViewBoxMatch ? parseFloat(svgViewBoxMatch[2]) : 100
+
+      const scaleX = targetWidth / svgWidth
+      const scaleY = targetHeight / svgHeight
+      const scale = Math.min(scaleX, scaleY)
+
+      const scaledSignatureWidth = svgWidth * scale
+      const scaledSignatureHeight = svgHeight * scale
+      const centeredX = targetX + (targetWidth - scaledSignatureWidth) / 2
+      const centeredY = targetY + (targetHeight - scaledSignatureHeight) / 2
+
+      page.drawSvgPath(signaturePathData, {
+        x: centeredX,
+        y: centeredY,
+        scale: scale,
+        color: rgb(0, 0, 0.5),
+      })
+    }
+
+    const signedPdfBase64 = await pdfDoc.saveAsBase64()
+    // we must ensure the PNG data URL prefix is removed before creating the payload.
+    const signaturePngBase64 = signaturePng.value.split(',')[1]
+
+    const payload: FinishPayload = {
+      signedDocument: {
+        type: 'application/pdf',
+        data: signedPdfBase64,
+      },
+      signatureImage: {
+        type: 'image/png',
+        data: signaturePngBase64,
+      },
+    }
+
+    // 8. Emit the final payload
+    emit('finish', payload)
+    logger.debug('Emitted "finish" event with payload.', payload)
+
+    // 9. Handle automatic download if the prop is set
+    if (props.isDownload) {
+      const dataUri = `data:application/pdf;base64,${signedPdfBase64}`
+      const link = document.createElement('a')
+      link.href = dataUri
+      link.download = 'signed-document.pdf'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      logger.debug('Triggered PDF download.')
+    }
+  } catch (error) {
+    logger.error('Failed to save document:', error)
+  } finally {
+    isSaving.value = false
+  }
+}
+
+function handleSignatureSave(payload: { svg: string; png: string }) {
+  // the SVG normalization logic is inside this handler.
+  const { svg, png } = payload
   const doc = new DOMParser().parseFromString(svg, 'image/svg+xml')
   const el = doc.querySelector('svg')
+
   if (!el) {
     signatureSvg.value = null
+    signaturePng.value = null // Clear PNG as well
     isSignaturePadOpen.value = false
     isLocked.value = false
     return
   }
 
-  // Normalize so it scales with our wrapper
+  // Normalize SVG for proper scaling
   const w = parseFloat(el.getAttribute('width') || '')
   const h = parseFloat(el.getAttribute('height') || '')
   if (!el.hasAttribute('viewBox') && Number.isFinite(w) && Number.isFinite(h)) {
@@ -176,14 +265,10 @@ function handleSignatureSave(svg: string) {
   el.removeAttribute('height')
   el.setAttribute('preserveAspectRatio', 'xMidYMid meet')
 
-  // Optional: ensure stroke styling is present but DO NOT touch stroke-widths
-  el.querySelectorAll('path').forEach((p) => {
-    if (!p.getAttribute('stroke')) p.setAttribute('stroke', '#000080')
-    if (!p.getAttribute('stroke-linecap')) p.setAttribute('stroke-linecap', 'round')
-    if (!p.getAttribute('stroke-linejoin')) p.setAttribute('stroke-linejoin', 'round')
-  })
-
+  // Store both formats
   signatureSvg.value = new XMLSerializer().serializeToString(el)
+  signaturePng.value = png
+
   isSignaturePadOpen.value = false
   isLocked.value = false
 }
@@ -195,10 +280,16 @@ function handleSignatureCancel() {
 
 const t = computed(() => {
   const hasSignature = !!signatureSvg.value
+  if (isSaving.value) {
+    return {
+      actionButton: props.translations?.updateSignature || 'Update Signature',
+      save: props.translations?.saving || 'Saving...',
+    }
+  }
   return {
     actionButton: hasSignature
-      ? props.translations?.updateSignature || 'Update Signature'
-      : props.translations?.drawSignature || 'Draw Signature',
+      ? props.translations?.updateSignature || 'Change Signature'
+      : props.translations?.drawSignature || 'Sign Here',
     save: props.translations?.save || 'Save',
   }
 })
@@ -709,7 +800,9 @@ onBeforeUnmount(() => {
     <div class="pdf-signer-toolbar">
       <div class="toolbar-group">
         <button @click="openSignaturePad" class="btn btn-secondary">{{ t.actionButton }}</button>
-        <button class="btn btn-primary" :disabled="!signatureSvg">{{ t.save }}</button>
+        <button @click="saveDocument" class="btn btn-primary" :disabled="!signatureSvg || isSaving">
+          {{ t.save }}
+        </button>
       </div>
       <div
         v-if="props.enableZoom"

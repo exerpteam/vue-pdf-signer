@@ -1,6 +1,8 @@
 import type { App } from 'vue'
 import PdfSigner from './components/PdfSigner.vue'
 
+export * from './types'
+
 // Named export for individual component import.
 export { PdfSigner }
 

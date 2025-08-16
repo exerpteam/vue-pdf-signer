@@ -48,6 +48,7 @@
   "dependencies": {
     "@panzoom/panzoom": "^4.6.0",
     "@vueuse/core": "^13.6.0",
+    "pdf-lib": "^1.17.1",
     "pdfjs-dist": "^5.4.54",
     "signature_pad": "^5.0.10"
   }

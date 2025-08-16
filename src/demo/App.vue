@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-import { PdfSigner } from '../lib'
+import { ref, watch, computed, nextTick } from 'vue'
+import { PdfSigner, type FinishPayload } from '../lib'
 import { PDF_MANIFEST, type PdfManifestEntry } from './pdf-manifest'
 
 // This interface matches the structure our component's prop expects.
@@ -18,6 +18,8 @@ const selectedPdfFileName = ref<string>(PDF_MANIFEST[0]?.fileName || '')
 const pdfData = ref<string>('')
 const signatureData = ref<SignaturePlacement[]>([])
 const isLoading = ref<boolean>(false)
+const output = ref<FinishPayload | null>(null)
+const outputSectionRef = ref<HTMLDivElement | null>(null)
 // --- END: Reactive state ---
 
 /**
@@ -73,6 +75,26 @@ async function loadPdfAsBase64(fileName: string): Promise<string> {
     return ''
   }
 }
+
+// Replace the existing handleFinish function
+async function handleFinish(payload: FinishPayload) {
+  console.log('Demo App received "finish" event:', payload)
+  output.value = payload
+
+  await nextTick()
+
+  outputSectionRef.value?.scrollIntoView({ behavior: 'smooth' })
+}
+
+const signedPdfUrl = computed(() => {
+  if (!output.value) return ''
+  return `data:application/pdf;base64,${output.value.signedDocument.data}`
+})
+
+const signatureImageUrl = computed(() => {
+  if (!output.value) return ''
+  return `data:image/png;base64,${output.value.signatureImage.data}`
+})
 
 // Watch for changes in the dropdown selection.
 watch(
@@ -130,7 +152,26 @@ watch(
       :enableZoom="true"
       :debug="true"
       :showSignatureBounds="false"
+      @finish="handleFinish"
     />
+
+    <!-- START: Output Section -->
+    <div v-if="output" ref="outputSectionRef" class="output-section">
+      <h2>Output</h2>
+      <div class="output-grid">
+        <div class="output-item">
+          <h3>Signed Document</h3>
+          <p>The signature has been embedded as a vector graphic in the PDF.</p>
+          <iframe :src="signedPdfUrl" title="Signed PDF Document"></iframe>
+        </div>
+        <div class="output-item">
+          <h3>Signature Image (PNG)</h3>
+          <p>This is the raster image of the signature.</p>
+          <img :src="signatureImageUrl" alt="User's signature" />
+        </div>
+      </div>
+    </div>
+    <!-- END: Output Section -->
   </main>
 </template>
 
@@ -183,4 +224,49 @@ main {
     min-width: 300px;
   }
 }
+
+/* START: Output Section Styles */
+.output-section {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid #eee;
+}
+
+.output-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+.output-item h3 {
+  margin-top: 0;
+}
+
+.output-item p {
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.output-item iframe {
+  width: 100%;
+  height: 600px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.output-item img {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+@media (min-width: 1024px) {
+  .output-grid {
+    /* On larger screens, show side-by-side */
+    grid-template-columns: 2fr 1fr;
+  }
+}
+/* END: Output Section Styles */
 </style>

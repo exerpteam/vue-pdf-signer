@@ -1,20 +1,5 @@
-interface SignaturePlacement {
-    left: number;
-    top: number;
-    width: number;
-    height: number;
-    page: number;
-}
-interface FinishPayload {
-    signedDocument: {
-        type: 'application/pdf';
-        data: string;
-    };
-    signatureImage: {
-        type: 'image/png';
-        data: string;
-    };
-}
+import { FinishPayload, SignaturePlacement } from '../types';
+
 declare const _default: import('vue').DefineComponent<import('vue').ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
     pdfData: string;
     signatureData?: SignaturePlacement[];
