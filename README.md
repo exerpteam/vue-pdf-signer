@@ -96,6 +96,53 @@ Provide an object to the `translations` prop with any of the following keys to o
 | `cancel`          | "Cancel"                                                                       | Text for the cancel button in the main toolbar.                        |
 | `cancelWarning`   | "You have unsigned changes. Are you sure you want to discard them and cancel?" | The confirmation message shown when canceling with unsaved signatures. |
 
+### Theming (Customization)
+
+The component's visual appearance can be customized by overriding its CSS Custom Properties (variables). To apply a custom theme, define new values for these variables in your own stylesheet, targeting the `.vue-pdf-signer` class.
+
+**Example:**
+
+```css
+/* In your host application's stylesheet */
+.vue-pdf-signer {
+  --vps-primary-bg-color: #d9534f;
+  --vps-primary-text-color: #ffffff;
+  --vps-primary-border-color: #d43f3a;
+  --vps-primary-bg-hover-color: #c9302c;
+
+  --vps-font-family: 'Georgia', serif;
+}
+```
+
+**Available Variables:**
+
+| Variable                         | Default Value                      | Description                                   |
+| -------------------------------- | ---------------------------------- | --------------------------------------------- |
+| `--vps-font-family`              | `system-ui`, `-apple-system`, etc. | The font used throughout the component.       |
+| `--vps-border-color`             | `#e0e0e0`                          | The main component border color.              |
+| `--vps-bg-color`                 | `#f5f5f5`                          | The background color of the PDF viewing area. |
+| `--vps-header-bg-color`          | `#ffffff`                          | The background color of the top toolbar.      |
+| **Primary Button**               |                                    | (e.g., Save, active document tab)             |
+| `--vps-primary-bg-color`         | `#007aff`                          | Background color.                             |
+| `--vps-primary-text-color`       | `white`                            | Text color.                                   |
+| `--vps-primary-border-color`     | `#007aff`                          | Border color.                                 |
+| `--vps-primary-bg-hover-color`   | `#005ecb`                          | Background color on hover.                    |
+| **Secondary Button**             |                                    | (e.g., Sign Document)                         |
+| `--vps-secondary-bg-color`       | `#6c757d`                          | Background color.                             |
+| `--vps-secondary-text-color`     | `white`                            | Text color.                                   |
+| `--vps-secondary-border-color`   | `#6c757d`                          | Border color.                                 |
+| `--vps-secondary-bg-hover-color` | `#5a6268`                          | Background color on hover.                    |
+| **Standard Button**              |                                    | (e.g., Cancel)                                |
+| `--vps-btn-bg-color`             | `#fff`                             | Background color.                             |
+| `--vps-btn-text-color`           | `#333`                             | Text color.                                   |
+| `--vps-btn-border-color`         | `#ccc`                             | Border color.                                 |
+| `--vps-btn-bg-hover-color`       | `#f8f8f8`                          | Background color on hover.                    |
+| `--vps-btn-border-hover-color`   | `#999`                             | Border color on hover.                        |
+| **Disabled State**               |                                    |                                               |
+| `--vps-disabled-bg-color`        | `#aeb1b4`                          | Background color for any disabled button.     |
+| `--vps-disabled-text-color`      | `#e9ecef`                          | Text color for any disabled button.           |
+| `--vps-disabled-border-color`    | `#aeb1b4`                          | Border color for any disabled button.         |
+
 ## Local Development
 
 This project includes a self-contained demo application for local development.
