@@ -19,6 +19,8 @@ A robust, reusable Vue 3 component for displaying and signing multiple PDF docum
 
 ## Component API
 
+**Important Integration Note:** This component manages its own state, including unsaved signatures. It is designed to control its own dismissal via the `finish` and `cancel` events. The host application **should not** wrap this component in a dialog with an external close button (e.g., an 'X' icon) that would unmount the component without user interaction from within `PdfSigner`. Doing so could lead to data loss. Instead, listen for the `finish` and `cancel` events to programmatically close the container or view that holds the `PdfSigner` component.
+
 ### Props
 
 | Prop                  | Type             | Required | Default | Description                                                                                                                        |
@@ -31,9 +33,10 @@ A robust, reusable Vue 3 component for displaying and signing multiple PDF docum
 
 ### Events
 
-| Event    | Payload         | Description                                                                                                  |
-| -------- | --------------- | ------------------------------------------------------------------------------------------------------------ |
-| `finish` | `FinishPayload` | Emitted when the user saves. The payload is a map of document keys to their corresponding signature results. |
+| Event    | Payload         | Description                                                                                                                                               |
+| -------- | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `finish` | `FinishPayload` | Emitted when the user saves. The payload is a map of document keys to their corresponding signature results.                                              |
+| `cancel` | `undefined`     | Emitted when the user clicks the cancel button. If there are unsaved signatures, the user will be prompted for confirmation before this event is emitted. |
 
 ### Type Definitions
 
@@ -79,17 +82,19 @@ interface SignatureResult {
 
 Provide an object to the `translations` prop with any of the following keys to override the default English text.
 
-| Key               | Default Value                                            | Description                                                            |
-| ----------------- | -------------------------------------------------------- | ---------------------------------------------------------------------- |
-| `updateSignature` | "Change Signature"                                       | Text for the action button when a document can be signed or re-signed. |
-| `drawSignature`   | "Sign Document"                                          | Text for the action button when a document has not yet been signed.    |
-| `save`            | "Save"                                                   | Text for the save button.                                              |
-| `saving`          | "Saving..."                                              | Text for the save button while the document is being processed.        |
-| `modalTitle`      | "Draw Signature"                                         | The title of the signature drawing modal.                              |
-| `modalSubtitle`   | "Use your mouse or finger to draw your signature below." | The instructional text below the title in the signature modal.         |
-| `modalCancel`     | "Cancel"                                                 | Text for the cancel button in the signature modal.                     |
-| `modalClear`      | "Clear"                                                  | Text for the button that clears the signature canvas.                  |
-| `modalDone`       | "Done"                                                   | Text for the button that confirms the signature drawing.               |
+| Key               | Default Value                                                                  | Description                                                            |
+| ----------------- | ------------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
+| `updateSignature` | "Change Signature"                                                             | Text for the action button when a document can be signed or re-signed. |
+| `drawSignature`   | "Sign Document"                                                                | Text for the action button when a document has not yet been signed.    |
+| `save`            | "Save"                                                                         | Text for the save button.                                              |
+| `saving`          | "Saving..."                                                                    | Text for the save button while the document is being processed.        |
+| `modalTitle`      | "Draw Signature"                                                               | The title of the signature drawing modal.                              |
+| `modalSubtitle`   | "Use your mouse or finger to draw your signature below."                       | The instructional text below the title in the signature modal.         |
+| `modalCancel`     | "Cancel"                                                                       | Text for the cancel button in the signature modal.                     |
+| `modalClear`      | "Clear"                                                                        | Text for the button that clears the signature canvas.                  |
+| `modalDone`       | "Done"                                                                         | Text for the button that confirms the signature drawing.               |
+| `cancel`          | "Cancel"                                                                       | Text for the cancel button in the main toolbar.                        |
+| `cancelWarning`   | "You have unsigned changes. Are you sure you want to discard them and cancel?" | The confirmation message shown when canceling with unsaved signatures. |
 
 ## Local Development
 

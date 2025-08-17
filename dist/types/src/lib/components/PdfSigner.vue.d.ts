@@ -12,6 +12,7 @@ declare const _default: import('vue').DefineComponent<import('vue').ExtractPropT
     debug: boolean;
     showSignatureBounds: boolean;
 }>>, {}, {}, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
+    cancel: () => void;
     finish: (payload: FinishPayload) => void;
 }, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
     documents: PdfDocument[];
@@ -25,6 +26,7 @@ declare const _default: import('vue').DefineComponent<import('vue').ExtractPropT
     debug: boolean;
     showSignatureBounds: boolean;
 }>>> & Readonly<{
+    onCancel?: (() => any) | undefined;
     onFinish?: ((payload: FinishPayload) => any) | undefined;
 }>, {
     signingPolicy: "all" | "any";

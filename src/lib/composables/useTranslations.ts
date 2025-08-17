@@ -23,6 +23,9 @@ export function useTranslations(
       drawSignature: 'Sign Document',
       save: 'Save',
       saving: 'Saving...',
+      // keys for the cancel flow.
+      cancel: 'Cancel',
+      cancelWarning: 'You have unsigned changes. Are you sure you want to discard them and cancel?',
       // SignaturePadModal content
       modalTitle: 'Draw Signature',
       modalSubtitle: 'Use your mouse or finger to draw your signature below.',

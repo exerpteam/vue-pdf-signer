@@ -20,6 +20,8 @@ export declare function useTranslations(props: {
         updateSignature: string;
         drawSignature: string;
         saving: string;
+        cancel: string;
+        cancelWarning: string;
         modalTitle: string;
         modalSubtitle: string;
         modalCancel: string;

@@ -89,7 +89,8 @@ watch(
 // --- END: Multi-document state management ---
 
 const emit = defineEmits<{
-  (e: 'finish', payload: FinishPayload): void
+  finish: [payload: FinishPayload]
+  cancel: [] // No payload for the cancel event
 }>()
 
 // --- START: Template Refs ---
@@ -154,6 +155,20 @@ const { signatureStyles } = useSignatureOverlay(
 
 // --- START: Lifecycle and Watchers ---
 
+function handleCancel() {
+  // Check if there are any new signatures.
+  if (newlySignedKeys.value.size > 0) {
+    // If so, ask the user for confirmation using the text from our composable.
+    if (window.confirm(t.value.cancelWarning)) {
+      emit('cancel')
+    }
+    // If the user clicks "Cancel" in the confirm dialog, we do nothing.
+  } else {
+    // If there are no new signatures, just emit the event directly.
+    emit('cancel')
+  }
+}
+
 onMounted(() => {
   loadAndRenderPdf(pdfData.value)
 })
@@ -194,6 +209,7 @@ onBeforeUnmount(() => {
         >
           {{ t.save }}
         </button>
+        <button @click="handleCancel" class="btn">{{ t.cancel }}</button>
       </div>
       <div class="toolbar-group" @touchstart.stop @touchmove.stop @wheel.stop>
         <button @click="zoomOut" class="btn btn-icon">-</button>
