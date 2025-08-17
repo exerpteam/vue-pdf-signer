@@ -13,7 +13,7 @@ interface SignatureData {
  * @param emit - The component's emit function.
  * @param signatureDataMap - A ref to the map containing signature data for each document key.
  */
-export declare function usePdfDocument(documents: Ref<PdfDocument[]>, newlySignedKeys: Ref<Set<string>>, emit: (e: 'finish', payload: FinishPayload) => void, signatureDataMap: Ref<Map<string, SignatureData>>): {
+export declare function usePdfDocument(documents: Ref<PdfDocument[]>, newlySignedKeys: Ref<Set<string>>, emit: (e: 'finish', payload: FinishPayload) => void, signatureDataMap: Ref<Map<string, SignatureData>>, setFinished: () => void): {
     isSaving: Ref<boolean, boolean>;
     saveDocument: () => Promise<void>;
 };

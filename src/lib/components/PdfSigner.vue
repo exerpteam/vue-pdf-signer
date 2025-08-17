@@ -37,6 +37,7 @@ const newlySignedKeys = ref<Set<string>>(new Set())
 
 // maps a document key to its specific signature data.
 const signatureDataMap = ref<Map<string, { svg: string; png: string }>>(new Map())
+const isFinished = ref(false)
 
 const isFinishEnabled = computed(() => {
   if (props.signingPolicy === 'any') {
@@ -138,6 +139,9 @@ const { isSaving, saveDocument } = usePdfDocument(
   newlySignedKeys,
   emit,
   signatureDataMap,
+  () => {
+    isFinished.value = true
+  },
 )
 
 // 5. UI Text and Translations
@@ -196,11 +200,13 @@ onBeforeUnmount(() => {
     <div class="pdf-signer-header">
       <!-- Top Row: Main Actions -->
       <div class="toolbar-row-main-actions">
-        <button @click="handleCancel" class="btn">{{ t.cancel }}</button>
+        <button @click="handleCancel" class="btn" :disabled="isSaving || isFinished">
+          {{ t.cancel }}
+        </button>
         <button
           @click="saveDocument"
           class="btn btn-primary"
-          :disabled="!isFinishEnabled || isSaving"
+          :disabled="!isFinishEnabled || isSaving || isFinished"
         >
           {{ t.save }}
         </button>
@@ -214,6 +220,7 @@ onBeforeUnmount(() => {
           @click="activeDocumentKey = doc.key"
           class="doc-tab"
           :class="{ active: activeDocumentKey === doc.key }"
+          :disabled="isSaving || isFinished"
         >
           <span v-if="doc.signed || newlySignedKeys.has(doc.key)" class="status-icon">✔</span>
           <span>{{ doc.name || doc.key }}</span>
@@ -225,14 +232,16 @@ onBeforeUnmount(() => {
         <button
           @click="openSignaturePad"
           class="btn btn-secondary"
-          :disabled="t.isSignActionDisabled"
+          :disabled="t.isSignActionDisabled || isFinished"
         >
           {{ t.actionButton }}
         </button>
         <div class="zoom-controls" @touchstart.stop @touchmove.stop @wheel.stop>
-          <button @click="zoomOut" class="btn btn-icon">-</button>
+          <button @click="zoomOut" class="btn btn-icon" :disabled="isSaving || isFinished">
+            -
+          </button>
           <span class="zoom-level">{{ zoomPercentage }}%</span>
-          <button @click="zoomIn" class="btn btn-icon">+</button>
+          <button @click="zoomIn" class="btn btn-icon" :disabled="isSaving || isFinished">+</button>
         </div>
       </div>
     </div>

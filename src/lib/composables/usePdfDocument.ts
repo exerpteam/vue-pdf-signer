@@ -83,6 +83,7 @@ export function usePdfDocument(
   newlySignedKeys: Ref<Set<string>>,
   emit: (e: 'finish', payload: FinishPayload) => void,
   signatureDataMap: Ref<Map<string, SignatureData>>,
+  setFinished: () => void,
 ) {
   const isSaving = ref(false)
 
@@ -205,6 +206,7 @@ export function usePdfDocument(
       }
 
       emit('finish', resultsMap)
+      setFinished()
     } catch (error) {
       logger.error('Failed to save document:', error)
     } finally {
