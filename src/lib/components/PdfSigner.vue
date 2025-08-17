@@ -36,21 +36,29 @@ const activeDocumentKey = ref<string | null>(null)
 const newlySignedKeys = ref<Set<string>>(new Set())
 
 const isFinishEnabled = computed(() => {
-  // If no signature has been drawn yet, disable the button.
-  if (!signatureSvg.value) return false
-
-  const unsignedDocs = props.documents.filter((doc) => !doc.signed)
+  if (props.signingPolicy === 'any') {
+    // For 'any' policy, the user can always finish, even with zero new signatures.
+    return true
+  }
 
   if (props.signingPolicy === 'all') {
-    // Every document that wasn't pre-signed must be newly signed.
-    return unsignedDocs.every((doc) => newlySignedKeys.value.has(doc.key))
+    // Find documents that were not pre-signed. These are the ones requiring a signature.
+    const requiredDocs = props.documents.filter((doc) => !doc.signed)
+
+    // If there are no documents that require a signature (all were pre-signed),
+    // then the condition is met and finishing is allowed.
+    if (requiredDocs.length === 0) {
+      return true
+    }
+
+    // If there are required documents, every one of them must have been newly signed.
+    const allRequiredDocsAreSigned = requiredDocs.every((doc) => newlySignedKeys.value.has(doc.key))
+
+    // A signature must also exist to have been applied to them.
+    return allRequiredDocsAreSigned && !!signatureSvg.value
   }
 
-  if (props.signingPolicy === 'any') {
-    // At least one document must be newly signed.
-    return newlySignedKeys.value.size > 0
-  }
-
+  // Fallback, should not be reached due to prop defaults.
   return false
 })
 
@@ -160,11 +168,6 @@ watch(isPdfRendered, (isRendered) => {
   if (isRendered) {
     initPanzoom()
   }
-})
-
-watch(activeDocumentKey, () => {
-  signatureSvg.value = null
-  signaturePng.value = null
 })
 
 onBeforeUnmount(() => {

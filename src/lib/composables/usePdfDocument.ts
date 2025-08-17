@@ -87,14 +87,23 @@ export function usePdfDocument(
    * Generates the final signed PDF, emits the result, and handles download.
    */
   async function saveDocument() {
-    if (!signatureSvg.value || !signaturePng.value || newlySignedKeys.value.size === 0) {
-      logger.warn('Save called without a signature or any newly signed documents.')
-      return
-    }
-
     isSaving.value = true
 
     try {
+      // If no documents were signed in this session, emit an empty payload and finish.
+      // This handles the 'any' policy with zero signatures, or 'all' with all pre-signed.
+      if (newlySignedKeys.value.size === 0) {
+        logger.debug('No new signatures to process. Emitting empty payload.')
+        emit('finish', {})
+        return // Exit early
+      }
+
+      // If there are new signatures, a signature must exist. This is a safeguard.
+      if (!signatureSvg.value || !signaturePng.value) {
+        logger.warn('Save called for newly signed documents, but no signature is available.')
+        return // Exit early
+      }
+
       const svgDoc = new DOMParser().parseFromString(signatureSvg.value, 'image/svg+xml')
       const svgElement = svgDoc.querySelector('svg') as SVGSVGElement | null
       const pathNodeList = Array.from(svgDoc.querySelectorAll('path')) as SVGPathElement[]
@@ -112,9 +121,7 @@ export function usePdfDocument(
       const resultsMap: FinishPayload = {}
       const signaturePngBase64 = signaturePng.value.split(',')[1]
 
-      // we loop through all documents.
       for (const doc of documents.value) {
-        // We only process the ones that were signed in this session.
         if (!newlySignedKeys.value.has(doc.key)) {
           continue
         }
