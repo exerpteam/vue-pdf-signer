@@ -27847,10 +27847,10 @@ function gn(i, I, g, C) {
     };
   }) };
 }
-const Cn = { class: "pdf-signer-toolbar" }, An = { class: "toolbar-group" }, ln = ["disabled"], sn = ["disabled"], dn = { class: "zoom-level" }, cn = { class: "pdf-signer-main" }, Zn = { class: "document-list-container" }, Gn = ["onClick"], bn = {
+const Cn = { class: "pdf-signer-header" }, An = { class: "toolbar-row-main-actions" }, ln = ["disabled"], sn = { class: "toolbar-row-docs" }, dn = ["onClick"], cn = {
   key: 0,
   class: "status-icon"
-}, on = {
+}, Zn = { class: "toolbar-row-view-actions" }, Gn = ["disabled"], bn = { class: "zoom-level" }, on = {
   key: 0,
   class: "signature-overlay"
 }, tn = ["innerHTML"], en = /* @__PURE__ */ xZ({
@@ -27930,81 +27930,81 @@ const Cn = { class: "pdf-signer-toolbar" }, An = { class: "toolbar-group" }, ln 
       gg("div", Cn, [
         gg("div", An, [
           gg("button", {
-            onClick: J[0] || (J[0] = //@ts-ignore
-            (...E) => sg(S) && sg(S)(...E)),
-            class: "btn btn-secondary",
-            disabled: sg(x).isSignActionDisabled
-          }, rC(sg(x).actionButton), 9, ln),
+            onClick: T,
+            class: "btn"
+          }, rC(sg(x).cancel), 1),
           gg("button", {
-            onClick: J[1] || (J[1] = //@ts-ignore
+            onClick: J[0] || (J[0] = //@ts-ignore
             (...E) => sg(K) && sg(K)(...E)),
             class: "btn btn-primary",
             disabled: !s.value || sg(Q)
-          }, rC(sg(x).save), 9, sn),
-          gg("button", {
-            onClick: T,
-            class: "btn"
-          }, rC(sg(x).cancel), 1)
+          }, rC(sg(x).save), 9, ln)
         ]),
-        gg("div", {
-          class: "toolbar-group",
-          onTouchstart: J[4] || (J[4] = JA(() => {
-          }, ["stop"])),
-          onTouchmove: J[5] || (J[5] = JA(() => {
-          }, ["stop"])),
-          onWheel: J[6] || (J[6] = JA(() => {
-          }, ["stop"]))
-        }, [
-          gg("button", {
-            onClick: J[2] || (J[2] = //@ts-ignore
-            (...E) => sg(R) && sg(R)(...E)),
-            class: "btn btn-icon"
-          }, "-"),
-          gg("span", dn, rC(sg(B)) + "%", 1),
-          gg("button", {
-            onClick: J[3] || (J[3] = //@ts-ignore
-            (...E) => sg(N) && sg(N)(...E)),
-            class: "btn btn-icon"
-          }, "+")
-        ], 32)
-      ]),
-      gg("div", cn, [
-        gg("div", Zn, [
+        gg("div", sn, [
           (LC(!0), gA(Rc, null, Xc(dI.documents, (E) => (LC(), gA("button", {
             key: E.key,
             onClick: (CI) => C.value = E.key,
-            class: qG(["document-list-item", { active: C.value === E.key }])
+            class: qG(["doc-tab", { active: C.value === E.key }])
           }, [
-            E.signed || A.value.has(E.key) ? (LC(), gA("span", bn, "✔")) : Ds("", !0),
+            E.signed || A.value.has(E.key) ? (LC(), gA("span", cn, "✔")) : Ds("", !0),
             gg("span", null, rC(E.name || E.key), 1)
-          ], 10, Gn))), 128))
+          ], 10, dn))), 128))
         ]),
+        gg("div", Zn, [
+          gg("button", {
+            onClick: J[1] || (J[1] = //@ts-ignore
+            (...E) => sg(S) && sg(S)(...E)),
+            class: "btn btn-secondary",
+            disabled: sg(x).isSignActionDisabled
+          }, rC(sg(x).actionButton), 9, Gn),
+          gg("div", {
+            class: "zoom-controls",
+            onTouchstart: J[4] || (J[4] = JA(() => {
+            }, ["stop"])),
+            onTouchmove: J[5] || (J[5] = JA(() => {
+            }, ["stop"])),
+            onWheel: J[6] || (J[6] = JA(() => {
+            }, ["stop"]))
+          }, [
+            gg("button", {
+              onClick: J[2] || (J[2] = //@ts-ignore
+              (...E) => sg(R) && sg(R)(...E)),
+              class: "btn btn-icon"
+            }, "-"),
+            gg("span", bn, rC(sg(B)) + "%", 1),
+            gg("button", {
+              onClick: J[3] || (J[3] = //@ts-ignore
+              (...E) => sg(N) && sg(N)(...E)),
+              class: "btn btn-icon"
+            }, "+")
+          ], 32)
+        ])
+      ]),
+      gg("div", {
+        ref_key: "viewportRef",
+        ref: a,
+        class: "pdf-viewport"
+      }, [
         gg("div", {
-          ref_key: "viewportRef",
-          ref: a,
-          class: "pdf-viewport"
+          ref_key: "panzoomContainer",
+          ref: e,
+          class: "panzoom-container"
         }, [
           gg("div", {
-            ref_key: "panzoomContainer",
-            ref: e,
-            class: "panzoom-container"
-          }, [
-            gg("div", {
-              ref_key: "pdfContainer",
-              ref: t,
-              class: "pdf-render-view"
-            }, null, 512),
-            b.value ? (LC(), gA("div", on, [
-              (LC(!0), gA(Rc, null, Xc(sg(k), (E, CI) => (LC(), gA("div", {
-                key: CI,
-                style: _G(E),
-                class: "signature-wrapper",
-                innerHTML: b.value
-              }, null, 12, tn))), 128))
-            ])) : Ds("", !0)
-          ], 512)
+            ref_key: "pdfContainer",
+            ref: t,
+            class: "pdf-render-view"
+          }, null, 512),
+          b.value ? (LC(), gA("div", on, [
+            (LC(!0), gA(Rc, null, Xc(sg(k), (E, CI) => (LC(), gA("div", {
+              key: CI,
+              style: _G(E),
+              class: "signature-wrapper",
+              innerHTML: b.value
+            }, null, 12, tn))), 128))
+          ])) : Ds("", !0)
         ], 512)
-      ]),
+      ], 512),
       sg(D) ? (LC(), PG(db, {
         key: 0,
         onClose: sg(F),
@@ -28017,7 +28017,7 @@ const Cn = { class: "pdf-signer-toolbar" }, An = { class: "toolbar-group" }, ln 
       }, null, 8, ["onClose", "title", "subtitle", "cancel-text", "clear-text", "done-text"])) : Ds("", !0)
     ], 32));
   }
-}), an = /* @__PURE__ */ PZ(en, [["__scopeId", "data-v-33dd9b20"]]), hn = {
+}), an = /* @__PURE__ */ PZ(en, [["__scopeId", "data-v-28222623"]]), hn = {
   install(i) {
     i.component("PdfSigner", an);
   }

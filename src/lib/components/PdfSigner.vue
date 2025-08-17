@@ -193,15 +193,10 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="vue-pdf-signer" @touchstart.stop @touchmove.stop @wheel.stop>
-    <div class="pdf-signer-toolbar">
-      <div class="toolbar-group">
-        <button
-          @click="openSignaturePad"
-          class="btn btn-secondary"
-          :disabled="t.isSignActionDisabled"
-        >
-          {{ t.actionButton }}
-        </button>
+    <div class="pdf-signer-header">
+      <!-- Top Row: Main Actions -->
+      <div class="toolbar-row-main-actions">
+        <button @click="handleCancel" class="btn">{{ t.cancel }}</button>
         <button
           @click="saveDocument"
           class="btn btn-primary"
@@ -209,22 +204,15 @@ onBeforeUnmount(() => {
         >
           {{ t.save }}
         </button>
-        <button @click="handleCancel" class="btn">{{ t.cancel }}</button>
       </div>
-      <div class="toolbar-group" @touchstart.stop @touchmove.stop @wheel.stop>
-        <button @click="zoomOut" class="btn btn-icon">-</button>
-        <span class="zoom-level">{{ zoomPercentage }}%</span>
-        <button @click="zoomIn" class="btn btn-icon">+</button>
-      </div>
-    </div>
 
-    <div class="pdf-signer-main">
-      <div class="document-list-container">
+      <!-- Middle Row: Document Tabs -->
+      <div class="toolbar-row-docs">
         <button
           v-for="doc in documents"
           :key="doc.key"
           @click="activeDocumentKey = doc.key"
-          class="document-list-item"
+          class="doc-tab"
           :class="{ active: activeDocumentKey === doc.key }"
         >
           <span v-if="doc.signed || newlySignedKeys.has(doc.key)" class="status-icon">✔</span>
@@ -232,23 +220,39 @@ onBeforeUnmount(() => {
         </button>
       </div>
 
-      <div ref="viewportRef" class="pdf-viewport">
-        <div ref="panzoomContainer" class="panzoom-container">
-          <div ref="pdfContainer" class="pdf-render-view">
-            <!-- PDF pages will be rendered here as canvas elements -->
-          </div>
+      <!-- Bottom Row: View/Signature Actions -->
+      <div class="toolbar-row-view-actions">
+        <button
+          @click="openSignaturePad"
+          class="btn btn-secondary"
+          :disabled="t.isSignActionDisabled"
+        >
+          {{ t.actionButton }}
+        </button>
+        <div class="zoom-controls" @touchstart.stop @touchmove.stop @wheel.stop>
+          <button @click="zoomOut" class="btn btn-icon">-</button>
+          <span class="zoom-level">{{ zoomPercentage }}%</span>
+          <button @click="zoomIn" class="btn btn-icon">+</button>
+        </div>
+      </div>
+    </div>
 
-          <!-- The signature overlay -->
-          <div v-if="activeSignatureSvg" class="signature-overlay">
-            <!-- We loop through the calculated styles to render multiple overlays -->
-            <div
-              v-for="(style, index) in signatureStyles"
-              :key="index"
-              :style="style"
-              class="signature-wrapper"
-              v-html="activeSignatureSvg"
-            ></div>
-          </div>
+    <div ref="viewportRef" class="pdf-viewport">
+      <div ref="panzoomContainer" class="panzoom-container">
+        <div ref="pdfContainer" class="pdf-render-view">
+          <!-- PDF pages will be rendered here as canvas elements -->
+        </div>
+
+        <!-- The signature overlay -->
+        <div v-if="activeSignatureSvg" class="signature-overlay">
+          <!-- We loop through the calculated styles to render multiple overlays -->
+          <div
+            v-for="(style, index) in signatureStyles"
+            :key="index"
+            :style="style"
+            class="signature-wrapper"
+            v-html="activeSignatureSvg"
+          ></div>
         </div>
       </div>
     </div>
