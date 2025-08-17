@@ -8,6 +8,8 @@
     "declaration": true,
     "declarationDir": "./dist/types",
     "emitDeclarationOnly": true,
-    "noEmit": false
+    "noEmit": false,
+    // This will flatten the output structure in dist/types correctly.
+    "rootDir": "src/lib"
   }
 }

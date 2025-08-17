@@ -14,6 +14,9 @@ export default defineConfig({
       outDir: 'dist/types',
     }),
   ],
+  // This prevents assets from the demo app's public folder (like favicon.ico)
+  // from being copied into our dist folder.
+  publicDir: false,
   build: {
     lib: {
       // The entry point of our library.
