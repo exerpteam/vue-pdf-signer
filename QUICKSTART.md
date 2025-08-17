@@ -133,7 +133,7 @@ This process uses `pnpm link` to create a symbolic link.
     Navigate to the `exerp-go` directory and link it to the global `vue-pdf-signer` package.
 
     ```bash
-    cd ../exerp-go
+    cd ../exerp-go/frontend
     pnpm link --global vue-pdf-signer
     ```
 
@@ -141,7 +141,7 @@ This process uses `pnpm link` to create a symbolic link.
     Start the `exerp-go` development server. It will now use your local `vue-pdf-signer` build.
 
     ```bash
-    pnpm dev
+    yarn serve
     ```
 
 6.  **Rebuild on Changes:**
