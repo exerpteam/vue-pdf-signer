@@ -3,6 +3,11 @@ import { PDFDocument, PDFName, PDFNumber, asNumber, rgb, LineCapStyle } from 'pd
 import { logger } from '../utils/debug'
 import type { FinishPayload, PdfDocument, SignatureResult } from '../types'
 
+interface SignatureData {
+  svg: string
+  png: string
+}
+
 /** Convert HEX to pdf-lib Color */
 function hexToPdfRgb(hex: string) {
   const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex) || []
@@ -71,62 +76,55 @@ function getUnionBBox(svgEl: SVGSVGElement, paths: SVGPathElement[]) {
  * @param documents - A ref to the array of all PdfDocuments.
  * @param newlySignedKeys - A ref to the set of keys for docs signed in this session.
  * @param emit - The component's emit function.
- * @param signatureSvg - A ref to the current signature SVG string.
- * @param signaturePng - A ref to the current signature PNG string.
+ * @param signatureDataMap - A ref to the map containing signature data for each document key.
  */
 export function usePdfDocument(
   documents: Ref<PdfDocument[]>,
   newlySignedKeys: Ref<Set<string>>,
   emit: (e: 'finish', payload: FinishPayload) => void,
-  signatureSvg: Ref<string | null>,
-  signaturePng: Ref<string | null>,
+  signatureDataMap: Ref<Map<string, SignatureData>>,
 ) {
   const isSaving = ref(false)
 
-  /**
-   * Generates the final signed PDF, emits the result, and handles download.
-   */
   async function saveDocument() {
     isSaving.value = true
 
     try {
-      // If no documents were signed in this session, emit an empty payload and finish.
-      // This handles the 'any' policy with zero signatures, or 'all' with all pre-signed.
       if (newlySignedKeys.value.size === 0) {
         logger.debug('No new signatures to process. Emitting empty payload.')
         emit('finish', {})
-        return // Exit early
-      }
-
-      // If there are new signatures, a signature must exist. This is a safeguard.
-      if (!signatureSvg.value || !signaturePng.value) {
-        logger.warn('Save called for newly signed documents, but no signature is available.')
-        return // Exit early
-      }
-
-      const svgDoc = new DOMParser().parseFromString(signatureSvg.value, 'image/svg+xml')
-      const svgElement = svgDoc.querySelector('svg') as SVGSVGElement | null
-      const pathNodeList = Array.from(svgDoc.querySelectorAll('path')) as SVGPathElement[]
-
-      if (!svgElement || pathNodeList.length === 0) {
-        logger.error('Signature SVG missing <svg> or <path> elements')
-        isSaving.value = false
         return
       }
 
-      const viewBoxRaw = svgElement.getAttribute('viewBox') || '0 0 200 160'
-      const [vbX, vbY, vbW, vbH] = viewBoxRaw.split(/[\s,]+/).map(Number)
-      const union = getUnionBBox(svgElement, pathNodeList)
-
       const resultsMap: FinishPayload = {}
-      const signaturePngBase64 = signaturePng.value.split(',')[1]
 
       for (const doc of documents.value) {
         if (!newlySignedKeys.value.has(doc.key)) {
           continue
         }
 
+        const signature = signatureDataMap.value.get(doc.key)
+        if (!signature) {
+          logger.warn(`No signature found for document key "${doc.key}". Skipping.`)
+          continue
+        }
+
         logger.debug(`Processing document: ${doc.key}`)
+
+        const svgDoc = new DOMParser().parseFromString(signature.svg, 'image/svg+xml')
+        const svgElement = svgDoc.querySelector('svg') as SVGSVGElement | null
+        const pathNodeList = Array.from(svgDoc.querySelectorAll('path')) as SVGPathElement[]
+
+        if (!svgElement || pathNodeList.length === 0) {
+          logger.error(`Signature SVG for doc "${doc.key}" is invalid. Skipping.`)
+          continue
+        }
+
+        const viewBoxRaw = svgElement.getAttribute('viewBox') || '0 0 200 160'
+        const [vbX, vbY, vbW, vbH] = viewBoxRaw.split(/[\s,]+/).map(Number)
+        const union = getUnionBBox(svgElement, pathNodeList)
+        const signaturePngBase64 = signature.png.split(',')[1]
+
         const pdfDoc = await PDFDocument.load(doc.data)
         const placements =
           doc.placements.length > 0
@@ -190,7 +188,8 @@ export function usePdfDocument(
               y,
               scale,
               borderColor: hexToPdfRgb(stroke),
-              borderWidth: strokeWidth * scale,
+              // We normalize the border width by the userUnit.
+              borderWidth: strokeWidth * scale * userUnit,
               borderLineCap: toCap(strokeLinecap),
             })
           })

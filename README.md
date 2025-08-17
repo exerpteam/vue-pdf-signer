@@ -1,6 +1,6 @@
 # Vue PDF Signer
 
-A robust, reusable Vue 3 component for displaying a PDF and overlaying a user-drawn signature. Built with TypeScript and Vite.
+A robust, reusable Vue 3 component for displaying and signing multiple PDF documents, with each document receiving its own unique signature. Built with TypeScript and Vite.
 
 ## Status
 
@@ -8,11 +8,12 @@ A robust, reusable Vue 3 component for displaying a PDF and overlaying a user-dr
 
 ## Features
 
+- **Multi-Document Management:** Displays a list of PDF documents and allows the user to switch between them.
+- **Per-Document Signature Capture:** Each document gets its own unique, user-drawn signature.
 - **PDF Loading & Rendering:** Renders multi-page PDFs provided as a base64 encoded string using `pdf.js`.
-- **Signature Capture:** Provides a responsive, touch-friendly modal for drawing a signature.
 - **Vector-Based Signature Placement:** Overlays the captured signature onto one or more predefined locations. The signature is embedded as a true vector graphic using `pdf-lib`, ensuring crisp quality at any zoom level.
 - **Pan & Zoom:** Supports interactive panning and zooming of the PDF document via mouse, trackpad, and touch gestures (e.g., pinch-to-zoom).
-- **Simple API:** Accepts a single `document` prop, making integration straightforward.
+- **Simple API:** Accepts a single `documents` prop, making integration straightforward.
 - **Customizable UI:** All user-facing text can be customized via a `translations` prop.
 - **Responsive & Touch-Friendly:** Designed for a seamless experience on both desktop and mobile browsers.
 
@@ -20,28 +21,31 @@ A robust, reusable Vue 3 component for displaying a PDF and overlaying a user-dr
 
 ### Props
 
-| Prop                  | Type               | Required | Default | Description                                                                                       |
-| --------------------- | ------------------ | :------: | :-----: | ------------------------------------------------------------------------------------------------- |
-| `document`            | `SignableDocument` |   Yes    |    -    | The core object containing the PDF data and signature placement information. See structure below. |
-| `translations`        | `Object`           |    No    |  `{}`   | An object to override the default UI text (e.g., `{ save: 'Confirm & Save' }`). See keys below.   |
-| `debug`               | `boolean`          |    No    | `false` | Enables verbose console logging for development purposes.                                         |
-| `showSignatureBounds` | `boolean`          |    No    | `false` | Displays a dashed border around signature placement areas, useful for debugging layout.           |
+| Prop                  | Type             | Required | Default | Description                                                                                                                        |
+| --------------------- | ---------------- | :------: | :-----: | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `documents`           | `PdfDocument[]`  |   Yes    |    -    | An array of document objects to be signed. See structure below.                                                                    |
+| `signingPolicy`       | `'all' \| 'any'` |    No    | `'all'` | Determines the condition for enabling the save button. `'all'`: all required docs must be signed. `'any'`: save is always enabled. |
+| `translations`        | `Object`         |    No    |  `{}`   | An object to override the default UI text (e.g., `{ save: 'Confirm & Save' }`). See keys below.                                    |
+| `debug`               | `boolean`        |    No    | `false` | Enables verbose console logging for development purposes.                                                                          |
+| `showSignatureBounds` | `boolean`        |    No    | `false` | Displays a dashed border around signature placement areas, useful for debugging layout.                                            |
 
 ### Events
 
-| Event    | Payload         | Description                                                                      |
-| -------- | --------------- | -------------------------------------------------------------------------------- |
-| `finish` | `FinishPayload` | Emitted when the user confirms and saves the signed document. See payload below. |
+| Event    | Payload         | Description                                                                                                  |
+| -------- | --------------- | ------------------------------------------------------------------------------------------------------------ |
+| `finish` | `FinishPayload` | Emitted when the user saves. The payload is a map of document keys to their corresponding signature results. |
 
 ### Type Definitions
 
-**`SignableDocument` (for the `document` prop):**
+**`PdfDocument` (for the `documents` prop):**
 
 ```typescript
-interface SignableDocument {
+interface PdfDocument {
+  key: string // A unique identifier for the document.
   name?: string
   data: string // The PDF document as a base64 string.
   placements: SignaturePlacement[]
+  signed?: boolean // Indicates if the document is already considered signed.
 }
 
 interface SignaturePlacement {
@@ -56,7 +60,10 @@ interface SignaturePlacement {
 **`FinishPayload` (for the `finish` event):**
 
 ```typescript
-interface FinishPayload {
+// A map where each key is a document's `key` and the value is its result.
+type FinishPayload = Record<string, SignatureResult>
+
+interface SignatureResult {
   signedDocument: {
     type: 'application/pdf'
     data: string // The signed PDF as a base64 string.
@@ -72,17 +79,17 @@ interface FinishPayload {
 
 Provide an object to the `translations` prop with any of the following keys to override the default English text.
 
-| Key               | Default Value                                            | Description                                                        |
-| ----------------- | -------------------------------------------------------- | ------------------------------------------------------------------ |
-| `updateSignature` | "Change Signature"                                       | Text for the main action button after a signature has been drawn.  |
-| `drawSignature`   | "Sign Here"                                              | Text for the main action button before a signature has been drawn. |
-| `save`            | "Save"                                                   | Text for the save button.                                          |
-| `saving`          | "Saving..."                                              | Text for the save button while the document is being processed.    |
-| `modalTitle`      | "Draw Signature"                                         | The title of the signature drawing modal.                          |
-| `modalSubtitle`   | "Use your mouse or finger to draw your signature below." | The instructional text below the title in the signature modal.     |
-| `modalCancel`     | "Cancel"                                                 | Text for the cancel button in the signature modal.                 |
-| `modalClear`      | "Clear"                                                  | Text for the button that clears the signature canvas.              |
-| `modalDone`       | "Done"                                                   | Text for the button that confirms the signature drawing.           |
+| Key               | Default Value                                            | Description                                                            |
+| ----------------- | -------------------------------------------------------- | ---------------------------------------------------------------------- |
+| `updateSignature` | "Change Signature"                                       | Text for the action button when a document can be signed or re-signed. |
+| `drawSignature`   | "Sign Document"                                          | Text for the action button when a document has not yet been signed.    |
+| `save`            | "Save"                                                   | Text for the save button.                                              |
+| `saving`          | "Saving..."                                              | Text for the save button while the document is being processed.        |
+| `modalTitle`      | "Draw Signature"                                         | The title of the signature drawing modal.                              |
+| `modalSubtitle`   | "Use your mouse or finger to draw your signature below." | The instructional text below the title in the signature modal.         |
+| `modalCancel`     | "Cancel"                                                 | Text for the cancel button in the signature modal.                     |
+| `modalClear`      | "Clear"                                                  | Text for the button that clears the signature canvas.                  |
+| `modalDone`       | "Done"                                                   | Text for the button that confirms the signature drawing.               |
 
 ## Local Development
 

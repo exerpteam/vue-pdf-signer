@@ -1,4 +1,5 @@
 import { computed, type Ref } from 'vue'
+import type { PdfDocument } from '../types'
 
 /**
  * A composable to manage all user-facing text within the component,
@@ -6,19 +7,20 @@ import { computed, type Ref } from 'vue'
  *
  * @param props - The component's props, specifically the `translations` object.
  * @param isSaving - A ref indicating if the save process is active.
- * @param signatureSvg - A ref holding the current signature SVG data.
+ * @param signatureSvg - A ref holding the current signature SVG data for the active document.
+ * @param activeDocument - A ref to the currently active document object.
  */
 export function useTranslations(
   props: { translations?: Record<string, string> },
   isSaving: Ref<boolean>,
   signatureSvg: Ref<string | null>,
+  activeDocument: Ref<PdfDocument | null>,
 ) {
   const t = computed(() => {
-    // This object contains all default English strings for the component.
     const defaultTranslations = {
       // Toolbar buttons
       updateSignature: 'Change Signature',
-      drawSignature: 'Sign Here',
+      drawSignature: 'Sign Document',
       save: 'Save',
       saving: 'Saving...',
       // SignaturePadModal content
@@ -29,23 +31,32 @@ export function useTranslations(
       modalDone: 'Done',
     }
 
-    // We merge the user's translations over our defaults.
     const merged = { ...defaultTranslations, ...props.translations }
 
-    const hasSignature = !!signatureSvg.value
+    const hasSessionSignature = !!signatureSvg.value
+    const isPreSigned = !!activeDocument.value?.signed
 
-    // The logic uses the merged object and returns all strings.
+    // If the document is pre-signed OR has a new signature,
+    // the action is to change it. Otherwise, it's to draw a new one.
+    const actionButtonText =
+      isPreSigned || hasSessionSignature ? merged.updateSignature : merged.drawSignature
+
+    // The sign button should only be disabled while the save process is running.
+    const isSignActionDisabled = isSaving.value
+
     if (isSaving.value) {
       return {
         ...merged,
-        actionButton: merged.updateSignature,
+        actionButton: actionButtonText,
         save: merged.saving,
+        isSignActionDisabled,
       }
     }
     return {
       ...merged,
-      actionButton: hasSignature ? merged.updateSignature : merged.drawSignature,
+      actionButton: actionButtonText,
       save: merged.save,
+      isSignActionDisabled,
     }
   })
 

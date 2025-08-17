@@ -6,7 +6,7 @@ import type { FinishPayload, PdfDocument } from '../types'
 
 import { usePdfRenderer } from '../composables/usePdfRenderer'
 import { usePanZoom } from '../composables/usePanZoom'
-import { useSignaturePad } from '../composables/useSignaturePad'
+import { useSignaturePad, processSignatureSVG } from '../composables/useSignaturePad'
 import { useSignatureOverlay } from '../composables/useSignatureOverlay'
 import { usePdfDocument } from '../composables/usePdfDocument'
 import { useTranslations } from '../composables/useTranslations'
@@ -35,50 +35,52 @@ watchEffect(() => {
 const activeDocumentKey = ref<string | null>(null)
 const newlySignedKeys = ref<Set<string>>(new Set())
 
+// maps a document key to its specific signature data.
+const signatureDataMap = ref<Map<string, { svg: string; png: string }>>(new Map())
+
 const isFinishEnabled = computed(() => {
   if (props.signingPolicy === 'any') {
-    // For 'any' policy, the user can always finish, even with zero new signatures.
     return true
   }
 
   if (props.signingPolicy === 'all') {
-    // Find documents that were not pre-signed. These are the ones requiring a signature.
     const requiredDocs = props.documents.filter((doc) => !doc.signed)
-
-    // If there are no documents that require a signature (all were pre-signed),
-    // then the condition is met and finishing is allowed.
     if (requiredDocs.length === 0) {
       return true
     }
-
-    // If there are required documents, every one of them must have been newly signed.
     const allRequiredDocsAreSigned = requiredDocs.every((doc) => newlySignedKeys.value.has(doc.key))
 
-    // A signature must also exist to have been applied to them.
-    return allRequiredDocsAreSigned && !!signatureSvg.value
+    // The existence of a signature is implied by a key being in `newlySignedKeys`.
+    return allRequiredDocsAreSigned
   }
 
-  // Fallback, should not be reached due to prop defaults.
   return false
 })
 
-// This computed property finds the currently selected document object.
 const activeDocument = computed(() => {
   if (!activeDocumentKey.value) return null
   return props.documents.find((doc) => doc.key === activeDocumentKey.value) ?? null
 })
 
-// These computed properties feed the active document's data to our composables.
-// This adapts our existing logic to the new multi-document structure.
 const pdfData = computed(() => activeDocument.value?.data ?? '')
 const signatureData = computed(() => activeDocument.value?.placements ?? [])
 
-// When the documents prop changes, we select the first non-pre-signed document as the active one.
+// This computed ref gets the signature for the *currently active* document.
+const activeSignature = computed(() => {
+  if (!activeDocumentKey.value) return null
+  return signatureDataMap.value.get(activeDocumentKey.value) ?? null
+})
+
+// We can now derive the SVG and PNG for the active signature.
+const activeSignatureSvg = computed(() => activeSignature.value?.svg ?? null)
+// const activeSignaturePng = computed(() => activeSignature.value?.png ?? null)
+
 watch(
   () => props.documents,
   (docs) => {
-    // When the list of documents changes, clear any session signatures.
     newlySignedKeys.value.clear()
+    // clear the signature map when documents change.
+    signatureDataMap.value.clear()
     const firstUnsignedDoc = docs.find((doc) => !doc.signed)
     activeDocumentKey.value = firstUnsignedDoc?.key ?? docs[0]?.key ?? null
   },
@@ -108,37 +110,39 @@ const { zoomPercentage, initPanzoom, destroyPanzoom, zoomIn, zoomOut } = usePanZ
 )
 
 // 3. Signature Pad (Modal and Data Capture)
-const {
-  isSignaturePadOpen,
-  signatureSvg,
-  signaturePng,
-  openSignaturePad,
-  handleSignatureCancel,
-  handleSignatureSave: _handleSignatureSave, // Renamed original handler
-} = useSignaturePad()
+const { isSignaturePadOpen, openSignaturePad, closeSignaturePad } = useSignaturePad()
 
-// When we save a signature from the modal, we also record that the active document is now signed.
+// This is the save handler. It's called directly by the modal's @save event.
 function handleSignatureSave(payload: { svg: string; png: string }) {
-  _handleSignatureSave(payload)
-  if (activeDocumentKey.value) {
+  const processedSvg = processSignatureSVG(payload.svg)
+
+  // We only proceed if the SVG is valid and we have an active document.
+  if (processedSvg && activeDocumentKey.value) {
+    signatureDataMap.value.set(activeDocumentKey.value, {
+      svg: processedSvg,
+      png: payload.png,
+    })
     newlySignedKeys.value.add(activeDocumentKey.value)
   }
+
+  // We always close the modal after an attempt.
+  closeSignaturePad()
 }
 
 // 4. PDF Document Generation (Saving Logic)
+// For now, we pass the active signature. This will be refactored in a later step
+// when we update usePdfDocument to handle the whole map.
 const { isSaving, saveDocument } = usePdfDocument(
   toRef(props, 'documents'),
   newlySignedKeys,
   emit,
-  signatureSvg,
-  signaturePng,
+  signatureDataMap,
 )
 
 // 5. UI Text and Translations
-const { t } = useTranslations(props, isSaving, signatureSvg)
+const { t } = useTranslations(props, isSaving, activeSignatureSvg, activeDocument)
 
 // 6. Signature Overlay Positioning Logic
-// We pass the computed ref here as well.
 const { showSignatureBounds } = toRefs(props)
 const { signatureStyles } = useSignatureOverlay(
   renderedPages,
@@ -154,16 +158,13 @@ onMounted(() => {
   loadAndRenderPdf(pdfData.value)
 })
 
-// When a new PDF is loaded, re-render it.
 watch(pdfData, (newPdfData, oldPdfData) => {
   if (newPdfData !== oldPdfData) {
-    // Destroy the old panzoom instance before loading the new PDF
     destroyPanzoom()
     loadAndRenderPdf(newPdfData)
   }
 })
 
-// When the PDF has finished rendering, initialize the panzoom functionality.
 watch(isPdfRendered, (isRendered) => {
   if (isRendered) {
     initPanzoom()
@@ -179,7 +180,13 @@ onBeforeUnmount(() => {
   <div class="vue-pdf-signer" @touchstart.stop @touchmove.stop @wheel.stop>
     <div class="pdf-signer-toolbar">
       <div class="toolbar-group">
-        <button @click="openSignaturePad" class="btn btn-secondary">{{ t.actionButton }}</button>
+        <button
+          @click="openSignaturePad"
+          class="btn btn-secondary"
+          :disabled="t.isSignActionDisabled"
+        >
+          {{ t.actionButton }}
+        </button>
         <button
           @click="saveDocument"
           class="btn btn-primary"
@@ -216,14 +223,14 @@ onBeforeUnmount(() => {
           </div>
 
           <!-- The signature overlay -->
-          <div v-if="signatureSvg" class="signature-overlay">
+          <div v-if="activeSignatureSvg" class="signature-overlay">
             <!-- We loop through the calculated styles to render multiple overlays -->
             <div
               v-for="(style, index) in signatureStyles"
               :key="index"
               :style="style"
               class="signature-wrapper"
-              v-html="signatureSvg"
+              v-html="activeSignatureSvg"
             ></div>
           </div>
         </div>
@@ -232,7 +239,7 @@ onBeforeUnmount(() => {
 
     <SignaturePadModal
       v-if="isSignaturePadOpen"
-      @close="handleSignatureCancel"
+      @close="closeSignaturePad"
       @save="handleSignatureSave"
       :title="t.modalTitle"
       :subtitle="t.modalSubtitle"
