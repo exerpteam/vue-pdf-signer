@@ -30,46 +30,6 @@ function toCap(cap?: string): LineCapStyle {
   }
 }
 
-/** Compute union BBox of all <path> elements in the SVG coordinate space */
-function getUnionBBox(svgEl: SVGSVGElement, paths: SVGPathElement[]) {
-  const NS = 'http://www.w3.org/2000/svg'
-  const tempSvg = document.createElementNS(NS, 'svg')
-  const vb = svgEl.getAttribute('viewBox') || '0 0 0 0'
-  tempSvg.setAttribute('viewBox', vb)
-  tempSvg.setAttribute('width', '0')
-  tempSvg.setAttribute('height', '0')
-  tempSvg.style.position = 'absolute'
-  tempSvg.style.opacity = '0'
-  document.body.appendChild(tempSvg)
-
-  let minX = Infinity,
-    minY = Infinity,
-    maxX = -Infinity,
-    maxY = -Infinity
-
-  paths.forEach((p) => {
-    const clone = document.createElementNS(NS, 'path')
-    clone.setAttribute('d', p.getAttribute('d') || '')
-    tempSvg.appendChild(clone)
-    try {
-      const bb = clone.getBBox()
-      minX = Math.min(minX, bb.x)
-      minY = Math.min(minY, bb.y)
-      maxX = Math.max(maxX, bb.x + bb.width)
-      maxY = Math.max(maxY, bb.y + bb.height)
-    } catch (e) {
-      logger.warn('getBBox failed for path', { e })
-    } finally {
-      tempSvg.removeChild(clone)
-    }
-  })
-
-  document.body.removeChild(tempSvg)
-  const width = Math.max(0, maxX - minX)
-  const height = Math.max(0, maxY - minY)
-  return { minX, minY, width, height }
-}
-
 /**
  * A composable to manage the final PDF document generation and saving process.
  *
@@ -123,7 +83,6 @@ export function usePdfDocument(
 
         const viewBoxRaw = svgElement.getAttribute('viewBox') || '0 0 200 160'
         const [vbX, vbY, vbW, vbH] = viewBoxRaw.split(/[\s,]+/).map(Number)
-        const union = getUnionBBox(svgElement, pathNodeList)
         const signaturePngBase64 = signature.png.split(',')[1]
 
         const pdfDoc = await PDFDocument.load(doc.data)
@@ -157,9 +116,8 @@ export function usePdfDocument(
           const targetX = placement.left * adjustedCmToPoints
           const targetY = pageHeight - placement.top * adjustedCmToPoints - targetHeight
 
-          const useUnionBBox = true
-          const boxW = useUnionBBox ? union.width : vbW - vbX
-          const boxH = useUnionBBox ? union.height : vbH - vbY
+          const boxW = vbW
+          const boxH = vbH
 
           if (!boxW || !boxH) {
             logger.warn('Zero-sized source box; skipping placement')
@@ -179,8 +137,9 @@ export function usePdfDocument(
             const stroke = el.getAttribute('stroke') || '#000080'
             const strokeWidth = parseFloat(el.getAttribute('stroke-width') || '2')
             const strokeLinecap = el.getAttribute('stroke-linecap') || 'round'
-            const offX = useUnionBBox ? union.minX : vbX
-            const offY = useUnionBBox ? union.minY : vbY
+
+            const offX = vbX
+            const offY = vbY
             const x = centeredX - offX * scale
             const y = centeredY + scaledHeight + offY * scale
 
