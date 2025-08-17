@@ -7,6 +7,8 @@ export interface SignaturePlacement {
 }
 
 export interface PdfManifestEntry {
+  key: string
+  signed?: boolean
   name: string
   fileName: string
   pageSizeCm: string
@@ -17,6 +19,8 @@ export interface PdfManifestEntry {
 
 export const PDF_MANIFEST: PdfManifestEntry[] = [
   {
+    key: 'suite-00',
+    signed: false,
     name: 'Standard A4 portrait (v2, UU=1)',
     fileName: 'pdf_suite_00.pdf',
     pageSizeCm: '21.00 x 29.70',
@@ -25,6 +29,8 @@ export const PDF_MANIFEST: PdfManifestEntry[] = [
     signaturePlacement: [{ left: 5, top: 7, width: 8, height: 4, page: 1 }],
   },
   {
+    key: 'suite-01',
+    signed: false,
     name: 'A4, portrait, UU=1',
     fileName: 'pdf_suite_01.pdf',
     pageSizeCm: '21.00 x 29.70',
@@ -33,6 +39,8 @@ export const PDF_MANIFEST: PdfManifestEntry[] = [
     signaturePlacement: [{ left: 5, top: 7, width: 8, height: 4, page: 1 }],
   },
   {
+    key: 'suite-02',
+    signed: false,
     name: 'A4, landscape, UU=1',
     fileName: 'pdf_suite_02.pdf',
     pageSizeCm: '29.70 x 21.00',
@@ -41,6 +49,8 @@ export const PDF_MANIFEST: PdfManifestEntry[] = [
     signaturePlacement: [{ left: 5, top: 7, width: 8, height: 4, page: 1 }],
   },
   {
+    key: 'suite-03',
+    signed: false,
     name: 'Letter, portrait, UU=1',
     fileName: 'pdf_suite_03.pdf',
     pageSizeCm: '21.59 x 27.94',
@@ -49,6 +59,8 @@ export const PDF_MANIFEST: PdfManifestEntry[] = [
     signaturePlacement: [{ left: 5, top: 7, width: 8, height: 4, page: 1 }],
   },
   {
+    key: 'suite-04',
+    signed: false,
     name: 'Letter, landscape, UU=1',
     fileName: 'pdf_suite_04.pdf',
     pageSizeCm: '27.94 x 21.59',
@@ -57,6 +69,8 @@ export const PDF_MANIFEST: PdfManifestEntry[] = [
     signaturePlacement: [{ left: 5, top: 7, width: 8, height: 4, page: 1 }],
   },
   {
+    key: 'suite-05',
+    signed: false,
     name: 'Legal, portrait, UU=1',
     fileName: 'pdf_suite_05.pdf',
     pageSizeCm: '21.59 x 35.56',
@@ -65,6 +79,8 @@ export const PDF_MANIFEST: PdfManifestEntry[] = [
     signaturePlacement: [{ left: 5, top: 7, width: 8, height: 4, page: 1 }],
   },
   {
+    key: 'suite-06',
+    signed: false,
     name: 'A3, portrait, UU=1',
     fileName: 'pdf_suite_06.pdf',
     pageSizeCm: '29.70 x 42.00',
@@ -73,6 +89,8 @@ export const PDF_MANIFEST: PdfManifestEntry[] = [
     signaturePlacement: [{ left: 5, top: 7, width: 8, height: 4, page: 1 }],
   },
   {
+    key: 'suite-07',
+    signed: false,
     name: 'A5, portrait, UU=1',
     fileName: 'pdf_suite_07.pdf',
     pageSizeCm: '14.80 x 21.00',
@@ -81,6 +99,8 @@ export const PDF_MANIFEST: PdfManifestEntry[] = [
     signaturePlacement: [{ left: 5, top: 7, width: 8, height: 4, page: 1 }],
   },
   {
+    key: 'suite-08',
+    signed: false,
     name: 'Tabloid, landscape, UU=1',
     fileName: 'pdf_suite_08.pdf',
     pageSizeCm: '43.18 x 27.94',
@@ -89,6 +109,8 @@ export const PDF_MANIFEST: PdfManifestEntry[] = [
     signaturePlacement: [{ left: 5, top: 7, width: 8, height: 4, page: 1 }],
   },
   {
+    key: 'suite-09',
+    signed: false,
     name: 'A4, portrait, UU=0.5',
     fileName: 'pdf_suite_09.pdf',
     pageSizeCm: '21.00 x 29.70',
@@ -97,6 +119,8 @@ export const PDF_MANIFEST: PdfManifestEntry[] = [
     signaturePlacement: [{ left: 5, top: 7, width: 8, height: 4, page: 1 }],
   },
   {
+    key: 'suite-10',
+    signed: false,
     name: 'A4, portrait, UU=2',
     fileName: 'pdf_suite_10.pdf',
     pageSizeCm: '21.00 x 29.70',
@@ -105,6 +129,8 @@ export const PDF_MANIFEST: PdfManifestEntry[] = [
     signaturePlacement: [{ left: 5, top: 7, width: 8, height: 4, page: 1 }],
   },
   {
+    key: 'suite-11',
+    signed: false,
     name: 'Square 20x20 cm, UU=1',
     fileName: 'pdf_suite_11.pdf',
     pageSizeCm: '20.00 x 20.00',
@@ -113,6 +139,8 @@ export const PDF_MANIFEST: PdfManifestEntry[] = [
     signaturePlacement: [{ left: 5, top: 7, width: 8, height: 4, page: 1 }],
   },
   {
+    key: 'suite-12',
+    signed: false,
     name: 'A4 portrait, multiple signatures (UU=1)',
     fileName: 'pdf_suite_12.pdf',
     pageSizeCm: '21.00 x 29.70',
@@ -157,6 +185,8 @@ export const PDF_MANIFEST: PdfManifestEntry[] = [
     ],
   },
   {
+    key: 'suite-13',
+    signed: false,
     name: 'A4 landscape, multiple signatures (UU=1)',
     fileName: 'pdf_suite_13.pdf',
     pageSizeCm: '29.70 x 21.00',
@@ -194,6 +224,8 @@ export const PDF_MANIFEST: PdfManifestEntry[] = [
     ],
   },
   {
+    key: 'suite-14',
+    signed: false,
     name: 'A2 portrait, large format (UU=1)',
     fileName: 'pdf_suite_14.pdf',
     pageSizeCm: '42.00 x 59.40',
@@ -224,6 +256,8 @@ export const PDF_MANIFEST: PdfManifestEntry[] = [
     ],
   },
   {
+    key: 'suite-15',
+    signed: false,
     name: 'Postcard 10x15 cm, small format (UU=1)',
     fileName: 'pdf_suite_15.pdf',
     pageSizeCm: '10.00 x 15.00',
@@ -247,6 +281,8 @@ export const PDF_MANIFEST: PdfManifestEntry[] = [
     ],
   },
   {
+    key: 'suite-16',
+    signed: false,
     name: 'Custom 22x28 cm with background bands (UU=1)',
     fileName: 'pdf_suite_16.pdf',
     pageSizeCm: '22.00 x 28.00',
@@ -270,6 +306,8 @@ export const PDF_MANIFEST: PdfManifestEntry[] = [
     ],
   },
   {
+    key: 'suite-17',
+    signed: false,
     name: 'A4 portrait (UU=1.5)',
     fileName: 'pdf_suite_17.pdf',
     pageSizeCm: '21.00 x 29.70',
@@ -293,6 +331,8 @@ export const PDF_MANIFEST: PdfManifestEntry[] = [
     ],
   },
   {
+    key: 'suite-18',
+    signed: false,
     name: 'A4 portrait (UU=0.66)',
     fileName: 'pdf_suite_18.pdf',
     pageSizeCm: '21.00 x 29.70',
@@ -316,6 +356,8 @@ export const PDF_MANIFEST: PdfManifestEntry[] = [
     ],
   },
   {
+    key: 'suite-19',
+    signed: false,
     name: 'A4 portrait with colored regions (UU=1)',
     fileName: 'pdf_suite_19.pdf',
     pageSizeCm: '21.00 x 29.70',
@@ -346,6 +388,8 @@ export const PDF_MANIFEST: PdfManifestEntry[] = [
     ],
   },
   {
+    key: 'suite-20',
+    signed: false,
     name: 'A4 portrait STRESS (many signatures) (UU=1)',
     fileName: 'pdf_suite_20.pdf',
     pageSizeCm: '21.00 x 29.70',
@@ -453,6 +497,8 @@ export const PDF_MANIFEST: PdfManifestEntry[] = [
     ],
   },
   {
+    key: 'suite-21',
+    signed: false,
     name: 'Mixed page formats (A4 P, A4 L, Letter P, 20x20) (UU=1)',
     fileName: 'pdf_suite_21.pdf',
     pageSizeCm: '21.00 x 29.70',
@@ -490,6 +536,8 @@ export const PDF_MANIFEST: PdfManifestEntry[] = [
     ],
   },
   {
+    key: 'suite-22',
+    signed: false,
     name: 'A4 portrait (no rotation) (UU=1)',
     fileName: 'pdf_suite_22.pdf',
     pageSizeCm: '21.00 x 29.70',
@@ -513,6 +561,8 @@ export const PDF_MANIFEST: PdfManifestEntry[] = [
     ],
   },
   {
+    key: 'suite-23',
+    signed: false,
     name: 'Square 20x20 (UU=1.5)',
     fileName: 'pdf_suite_23.pdf',
     pageSizeCm: '20.00 x 20.00',
@@ -536,6 +586,8 @@ export const PDF_MANIFEST: PdfManifestEntry[] = [
     ],
   },
   {
+    key: 'suite-24',
+    signed: false,
     name: 'Tabloid landscape with backgrounds (UU=1)',
     fileName: 'pdf_suite_24.pdf',
     pageSizeCm: '43.18 x 27.94',
@@ -559,6 +611,8 @@ export const PDF_MANIFEST: PdfManifestEntry[] = [
     ],
   },
   {
+    key: 'suite-25',
+    signed: false,
     name: 'Legal portrait (UU=0.66)',
     fileName: 'pdf_suite_25.pdf',
     pageSizeCm: '21.59 x 35.56',

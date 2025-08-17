@@ -5,12 +5,22 @@ export interface SignaturePlacement {
     height: number;
     page: number;
 }
-export interface SignableDocument {
+/**
+ * This represents a single document within the multi-document list.
+ * - `key`: A unique identifier for this document.
+ * - `signed`: Indicates if the document has a pre-existing signature.
+ */
+export interface PdfDocument {
+    key: string;
     name?: string;
     data: string;
     placements: SignaturePlacement[];
+    signed?: boolean;
 }
-export interface FinishPayload {
+/**
+ * This represents the output for a single signed document.
+ */
+export interface SignatureResult {
     signedDocument: {
         type: 'application/pdf';
         data: string;
@@ -20,3 +30,8 @@ export interface FinishPayload {
         data: string;
     };
 }
+/**
+ * The finish event now emits a map where each key is the
+ * document's `key` and the value is its corresponding signature result.
+ */
+export type FinishPayload = Record<string, SignatureResult>;

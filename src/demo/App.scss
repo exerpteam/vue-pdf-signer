@@ -8,112 +8,24 @@ main {
 }
 
 .controls {
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: flex-start;
-  gap: 0.5rem;
-  flex-direction: column;
-}
-.controls label {
-  font-weight: 500;
-}
-.controls select {
-  padding: 0.5rem;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  width: 100%;
-  max-width: 400px;
-}
-
-/* START: Styles for controls */
-.signature-controls {
+  margin-bottom: 2rem;
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 1rem;
-  margin-bottom: 2rem;
   background-color: #fdfdfd;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 0.75rem;
 }
-.signature-controls legend {
+.controls legend {
   font-weight: 600;
   padding: 0 0.5rem;
 }
-
-.signature-placement-item {
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
-  padding: 1rem;
-  background-color: #fff;
-}
-
-.item-header {
+.radio-group {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid #eee;
+  gap: 0.5rem;
 }
-.item-header h4 {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 600;
-}
-.remove-btn {
-  background: none;
-  border: 1px solid #dc3545;
-  color: #dc3545;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition:
-    background-color 0.2s,
-    color 0.2s;
-}
-.remove-btn:hover {
-  background-color: #dc3545;
-  color: white;
-}
-
-.signature-controls-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 1rem;
-}
-.input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-.input-group label {
-  font-size: 0.875rem;
-  color: #555;
-}
-.input-group input {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.add-btn {
-  align-self: flex-start;
-  background-color: #007aff;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-.add-btn:hover {
-  background-color: #005ecb;
-}
-/* END: Styles for controls */
 
 .loading-placeholder {
   display: flex;
@@ -131,26 +43,49 @@ main {
   padding-top: 2rem;
   border-top: 1px solid #eee;
 }
+
+.output-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.output-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  background-color: #fcfcfc;
+}
+
+.output-card h3 {
+  margin-top: 0;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
 .output-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 2rem;
 }
-.output-item h3 {
+
+.output-item h4 {
   margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  color: #333;
 }
-.output-item p {
-  color: #555;
-  font-size: 0.9rem;
-}
+
 .output-item iframe {
   width: 100%;
-  height: 600px;
+  height: 500px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
 .output-item img {
   max-width: 100%;
+  max-height: 200px;
   height: auto;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -158,14 +93,6 @@ main {
 }
 
 @media (min-width: 768px) {
-  .controls {
-    flex-direction: row;
-    align-items: center;
-  }
-  .controls select {
-    width: auto;
-    min-width: 300px;
-  }
   .output-grid {
     grid-template-columns: 2fr 1fr;
   }

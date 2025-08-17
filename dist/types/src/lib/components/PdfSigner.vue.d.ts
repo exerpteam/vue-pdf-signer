@@ -1,28 +1,33 @@
-import { FinishPayload, SignableDocument } from '../types';
+import { FinishPayload, PdfDocument } from '../types';
 
 declare const _default: import('vue').DefineComponent<import('vue').ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
-    document: SignableDocument;
+    documents: PdfDocument[];
+    signingPolicy?: "all" | "any";
     translations?: Record<string, string>;
     debug?: boolean;
     showSignatureBounds?: boolean;
 }>, {
+    signingPolicy: string;
     translations: () => {};
     debug: boolean;
     showSignatureBounds: boolean;
 }>>, {}, {}, {}, {}, import('vue').ComponentOptionsMixin, import('vue').ComponentOptionsMixin, {
     finish: (payload: FinishPayload) => void;
 }, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
-    document: SignableDocument;
+    documents: PdfDocument[];
+    signingPolicy?: "all" | "any";
     translations?: Record<string, string>;
     debug?: boolean;
     showSignatureBounds?: boolean;
 }>, {
+    signingPolicy: string;
     translations: () => {};
     debug: boolean;
     showSignatureBounds: boolean;
 }>>> & Readonly<{
     onFinish?: ((payload: FinishPayload) => any) | undefined;
 }>, {
+    signingPolicy: "all" | "any";
     translations: Record<string, string>;
     debug: boolean;
     showSignatureBounds: boolean;
