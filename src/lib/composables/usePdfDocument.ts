@@ -1,5 +1,17 @@
 import { ref, type Ref } from 'vue'
-import { PDFDocument, PDFName, PDFNumber, asNumber, rgb, LineCapStyle } from 'pdf-lib'
+import {
+  PDFDocument,
+  PDFName,
+  PDFNumber,
+  asNumber,
+  rgb,
+  LineCapStyle,
+  rectangle,
+  clip,
+  endPath,
+  pushGraphicsState,
+  popGraphicsState,
+} from 'pdf-lib'
 import { logger } from '../utils/debug'
 import type { FinishPayload, PdfDocument, SignatureResult } from '../types'
 
@@ -130,6 +142,15 @@ export function usePdfDocument(
           const centeredX = targetX + (targetWidth - scaledWidth) / 2
           const centeredY = targetY + (targetHeight - scaledHeight) / 2
 
+          // We define a clipping rectangle
+          // that matches the target placement area.
+          page.pushOperators(
+            pushGraphicsState(),
+            rectangle(targetX, targetY, targetWidth, targetHeight),
+            clip(),
+            endPath(),
+          )
+
           pathNodeList.forEach((el) => {
             const d = el.getAttribute('d') || ''
             if (!d) return
@@ -137,7 +158,6 @@ export function usePdfDocument(
             const stroke = el.getAttribute('stroke') || '#000080'
             const strokeWidth = parseFloat(el.getAttribute('stroke-width') || '2')
             const strokeLinecap = el.getAttribute('stroke-linecap') || 'round'
-
             const offX = vbX
             const offY = vbY
             const x = centeredX - offX * scale
@@ -148,11 +168,13 @@ export function usePdfDocument(
               y,
               scale,
               borderColor: hexToPdfRgb(stroke),
-              // We normalize the border width by the userUnit.
               borderWidth: strokeWidth * scale * userUnit,
               borderLineCap: toCap(strokeLinecap),
             })
           })
+
+          // After drawing, we restore the graphics state to remove the clip.
+          page.pushOperators(popGraphicsState())
         }
 
         const signedPdfBase64 = await pdfDoc.saveAsBase64()
