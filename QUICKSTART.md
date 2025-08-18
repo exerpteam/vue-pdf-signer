@@ -134,7 +134,7 @@ This process uses `pnpm link` to create a symbolic link.
 
     ```bash
     cd ../exerp-go/frontend
-    pnpm link --global vue-pdf-signer
+    yarn link --global vue-pdf-signer
     ```
 
 5.  **Run the Host App:**
