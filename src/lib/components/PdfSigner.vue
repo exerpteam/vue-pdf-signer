@@ -197,23 +197,25 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="vue-pdf-signer" @touchstart.stop @touchmove.stop @wheel.stop>
-    <div class="pdf-signer-header">
+    <div class="pdf-signer-header" data-cy="pdf-signer-header">
       <!-- Top Row: Main Actions -->
-      <div class="toolbar-row-main-actions">
-        <button @click="handleCancel" class="btn" :disabled="isSaving || isFinished">
+      <div class="toolbar-row-main-actions" data-cy="toolbar-row-main-actions">
+        <button @click="handleCancel" class="btn" :disabled="isSaving || isFinished"
+        data-cy="sign-cancel">
           {{ t.cancel }}
         </button>
         <button
           @click="saveDocument"
           class="btn btn-primary"
           :disabled="!isFinishEnabled || isSaving || isFinished"
+          data-cy="save-sign"
         >
           {{ t.save }}
         </button>
       </div>
 
       <!-- Middle Row: Document Tabs -->
-      <div class="toolbar-row-docs">
+      <div class="toolbar-row-docs" data-cy="toolbar-row-docs">
         <button
           v-for="doc in documents"
           :key="doc.key"
@@ -221,6 +223,7 @@ onBeforeUnmount(() => {
           class="doc-tab"
           :class="{ active: activeDocumentKey === doc.key }"
           :disabled="isSaving || isFinished"
+          :data-cy="`doc-tab-${doc.key}`"
         >
           <span v-if="doc.signed || newlySignedKeys.has(doc.key)" class="status-icon">✔</span>
           <span>{{ doc.name || doc.key }}</span>
@@ -233,15 +236,16 @@ onBeforeUnmount(() => {
           @click="openSignaturePad"
           class="btn btn-secondary"
           :disabled="t.isSignActionDisabled || isFinished"
+          data-cy="update-sign"
         >
           {{ t.actionButton }}
         </button>
-        <div class="zoom-controls" @touchstart.stop @touchmove.stop @wheel.stop>
-          <button @click="zoomOut" class="btn btn-icon" :disabled="isSaving || isFinished">
+        <div class="zoom-controls" data-cy="zoom-controls">
+          <button @click="zoomOut" class="btn btn-icon" :disabled="isSaving || isFinished" data-cy="zoom-out-button">
             -
           </button>
-          <span class="zoom-level">{{ zoomPercentage }}%</span>
-          <button @click="zoomIn" class="btn btn-icon" :disabled="isSaving || isFinished">+</button>
+          <span class="zoom-level" data-cy="zoom-percentage">{{ zoomPercentage }}%</span>
+          <button @click="zoomIn" class="btn btn-icon" :disabled="isSaving || isFinished" data-cy="zoom-in-button">+</button>
         </div>
       </div>
     </div>
