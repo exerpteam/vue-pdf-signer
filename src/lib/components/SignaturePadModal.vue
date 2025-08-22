@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
-import SignaturePad from 'signature_pad'
+import SignaturePad, { type BasicPoint } from 'signature_pad'
 
 // we define props for all user-facing text in this component.
 const props = defineProps<{
@@ -74,8 +74,17 @@ onMounted(() => {
   // Initialize the SignaturePad instance on our canvas element.
   signaturePadInstance.value = new SignaturePad(canvasRef.value, {
     penColor: '#000080', // A dark navy blue, as requested for the final PDF.
-    // backgroundColor: '#ffffff',
+    // backgroundColor:
+    //  '#ffffff',
   })
+
+  window.addEventListener('draw-signature-for-test', (event: any) => {
+    const data = event.detail
+    if (!signaturePadInstance.value || !data) return
+    signaturePadInstance.value.clear()
+    signaturePadInstance.value.fromData(data)
+  })
+
 
   // Set up the resize listener to handle orientation changes or window resizing.
   window.addEventListener('resize', resizeCanvas)
@@ -86,6 +95,7 @@ onUnmounted(() => {
   // Clean up the listener to prevent memory leaks.
   window.removeEventListener('resize', resizeCanvas)
 })
+
 </script>
 
 <template>
@@ -97,13 +107,14 @@ onUnmounted(() => {
       </div>
 
       <div class="signature-pad-wrapper">
-        <canvas ref="canvasRef" class="signature-canvas"></canvas>
+        <canvas ref="canvasRef" class="signature-canvas" data-cy="signature-pad-canvas"
+        ></canvas>
       </div>
 
-      <div class="modal-actions">
-        <button @click="$emit('close')" class="btn btn-secondary">{{ props.cancelText }}</button>
-        <button @click="handleClear" class="btn btn-tertiary">{{ props.clearText }}</button>
-        <button @click="handleSave" class="btn btn-primary">{{ props.doneText }}</button>
+      <div class="modal-actions" data-cy="signature-pad-actions">
+        <button @click="$emit('close')" class="btn btn-secondary" data-cy="signature-pad-cancel-button">{{ props.cancelText }}</button>
+        <button @click="handleClear" class="btn btn-tertiary" data-cy="signature-pad-clear-button">{{ props.clearText }}</button>
+        <button @click="handleSave" class="btn btn-primary" data-cy="sign-done">{{ props.doneText }}</button>
       </div>
     </div>
   </div>
