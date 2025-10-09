@@ -21,8 +21,8 @@ importers:
         specifier: ^5.4.54
         version: 5.4.54
       signature_pad:
-        specifier: ^5.0.10
-        version: 5.0.10
+        specifier: 5.1.1
+        version: 5.1.1
     devDependencies:
       '@tsconfig/node22':
         specifier: ^22.0.2
@@ -1373,8 +1373,8 @@ packages:
     resolution: {integrity: sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==}
     engines: {node: '>=8'}
 
-  signature_pad@5.0.10:
-    resolution: {integrity: sha512-t7rLjpAtxYAIrTHr7EKfY8ulTWF+G/LFMto502a61KZvZNWZSwhTPeLE6171YMDd2sSYRBwQ17ENK5huAi9Rsg==}
+  signature_pad@5.1.1:
+    resolution: {integrity: sha512-BT5JJygS5BS0oV+tffPRorIud6q17bM7v/1LdQwd0o6mTqGoI25yY1NjSL99OqkekWltS4uon6p52Y8j1Zqu7g==}
 
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
@@ -2005,7 +2005,7 @@ snapshots:
 
   '@types/signature_pad@4.0.0':
     dependencies:
-      signature_pad: 5.0.10
+      signature_pad: 5.1.1
 
   '@types/web-bluetooth@0.0.21': {}
 
@@ -2806,7 +2806,7 @@ snapshots:
 
   shebang-regex@3.0.0: {}
 
-  signature_pad@5.0.10: {}
+  signature_pad@5.1.1: {}
 
   source-map-js@1.2.1: {}
 
