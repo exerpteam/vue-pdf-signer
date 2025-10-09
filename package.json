@@ -20,7 +20,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
+    "build:demo": "vite build --config vite.preview.config.ts",
     "preview": "vite preview",
+    "preview:demo": "vite preview --config vite.preview.config.ts",
     "lint": "eslint . --fix",
     "format": "prettier --write src/ lib/"
   },

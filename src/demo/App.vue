@@ -21,7 +21,7 @@ const customTranslations = ref({
  */
 async function loadPdfAsBase64(fileName: string): Promise<string> {
   try {
-    const pdfUrl = `/src/demo/samples/${fileName}`
+    const pdfUrl = `/samples/${fileName}`
     const response = await fetch(pdfUrl)
     if (!response.ok) throw new Error(`Failed to fetch PDF: ${response.statusText}`)
     const blob = await response.blob()
