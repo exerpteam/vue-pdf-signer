@@ -32,3 +32,7 @@ coverage
 # Environment files
 .env*.local
 .env
+TASK.md
+diff.txt
+
+preview-dist
