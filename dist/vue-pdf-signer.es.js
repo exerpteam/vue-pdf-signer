@@ -29101,7 +29101,7 @@ const _hoisted_1 = {
       onWheel: WI[6] || (WI[6] = withModifiers(() => {
       }, ["stop"]))
     }, [
-      WI[7] || (WI[7] = createElementVNode("p", { class: "pdf-signer-attempt-banner" }, "Attempt: adding logs.. (dev)", -1)),
+      WI[7] || (WI[7] = createElementVNode("p", { class: "pdf-signer-attempt-banner" }, "Attempt: change the height to flex.. (preview)", -1)),
       createElementVNode("div", _hoisted_1, [
         createElementVNode("div", _hoisted_2, [
           createElementVNode("button", {
@@ -29195,7 +29195,7 @@ const _hoisted_1 = {
       g.debug ? (openBlock(), createBlock(DebugOverlay, { key: 1 })) : createCommentVNode("", !0)
     ], 32));
   }
-}), PdfSigner = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-1dc86158"]]), index = {
+}), PdfSigner = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-53e40298"]]), index = {
   install(C) {
     C.component("PdfSigner", PdfSigner);
   }

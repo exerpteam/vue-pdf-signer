@@ -236,7 +236,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="vue-pdf-signer" @touchstart.stop @touchmove.stop @wheel.stop>
-    <p class="pdf-signer-attempt-banner">Attempt: adding logs.. (dev)</p>
+    <p class="pdf-signer-attempt-banner">Attempt: change the height to flex.. (preview)</p>
     <div class="pdf-signer-header" data-cy="pdf-signer-header">
       <!-- Top Row: Main Actions -->
       <div class="toolbar-row-main-actions" data-cy="toolbar-row-main-actions">
