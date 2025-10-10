@@ -7,6 +7,7 @@ import { PDF_MANIFEST } from './pdf-manifest'
 const documents = ref<PdfDocument[]>([])
 const isLoading = ref<boolean>(true)
 const signingPolicy = ref<'all' | 'any'>('all')
+const debugEnabled = ref(false)
 const output = ref<FinishPayload | null>(null)
 const outputSectionRef = ref<HTMLDivElement | null>(null)
 
@@ -89,6 +90,14 @@ onMounted(async () => {
     </fieldset>
     <!-- END: Signing Policy Controls -->
 
+    <fieldset class="controls">
+      <legend>Debug Options</legend>
+      <label class="checkbox-group" for="toggle-debug">
+        <input id="toggle-debug" type="checkbox" v-model="debugEnabled" />
+        Enable Debug Logs
+      </label>
+    </fieldset>
+
     <h2>PdfSigner Component</h2>
 
     <div v-if="isLoading" class="loading-placeholder">
@@ -99,7 +108,7 @@ onMounted(async () => {
       v-if="!isLoading && documents.length > 0"
       :documents="documents"
       :signing-policy="signingPolicy"
-      :debug="true"
+      :debug="debugEnabled"
       :showSignatureBounds="true"
       :translations="customTranslations"
       @finish="handleFinish"
