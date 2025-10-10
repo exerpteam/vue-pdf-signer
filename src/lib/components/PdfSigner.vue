@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, onBeforeUnmount, watchEffect, toRefs, computed, toRef } from 'vue'
 import SignaturePadModal from './SignaturePadModal.vue'
+import DebugOverlay from './DebugOverlay.vue'
 import { isDebug } from '../utils/debug'
 import type { FinishPayload, PdfDocument } from '../types'
 
@@ -10,6 +11,7 @@ import { useSignaturePad, processSignatureSVG } from '../composables/useSignatur
 import { useSignatureOverlay } from '../composables/useSignatureOverlay'
 import { usePdfDocument } from '../composables/usePdfDocument'
 import { useTranslations } from '../composables/useTranslations'
+import { useDebugLogger } from '../composables/useDebugLogger'
 
 const props = withDefaults(
   defineProps<{
@@ -157,6 +159,29 @@ const { signatureStyles } = useSignatureOverlay(
 )
 // --- END: Using Composables ---
 
+const { log, clearLogs } = useDebugLogger()
+
+function captureDebugContext() {
+  if (!isDebug.value) {
+    return
+  }
+
+  clearLogs()
+  log('Debug session started')
+
+  if (typeof navigator !== 'undefined') {
+    log('navigator.userAgent', navigator.userAgent)
+  }
+
+  if (typeof window !== 'undefined') {
+    log('Viewport dimensions', {
+      innerWidth: window.innerWidth,
+      innerHeight: window.innerHeight,
+    })
+    log('window.devicePixelRatio', window.devicePixelRatio)
+  }
+}
+
 // --- START: Lifecycle and Watchers ---
 
 function handleCancel() {
@@ -174,6 +199,10 @@ function handleCancel() {
 }
 
 onMounted(() => {
+  if (isDebug.value) {
+    captureDebugContext()
+  }
+
   loadAndRenderPdf(pdfData.value)
 })
 
@@ -190,6 +219,16 @@ watch(isPdfRendered, (isRendered) => {
   }
 })
 
+watch(
+  isDebug,
+  (enabled, wasEnabled) => {
+    if (enabled && !wasEnabled) {
+      captureDebugContext()
+    }
+  },
+  { flush: 'post' },
+)
+
 onBeforeUnmount(() => {
   // The panzoom cleanup is handled within its own composable.
 })
@@ -197,7 +236,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="vue-pdf-signer" @touchstart.stop @touchmove.stop @wheel.stop>
-    <p class="pdf-signer-attempt-banner">Attempt: fixing pdf loading issue.. (preview)</p>
+    <p class="pdf-signer-attempt-banner">Attempt: adding logs.. (dev)</p>
     <div class="pdf-signer-header" data-cy="pdf-signer-header">
       <!-- Top Row: Main Actions -->
       <div class="toolbar-row-main-actions" data-cy="toolbar-row-main-actions">
@@ -281,6 +320,7 @@ onBeforeUnmount(() => {
       :clear-text="t.modalClear"
       :done-text="t.modalDone"
     />
+    <DebugOverlay v-if="props.debug" />
   </div>
 </template>
 

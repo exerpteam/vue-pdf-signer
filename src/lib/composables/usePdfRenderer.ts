@@ -1,6 +1,7 @@
-import { ref, markRaw, type Ref } from 'vue'
+import { ref, markRaw, type Ref, watch, onScopeDispose } from 'vue'
 import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf.js'
-import { logger } from '../utils/debug'
+import { logger, isDebug } from '../utils/debug'
+import { useDebugLogger } from './useDebugLogger'
 
 import pdfjsWorker from 'pdfjs-dist/legacy/build/pdf.worker.js?url'
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker
@@ -35,6 +36,40 @@ export function usePdfRenderer(
   const initialPdfScale = ref(1)
   const isPdfRendered = ref(false)
   // --- END: Reactive State ---
+  const { log } = useDebugLogger()
+  let resizeObserver: ResizeObserver | null = null
+
+  function teardownResizeObserver() {
+    if (resizeObserver) {
+      resizeObserver.disconnect()
+      resizeObserver = null
+    }
+  }
+
+  function logPdfContainerDimensions(reason: string) {
+    if (!isDebug.value || !pdfContainer.value) {
+      return
+    }
+
+    log(`pdfContainer ${reason}`, {
+      clientWidth: pdfContainer.value.clientWidth,
+      clientHeight: pdfContainer.value.clientHeight,
+    })
+  }
+
+  function setupResizeObserver() {
+    if (!isDebug.value || !pdfContainer.value || typeof ResizeObserver === 'undefined') {
+      return
+    }
+
+    teardownResizeObserver()
+
+    resizeObserver = new ResizeObserver(() => {
+      logPdfContainerDimensions('ResizeObserver update')
+    })
+
+    resizeObserver.observe(pdfContainer.value)
+  }
 
   /**
    * Renders the PDF pages onto canvas elements.
@@ -101,6 +136,7 @@ export function usePdfRenderer(
     pdfContainer.value.innerHTML = ''
     renderedPages.value = []
     isPdfRendered.value = false
+    teardownResizeObserver()
 
     try {
       const pdfBinary = atob(pdfData)
@@ -128,6 +164,43 @@ export function usePdfRenderer(
       }
     }
   }
+
+  watch(
+    isPdfRendered,
+    (rendered) => {
+      if (!rendered) {
+        teardownResizeObserver()
+        return
+      }
+
+      if (!isDebug.value) {
+        return
+      }
+
+      logPdfContainerDimensions('rendered')
+      setupResizeObserver()
+    },
+    { flush: 'post' },
+  )
+
+  watch(
+    () => isDebug.value,
+    (enabled) => {
+      if (!enabled) {
+        teardownResizeObserver()
+        return
+      }
+
+      if (isPdfRendered.value) {
+        logPdfContainerDimensions('debug enabled')
+        setupResizeObserver()
+      }
+    },
+  )
+
+  onScopeDispose(() => {
+    teardownResizeObserver()
+  })
 
   // Expose the state and methods to be used by the component.
   return {

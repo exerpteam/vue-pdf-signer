@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
-import SignaturePad, { type BasicPoint } from 'signature_pad'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
+import SignaturePad, { type PointGroup } from 'signature_pad'
+import { useDebugLogger } from '../composables/useDebugLogger'
+import { isDebug } from '../utils/debug'
 
 // we define props for all user-facing text in this component.
 const props = defineProps<{
@@ -19,6 +21,10 @@ const emit = defineEmits<{
 // Refs for the canvas element and the SignaturePad instance.
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const signaturePadInstance = ref<SignaturePad | null>(null)
+const { log } = useDebugLogger()
+const pointerEventTypes = ['pointerdown', 'pointermove', 'pointerup', 'pointercancel'] as const
+let removePointerListeners: (() => void) | null = null
+const drawSignatureEvent = 'draw-signature-for-test'
 
 // --- START: Event Handlers ---
 
@@ -42,6 +48,21 @@ function handleClear() {
 }
 
 // --- END: Event Handlers ---
+
+function handleExternalSignature(event: Event) {
+  const signaturePad = signaturePadInstance.value
+  if (!signaturePad) {
+    return
+  }
+
+  const { detail } = event as CustomEvent<PointGroup[]>
+  if (!detail) {
+    return
+  }
+
+  signaturePad.clear()
+  signaturePad.fromData(detail)
+}
 
 // --- START: Canvas Resize Logic ---
 
@@ -78,23 +99,71 @@ onMounted(() => {
     //  '#ffffff',
   })
 
-  window.addEventListener('draw-signature-for-test', (event: any) => {
-    const data = event.detail
-    if (!signaturePadInstance.value || !data) return
-    signaturePadInstance.value.clear()
-    signaturePadInstance.value.fromData(data)
-  })
-
+  window.addEventListener(drawSignatureEvent, handleExternalSignature as EventListener)
 
   // Set up the resize listener to handle orientation changes or window resizing.
   window.addEventListener('resize', resizeCanvas)
   resizeCanvas() // Initial resize to set the correct dimensions on mount.
+
+  if (isDebug.value) {
+    addPointerLogging()
+  }
 })
 
 onUnmounted(() => {
+  teardownPointerLogging()
   // Clean up the listener to prevent memory leaks.
   window.removeEventListener('resize', resizeCanvas)
+  window.removeEventListener(drawSignatureEvent, handleExternalSignature as EventListener)
 })
+
+function handlePointerEvent(event: PointerEvent) {
+  if (!isDebug.value) return
+
+  log('SignaturePad pointer event', {
+    type: event.type,
+    pointerType: event.pointerType,
+    pointerId: event.pointerId,
+    pressure: event.pressure,
+    clientX: event.clientX,
+    clientY: event.clientY,
+  })
+}
+
+function addPointerLogging() {
+  if (!canvasRef.value || removePointerListeners) {
+    return
+  }
+
+  const canvas = canvasRef.value
+
+  pointerEventTypes.forEach((eventName) => {
+    canvas.addEventListener(eventName, handlePointerEvent)
+  })
+
+  removePointerListeners = () => {
+    pointerEventTypes.forEach((eventName) => {
+      canvas.removeEventListener(eventName, handlePointerEvent)
+    })
+    removePointerListeners = null
+  }
+}
+
+function teardownPointerLogging() {
+  removePointerListeners?.()
+}
+
+watch(
+  () => isDebug.value,
+  (enabled) => {
+    if (enabled) {
+      addPointerLogging()
+    } else {
+      teardownPointerLogging()
+    }
+  },
+  { flush: 'post' },
+)
 
 </script>
 
