@@ -235,8 +235,9 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="vue-pdf-signer" @touchstart.stop @touchmove.stop @wheel.stop>
-    <p class="pdf-signer-attempt-banner">Attempt: change the height to flex.. (preview)</p>
+  <!-- The .stop modifiers for touch events were removed to fix the Safari "dots only" bug by allowing the signature pad to receive touchmove events; background scrolling is now handled by panzoom and the modal's touch-action style. -->
+  <div class="vue-pdf-signer" @wheel.stop>
+    <p class="pdf-signer-attempt-banner">Attempt: change the signature thing.. (preview)</p>
     <div class="pdf-signer-header" data-cy="pdf-signer-header">
       <!-- Top Row: Main Actions -->
       <div class="toolbar-row-main-actions" data-cy="toolbar-row-main-actions">

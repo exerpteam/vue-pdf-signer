@@ -583,7 +583,7 @@ function useDebugLogger() {
     clearLogs
   };
 }
-const _hoisted_1$2 = { class: "modal-overlay" }, _hoisted_2$2 = { class: "modal-content" }, _hoisted_3$2 = { class: "modal-header" }, _hoisted_4$2 = { class: "signature-pad-wrapper" }, _hoisted_5$2 = {
+const _hoisted_1$2 = { class: "modal-overlay" }, _hoisted_2$2 = { class: "modal-content" }, _hoisted_3$2 = { class: "modal-header" }, _hoisted_4$2 = { class: "signature-pad-wrapper panzoom-exclude" }, _hoisted_5$2 = {
   class: "modal-actions",
   "data-cy": "signature-pad-actions"
 }, drawSignatureEvent = "draw-signature-for-test", _sfc_main$2 = /* @__PURE__ */ defineComponent({
@@ -705,7 +705,7 @@ const _hoisted_1$2 = { class: "modal-overlay" }, _hoisted_2$2 = { class: "modal-
   for (const [A, l] of I)
     g[A] = l;
   return g;
-}, SignaturePadModal = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["__scopeId", "data-v-3270b516"]]), _hoisted_1$1 = {
+}, SignaturePadModal = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["__scopeId", "data-v-7e6768ec"]]), _hoisted_1$1 = {
   class: "debug-overlay",
   "data-cy": "pdf-debug-overlay"
 }, _hoisted_2$1 = { class: "debug-overlay__header" }, _hoisted_3$1 = { class: "debug-overlay__actions" }, _hoisted_4$1 = ["disabled"], _hoisted_5$1 = ["disabled"], _hoisted_6$1 = {
@@ -17618,6 +17618,8 @@ function usePanZoom(C, I) {
     if (!C.value || !I.value) return;
     (a = g.value) == null || a.destroy();
     const t = Panzoom(C.value, {
+      excludeClass: "panzoom-exclude",
+      // Let signature pad handle its own gestures.
       maxScale: MAX_ZOOM_LEVEL,
       minScale: 0.1,
       canvas: !0,
@@ -29094,14 +29096,10 @@ const _hoisted_1 = {
     ), onBeforeUnmount(() => {
     }), (bI, WI) => (openBlock(), createElementBlock("div", {
       class: "vue-pdf-signer",
-      onTouchstart: WI[4] || (WI[4] = withModifiers(() => {
-      }, ["stop"])),
-      onTouchmove: WI[5] || (WI[5] = withModifiers(() => {
-      }, ["stop"])),
-      onWheel: WI[6] || (WI[6] = withModifiers(() => {
+      onWheel: WI[4] || (WI[4] = withModifiers(() => {
       }, ["stop"]))
     }, [
-      WI[7] || (WI[7] = createElementVNode("p", { class: "pdf-signer-attempt-banner" }, "Attempt: change the height to flex.. (preview)", -1)),
+      WI[5] || (WI[5] = createElementVNode("p", { class: "pdf-signer-attempt-banner" }, "Attempt: change the signature thing.. (preview)", -1)),
       createElementVNode("div", _hoisted_1, [
         createElementVNode("div", _hoisted_2, [
           createElementVNode("button", {
@@ -29195,7 +29193,7 @@ const _hoisted_1 = {
       g.debug ? (openBlock(), createBlock(DebugOverlay, { key: 1 })) : createCommentVNode("", !0)
     ], 32));
   }
-}), PdfSigner = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-53e40298"]]), index = {
+}), PdfSigner = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-4acac4f7"]]), index = {
   install(C) {
     C.component("PdfSigner", PdfSigner);
   }

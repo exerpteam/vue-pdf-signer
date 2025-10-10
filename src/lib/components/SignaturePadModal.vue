@@ -175,7 +175,7 @@ watch(
         <p>{{ props.subtitle }}</p>
       </div>
 
-      <div class="signature-pad-wrapper">
+      <div class="signature-pad-wrapper panzoom-exclude">
         <canvas ref="canvasRef" class="signature-canvas" data-cy="signature-pad-canvas"
         ></canvas>
       </div>
