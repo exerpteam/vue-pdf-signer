@@ -6,8 +6,8 @@ import { useDebugLogger } from './useDebugLogger'
 import pdfjsWorker from 'pdfjs-dist/legacy/build/pdf.worker.js?url'
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker
 
-const HIGH_RES_SCALE_FACTOR = 4
 const DPR = Math.min(window.devicePixelRatio || 1, 2)
+const HIGH_RES_SCALE_FACTOR = DPR > 1 ? 2 : 4
 
 /**
  * interface to create a clear data structure
