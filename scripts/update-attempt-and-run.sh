@@ -146,8 +146,10 @@ fi
 
 echo "Running build with $PACKAGE_MANAGER..."
 if [[ "$PACKAGE_MANAGER" == "pnpm" ]]; then
+  pnpm install
   pnpm run build
 else
+  npm install
   npm run build
 fi
 

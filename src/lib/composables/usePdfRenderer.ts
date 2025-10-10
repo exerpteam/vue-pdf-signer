@@ -1,8 +1,8 @@
 import { ref, markRaw, type Ref } from 'vue'
-import * as pdfjsLib from 'pdfjs-dist'
+import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf.js'
 import { logger } from '../utils/debug'
 
-import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.mjs?url'
+import pdfjsWorker from 'pdfjs-dist/legacy/build/pdf.worker.js?url'
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker
 
 const HIGH_RES_SCALE_FACTOR = 4
@@ -109,7 +109,7 @@ export function usePdfRenderer(
         pdfBytes[i] = pdfBinary.charCodeAt(i)
       }
 
-      const loadingTask = pdfjsLib.getDocument({ data: pdfBytes })
+      const loadingTask = pdfjsLib.getDocument({ data: pdfBytes, isEvalSupported: false })
       const pdf = await loadingTask.promise
       const firstPage = await pdf.getPage(1)
 
