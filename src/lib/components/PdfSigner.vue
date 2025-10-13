@@ -266,7 +266,7 @@ onBeforeUnmount(() => {
 <template>
   <!-- The .stop modifiers for touch events were removed to fix the Safari "dots only" bug by allowing the signature pad to receive touchmove events; background scrolling is now handled by panzoom and the modal's touch-action style. -->
   <div class="vue-pdf-signer" @wheel.stop>
-    <p class="pdf-signer-attempt-banner">Attempt: one page at a time... (dev)</p>
+    <p class="pdf-signer-attempt-banner">Attempt: test with specific PDf... (preview)</p>
     <div class="pdf-signer-header" data-cy="pdf-signer-header">
       <!-- Top Row: Main Actions -->
       <div class="toolbar-row-main-actions" data-cy="toolbar-row-main-actions">

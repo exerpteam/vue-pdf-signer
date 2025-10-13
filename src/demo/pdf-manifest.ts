@@ -751,4 +751,22 @@ export const PDF_MANIFEST: PdfManifestEntry[] = [
       },
     ],
   },
+  {
+    key: 'va-aus-cont',
+    signed: false,
+    name: 'VA AUS Contract',
+    fileName: 'VA_AUS_CONT.pdf',
+    pageSizeCm: '21.00 x 29.70',
+    orientation: 'portrait',
+    userUnit: 1.0,
+    signaturePlacement: [
+      {
+        left: 5,
+        top: 7,
+        width: 8,
+        height: 4,
+        page: 1,
+      },
+    ],
+  },
 ]
