@@ -1,6 +1,7 @@
 import { ref, markRaw, type Ref, watch, onScopeDispose } from 'vue'
 import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf.js'
 import { logger, isDebug } from '../utils/debug'
+import { getIosMajorVersion } from '../utils/device-detection'
 import { useDebugLogger } from './useDebugLogger'
 
 import pdfjsWorker from 'pdfjs-dist/legacy/build/pdf.worker.js?url'
@@ -90,7 +91,15 @@ export function usePdfRenderer(
     const page = await pdf.getPage(pageNumber)
     const unscaledViewport = page.getViewport({ scale: 1 })
     const scale = initialPdfScale.value || 1
-    const highResViewport = page.getViewport({ scale: scale * HIGH_RES_SCALE_FACTOR })
+    const iosMajorVersion = getIosMajorVersion()
+    const dynamicScaleFactor =
+      iosMajorVersion !== null && iosMajorVersion <= 16 ? 1.5 : HIGH_RES_SCALE_FACTOR
+
+    console.log(
+      `[DEBUG] iOS Version: ${iosMajorVersion}, Using Scale Factor: ${dynamicScaleFactor}`,
+    )
+
+    const highResViewport = page.getViewport({ scale: scale * dynamicScaleFactor })
     const displayViewport = page.getViewport({ scale })
 
     pdfContainer.value.innerHTML = ''

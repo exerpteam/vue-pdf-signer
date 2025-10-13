@@ -266,12 +266,15 @@ onBeforeUnmount(() => {
 <template>
   <!-- The .stop modifiers for touch events were removed to fix the Safari "dots only" bug by allowing the signature pad to receive touchmove events; background scrolling is now handled by panzoom and the modal's touch-action style. -->
   <div class="vue-pdf-signer" @wheel.stop>
-    <p class="pdf-signer-attempt-banner">Attempt: test with specific PDf... (preview)</p>
     <div class="pdf-signer-header" data-cy="pdf-signer-header">
       <!-- Top Row: Main Actions -->
       <div class="toolbar-row-main-actions" data-cy="toolbar-row-main-actions">
-        <button @click="handleCancel" class="btn" :disabled="isSaving || isFinished"
-        data-cy="sign-cancel">
+        <button
+          @click="handleCancel"
+          class="btn"
+          :disabled="isSaving || isFinished"
+          data-cy="sign-cancel"
+        >
           {{ t.cancel }}
         </button>
         <button
@@ -310,11 +313,7 @@ onBeforeUnmount(() => {
         >
           {{ t.actionButton }}
         </button>
-        <div
-          v-if="totalPages > 1"
-          class="pagination-controls"
-          data-cy="pagination-controls"
-        >
+        <div v-if="totalPages > 1" class="pagination-controls" data-cy="pagination-controls">
           <button
             @click="handlePreviousPage"
             type="button"
@@ -344,11 +343,23 @@ onBeforeUnmount(() => {
           </button>
         </div>
         <div class="zoom-controls" data-cy="zoom-controls">
-          <button @click="zoomOut" class="btn btn-icon" :disabled="isSaving || isFinished" data-cy="zoom-out-button">
+          <button
+            @click="zoomOut"
+            class="btn btn-icon"
+            :disabled="isSaving || isFinished"
+            data-cy="zoom-out-button"
+          >
             -
           </button>
           <span class="zoom-level" data-cy="zoom-percentage">{{ zoomPercentage }}%</span>
-          <button @click="zoomIn" class="btn btn-icon" :disabled="isSaving || isFinished" data-cy="zoom-in-button">+</button>
+          <button
+            @click="zoomIn"
+            class="btn btn-icon"
+            :disabled="isSaving || isFinished"
+            data-cy="zoom-in-button"
+          >
+            +
+          </button>
         </div>
       </div>
     </div>
