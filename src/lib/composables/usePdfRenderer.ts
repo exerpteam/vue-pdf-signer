@@ -35,6 +35,9 @@ export function usePdfRenderer(
   const firstCanvasRef = ref<HTMLCanvasElement | null>(null)
   const initialPdfScale = ref(1)
   const isPdfRendered = ref(false)
+  const currentPageNumber = ref(1)
+  const totalPages = ref(0)
+  const pdfDocumentRef = ref<pdfjsLib.PDFDocumentProxy | null>(null)
   // --- END: Reactive State ---
   const { log } = useDebugLogger()
   let resizeObserver: ResizeObserver | null = null
@@ -72,58 +75,65 @@ export function usePdfRenderer(
   }
 
   /**
-   * Renders the PDF pages onto canvas elements.
+   * Render a single PDF page onto the container.
    */
-  async function renderInitialPdfPages(pdf: pdfjsLib.PDFDocumentProxy, scale: number) {
-    if (!pdfContainer.value) return
+  async function renderPage(pageNumber: number) {
+    if (!pdfContainer.value || !pdfDocumentRef.value) return
 
-    initialPdfScale.value = scale
+    const pdf = pdfDocumentRef.value
 
-    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-      const page = await pdf.getPage(pageNum)
-      const unscaledViewport = page.getViewport({ scale: 1 })
+    if (pageNumber < 1 || pageNumber > pdf.numPages) {
+      logger.warn(`Requested page ${pageNumber} is out of bounds.`)
+      return
+    }
 
-      if (pageNum === 1) {
-        originalPdfDimensions.value = {
-          width: unscaledViewport.width,
-          height: unscaledViewport.height,
-        }
-      }
+    const page = await pdf.getPage(pageNumber)
+    const unscaledViewport = page.getViewport({ scale: 1 })
+    const scale = initialPdfScale.value || 1
+    const highResViewport = page.getViewport({ scale: scale * HIGH_RES_SCALE_FACTOR })
+    const displayViewport = page.getViewport({ scale })
 
-      const highResViewport = page.getViewport({ scale: scale * HIGH_RES_SCALE_FACTOR })
-      const displayViewport = page.getViewport({ scale })
+    pdfContainer.value.innerHTML = ''
+    renderedPages.value = []
 
-      const canvas = document.createElement('canvas')
-      const context = canvas.getContext('2d')!
+    const canvas = document.createElement('canvas')
+    const context = canvas.getContext('2d')!
 
-      canvas.style.display = 'block'
-      canvas.style.margin = '0 auto 1rem auto'
-      canvas.width = Math.floor(highResViewport.width * DPR)
-      canvas.height = Math.floor(highResViewport.height * DPR)
-      canvas.style.width = `${Math.floor(displayViewport.width)}px`
-      canvas.style.height = `${Math.floor(displayViewport.height)}px`
+    canvas.style.display = 'block'
+    canvas.style.margin = '0 auto 1rem auto'
+    canvas.width = Math.floor(highResViewport.width * DPR)
+    canvas.height = Math.floor(highResViewport.height * DPR)
+    canvas.style.width = `${Math.floor(displayViewport.width)}px`
+    canvas.style.height = `${Math.floor(displayViewport.height)}px`
 
-      if (pageNum === 1) {
-        firstCanvasRef.value = canvas
-      }
+    if (pageNumber === 1) {
+      firstCanvasRef.value = canvas
+    }
 
-      pdfContainer.value.appendChild(canvas)
+    pdfContainer.value.appendChild(canvas)
 
-      renderedPages.value.push({
-        pageNum,
+    const renderContext = {
+      canvasContext: context,
+      viewport: highResViewport,
+      transform: DPR !== 1 ? [DPR, 0, 0, DPR, 0, 0] : undefined,
+      canvas,
+    }
+
+    await page.render(renderContext).promise
+
+    originalPdfDimensions.value = {
+      width: unscaledViewport.width,
+      height: unscaledViewport.height,
+    }
+
+    renderedPages.value = [
+      {
+        pageNum: pageNumber,
         canvas: markRaw(canvas),
         originalWidth: unscaledViewport.width,
         originalHeight: unscaledViewport.height,
-      })
-
-      const renderContext = {
-        canvasContext: context,
-        viewport: highResViewport,
-        transform: DPR !== 1 ? [DPR, 0, 0, DPR, 0, 0] : undefined,
-        canvas,
-      }
-      await page.render(renderContext).promise
-    }
+      },
+    ]
   }
 
   /**
@@ -136,6 +146,9 @@ export function usePdfRenderer(
     pdfContainer.value.innerHTML = ''
     renderedPages.value = []
     isPdfRendered.value = false
+    pdfDocumentRef.value = null
+    totalPages.value = 0
+    currentPageNumber.value = 1
     teardownResizeObserver()
 
     try {
@@ -147,6 +160,8 @@ export function usePdfRenderer(
 
       const loadingTask = pdfjsLib.getDocument({ data: pdfBytes, isEvalSupported: false })
       const pdf = await loadingTask.promise
+      pdfDocumentRef.value = markRaw(pdf)
+      totalPages.value = pdf.numPages
       const firstPage = await pdf.getPage(1)
 
       const viewportRect = viewportRef.value.getBoundingClientRect()
@@ -155,7 +170,8 @@ export function usePdfRenderer(
       const fitToWidthScale = (availableWidth * 0.9) / unscaledViewport.width
       const scale = Math.min(fitToWidthScale, 2)
 
-      await renderInitialPdfPages(pdf, scale)
+      initialPdfScale.value = scale
+      await renderPage(1)
       isPdfRendered.value = true
     } catch (error) {
       logger.error('Failed to render PDF', error)
@@ -202,6 +218,22 @@ export function usePdfRenderer(
     teardownResizeObserver()
   })
 
+  async function changePage(pageNumber: number) {
+    if (!pdfDocumentRef.value) return
+    if (pageNumber === currentPageNumber.value) return
+    if (pageNumber < 1 || pageNumber > totalPages.value) {
+      logger.warn(`changePage: requested page ${pageNumber} is out of bounds.`)
+      return
+    }
+
+    try {
+      await renderPage(pageNumber)
+      currentPageNumber.value = pageNumber
+    } catch (error) {
+      logger.error(`Failed to render page ${pageNumber}`, error)
+    }
+  }
+
   // Expose the state and methods to be used by the component.
   return {
     renderedPages,
@@ -209,6 +241,9 @@ export function usePdfRenderer(
     firstCanvasRef,
     initialPdfScale,
     isPdfRendered,
+    currentPageNumber,
+    totalPages,
     loadAndRenderPdf,
+    changePage,
   }
 }

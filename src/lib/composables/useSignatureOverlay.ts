@@ -35,10 +35,15 @@ export function useSignatureOverlay(
       return []
     }
 
+    const currentPageNum = renderedPages.value[0]?.pageNum
+    if (!currentPageNum) {
+      return []
+    }
+
     const placements =
       signatureData.value.length > 0
-        ? signatureData.value
-        : [{ left: 5, top: 7, width: 8, height: 4, page: 1 }]
+        ? signatureData.value.filter((placement) => placement.page === currentPageNum)
+        : []
 
     const containerWidth = containerClientWidth.value
 

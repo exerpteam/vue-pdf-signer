@@ -105,7 +105,14 @@ const viewportRef = ref<HTMLDivElement | null>(null)
 // --- START: Using Composables ---
 
 // 1. PDF Rendering Logic
-const { isPdfRendered, loadAndRenderPdf, renderedPages } = usePdfRenderer(pdfContainer, viewportRef)
+const {
+  isPdfRendered,
+  loadAndRenderPdf,
+  renderedPages,
+  currentPageNumber,
+  totalPages,
+  changePage,
+} = usePdfRenderer(pdfContainer, viewportRef)
 
 // 2. Pan and Zoom Logic
 const { zoomPercentage, initPanzoom, destroyPanzoom, zoomIn, zoomOut } = usePanZoom(
@@ -182,6 +189,28 @@ function captureDebugContext() {
   }
 }
 
+async function handlePreviousPage() {
+  if (currentPageNumber.value <= 1) return
+
+  destroyPanzoom()
+  try {
+    await changePage(currentPageNumber.value - 1)
+  } finally {
+    initPanzoom()
+  }
+}
+
+async function handleNextPage() {
+  if (currentPageNumber.value >= totalPages.value) return
+
+  destroyPanzoom()
+  try {
+    await changePage(currentPageNumber.value + 1)
+  } finally {
+    initPanzoom()
+  }
+}
+
 // --- START: Lifecycle and Watchers ---
 
 function handleCancel() {
@@ -237,7 +266,7 @@ onBeforeUnmount(() => {
 <template>
   <!-- The .stop modifiers for touch events were removed to fix the Safari "dots only" bug by allowing the signature pad to receive touchmove events; background scrolling is now handled by panzoom and the modal's touch-action style. -->
   <div class="vue-pdf-signer" @wheel.stop>
-    <p class="pdf-signer-attempt-banner">Attempt: height fix... (dev)</p>
+    <p class="pdf-signer-attempt-banner">Attempt: one page at a time... (dev)</p>
     <div class="pdf-signer-header" data-cy="pdf-signer-header">
       <!-- Top Row: Main Actions -->
       <div class="toolbar-row-main-actions" data-cy="toolbar-row-main-actions">
@@ -281,6 +310,39 @@ onBeforeUnmount(() => {
         >
           {{ t.actionButton }}
         </button>
+        <div
+          v-if="totalPages > 1"
+          class="pagination-controls"
+          data-cy="pagination-controls"
+        >
+          <button
+            @click="handlePreviousPage"
+            type="button"
+            class="btn btn-icon pagination-button"
+            :aria-label="t.previousPage"
+            :disabled="currentPageNumber === 1 || isSaving || isFinished"
+            data-cy="pagination-prev"
+          >
+            <span aria-hidden="true" class="pagination-arrow">&larr;</span>
+          </button>
+          <span class="page-indicator" data-cy="pagination-indicator">
+            {{
+              t.pageIndicator
+                .replace('{currentPage}', String(currentPageNumber))
+                .replace('{totalPages}', String(totalPages))
+            }}
+          </span>
+          <button
+            @click="handleNextPage"
+            type="button"
+            class="btn btn-icon pagination-button"
+            :aria-label="t.nextPage"
+            :disabled="currentPageNumber === totalPages || isSaving || isFinished"
+            data-cy="pagination-next"
+          >
+            <span aria-hidden="true" class="pagination-arrow">&rarr;</span>
+          </button>
+        </div>
         <div class="zoom-controls" data-cy="zoom-controls">
           <button @click="zoomOut" class="btn btn-icon" :disabled="isSaving || isFinished" data-cy="zoom-out-button">
             -

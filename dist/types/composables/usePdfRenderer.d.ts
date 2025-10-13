@@ -40,5 +40,8 @@ export declare function usePdfRenderer(pdfContainer: Ref<HTMLDivElement | null>,
     firstCanvasRef: Ref<HTMLCanvasElement | null, HTMLCanvasElement | null>;
     initialPdfScale: Ref<number, number>;
     isPdfRendered: Ref<boolean, boolean>;
+    currentPageNumber: Ref<number, number>;
+    totalPages: Ref<number, number>;
     loadAndRenderPdf: (pdfData: string) => Promise<void>;
+    changePage: (pageNumber: number) => Promise<void>;
 };

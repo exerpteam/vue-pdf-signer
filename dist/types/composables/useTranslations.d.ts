@@ -22,6 +22,9 @@ export declare function useTranslations(props: {
         saving: string;
         cancel: string;
         cancelWarning: string;
+        previousPage: string;
+        nextPage: string;
+        pageIndicator: string;
         modalTitle: string;
         modalSubtitle: string;
         modalCancel: string;
