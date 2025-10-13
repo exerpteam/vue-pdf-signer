@@ -85,6 +85,7 @@ export function usePanZoom(
     panzoom.value?.destroy()
 
     const pz = Panzoom(panzoomContainer.value, {
+      excludeClass: 'panzoom-exclude', // Let signature pad handle its own gestures.
       maxScale: MAX_ZOOM_LEVEL,
       minScale: 0.1,
       canvas: true,

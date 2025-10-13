@@ -1,12 +1,14 @@
-import { ref, markRaw, type Ref } from 'vue'
-import * as pdfjsLib from 'pdfjs-dist'
-import { logger } from '../utils/debug'
+import { ref, markRaw, type Ref, watch, onScopeDispose } from 'vue'
+import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf.js'
+import { logger, isDebug } from '../utils/debug'
+import { getIosMajorVersion } from '../utils/device-detection'
+import { useDebugLogger } from './useDebugLogger'
 
-import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.mjs?url'
+import pdfjsWorker from 'pdfjs-dist/legacy/build/pdf.worker.js?url'
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker
 
-const HIGH_RES_SCALE_FACTOR = 4
 const DPR = Math.min(window.devicePixelRatio || 1, 2)
+const HIGH_RES_SCALE_FACTOR = DPR > 1 ? 2 : 4
 
 /**
  * interface to create a clear data structure
@@ -34,61 +36,113 @@ export function usePdfRenderer(
   const firstCanvasRef = ref<HTMLCanvasElement | null>(null)
   const initialPdfScale = ref(1)
   const isPdfRendered = ref(false)
+  const currentPageNumber = ref(1)
+  const totalPages = ref(0)
+  const pdfDocumentRef = ref<pdfjsLib.PDFDocumentProxy | null>(null)
   // --- END: Reactive State ---
+  const { log } = useDebugLogger()
+  let resizeObserver: ResizeObserver | null = null
+
+  function teardownResizeObserver() {
+    if (resizeObserver) {
+      resizeObserver.disconnect()
+      resizeObserver = null
+    }
+  }
+
+  function logPdfContainerDimensions(reason: string) {
+    if (!isDebug.value || !pdfContainer.value) {
+      return
+    }
+
+    log(`pdfContainer ${reason}`, {
+      clientWidth: pdfContainer.value.clientWidth,
+      clientHeight: pdfContainer.value.clientHeight,
+    })
+  }
+
+  function setupResizeObserver() {
+    if (!isDebug.value || !pdfContainer.value || typeof ResizeObserver === 'undefined') {
+      return
+    }
+
+    teardownResizeObserver()
+
+    resizeObserver = new ResizeObserver(() => {
+      logPdfContainerDimensions('ResizeObserver update')
+    })
+
+    resizeObserver.observe(pdfContainer.value)
+  }
 
   /**
-   * Renders the PDF pages onto canvas elements.
+   * Render a single PDF page onto the container.
    */
-  async function renderInitialPdfPages(pdf: pdfjsLib.PDFDocumentProxy, scale: number) {
-    if (!pdfContainer.value) return
+  async function renderPage(pageNumber: number) {
+    if (!pdfContainer.value || !pdfDocumentRef.value) return
 
-    initialPdfScale.value = scale
+    const pdf = pdfDocumentRef.value
 
-    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
-      const page = await pdf.getPage(pageNum)
-      const unscaledViewport = page.getViewport({ scale: 1 })
+    if (pageNumber < 1 || pageNumber > pdf.numPages) {
+      logger.warn(`Requested page ${pageNumber} is out of bounds.`)
+      return
+    }
 
-      if (pageNum === 1) {
-        originalPdfDimensions.value = {
-          width: unscaledViewport.width,
-          height: unscaledViewport.height,
-        }
-      }
+    const page = await pdf.getPage(pageNumber)
+    const unscaledViewport = page.getViewport({ scale: 1 })
+    const scale = initialPdfScale.value || 1
+    const iosMajorVersion = getIosMajorVersion()
+    const dynamicScaleFactor =
+      iosMajorVersion !== null && iosMajorVersion <= 16 ? 1.5 : HIGH_RES_SCALE_FACTOR
 
-      const highResViewport = page.getViewport({ scale: scale * HIGH_RES_SCALE_FACTOR })
-      const displayViewport = page.getViewport({ scale })
+    console.log(
+      `[DEBUG] iOS Version: ${iosMajorVersion}, Using Scale Factor: ${dynamicScaleFactor}`,
+    )
 
-      const canvas = document.createElement('canvas')
-      const context = canvas.getContext('2d')!
+    const highResViewport = page.getViewport({ scale: scale * dynamicScaleFactor })
+    const displayViewport = page.getViewport({ scale })
 
-      canvas.style.display = 'block'
-      canvas.style.margin = '0 auto 1rem auto'
-      canvas.width = Math.floor(highResViewport.width * DPR)
-      canvas.height = Math.floor(highResViewport.height * DPR)
-      canvas.style.width = `${Math.floor(displayViewport.width)}px`
-      canvas.style.height = `${Math.floor(displayViewport.height)}px`
+    pdfContainer.value.innerHTML = ''
+    renderedPages.value = []
 
-      if (pageNum === 1) {
-        firstCanvasRef.value = canvas
-      }
+    const canvas = document.createElement('canvas')
+    const context = canvas.getContext('2d')!
 
-      pdfContainer.value.appendChild(canvas)
+    canvas.style.display = 'block'
+    canvas.style.margin = '0 auto 1rem auto'
+    canvas.width = Math.floor(highResViewport.width * DPR)
+    canvas.height = Math.floor(highResViewport.height * DPR)
+    canvas.style.width = `${Math.floor(displayViewport.width)}px`
+    canvas.style.height = `${Math.floor(displayViewport.height)}px`
 
-      renderedPages.value.push({
-        pageNum,
+    if (pageNumber === 1) {
+      firstCanvasRef.value = canvas
+    }
+
+    pdfContainer.value.appendChild(canvas)
+
+    const renderContext = {
+      canvasContext: context,
+      viewport: highResViewport,
+      transform: DPR !== 1 ? [DPR, 0, 0, DPR, 0, 0] : undefined,
+      canvas,
+    }
+
+    await page.render(renderContext).promise
+
+    originalPdfDimensions.value = {
+      width: unscaledViewport.width,
+      height: unscaledViewport.height,
+    }
+
+    renderedPages.value = [
+      {
+        pageNum: pageNumber,
         canvas: markRaw(canvas),
         originalWidth: unscaledViewport.width,
         originalHeight: unscaledViewport.height,
-      })
-
-      const renderContext = {
-        canvasContext: context,
-        viewport: highResViewport,
-        transform: DPR !== 1 ? [DPR, 0, 0, DPR, 0, 0] : undefined,
-        canvas,
-      }
-      await page.render(renderContext).promise
-    }
+      },
+    ]
   }
 
   /**
@@ -101,6 +155,10 @@ export function usePdfRenderer(
     pdfContainer.value.innerHTML = ''
     renderedPages.value = []
     isPdfRendered.value = false
+    pdfDocumentRef.value = null
+    totalPages.value = 0
+    currentPageNumber.value = 1
+    teardownResizeObserver()
 
     try {
       const pdfBinary = atob(pdfData)
@@ -109,8 +167,10 @@ export function usePdfRenderer(
         pdfBytes[i] = pdfBinary.charCodeAt(i)
       }
 
-      const loadingTask = pdfjsLib.getDocument({ data: pdfBytes })
+      const loadingTask = pdfjsLib.getDocument({ data: pdfBytes, isEvalSupported: false })
       const pdf = await loadingTask.promise
+      pdfDocumentRef.value = markRaw(pdf)
+      totalPages.value = pdf.numPages
       const firstPage = await pdf.getPage(1)
 
       const viewportRect = viewportRef.value.getBoundingClientRect()
@@ -119,13 +179,67 @@ export function usePdfRenderer(
       const fitToWidthScale = (availableWidth * 0.9) / unscaledViewport.width
       const scale = Math.min(fitToWidthScale, 2)
 
-      await renderInitialPdfPages(pdf, scale)
+      initialPdfScale.value = scale
+      await renderPage(1)
       isPdfRendered.value = true
     } catch (error) {
       logger.error('Failed to render PDF', error)
       if (pdfContainer.value) {
         pdfContainer.value.innerHTML = '<p style="color: red;">Error: Failed to load PDF.</p>'
       }
+    }
+  }
+
+  watch(
+    isPdfRendered,
+    (rendered) => {
+      if (!rendered) {
+        teardownResizeObserver()
+        return
+      }
+
+      if (!isDebug.value) {
+        return
+      }
+
+      logPdfContainerDimensions('rendered')
+      setupResizeObserver()
+    },
+    { flush: 'post' },
+  )
+
+  watch(
+    () => isDebug.value,
+    (enabled) => {
+      if (!enabled) {
+        teardownResizeObserver()
+        return
+      }
+
+      if (isPdfRendered.value) {
+        logPdfContainerDimensions('debug enabled')
+        setupResizeObserver()
+      }
+    },
+  )
+
+  onScopeDispose(() => {
+    teardownResizeObserver()
+  })
+
+  async function changePage(pageNumber: number) {
+    if (!pdfDocumentRef.value) return
+    if (pageNumber === currentPageNumber.value) return
+    if (pageNumber < 1 || pageNumber > totalPages.value) {
+      logger.warn(`changePage: requested page ${pageNumber} is out of bounds.`)
+      return
+    }
+
+    try {
+      await renderPage(pageNumber)
+      currentPageNumber.value = pageNumber
+    } catch (error) {
+      logger.error(`Failed to render page ${pageNumber}`, error)
     }
   }
 
@@ -136,6 +250,9 @@ export function usePdfRenderer(
     firstCanvasRef,
     initialPdfScale,
     isPdfRendered,
+    currentPageNumber,
+    totalPages,
     loadAndRenderPdf,
+    changePage,
   }
 }

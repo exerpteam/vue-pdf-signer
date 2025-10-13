@@ -12,6 +12,7 @@ node_modules
 dist-ssr
 coverage
 *.local
+preview-dist
 
 /cypress/videos/
 /cypress/screenshots/
@@ -32,3 +33,7 @@ coverage
 # Environment files
 .env*.local
 .env
+TASK.md
+diff.txt
+
+preview-dist

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, onBeforeUnmount, watchEffect, toRefs, computed, toRef } from 'vue'
 import SignaturePadModal from './SignaturePadModal.vue'
+import DebugOverlay from './DebugOverlay.vue'
 import { isDebug } from '../utils/debug'
 import type { FinishPayload, PdfDocument } from '../types'
 
@@ -10,6 +11,7 @@ import { useSignaturePad, processSignatureSVG } from '../composables/useSignatur
 import { useSignatureOverlay } from '../composables/useSignatureOverlay'
 import { usePdfDocument } from '../composables/usePdfDocument'
 import { useTranslations } from '../composables/useTranslations'
+import { useDebugLogger } from '../composables/useDebugLogger'
 
 const props = withDefaults(
   defineProps<{
@@ -103,7 +105,14 @@ const viewportRef = ref<HTMLDivElement | null>(null)
 // --- START: Using Composables ---
 
 // 1. PDF Rendering Logic
-const { isPdfRendered, loadAndRenderPdf, renderedPages } = usePdfRenderer(pdfContainer, viewportRef)
+const {
+  isPdfRendered,
+  loadAndRenderPdf,
+  renderedPages,
+  currentPageNumber,
+  totalPages,
+  changePage,
+} = usePdfRenderer(pdfContainer, viewportRef)
 
 // 2. Pan and Zoom Logic
 const { zoomPercentage, initPanzoom, destroyPanzoom, zoomIn, zoomOut } = usePanZoom(
@@ -157,6 +166,51 @@ const { signatureStyles } = useSignatureOverlay(
 )
 // --- END: Using Composables ---
 
+const { log, clearLogs } = useDebugLogger()
+
+function captureDebugContext() {
+  if (!isDebug.value) {
+    return
+  }
+
+  clearLogs()
+  log('Debug session started')
+
+  if (typeof navigator !== 'undefined') {
+    log('navigator.userAgent', navigator.userAgent)
+  }
+
+  if (typeof window !== 'undefined') {
+    log('Viewport dimensions', {
+      innerWidth: window.innerWidth,
+      innerHeight: window.innerHeight,
+    })
+    log('window.devicePixelRatio', window.devicePixelRatio)
+  }
+}
+
+async function handlePreviousPage() {
+  if (currentPageNumber.value <= 1) return
+
+  destroyPanzoom()
+  try {
+    await changePage(currentPageNumber.value - 1)
+  } finally {
+    initPanzoom()
+  }
+}
+
+async function handleNextPage() {
+  if (currentPageNumber.value >= totalPages.value) return
+
+  destroyPanzoom()
+  try {
+    await changePage(currentPageNumber.value + 1)
+  } finally {
+    initPanzoom()
+  }
+}
+
 // --- START: Lifecycle and Watchers ---
 
 function handleCancel() {
@@ -174,6 +228,10 @@ function handleCancel() {
 }
 
 onMounted(() => {
+  if (isDebug.value) {
+    captureDebugContext()
+  }
+
   loadAndRenderPdf(pdfData.value)
 })
 
@@ -190,18 +248,33 @@ watch(isPdfRendered, (isRendered) => {
   }
 })
 
+watch(
+  isDebug,
+  (enabled, wasEnabled) => {
+    if (enabled && !wasEnabled) {
+      captureDebugContext()
+    }
+  },
+  { flush: 'post' },
+)
+
 onBeforeUnmount(() => {
   // The panzoom cleanup is handled within its own composable.
 })
 </script>
 
 <template>
-  <div class="vue-pdf-signer" @touchstart.stop @touchmove.stop @wheel.stop>
+  <!-- The .stop modifiers for touch events were removed to fix the Safari "dots only" bug by allowing the signature pad to receive touchmove events; background scrolling is now handled by panzoom and the modal's touch-action style. -->
+  <div class="vue-pdf-signer" @wheel.stop>
     <div class="pdf-signer-header" data-cy="pdf-signer-header">
       <!-- Top Row: Main Actions -->
       <div class="toolbar-row-main-actions" data-cy="toolbar-row-main-actions">
-        <button @click="handleCancel" class="btn" :disabled="isSaving || isFinished"
-        data-cy="sign-cancel">
+        <button
+          @click="handleCancel"
+          class="btn"
+          :disabled="isSaving || isFinished"
+          data-cy="sign-cancel"
+        >
           {{ t.cancel }}
         </button>
         <button
@@ -240,12 +313,53 @@ onBeforeUnmount(() => {
         >
           {{ t.actionButton }}
         </button>
+        <div v-if="totalPages > 1" class="pagination-controls" data-cy="pagination-controls">
+          <button
+            @click="handlePreviousPage"
+            type="button"
+            class="btn btn-icon pagination-button"
+            :aria-label="t.previousPage"
+            :disabled="currentPageNumber === 1 || isSaving || isFinished"
+            data-cy="pagination-prev"
+          >
+            <span aria-hidden="true" class="pagination-arrow">&larr;</span>
+          </button>
+          <span class="page-indicator" data-cy="pagination-indicator">
+            {{
+              t.pageIndicator
+                .replace('{currentPage}', String(currentPageNumber))
+                .replace('{totalPages}', String(totalPages))
+            }}
+          </span>
+          <button
+            @click="handleNextPage"
+            type="button"
+            class="btn btn-icon pagination-button"
+            :aria-label="t.nextPage"
+            :disabled="currentPageNumber === totalPages || isSaving || isFinished"
+            data-cy="pagination-next"
+          >
+            <span aria-hidden="true" class="pagination-arrow">&rarr;</span>
+          </button>
+        </div>
         <div class="zoom-controls" data-cy="zoom-controls">
-          <button @click="zoomOut" class="btn btn-icon" :disabled="isSaving || isFinished" data-cy="zoom-out-button">
+          <button
+            @click="zoomOut"
+            class="btn btn-icon"
+            :disabled="isSaving || isFinished"
+            data-cy="zoom-out-button"
+          >
             -
           </button>
           <span class="zoom-level" data-cy="zoom-percentage">{{ zoomPercentage }}%</span>
-          <button @click="zoomIn" class="btn btn-icon" :disabled="isSaving || isFinished" data-cy="zoom-in-button">+</button>
+          <button
+            @click="zoomIn"
+            class="btn btn-icon"
+            :disabled="isSaving || isFinished"
+            data-cy="zoom-in-button"
+          >
+            +
+          </button>
         </div>
       </div>
     </div>
@@ -280,6 +394,7 @@ onBeforeUnmount(() => {
       :clear-text="t.modalClear"
       :done-text="t.modalDone"
     />
+    <DebugOverlay v-if="props.debug" />
   </div>
 </template>
 

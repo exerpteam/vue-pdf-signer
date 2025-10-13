@@ -34,7 +34,7 @@
   border: 1px solid var(--vps-border-color);
   border-radius: 8px;
   background-color: var(--vps-bg-color);
-  height: 100%;
+  flex: 1;
   min-height: 400px;
   max-height: 90vh;
   display: flex;
@@ -61,12 +61,46 @@
   align-items: center;
 }
 
+.toolbar-row-view-actions {
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.toolbar-row-view-actions > * {
+  flex-shrink: 0;
+}
+
 .toolbar-row-docs {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
   flex-wrap: wrap; // Allows pills to wrap on small screens.
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pagination-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pagination-arrow {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.page-indicator {
+  min-width: 3.5ch;
+  text-align: center;
+  font-weight: 500;
+  color: #333;
+  user-select: none;
 }
 
 .zoom-controls {
@@ -116,7 +150,6 @@
 
 .pdf-viewport {
   flex-grow: 1;
-  overflow: auto;
   background-color: var(--vps-bg-color);
 }
 
@@ -253,5 +286,16 @@
     width: 1.75rem;
     height: 1.75rem;
     font-size: 1rem;
+  }
+  .toolbar-row-view-actions {
+    justify-content: center;
+  }
+  .toolbar-row-view-actions > button {
+    width: 100%;
+  }
+  .pagination-controls,
+  .zoom-controls {
+    width: 100%;
+    justify-content: center;
   }
 }

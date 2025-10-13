@@ -7,6 +7,7 @@ import { PDF_MANIFEST } from './pdf-manifest'
 const documents = ref<PdfDocument[]>([])
 const isLoading = ref<boolean>(true)
 const signingPolicy = ref<'all' | 'any'>('all')
+const debugEnabled = ref(false)
 const output = ref<FinishPayload | null>(null)
 const outputSectionRef = ref<HTMLDivElement | null>(null)
 
@@ -21,7 +22,7 @@ const customTranslations = ref({
  */
 async function loadPdfAsBase64(fileName: string): Promise<string> {
   try {
-    const pdfUrl = `/src/demo/samples/${fileName}`
+    const pdfUrl = `/samples/${fileName}`
     const response = await fetch(pdfUrl)
     if (!response.ok) throw new Error(`Failed to fetch PDF: ${response.statusText}`)
     const blob = await response.blob()
@@ -75,20 +76,6 @@ onMounted(async () => {
   </header>
 
   <main>
-    <!-- START: Signing Policy Controls -->
-    <fieldset class="controls">
-      <legend>Signing Policy</legend>
-      <div class="radio-group">
-        <input type="radio" id="policy-all" value="all" v-model="signingPolicy" />
-        <label for="policy-all">Require All documents to be signed</label>
-      </div>
-      <div class="radio-group">
-        <input type="radio" id="policy-any" value="any" v-model="signingPolicy" />
-        <label for="policy-any">Allow saving after Any document is signed</label>
-      </div>
-    </fieldset>
-    <!-- END: Signing Policy Controls -->
-
     <h2>PdfSigner Component</h2>
 
     <div v-if="isLoading" class="loading-placeholder">
@@ -99,11 +86,35 @@ onMounted(async () => {
       v-if="!isLoading && documents.length > 0"
       :documents="documents"
       :signing-policy="signingPolicy"
-      :debug="true"
+      :debug="debugEnabled"
       :showSignatureBounds="true"
       :translations="customTranslations"
       @finish="handleFinish"
     />
+
+    <section v-if="!isLoading" class="control-panel" aria-label="Demo controls">
+      <!-- START: Signing Policy Controls -->
+      <fieldset class="controls controls--compact">
+        <legend>Signing Policy</legend>
+        <div class="radio-group">
+          <input type="radio" id="policy-all" value="all" v-model="signingPolicy" />
+          <label for="policy-all">Require all documents to be signed</label>
+        </div>
+        <div class="radio-group">
+          <input type="radio" id="policy-any" value="any" v-model="signingPolicy" />
+          <label for="policy-any">Allow saving after any document is signed</label>
+        </div>
+      </fieldset>
+      <!-- END: Signing Policy Controls -->
+
+      <fieldset class="controls controls--compact">
+        <legend>Debug Options</legend>
+        <label class="checkbox-group" for="toggle-debug">
+          <input id="toggle-debug" type="checkbox" v-model="debugEnabled" />
+          Enable debug logs
+        </label>
+      </fieldset>
+    </section>
 
     <div v-if="output" ref="outputSectionRef" class="output-section">
       <h2>Output</h2>
