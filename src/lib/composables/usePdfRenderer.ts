@@ -42,12 +42,41 @@ export function usePdfRenderer(
   // --- END: Reactive State ---
   const { log } = useDebugLogger()
   let resizeObserver: ResizeObserver | null = null
+  let pdfLoadingTask:
+    | { destroy: () => Promise<void> | void; promise: Promise<pdfjsLib.PDFDocumentProxy> }
+    | null = null
+  let renderTask: { cancel: () => void; promise: Promise<void> } | null = null
+  let loadGeneration = 0
 
   function teardownResizeObserver() {
     if (resizeObserver) {
       resizeObserver.disconnect()
       resizeObserver = null
     }
+  }
+
+  function teardownPdfResources() {
+    loadGeneration += 1
+    renderTask?.cancel()
+    renderTask = null
+    const loadingTask = pdfLoadingTask
+    pdfLoadingTask = null
+    if (loadingTask) {
+      void Promise.resolve(loadingTask.destroy()).catch(() => undefined)
+    }
+
+    const pdfDocument = pdfDocumentRef.value
+    pdfDocumentRef.value = null
+    if (pdfDocument) {
+      void Promise.resolve(pdfDocument.destroy()).catch(() => undefined)
+    }
+    firstCanvasRef.value = null
+    originalPdfDimensions.value = { width: 0, height: 0 }
+    initialPdfScale.value = 1
+    isPdfRendered.value = false
+    currentPageNumber.value = 1
+    totalPages.value = 0
+    renderedPages.value = []
   }
 
   function logPdfContainerDimensions(reason: string) {
@@ -78,7 +107,7 @@ export function usePdfRenderer(
   /**
    * Render a single PDF page onto the container.
    */
-  async function renderPage(pageNumber: number) {
+  async function renderPage(pageNumber: number, generation = loadGeneration) {
     if (!pdfContainer.value || !pdfDocumentRef.value) return
 
     const pdf = pdfDocumentRef.value
@@ -128,7 +157,25 @@ export function usePdfRenderer(
       canvas,
     }
 
-    await page.render(renderContext).promise
+    renderTask?.cancel()
+    const task = page.render(renderContext)
+    renderTask = task
+
+    try {
+      await task.promise
+    } catch (error) {
+      if (generation !== loadGeneration) {
+        return
+      }
+      if ((error as { name?: string })?.name === 'RenderingCancelledException') {
+        return
+      }
+      throw error
+    } finally {
+      if (renderTask === task) {
+        renderTask = null
+      }
+    }
 
     originalPdfDimensions.value = {
       width: unscaledViewport.width,
@@ -152,13 +199,11 @@ export function usePdfRenderer(
     if (!pdfData || !pdfContainer.value || !viewportRef.value) return
 
     // Reset state before rendering a new PDF
+    teardownPdfResources()
     pdfContainer.value.innerHTML = ''
-    renderedPages.value = []
-    isPdfRendered.value = false
-    pdfDocumentRef.value = null
-    totalPages.value = 0
-    currentPageNumber.value = 1
     teardownResizeObserver()
+
+    const generation = loadGeneration
 
     try {
       const pdfBinary = atob(pdfData)
@@ -167,11 +212,21 @@ export function usePdfRenderer(
         pdfBytes[i] = pdfBinary.charCodeAt(i)
       }
 
-      const loadingTask = pdfjsLib.getDocument({ data: pdfBytes, isEvalSupported: false })
-      const pdf = await loadingTask.promise
+      pdfLoadingTask = pdfjsLib.getDocument({ data: pdfBytes, isEvalSupported: false })
+      const pdf = await pdfLoadingTask.promise
+      if (generation !== loadGeneration) {
+        void pdf.destroy()
+        return
+      }
+
+      pdfLoadingTask = null
       pdfDocumentRef.value = markRaw(pdf)
       totalPages.value = pdf.numPages
       const firstPage = await pdf.getPage(1)
+      if (generation !== loadGeneration) {
+        void pdf.destroy()
+        return
+      }
 
       const viewportRect = viewportRef.value.getBoundingClientRect()
       const availableWidth = viewportRect.width
@@ -180,9 +235,18 @@ export function usePdfRenderer(
       const scale = Math.min(fitToWidthScale, 2)
 
       initialPdfScale.value = scale
-      await renderPage(1)
+      await renderPage(1, generation)
+      if (generation !== loadGeneration) {
+        return
+      }
       isPdfRendered.value = true
     } catch (error) {
+      if (generation !== loadGeneration) {
+        return
+      }
+      if ((error as { name?: string })?.name === 'RenderingCancelledException') {
+        return
+      }
       logger.error('Failed to render PDF', error)
       if (pdfContainer.value) {
         pdfContainer.value.innerHTML = '<p style="color: red;">Error: Failed to load PDF.</p>'
@@ -225,6 +289,7 @@ export function usePdfRenderer(
 
   onScopeDispose(() => {
     teardownResizeObserver()
+    teardownPdfResources()
   })
 
   async function changePage(pageNumber: number) {

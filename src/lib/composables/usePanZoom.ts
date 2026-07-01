@@ -28,6 +28,7 @@ export function usePanZoom(
   const panzoom = ref<PanzoomObject | null>(null)
   const currentZoom = ref(1)
   const zoomPercentage = computed(() => Math.round(currentZoom.value * 100))
+  let removePanzoomListeners: (() => void) | null = null
   // --- END: Reactive State ---
 
   /**
@@ -82,6 +83,7 @@ export function usePanZoom(
   /** Initializes Panzoom and attaches event listeners. */
   function initPanzoom() {
     if (!panzoomContainer.value || !viewportRef.value) return
+    removePanzoomListeners?.()
     panzoom.value?.destroy()
 
     const pz = Panzoom(panzoomContainer.value, {
@@ -93,21 +95,33 @@ export function usePanZoom(
       contain: 'outside',
       startScale: 1,
     })
+    const viewportEl = viewportRef.value
+    const containerEl = panzoomContainer.value
 
-    viewportRef.value.addEventListener('wheel', pz.zoomWithWheel, { passive: false })
-
-    panzoomContainer.value.addEventListener('panzoomstart', (e) => {
-      e.preventDefault()
-    })
-
-    panzoomContainer.value.addEventListener('panzoomzoom', (e) => {
-      const event = e as PanzoomEvent
-      currentZoom.value = event.detail.scale
-    })
-
-    panzoomContainer.value.addEventListener('panzoomend', () => {
+    const handleWheel = (event: WheelEvent) => pz.zoomWithWheel(event)
+    const handlePanzoomStart = (event: Event) => {
+      event.preventDefault()
+    }
+    const handlePanzoomZoom = (event: Event) => {
+      const zoomEvent = event as PanzoomEvent
+      currentZoom.value = zoomEvent.detail.scale
+    }
+    const handlePanzoomEnd = () => {
       updatePanState()
-    })
+    }
+
+    viewportEl.addEventListener('wheel', handleWheel, { passive: false })
+    containerEl.addEventListener('panzoomstart', handlePanzoomStart)
+    containerEl.addEventListener('panzoomzoom', handlePanzoomZoom)
+    containerEl.addEventListener('panzoomend', handlePanzoomEnd)
+
+    removePanzoomListeners = () => {
+      viewportEl.removeEventListener('wheel', handleWheel)
+      containerEl.removeEventListener('panzoomstart', handlePanzoomStart)
+      containerEl.removeEventListener('panzoomzoom', handlePanzoomZoom)
+      containerEl.removeEventListener('panzoomend', handlePanzoomEnd)
+      removePanzoomListeners = null
+    }
 
     panzoom.value = pz
     updatePanState() // Call this immediately after init
@@ -115,6 +129,7 @@ export function usePanZoom(
 
   /** Destroys the Panzoom instance and cleans up listeners. */
   function destroyPanzoom() {
+    removePanzoomListeners?.()
     if (panzoom.value) {
       panzoom.value.destroy()
       panzoom.value = null
