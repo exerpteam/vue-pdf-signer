@@ -16,12 +16,14 @@ import { useDebugLogger } from '../composables/useDebugLogger'
 const props = withDefaults(
   defineProps<{
     documents: PdfDocument[]
+    isOpen?: boolean
     signingPolicy?: 'all' | 'any'
     translations?: Record<string, string>
     debug?: boolean
     showSignatureBounds?: boolean
   }>(),
   {
+    isOpen: false,
     signingPolicy: 'all',
     translations: () => ({}),
     debug: false,
@@ -81,9 +83,17 @@ const activeSignatureSvg = computed(() => activeSignature.value?.svg ?? null)
 watch(
   () => props.documents,
   (docs) => {
-    resetSigningSession()
-    const firstUnsignedDoc = docs.find((doc) => !doc.signed)
-    activeDocumentKey.value = firstUnsignedDoc?.key ?? docs[0]?.key ?? null
+    resetSigningSession(docs)
+  },
+  { immediate: true },
+)
+
+watch(
+  () => props.isOpen,
+  (isOpen, wasOpen) => {
+    if (isOpen && !wasOpen) {
+      resetSigningSession()
+    }
   },
   { immediate: true },
 )
@@ -166,11 +176,13 @@ const { signatureStyles } = useSignatureOverlay(
 
 const { log, clearLogs } = useDebugLogger()
 
-function resetSigningSession() {
+function resetSigningSession(docs: PdfDocument[] = props.documents) {
   newlySignedKeys.value.clear()
   // Clear the signature map when documents change.
   signatureDataMap.value.clear()
   isFinished.value = false
+  const firstUnsignedDoc = docs.find((doc) => !doc.signed)
+  activeDocumentKey.value = firstUnsignedDoc?.key ?? docs[0]?.key ?? null
 }
 
 function captureDebugContext() {

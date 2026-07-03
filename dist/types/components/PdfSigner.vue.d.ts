@@ -2,11 +2,13 @@ import { FinishPayload, PdfDocument } from '../types';
 
 declare const _default: import('vue').DefineComponent<import('vue').ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
     documents: PdfDocument[];
+    isOpen?: boolean;
     signingPolicy?: "all" | "any";
     translations?: Record<string, string>;
     debug?: boolean;
     showSignatureBounds?: boolean;
 }>, {
+    isOpen: boolean;
     signingPolicy: string;
     translations: () => {};
     debug: boolean;
@@ -16,11 +18,13 @@ declare const _default: import('vue').DefineComponent<import('vue').ExtractPropT
     finish: (payload: FinishPayload) => void;
 }, string, import('vue').PublicProps, Readonly<import('vue').ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
     documents: PdfDocument[];
+    isOpen?: boolean;
     signingPolicy?: "all" | "any";
     translations?: Record<string, string>;
     debug?: boolean;
     showSignatureBounds?: boolean;
 }>, {
+    isOpen: boolean;
     signingPolicy: string;
     translations: () => {};
     debug: boolean;
@@ -29,6 +33,7 @@ declare const _default: import('vue').DefineComponent<import('vue').ExtractPropT
     onCancel?: (() => any) | undefined;
     onFinish?: ((payload: FinishPayload) => any) | undefined;
 }>, {
+    isOpen: boolean;
     signingPolicy: "all" | "any";
     translations: Record<string, string>;
     debug: boolean;

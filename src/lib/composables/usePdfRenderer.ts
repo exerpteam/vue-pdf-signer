@@ -196,7 +196,16 @@ export function usePdfRenderer(
    * Main function to load a PDF from base64 data, render it, and set up interactions.
    */
   async function loadAndRenderPdf(pdfData: string) {
-    if (!pdfData || !pdfContainer.value || !viewportRef.value) return
+    if (!pdfData) {
+      teardownPdfResources()
+      if (pdfContainer.value) {
+        pdfContainer.value.innerHTML = ''
+      }
+      teardownResizeObserver()
+      return
+    }
+
+    if (!pdfContainer.value || !viewportRef.value) return
 
     // Reset state before rendering a new PDF
     teardownPdfResources()

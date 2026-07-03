@@ -85,6 +85,7 @@ export function usePanZoom(
     if (!panzoomContainer.value || !viewportRef.value) return
     removePanzoomListeners?.()
     panzoom.value?.destroy()
+    currentZoom.value = 1
 
     const pz = Panzoom(panzoomContainer.value, {
       excludeClass: 'panzoom-exclude', // Let signature pad handle its own gestures.
@@ -134,6 +135,7 @@ export function usePanZoom(
       panzoom.value.destroy()
       panzoom.value = null
     }
+    currentZoom.value = 1
   }
 
   onBeforeUnmount(destroyPanzoom)

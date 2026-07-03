@@ -26,6 +26,7 @@ A robust, reusable Vue 3 component for displaying and signing multiple PDF docum
 | Prop                  | Type             | Required | Default | Description                                                                                                                        |
 | --------------------- | ---------------- | :------: | :-----: | ---------------------------------------------------------------------------------------------------------------------------------- |
 | `documents`           | `PdfDocument[]`  |   Yes    |    -    | An array of document objects to be signed. See structure below.                                                                    |
+| `isOpen`              | `boolean`        |    No    | `false` | Signals when the host modal/dialog opens. Used to reset session state when a mounted signer is reopened.                           |
 | `signingPolicy`       | `'all' \| 'any'` |    No    | `'all'` | Determines the condition for enabling the save button. `'all'`: all required docs must be signed. `'any'`: save is always enabled. |
 | `translations`        | `Object`         |    No    |  `{}`   | An object to override the default UI text (e.g., `{ save: 'Confirm & Save' }`). See keys below.                                    |
 | `debug`               | `boolean`        |    No    | `false` | Enables verbose console logging for development purposes.                                                                          |
