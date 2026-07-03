@@ -81,9 +81,7 @@ const activeSignatureSvg = computed(() => activeSignature.value?.svg ?? null)
 watch(
   () => props.documents,
   (docs) => {
-    newlySignedKeys.value.clear()
-    // clear the signature map when documents change.
-    signatureDataMap.value.clear()
+    resetSigningSession()
     const firstUnsignedDoc = docs.find((doc) => !doc.signed)
     activeDocumentKey.value = firstUnsignedDoc?.key ?? docs[0]?.key ?? null
   },
@@ -167,6 +165,13 @@ const { signatureStyles } = useSignatureOverlay(
 // --- END: Using Composables ---
 
 const { log, clearLogs } = useDebugLogger()
+
+function resetSigningSession() {
+  newlySignedKeys.value.clear()
+  // Clear the signature map when documents change.
+  signatureDataMap.value.clear()
+  isFinished.value = false
+}
 
 function captureDebugContext() {
   if (!isDebug.value) {

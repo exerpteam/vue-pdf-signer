@@ -796,8 +796,8 @@ function requireDommatrix() {
     })(dommatrix, (function() {
       function g(B) {
         var h = new V(), u = Array.from(B);
-        if (!u.every(function(U) {
-          return !Number.isNaN(U);
+        if (!u.every(function(P) {
+          return !Number.isNaN(P);
         }))
           throw TypeError('CSSMatrix: "' + B + '" must only have numbers.');
         if (u.length === 16) {
@@ -1345,7 +1345,7 @@ function requirePonyfill() {
       }
       function hI(e) {
         var W = e._ownerReadableStream;
-        W._state === "readable" ? U(e, new TypeError("Reader was released and can no longer be used to monitor the stream's closedness")) : T(e, new TypeError("Reader was released and can no longer be used to monitor the stream's closedness")), W._readableStreamController[z](), W._reader = void 0, e._ownerReadableStream = void 0;
+        W._state === "readable" ? P(e, new TypeError("Reader was released and can no longer be used to monitor the stream's closedness")) : T(e, new TypeError("Reader was released and can no longer be used to monitor the stream's closedness")), W._readableStreamController[z](), W._reader = void 0, e._ownerReadableStream = void 0;
       }
       function BI(e) {
         return new TypeError("Cannot " + e + " a stream using a released reader");
@@ -1356,12 +1356,12 @@ function requirePonyfill() {
         });
       }
       function p(e, W) {
-        gI(e), U(e, W);
+        gI(e), P(e, W);
       }
       function H(e) {
         gI(e), N(e);
       }
-      function U(e, W) {
+      function P(e, W) {
         e._closedPromise_reject !== void 0 && (r(e._closedPromise), e._closedPromise_reject(W), e._closedPromise_resolve = void 0, e._closedPromise_reject = void 0);
       }
       function T(e, W) {
@@ -1378,7 +1378,7 @@ function requirePonyfill() {
       function L(e) {
         return typeof e == "object" || typeof e == "function";
       }
-      function E(e, W) {
+      function U(e, W) {
         if (e !== void 0 && !L(e))
           throw new TypeError("".concat(W, " is not an object."));
       }
@@ -1551,7 +1551,7 @@ function requirePonyfill() {
           return D;
         }
       }
-      function P(e) {
+      function E(e) {
         var W, D = (W = {}, W[A.iterator] = function() {
           return e.iterator;
         }, W), CI = (function() {
@@ -1578,7 +1578,7 @@ function requirePonyfill() {
           if (W === "async") {
             if (D = f(e, q), D === void 0) {
               var CI = f(e, A.iterator), eI = VI(e, "sync", CI);
-              return P(eI);
+              return E(eI);
             }
           } else
             D = f(e, A.iterator);
@@ -2174,7 +2174,7 @@ function requirePonyfill() {
         return new TypeError("ReadableByteStreamController.prototype.".concat(e, " can only be used on a ReadableByteStreamController"));
       }
       function mi(e, W) {
-        E(e, W);
+        U(e, W);
         var D = e == null ? void 0 : e.mode;
         return {
           mode: D === void 0 ? void 0 : ni(D, "".concat(W, " has member 'mode' that"))
@@ -2187,7 +2187,7 @@ function requirePonyfill() {
       }
       function Wi(e, W) {
         var D;
-        E(e, W);
+        U(e, W);
         var CI = (D = e == null ? void 0 : e.min) !== null && D !== void 0 ? D : 1;
         return {
           min: RI(CI, "".concat(W, " has member 'min' that"))
@@ -2325,7 +2325,7 @@ function requirePonyfill() {
         };
       }
       function nC(e, W) {
-        E(e, W);
+        U(e, W);
         var D = e == null ? void 0 : e.highWaterMark, CI = e == null ? void 0 : e.size;
         return {
           highWaterMark: D === void 0 ? void 0 : wI(D),
@@ -2338,7 +2338,7 @@ function requirePonyfill() {
         };
       }
       function Yi(e, W) {
-        E(e, W);
+        U(e, W);
         var D = e == null ? void 0 : e.abort, CI = e == null ? void 0 : e.close, eI = e == null ? void 0 : e.start, tI = e == null ? void 0 : e.type, NI = e == null ? void 0 : e.write;
         return {
           abort: D === void 0 ? void 0 : Vi(D, e, "".concat(W, " has member 'abort' that")),
@@ -3442,7 +3442,7 @@ function requirePonyfill() {
         return W = dC(D, CI, eI, 0), W;
       }
       function bl(e, W) {
-        E(e, W);
+        U(e, W);
         var D = e, CI = D == null ? void 0 : D.autoAllocateChunkSize, eI = D == null ? void 0 : D.cancel, tI = D == null ? void 0 : D.pull, NI = D == null ? void 0 : D.start, JI = D == null ? void 0 : D.type;
         return {
           autoAllocateChunkSize: CI === void 0 ? void 0 : RI(CI, "".concat(W, " has member 'autoAllocateChunkSize' that")),
@@ -3473,12 +3473,12 @@ function requirePonyfill() {
         return e;
       }
       function Wl(e, W) {
-        E(e, W);
+        U(e, W);
         var D = e == null ? void 0 : e.preventCancel;
         return { preventCancel: !!D };
       }
       function TA(e, W) {
-        E(e, W);
+        U(e, W);
         var D = e == null ? void 0 : e.preventAbort, CI = e == null ? void 0 : e.preventCancel, eI = e == null ? void 0 : e.preventClose, tI = e == null ? void 0 : e.signal;
         return tI !== void 0 && wl(tI, "".concat(W, " has member 'signal' that")), {
           preventAbort: !!D,
@@ -3492,7 +3492,7 @@ function requirePonyfill() {
           throw new TypeError("".concat(W, " is not an AbortSignal."));
       }
       function hl(e, W) {
-        E(e, W);
+        U(e, W);
         var D = e == null ? void 0 : e.readable;
         mI(D, "readable", "ReadableWritablePair"), pI(D, "".concat(W, " has member 'readable' that"));
         var CI = e == null ? void 0 : e.writable;
@@ -3645,13 +3645,13 @@ function requirePonyfill() {
       function jA(e, W) {
         e._state = "errored", e._storedError = W;
         var D = e._reader;
-        D !== void 0 && (U(D, W), DI(D) ? yI(D, W) : VA(D, W));
+        D !== void 0 && (P(D, W), DI(D) ? yI(D, W) : VA(D, W));
       }
       function Tg(e) {
         return new TypeError("ReadableStream.prototype.".concat(e, " can only be used on a ReadableStream"));
       }
       function QA(e, W) {
-        E(e, W);
+        U(e, W);
         var D = e == null ? void 0 : e.highWaterMark;
         return mI(D, "highWaterMark", "QueuingStrategyInit"), {
           highWaterMark: wI(D)
@@ -3755,7 +3755,7 @@ function requirePonyfill() {
         return !G(e) || !Object.prototype.hasOwnProperty.call(e, "_countQueuingStrategyHighWaterMark") ? !1 : e instanceof MC;
       }
       function Bl(e, W) {
-        E(e, W);
+        U(e, W);
         var D = e == null ? void 0 : e.cancel, CI = e == null ? void 0 : e.flush, eI = e == null ? void 0 : e.readableType, tI = e == null ? void 0 : e.start, NI = e == null ? void 0 : e.transform, JI = e == null ? void 0 : e.writableType;
         return {
           cancel: D === void 0 ? void 0 : yl(D, e, "".concat(W, " has member 'cancel' that")),
@@ -4493,50 +4493,50 @@ function requirePdf() {
                 writable: !1
               }), w;
             }
-            const U = (function() {
+            const P = (function() {
               function sI(w, dI) {
                 this.constructor === sI && hI("Cannot initialize BaseException."), this.message = w, this.name = dI;
               }
               return sI.prototype = new Error(), sI.constructor = sI, sI;
             })();
-            I.BaseException = U;
-            class T extends U {
+            I.BaseException = P;
+            class T extends P {
               constructor(sI, w) {
                 super(sI, "PasswordException"), this.code = w;
               }
             }
             I.PasswordException = T;
-            class N extends U {
+            class N extends P {
               constructor(sI, w) {
                 super(sI, "UnknownErrorException"), this.details = w;
               }
             }
             I.UnknownErrorException = N;
-            class K extends U {
+            class K extends P {
               constructor(sI) {
                 super(sI, "InvalidPDFException");
               }
             }
             I.InvalidPDFException = K;
-            class J extends U {
+            class J extends P {
               constructor(sI) {
                 super(sI, "MissingPDFException");
               }
             }
             I.MissingPDFException = J;
-            class L extends U {
+            class L extends P {
               constructor(sI, w) {
                 super(sI, "UnexpectedResponseException"), this.status = w;
               }
             }
             I.UnexpectedResponseException = L;
-            class E extends U {
+            class U extends P {
               constructor(sI) {
                 super(sI, "FormatError");
               }
             }
-            I.FormatError = E;
-            class iI extends U {
+            I.FormatError = U;
+            class iI extends P {
               constructor(sI) {
                 super(sI, "AbortException");
               }
@@ -4549,8 +4549,8 @@ function requirePdf() {
                 return String.fromCharCode.apply(null, cI);
               const dI = [];
               for (let WI = 0; WI < sI; WI += w) {
-                const f = Math.min(WI + w, sI), P = cI.subarray(WI, f);
-                dI.push(String.fromCharCode.apply(null, P));
+                const f = Math.min(WI + w, sI), E = cI.subarray(WI, f);
+                dI.push(String.fromCharCode.apply(null, E));
               }
               return dI.join("");
             }
@@ -4578,10 +4578,10 @@ function requirePdf() {
               let dI = 0;
               const WI = new Uint8Array(w);
               for (let f = 0; f < sI; f++) {
-                let P = cI[f];
-                P instanceof Uint8Array || (typeof P == "string" ? P = aI(P) : P = new Uint8Array(P));
-                const q = P.byteLength;
-                WI.set(P, dI), dI += q;
+                let E = cI[f];
+                E instanceof Uint8Array || (typeof E == "string" ? E = aI(E) : E = new Uint8Array(E));
+                const q = E.byteLength;
+                WI.set(E, dI), dI += q;
               }
               return WI;
             }
@@ -4641,8 +4641,8 @@ function requirePdf() {
                 return [WI, f];
               }
               static getAxialAlignedBoundingBox(sI, w) {
-                const dI = KI.applyTransform(sI, w), WI = KI.applyTransform(sI.slice(2, 4), w), f = KI.applyTransform([sI[0], sI[3]], w), P = KI.applyTransform([sI[2], sI[1]], w);
-                return [Math.min(dI[0], WI[0], f[0], P[0]), Math.min(dI[1], WI[1], f[1], P[1]), Math.max(dI[0], WI[0], f[0], P[0]), Math.max(dI[1], WI[1], f[1], P[1])];
+                const dI = KI.applyTransform(sI, w), WI = KI.applyTransform(sI.slice(2, 4), w), f = KI.applyTransform([sI[0], sI[3]], w), E = KI.applyTransform([sI[2], sI[1]], w);
+                return [Math.min(dI[0], WI[0], f[0], E[0]), Math.min(dI[1], WI[1], f[1], E[1]), Math.max(dI[0], WI[0], f[0], E[0]), Math.max(dI[1], WI[1], f[1], E[1])];
               }
               static inverseTransform(sI) {
                 const w = sI[0] * sI[3] - sI[1] * sI[2];
@@ -4652,7 +4652,7 @@ function requirePdf() {
                 return [sI[0] * w[0] + sI[1] * w[1] + sI[2] * w[2], sI[3] * w[0] + sI[4] * w[1] + sI[5] * w[2], sI[6] * w[0] + sI[7] * w[1] + sI[8] * w[2]];
               }
               static singularValueDecompose2dScale(sI) {
-                const w = [sI[0], sI[2], sI[1], sI[3]], dI = sI[0] * w[0] + sI[1] * w[2], WI = sI[0] * w[1] + sI[1] * w[3], f = sI[2] * w[0] + sI[3] * w[2], P = sI[2] * w[1] + sI[3] * w[3], q = (dI + P) / 2, VI = Math.sqrt((dI + P) ** 2 - 4 * (dI * P - f * WI)) / 2, XI = q + VI || 1, MI = q - VI || 1;
+                const w = [sI[0], sI[2], sI[1], sI[3]], dI = sI[0] * w[0] + sI[1] * w[2], WI = sI[0] * w[1] + sI[1] * w[3], f = sI[2] * w[0] + sI[3] * w[2], E = sI[2] * w[1] + sI[3] * w[3], q = (dI + E) / 2, VI = Math.sqrt((dI + E) ** 2 - 4 * (dI * E - f * WI)) / 2, XI = q + VI || 1, MI = q - VI || 1;
                 return [Math.sqrt(XI), Math.sqrt(MI)];
               }
               static normalizeRect(sI) {
@@ -4663,14 +4663,14 @@ function requirePdf() {
                 const dI = Math.max(Math.min(sI[0], sI[2]), Math.min(w[0], w[2])), WI = Math.min(Math.max(sI[0], sI[2]), Math.max(w[0], w[2]));
                 if (dI > WI)
                   return null;
-                const f = Math.max(Math.min(sI[1], sI[3]), Math.min(w[1], w[3])), P = Math.min(Math.max(sI[1], sI[3]), Math.max(w[1], w[3]));
-                return f > P ? null : [dI, f, WI, P];
+                const f = Math.max(Math.min(sI[1], sI[3]), Math.min(w[1], w[3])), E = Math.min(Math.max(sI[1], sI[3]), Math.max(w[1], w[3]));
+                return f > E ? null : [dI, f, WI, E];
               }
-              static bezierBoundingBox(sI, w, dI, WI, f, P, q, VI) {
+              static bezierBoundingBox(sI, w, dI, WI, f, E, q, VI) {
                 const XI = [], MI = [[], []];
                 let zI, TI, xI, SI, fI, $I, jI, gg;
                 for (let qI = 0; qI < 2; ++qI) {
-                  if (qI === 0 ? (TI = 6 * sI - 12 * dI + 6 * f, zI = -3 * sI + 9 * dI - 9 * f + 3 * q, xI = 3 * dI - 3 * sI) : (TI = 6 * w - 12 * WI + 6 * P, zI = -3 * w + 9 * WI - 9 * P + 3 * VI, xI = 3 * WI - 3 * w), Math.abs(zI) < 1e-12) {
+                  if (qI === 0 ? (TI = 6 * sI - 12 * dI + 6 * f, zI = -3 * sI + 9 * dI - 9 * f + 3 * q, xI = 3 * dI - 3 * sI) : (TI = 6 * w - 12 * WI + 6 * E, zI = -3 * w + 9 * WI - 9 * E + 3 * VI, xI = 3 * WI - 3 * w), Math.abs(zI) < 1e-12) {
                     if (Math.abs(TI) < 1e-12)
                       continue;
                     SI = -xI / TI, 0 < SI && SI < 1 && XI.push(SI);
@@ -4681,7 +4681,7 @@ function requirePdf() {
                 let lg = XI.length, UI;
                 const Cg = lg;
                 for (; lg--; )
-                  SI = XI[lg], UI = 1 - SI, MI[0][lg] = UI * UI * UI * sI + 3 * UI * UI * SI * dI + 3 * UI * SI * SI * f + SI * SI * SI * q, MI[1][lg] = UI * UI * UI * w + 3 * UI * UI * SI * WI + 3 * UI * SI * SI * P + SI * SI * SI * VI;
+                  SI = XI[lg], UI = 1 - SI, MI[0][lg] = UI * UI * UI * sI + 3 * UI * UI * SI * dI + 3 * UI * SI * SI * f + SI * SI * SI * q, MI[1][lg] = UI * UI * UI * w + 3 * UI * UI * SI * WI + 3 * UI * SI * SI * E + SI * SI * SI * VI;
                 return MI[0][Cg] = sI, MI[1][Cg] = w, MI[0][Cg + 1] = q, MI[1][Cg + 1] = VI, MI[0].length = MI[1].length = Cg + 2, [Math.min(...MI[0]), Math.min(...MI[1]), Math.max(...MI[0]), Math.max(...MI[1])];
               }
             }
@@ -5623,20 +5623,20 @@ function requirePdf() {
             }, gI = function(L) {
               if (!c(L))
                 return !1;
-              var E = o(L);
-              return E === "DataView" || Z(hI, E) || Z(BI, E);
+              var U = o(L);
+              return U === "DataView" || Z(hI, U) || Z(BI, U);
             }, p = function(J) {
               var L = Y(J);
               if (c(L)) {
-                var E = t(L);
-                return E && Z(E, j) ? E[j] : p(L);
+                var U = t(L);
+                return U && Z(U, j) ? U[j] : p(L);
               }
             }, H = function(J) {
               if (!c(J))
                 return !1;
               var L = o(J);
               return Z(hI, L) || Z(BI, L);
-            }, U = function(J) {
+            }, P = function(J) {
               if (H(J))
                 return J;
               throw O("Target is not a typed array");
@@ -5644,9 +5644,9 @@ function requirePdf() {
               if (s(J) && (!y || V(k, J)))
                 return J;
               throw O(a(J) + " is not a typed array constructor");
-            }, N = function(J, L, E, iI) {
+            }, N = function(J, L, U, iI) {
               if (l) {
-                if (E)
+                if (U)
                   for (var ZI in hI) {
                     var aI = d[ZI];
                     if (aI && Z(aI.prototype, J))
@@ -5659,13 +5659,13 @@ function requirePdf() {
                         }
                       }
                   }
-                (!S[J] || E) && b(S, J, E ? L : v && X[J] || L, iI);
+                (!S[J] || U) && b(S, J, U ? L : v && X[J] || L, iI);
               }
-            }, K = function(J, L, E) {
+            }, K = function(J, L, U) {
               var iI, ZI;
               if (l) {
                 if (y) {
-                  if (E) {
+                  if (U) {
                     for (iI in hI)
                       if (ZI = d[iI], ZI && Z(ZI, J))
                         try {
@@ -5673,16 +5673,16 @@ function requirePdf() {
                         } catch (aI) {
                         }
                   }
-                  if (!k[J] || E)
+                  if (!k[J] || U)
                     try {
-                      return b(k, J, E ? L : v && k[J] || L);
+                      return b(k, J, U ? L : v && k[J] || L);
                     } catch (aI) {
                     }
                   else
                     return;
                 }
                 for (iI in hI)
-                  ZI = d[iI], ZI && (!ZI[J] || E) && b(ZI, J, L);
+                  ZI = d[iI], ZI && (!ZI[J] || U) && b(ZI, J, L);
               }
             };
             for (z in hI)
@@ -5709,7 +5709,7 @@ function requirePdf() {
             C.exports = {
               NATIVE_ARRAY_BUFFER_VIEWS: v,
               TYPED_ARRAY_TAG: Q && AI,
-              aTypedArray: U,
+              aTypedArray: P,
               aTypedArrayConstructor: T,
               exportTypedArrayMethod: N,
               exportTypedArrayStaticMethod: K,
@@ -5851,23 +5851,23 @@ function requirePdf() {
             };
             C.exports = function(k, S, $, O, _, AI, j) {
               Z($, S, O);
-              var v = function(U) {
-                if (U === _ && hI)
+              var v = function(P) {
+                if (P === _ && hI)
                   return hI;
-                if (!u && U in lI)
-                  return lI[U];
-                switch (U) {
+                if (!u && P in lI)
+                  return lI[P];
+                switch (P) {
                   case n:
                     return function() {
-                      return new $(this, U);
+                      return new $(this, P);
                     };
                   case X:
                     return function() {
-                      return new $(this, U);
+                      return new $(this, P);
                     };
                   case R:
                     return function() {
-                      return new $(this, U);
+                      return new $(this, P);
                     };
                 }
                 return function() {
@@ -6434,7 +6434,7 @@ function requirePdf() {
           /* 119 */
           /***/
           ((C, I, g) => {
-            var A = g(37), l = g(6), d = g(7), s = g(25), c = g(17), Z = g(10), o = g(42), a = g(23), G = g(120), b = g(22), m = g(24), V = g(105), Y = g(48), y = g(80), M = g(40), B = g(101), h = g(45), u = g(65), t = g(121), n = g(122), X = g(124), R = g(29), r = g(125), k = g(126), S = g(127), $ = d.Object, O = d.Date, _ = d.Error, AI = d.EvalError, j = d.RangeError, v = d.ReferenceError, Q = d.SyntaxError, z = d.TypeError, lI = d.URIError, oI = d.PerformanceMark, hI = d.WebAssembly, BI = hI && hI.CompileError || _, gI = hI && hI.LinkError || _, p = hI && hI.RuntimeError || _, H = s("DOMException"), U = s("Set"), T = s("Map"), N = T.prototype, K = c(N.has), J = c(N.get), L = c(N.set), E = c(U.prototype.add), iI = s("Object", "keys"), ZI = c([].push), aI = c((!0).valueOf), GI = c(1 .valueOf), mI = c("".valueOf), wI = c(O.prototype.getTime), YI = o("structuredClone"), uI = "DataCloneError", RI = "Transferring", pI = function(II) {
+            var A = g(37), l = g(6), d = g(7), s = g(25), c = g(17), Z = g(10), o = g(42), a = g(23), G = g(120), b = g(22), m = g(24), V = g(105), Y = g(48), y = g(80), M = g(40), B = g(101), h = g(45), u = g(65), t = g(121), n = g(122), X = g(124), R = g(29), r = g(125), k = g(126), S = g(127), $ = d.Object, O = d.Date, _ = d.Error, AI = d.EvalError, j = d.RangeError, v = d.ReferenceError, Q = d.SyntaxError, z = d.TypeError, lI = d.URIError, oI = d.PerformanceMark, hI = d.WebAssembly, BI = hI && hI.CompileError || _, gI = hI && hI.LinkError || _, p = hI && hI.RuntimeError || _, H = s("DOMException"), P = s("Set"), T = s("Map"), N = T.prototype, K = c(N.has), J = c(N.get), L = c(N.set), U = c(P.prototype.add), iI = s("Object", "keys"), ZI = c([].push), aI = c((!0).valueOf), GI = c(1 .valueOf), mI = c("".valueOf), wI = c(O.prototype.getTime), YI = o("structuredClone"), uI = "DataCloneError", RI = "Transferring", pI = function(II) {
               return !Z(function() {
                 var nI = new d.Set([7]), x = II(nI), cI = II($(7));
                 return x == nI || !x.has(7) || typeof cI != "object" || cI != 7;
@@ -6466,7 +6466,7 @@ function requirePdf() {
                   return J(nI, II);
               } else
                 nI = new T();
-              var x = y(II), cI = !1, sI, w, dI, WI, f, P, q, VI, XI, MI;
+              var x = y(II), cI = !1, sI, w, dI, WI, f, E, q, VI, XI, MI;
               switch (x) {
                 case "Array":
                   dI = [], cI = !0;
@@ -6478,7 +6478,7 @@ function requirePdf() {
                   dI = new T(), cI = !0;
                   break;
                 case "Set":
-                  dI = new U(), cI = !0;
+                  dI = new P(), cI = !0;
                   break;
                 case "RegExp":
                   dI = new RegExp(II.source, n(II));
@@ -6546,7 +6546,7 @@ function requirePdf() {
                   break;
                 case "FileList":
                   if (sI = d.DataTransfer, G(sI)) {
-                    for (WI = new sI(), f = 0, P = u(II); f < P; f++)
+                    for (WI = new sI(), f = 0, E = u(II); f < E; f++)
                       WI.items.add(bI(II[f], nI));
                     dI = WI.files;
                   } else kI ? dI = kI(II) : F(x);
@@ -6584,7 +6584,7 @@ function requirePdf() {
                           if (typeof II.slice == "function")
                             dI = II.slice(0);
                           else
-                            for (P = II.byteLength, dI = new ArrayBuffer(P), XI = new sI(II), MI = new sI(dI), f = 0; f < P; f++)
+                            for (E = II.byteLength, dI = new ArrayBuffer(E), XI = new sI(II), MI = new sI(dI), f = 0; f < E; f++)
                               MI.setUint8(f, XI.getUint8(f));
                         } catch (zI) {
                           throw new H("ArrayBuffer is detached", uI);
@@ -6658,7 +6658,7 @@ function requirePdf() {
                 switch (x) {
                   case "Array":
                   case "Object":
-                    for (q = iI(II), f = 0, P = u(q); f < P; f++)
+                    for (q = iI(II), f = 0, E = u(q); f < E; f++)
                       VI = q[f], B(dI, VI, bI(II[VI], nI));
                     break;
                   case "Map":
@@ -6668,7 +6668,7 @@ function requirePdf() {
                     break;
                   case "Set":
                     II.forEach(function(zI) {
-                      E(dI, bI(zI, nI));
+                      U(dI, bI(zI, nI));
                     });
                     break;
                   case "Error":
@@ -6689,7 +6689,7 @@ function requirePdf() {
               V(II, function(XI) {
                 ZI(x, Y(XI));
               });
-              var cI = 0, sI = u(x), w, dI, WI, f, P, q, VI;
+              var cI = 0, sI = u(x), w, dI, WI, f, E, q, VI;
               if (yI)
                 for (f = KI(x, { transfer: x }); cI < sI; )
                   L(nI, x[cI], f[cI++]);
@@ -6701,7 +6701,7 @@ function requirePdf() {
                     case "ImageBitmap":
                       WI = d.OffscreenCanvas, G(WI) || F(dI, RI);
                       try {
-                        q = new WI(w.width, w.height), VI = q.getContext("bitmaprenderer"), VI.transferFromImageBitmap(w), P = q.transferToImageBitmap();
+                        q = new WI(w.width, w.height), VI = q.getContext("bitmaprenderer"), VI.transferFromImageBitmap(w), E = q.transferToImageBitmap();
                       } catch (XI) {
                       }
                       break;
@@ -6709,7 +6709,7 @@ function requirePdf() {
                     case "VideoFrame":
                       (!a(w.clone) || !a(w.close)) && F(dI, RI);
                       try {
-                        P = w.clone(), w.close();
+                        E = w.clone(), w.close();
                       } catch (XI) {
                       }
                       break;
@@ -6721,9 +6721,9 @@ function requirePdf() {
                     case "WritableStream":
                       F(dI, RI);
                   }
-                  if (P === void 0)
+                  if (E === void 0)
                     throw new H("This object cannot be transferred: " + dI, uI);
-                  L(nI, w, P);
+                  L(nI, w, E);
                 }
             };
             l({
@@ -8896,10 +8896,10 @@ function requirePdf() {
               }
             }
             I.ColorManager = O, d(O, "_colorsMapping", /* @__PURE__ */ new Map([["CanvasText", [0, 0, 0]], ["Canvas", [255, 255, 255]]]));
-            var _ = /* @__PURE__ */ new WeakMap(), AI = /* @__PURE__ */ new WeakMap(), j = /* @__PURE__ */ new WeakMap(), v = /* @__PURE__ */ new WeakMap(), Q = /* @__PURE__ */ new WeakMap(), z = /* @__PURE__ */ new WeakMap(), lI = /* @__PURE__ */ new WeakMap(), oI = /* @__PURE__ */ new WeakMap(), hI = /* @__PURE__ */ new WeakMap(), BI = /* @__PURE__ */ new WeakMap(), gI = /* @__PURE__ */ new WeakMap(), p = /* @__PURE__ */ new WeakMap(), H = /* @__PURE__ */ new WeakMap(), U = /* @__PURE__ */ new WeakMap(), T = /* @__PURE__ */ new WeakMap(), N = /* @__PURE__ */ new WeakMap(), K = /* @__PURE__ */ new WeakMap(), J = /* @__PURE__ */ new WeakSet(), L = /* @__PURE__ */ new WeakSet(), E = /* @__PURE__ */ new WeakSet(), iI = /* @__PURE__ */ new WeakSet(), ZI = /* @__PURE__ */ new WeakSet(), aI = /* @__PURE__ */ new WeakSet(), GI = /* @__PURE__ */ new WeakSet(), mI = /* @__PURE__ */ new WeakSet(), wI = /* @__PURE__ */ new WeakSet();
+            var _ = /* @__PURE__ */ new WeakMap(), AI = /* @__PURE__ */ new WeakMap(), j = /* @__PURE__ */ new WeakMap(), v = /* @__PURE__ */ new WeakMap(), Q = /* @__PURE__ */ new WeakMap(), z = /* @__PURE__ */ new WeakMap(), lI = /* @__PURE__ */ new WeakMap(), oI = /* @__PURE__ */ new WeakMap(), hI = /* @__PURE__ */ new WeakMap(), BI = /* @__PURE__ */ new WeakMap(), gI = /* @__PURE__ */ new WeakMap(), p = /* @__PURE__ */ new WeakMap(), H = /* @__PURE__ */ new WeakMap(), P = /* @__PURE__ */ new WeakMap(), T = /* @__PURE__ */ new WeakMap(), N = /* @__PURE__ */ new WeakMap(), K = /* @__PURE__ */ new WeakMap(), J = /* @__PURE__ */ new WeakSet(), L = /* @__PURE__ */ new WeakSet(), U = /* @__PURE__ */ new WeakSet(), iI = /* @__PURE__ */ new WeakSet(), ZI = /* @__PURE__ */ new WeakSet(), aI = /* @__PURE__ */ new WeakSet(), GI = /* @__PURE__ */ new WeakSet(), mI = /* @__PURE__ */ new WeakSet(), wI = /* @__PURE__ */ new WeakSet();
             class YI {
               constructor(F, bI) {
-                s(this, wI), s(this, mI), s(this, GI), s(this, aI), s(this, ZI), s(this, iI), s(this, E), s(this, L), s(this, J), Z(this, _, {
+                s(this, wI), s(this, mI), s(this, GI), s(this, aI), s(this, ZI), s(this, iI), s(this, U), s(this, L), s(this, J), Z(this, _, {
                   writable: !0,
                   value: null
                 }), Z(this, AI, {
@@ -8938,7 +8938,7 @@ function requirePdf() {
                 }), Z(this, H, {
                   writable: !0,
                   value: this.keydown.bind(this)
-                }), Z(this, U, {
+                }), Z(this, P, {
                   writable: !0,
                   value: this.onEditingAction.bind(this)
                 }), Z(this, T, {
@@ -8957,10 +8957,10 @@ function requirePdf() {
                 }), Z(this, K, {
                   writable: !0,
                   value: null
-                }), a(this, K, F), a(this, oI, bI), b(this, oI)._on("editingaction", b(this, U)), b(this, oI)._on("pagechanging", b(this, T));
+                }), a(this, K, F), a(this, oI, bI), b(this, oI)._on("editingaction", b(this, P)), b(this, oI)._on("pagechanging", b(this, T));
               }
               destroy() {
-                c(this, L, RI).call(this), b(this, oI)._off("editingaction", b(this, U)), b(this, oI)._off("pagechanging", b(this, T));
+                c(this, L, RI).call(this), b(this, oI)._off("editingaction", b(this, P)), b(this, oI)._off("pagechanging", b(this, T));
                 for (const F of b(this, j).values())
                   F.destroy();
                 b(this, j).clear(), b(this, AI).clear(), a(this, _, null), b(this, p).clear(), b(this, v).destroy(), b(this, Q).destroy();
@@ -8982,14 +8982,14 @@ function requirePdf() {
                 ["undo", "redo", "cut", "copy", "paste", "delete", "selectAll"].includes(F.name) && this[F.name]();
               }
               setEditingState(F) {
-                F ? (c(this, J, uI).call(this), c(this, E, pI).call(this, {
+                F ? (c(this, J, uI).call(this), c(this, U, pI).call(this, {
                   isEditing: b(this, gI) !== A.AnnotationEditorType.NONE,
                   isEmpty: c(this, mI, OI).call(this),
                   hasSomethingToUndo: b(this, Q).hasSomethingToUndo(),
                   hasSomethingToRedo: b(this, Q).hasSomethingToRedo(),
                   hasSelectedEditor: !1,
                   hasEmptyClipboard: b(this, v).isEmpty()
-                })) : (c(this, L, RI).call(this), c(this, E, pI).call(this, {
+                })) : (c(this, L, RI).call(this), c(this, U, pI).call(this, {
                   isEditing: !1
                 }));
               }
@@ -9048,19 +9048,19 @@ function requirePdf() {
               }
               toggleSelected(F) {
                 if (b(this, p).has(F)) {
-                  b(this, p).delete(F), F.unselect(), c(this, E, pI).call(this, {
+                  b(this, p).delete(F), F.unselect(), c(this, U, pI).call(this, {
                     hasSelectedEditor: this.hasSelection
                   });
                   return;
                 }
-                b(this, p).add(F), F.select(), c(this, iI, rI).call(this, F.propertiesToUpdate), c(this, E, pI).call(this, {
+                b(this, p).add(F), F.select(), c(this, iI, rI).call(this, F.propertiesToUpdate), c(this, U, pI).call(this, {
                   hasSelectedEditor: !0
                 });
               }
               setSelected(F) {
                 for (const bI of b(this, p))
                   bI !== F && bI.unselect();
-                b(this, p).clear(), b(this, p).add(F), F.select(), c(this, iI, rI).call(this, F.propertiesToUpdate), c(this, E, pI).call(this, {
+                b(this, p).clear(), b(this, p).add(F), F.select(), c(this, iI, rI).call(this, F.propertiesToUpdate), c(this, U, pI).call(this, {
                   hasSelectedEditor: !0
                 });
               }
@@ -9068,7 +9068,7 @@ function requirePdf() {
                 return b(this, p).has(F);
               }
               unselect(F) {
-                F.unselect(), b(this, p).delete(F), c(this, E, pI).call(this, {
+                F.unselect(), b(this, p).delete(F), c(this, U, pI).call(this, {
                   hasSelectedEditor: this.hasSelection
                 });
               }
@@ -9076,21 +9076,21 @@ function requirePdf() {
                 return b(this, p).size !== 0;
               }
               undo() {
-                b(this, Q).undo(), c(this, E, pI).call(this, {
+                b(this, Q).undo(), c(this, U, pI).call(this, {
                   hasSomethingToUndo: b(this, Q).hasSomethingToUndo(),
                   hasSomethingToRedo: !0,
                   isEmpty: c(this, mI, OI).call(this)
                 });
               }
               redo() {
-                b(this, Q).redo(), c(this, E, pI).call(this, {
+                b(this, Q).redo(), c(this, U, pI).call(this, {
                   hasSomethingToUndo: !0,
                   hasSomethingToRedo: b(this, Q).hasSomethingToRedo(),
                   isEmpty: c(this, mI, OI).call(this)
                 });
               }
               addCommands(F) {
-                b(this, Q).add(F), c(this, E, pI).call(this, {
+                b(this, Q).add(F), c(this, U, pI).call(this, {
                   hasSomethingToUndo: !0,
                   hasSomethingToRedo: !1,
                   isEmpty: c(this, mI, OI).call(this)
@@ -9119,7 +9119,7 @@ function requirePdf() {
                     bI.isEmpty() || F.push(bI);
                   if (F.length === 0)
                     return;
-                  b(this, v).copy(F), c(this, E, pI).call(this, {
+                  b(this, v).copy(F), c(this, U, pI).call(this, {
                     hasEmptyClipboard: !1
                   });
                 }
@@ -9158,7 +9158,7 @@ function requirePdf() {
                 if (c(this, wI, kI).size !== 0) {
                   for (const F of b(this, p))
                     F.unselect();
-                  b(this, p).clear(), c(this, E, pI).call(this, {
+                  b(this, p).clear(), c(this, U, pI).call(this, {
                     hasSelectedEditor: !1
                   });
                 }
@@ -9225,7 +9225,7 @@ function requirePdf() {
               b(this, p).clear();
               for (const F of DI)
                 F.isEmpty() || (b(this, p).add(F), F.select());
-              c(this, E, pI).call(this, {
+              c(this, U, pI).call(this, {
                 hasSelectedEditor: !0
               });
             }
@@ -9316,26 +9316,26 @@ function requirePdf() {
                 } = j;
                 this.viewBox = v, this.scale = Q, this.rotation = z, this.offsetX = lI, this.offsetY = oI;
                 const BI = (v[2] + v[0]) / 2, gI = (v[3] + v[1]) / 2;
-                let p, H, U, T;
+                let p, H, P, T;
                 switch (z %= 360, z < 0 && (z += 360), z) {
                   case 180:
-                    p = -1, H = 0, U = 0, T = 1;
+                    p = -1, H = 0, P = 0, T = 1;
                     break;
                   case 90:
-                    p = 0, H = 1, U = 1, T = 0;
+                    p = 0, H = 1, P = 1, T = 0;
                     break;
                   case 270:
-                    p = 0, H = -1, U = -1, T = 0;
+                    p = 0, H = -1, P = -1, T = 0;
                     break;
                   case 0:
-                    p = 1, H = 0, U = 0, T = -1;
+                    p = 1, H = 0, P = 0, T = -1;
                     break;
                   default:
                     throw new Error("PageViewport: Invalid rotation, must be a multiple of 90 degrees.");
                 }
-                hI && (U = -U, T = -T);
+                hI && (P = -P, T = -T);
                 let N, K, J, L;
-                p === 0 ? (N = Math.abs(gI - v[1]) * Q + lI, K = Math.abs(BI - v[0]) * Q + oI, J = Math.abs(v[3] - v[1]) * Q, L = Math.abs(v[2] - v[0]) * Q) : (N = Math.abs(BI - v[0]) * Q + lI, K = Math.abs(gI - v[1]) * Q + oI, J = Math.abs(v[2] - v[0]) * Q, L = Math.abs(v[3] - v[1]) * Q), this.transform = [p * Q, H * Q, U * Q, T * Q, N - p * Q * BI - U * Q * gI, K - H * Q * BI - T * Q * gI], this.width = J, this.height = L;
+                p === 0 ? (N = Math.abs(gI - v[1]) * Q + lI, K = Math.abs(BI - v[0]) * Q + oI, J = Math.abs(v[3] - v[1]) * Q, L = Math.abs(v[2] - v[0]) * Q) : (N = Math.abs(BI - v[0]) * Q + lI, K = Math.abs(gI - v[1]) * Q + oI, J = Math.abs(v[2] - v[0]) * Q, L = Math.abs(v[3] - v[1]) * Q), this.transform = [p * Q, H * Q, P * Q, T * Q, N - p * Q * BI - P * Q * gI, K - H * Q * BI - T * Q * gI], this.width = J, this.height = L;
               }
               clone() {
                 let {
@@ -9961,28 +9961,28 @@ function requirePdf() {
                 p.save(), this.__originalSave();
               }, gI.restore = function() {
                 p.restore(), this.__originalRestore();
-              }, gI.translate = function(U, T) {
-                p.translate(U, T), this.__originalTranslate(U, T);
-              }, gI.scale = function(U, T) {
-                p.scale(U, T), this.__originalScale(U, T);
-              }, gI.transform = function(U, T, N, K, J, L) {
-                p.transform(U, T, N, K, J, L), this.__originalTransform(U, T, N, K, J, L);
-              }, gI.setTransform = function(U, T, N, K, J, L) {
-                p.setTransform(U, T, N, K, J, L), this.__originalSetTransform(U, T, N, K, J, L);
+              }, gI.translate = function(P, T) {
+                p.translate(P, T), this.__originalTranslate(P, T);
+              }, gI.scale = function(P, T) {
+                p.scale(P, T), this.__originalScale(P, T);
+              }, gI.transform = function(P, T, N, K, J, L) {
+                p.transform(P, T, N, K, J, L), this.__originalTransform(P, T, N, K, J, L);
+              }, gI.setTransform = function(P, T, N, K, J, L) {
+                p.setTransform(P, T, N, K, J, L), this.__originalSetTransform(P, T, N, K, J, L);
               }, gI.resetTransform = function() {
                 p.resetTransform(), this.__originalResetTransform();
-              }, gI.rotate = function(U) {
-                p.rotate(U), this.__originalRotate(U);
-              }, gI.clip = function(U) {
-                p.clip(U), this.__originalClip(U);
-              }, gI.moveTo = function(H, U) {
-                p.moveTo(H, U), this.__originalMoveTo(H, U);
-              }, gI.lineTo = function(H, U) {
-                p.lineTo(H, U), this.__originalLineTo(H, U);
-              }, gI.bezierCurveTo = function(H, U, T, N, K, J) {
-                p.bezierCurveTo(H, U, T, N, K, J), this.__originalBezierCurveTo(H, U, T, N, K, J);
-              }, gI.rect = function(H, U, T, N) {
-                p.rect(H, U, T, N), this.__originalRect(H, U, T, N);
+              }, gI.rotate = function(P) {
+                p.rotate(P), this.__originalRotate(P);
+              }, gI.clip = function(P) {
+                p.clip(P), this.__originalClip(P);
+              }, gI.moveTo = function(H, P) {
+                p.moveTo(H, P), this.__originalMoveTo(H, P);
+              }, gI.lineTo = function(H, P) {
+                p.lineTo(H, P), this.__originalLineTo(H, P);
+              }, gI.bezierCurveTo = function(H, P, T, N, K, J) {
+                p.bezierCurveTo(H, P, T, N, K, J), this.__originalBezierCurveTo(H, P, T, N, K, J);
+              }, gI.rect = function(H, P, T, N) {
+                p.rect(H, P, T, N), this.__originalRect(H, P, T, N);
               }, gI.closePath = function() {
                 p.closePath(), this.__originalClosePath();
               }, gI.beginPath = function() {
@@ -9993,9 +9993,9 @@ function requirePdf() {
               constructor(p) {
                 this.canvasFactory = p, this.cache = /* @__PURE__ */ Object.create(null);
               }
-              getCanvas(p, H, U) {
+              getCanvas(p, H, P) {
                 let T;
-                return this.cache[p] !== void 0 ? (T = this.cache[p], this.canvasFactory.reset(T, H, U)) : (T = this.canvasFactory.create(H, U), this.cache[p] = T), T;
+                return this.cache[p] !== void 0 ? (T = this.cache[p], this.canvasFactory.reset(T, H, P)) : (T = this.canvasFactory.create(H, P), this.cache[p] = T), T;
               }
               delete(p) {
                 delete this.cache[p];
@@ -10007,19 +10007,19 @@ function requirePdf() {
                 }
               }
             }
-            function u(gI, p, H, U, T, N, K, J, L, E) {
+            function u(gI, p, H, P, T, N, K, J, L, U) {
               const [iI, ZI, aI, GI, mI, wI] = (0, A.getCurrentTransform)(gI);
               if (ZI === 0 && aI === 0) {
-                const RI = K * iI + mI, pI = Math.round(RI), rI = J * GI + wI, LI = Math.round(rI), KI = (K + L) * iI + mI, PI = Math.abs(Math.round(KI) - pI) || 1, OI = (J + E) * GI + wI, kI = Math.abs(Math.round(OI) - LI) || 1;
-                return gI.setTransform(Math.sign(iI), 0, 0, Math.sign(GI), pI, LI), gI.drawImage(p, H, U, T, N, 0, 0, PI, kI), gI.setTransform(iI, ZI, aI, GI, mI, wI), [PI, kI];
+                const RI = K * iI + mI, pI = Math.round(RI), rI = J * GI + wI, LI = Math.round(rI), KI = (K + L) * iI + mI, PI = Math.abs(Math.round(KI) - pI) || 1, OI = (J + U) * GI + wI, kI = Math.abs(Math.round(OI) - LI) || 1;
+                return gI.setTransform(Math.sign(iI), 0, 0, Math.sign(GI), pI, LI), gI.drawImage(p, H, P, T, N, 0, 0, PI, kI), gI.setTransform(iI, ZI, aI, GI, mI, wI), [PI, kI];
               }
               if (iI === 0 && GI === 0) {
-                const RI = J * aI + mI, pI = Math.round(RI), rI = K * ZI + wI, LI = Math.round(rI), KI = (J + E) * aI + mI, PI = Math.abs(Math.round(KI) - pI) || 1, OI = (K + L) * ZI + wI, kI = Math.abs(Math.round(OI) - LI) || 1;
-                return gI.setTransform(0, Math.sign(ZI), Math.sign(aI), 0, pI, LI), gI.drawImage(p, H, U, T, N, 0, 0, kI, PI), gI.setTransform(iI, ZI, aI, GI, mI, wI), [kI, PI];
+                const RI = J * aI + mI, pI = Math.round(RI), rI = K * ZI + wI, LI = Math.round(rI), KI = (J + U) * aI + mI, PI = Math.abs(Math.round(KI) - pI) || 1, OI = (K + L) * ZI + wI, kI = Math.abs(Math.round(OI) - LI) || 1;
+                return gI.setTransform(0, Math.sign(ZI), Math.sign(aI), 0, pI, LI), gI.drawImage(p, H, P, T, N, 0, 0, kI, PI), gI.setTransform(iI, ZI, aI, GI, mI, wI), [kI, PI];
               }
-              gI.drawImage(p, H, U, T, N, K, J, L, E);
+              gI.drawImage(p, H, P, T, N, K, J, L, U);
               const YI = Math.hypot(iI, ZI), uI = Math.hypot(aI, GI);
-              return [YI * L, uI * E];
+              return [YI * L, uI * U];
             }
             function t(gI) {
               const {
@@ -10028,8 +10028,8 @@ function requirePdf() {
               } = gI;
               if (p > y || H > y)
                 return null;
-              const U = 1e3, T = new Uint8Array([0, 2, 4, 0, 1, 0, 5, 4, 8, 10, 0, 8, 0, 2, 1, 0]), N = p + 1;
-              let K = new Uint8Array(N * (H + 1)), J, L, E;
+              const P = 1e3, T = new Uint8Array([0, 2, 4, 0, 1, 0, 5, 4, 8, 10, 0, 8, 0, 2, 1, 0]), N = p + 1;
+              let K = new Uint8Array(N * (H + 1)), J, L, U;
               const iI = p + 7 & -8;
               let ZI = new Uint8Array(iI * H), aI = 0;
               for (const uI of gI.data) {
@@ -10041,16 +10041,16 @@ function requirePdf() {
               for (aI = 0, ZI[aI] !== 0 && (K[0] = 1, ++GI), L = 1; L < p; L++)
                 ZI[aI] !== ZI[aI + 1] && (K[L] = ZI[aI] ? 2 : 1, ++GI), aI++;
               for (ZI[aI] !== 0 && (K[L] = 2, ++GI), J = 1; J < H; J++) {
-                aI = J * iI, E = J * N, ZI[aI - iI] !== ZI[aI] && (K[E] = ZI[aI] ? 1 : 8, ++GI);
+                aI = J * iI, U = J * N, ZI[aI - iI] !== ZI[aI] && (K[U] = ZI[aI] ? 1 : 8, ++GI);
                 let uI = (ZI[aI] ? 4 : 0) + (ZI[aI - iI] ? 8 : 0);
                 for (L = 1; L < p; L++)
-                  uI = (uI >> 2) + (ZI[aI + 1] ? 4 : 0) + (ZI[aI - iI + 1] ? 8 : 0), T[uI] && (K[E + L] = T[uI], ++GI), aI++;
-                if (ZI[aI - iI] !== ZI[aI] && (K[E + L] = ZI[aI] ? 2 : 4, ++GI), GI > U)
+                  uI = (uI >> 2) + (ZI[aI + 1] ? 4 : 0) + (ZI[aI - iI + 1] ? 8 : 0), T[uI] && (K[U + L] = T[uI], ++GI), aI++;
+                if (ZI[aI - iI] !== ZI[aI] && (K[U + L] = ZI[aI] ? 2 : 4, ++GI), GI > P)
                   return null;
               }
-              for (aI = iI * (H - 1), E = J * N, ZI[aI] !== 0 && (K[E] = 8, ++GI), L = 1; L < p; L++)
-                ZI[aI] !== ZI[aI + 1] && (K[E + L] = ZI[aI] ? 4 : 8, ++GI), aI++;
-              if (ZI[aI] !== 0 && (K[E + L] = 4, ++GI), GI > U)
+              for (aI = iI * (H - 1), U = J * N, ZI[aI] !== 0 && (K[U] = 8, ++GI), L = 1; L < p; L++)
+                ZI[aI] !== ZI[aI + 1] && (K[U + L] = ZI[aI] ? 4 : 8, ++GI), aI++;
+              if (ZI[aI] !== 0 && (K[U + L] = 4, ++GI), GI > P)
                 return null;
               const mI = new Int32Array([0, N, -1, 0, -N, 0, 0, 0, 1]), wI = new Path2D();
               for (J = 0; GI && J <= H; J++) {
@@ -10088,18 +10088,18 @@ function requirePdf() {
               setCurrentPoint(p, H) {
                 this.x = p, this.y = H;
               }
-              updatePathMinMax(p, H, U) {
-                [H, U] = l.Util.applyTransform([H, U], p), this.minX = Math.min(this.minX, H), this.minY = Math.min(this.minY, U), this.maxX = Math.max(this.maxX, H), this.maxY = Math.max(this.maxY, U);
+              updatePathMinMax(p, H, P) {
+                [H, P] = l.Util.applyTransform([H, P], p), this.minX = Math.min(this.minX, H), this.minY = Math.min(this.minY, P), this.maxX = Math.max(this.maxX, H), this.maxY = Math.max(this.maxY, P);
               }
               updateRectMinMax(p, H) {
-                const U = l.Util.applyTransform(H, p), T = l.Util.applyTransform(H.slice(2), p);
-                this.minX = Math.min(this.minX, U[0], T[0]), this.minY = Math.min(this.minY, U[1], T[1]), this.maxX = Math.max(this.maxX, U[0], T[0]), this.maxY = Math.max(this.maxY, U[1], T[1]);
+                const P = l.Util.applyTransform(H, p), T = l.Util.applyTransform(H.slice(2), p);
+                this.minX = Math.min(this.minX, P[0], T[0]), this.minY = Math.min(this.minY, P[1], T[1]), this.maxX = Math.max(this.maxX, P[0], T[0]), this.maxY = Math.max(this.maxY, P[1], T[1]);
               }
               updateScalingPathMinMax(p, H) {
                 l.Util.scaleMinMax(p, H), this.minX = Math.min(this.minX, H[0]), this.maxX = Math.max(this.maxX, H[1]), this.minY = Math.min(this.minY, H[2]), this.maxY = Math.max(this.maxY, H[3]);
               }
-              updateCurvePathMinMax(p, H, U, T, N, K, J, L, E, iI) {
-                const ZI = l.Util.bezierBoundingBox(H, U, T, N, K, J, L, E);
+              updateCurvePathMinMax(p, H, P, T, N, K, J, L, U, iI) {
+                const ZI = l.Util.bezierBoundingBox(H, P, T, N, K, J, L, U);
                 if (iI) {
                   iI[0] = Math.min(iI[0], ZI[0], ZI[2]), iI[1] = Math.max(iI[1], ZI[0], ZI[2]), iI[2] = Math.min(iI[2], ZI[1], ZI[3]), iI[3] = Math.max(iI[3], ZI[1], ZI[3]);
                   return;
@@ -10108,13 +10108,13 @@ function requirePdf() {
               }
               getPathBoundingBox() {
                 let p = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : d.PathType.FILL, H = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : null;
-                const U = [this.minX, this.minY, this.maxX, this.maxY];
+                const P = [this.minX, this.minY, this.maxX, this.maxY];
                 if (p === d.PathType.STROKE) {
                   H || (0, l.unreachable)("Stroke bounding box must include transform.");
                   const T = l.Util.singularValueDecompose2dScale(H), N = T[0] * this.lineWidth / 2, K = T[1] * this.lineWidth / 2;
-                  U[0] -= N, U[1] -= K, U[2] += N, U[3] += K;
+                  P[0] -= N, P[1] -= K, P[2] += N, P[3] += K;
                 }
-                return U;
+                return P;
               }
               updateClipFromPath() {
                 const p = l.Util.intersect(this.clipBox, this.getPathBoundingBox());
@@ -10137,8 +10137,8 @@ function requirePdf() {
                 gI.putImageData(p, 0, 0);
                 return;
               }
-              const U = p.height, T = p.width, N = U % M, K = (U - N) / M, J = N === 0 ? K : K + 1, L = gI.createImageData(T, M);
-              let E = 0, iI;
+              const P = p.height, T = p.width, N = P % M, K = (P - N) / M, J = N === 0 ? K : K + 1, L = gI.createImageData(T, M);
+              let U = 0, iI;
               const ZI = p.data, aI = L.data;
               let GI, mI, wI, YI, uI, RI, pI, rI;
               if (H)
@@ -10155,14 +10155,14 @@ function requirePdf() {
                 let kI = 4294967295, DI = l.FeatureTest.isLittleEndian ? 4278190080 : 255;
                 for (rI && rI[0] === 255 && rI[255] === 0 && ([kI, DI] = [DI, kI]), GI = 0; GI < J; GI++) {
                   for (wI = GI < K ? M : N, iI = 0, mI = 0; mI < wI; mI++) {
-                    const F = LI - E;
+                    const F = LI - U;
                     let bI = 0;
                     const yI = F > OI ? T : F * 8 - 7, HI = yI & -8;
                     let II = 0, nI = 0;
                     for (; bI < HI; bI += 8)
-                      nI = ZI[E++], KI[iI++] = nI & 128 ? kI : DI, KI[iI++] = nI & 64 ? kI : DI, KI[iI++] = nI & 32 ? kI : DI, KI[iI++] = nI & 16 ? kI : DI, KI[iI++] = nI & 8 ? kI : DI, KI[iI++] = nI & 4 ? kI : DI, KI[iI++] = nI & 2 ? kI : DI, KI[iI++] = nI & 1 ? kI : DI;
+                      nI = ZI[U++], KI[iI++] = nI & 128 ? kI : DI, KI[iI++] = nI & 64 ? kI : DI, KI[iI++] = nI & 32 ? kI : DI, KI[iI++] = nI & 16 ? kI : DI, KI[iI++] = nI & 8 ? kI : DI, KI[iI++] = nI & 4 ? kI : DI, KI[iI++] = nI & 2 ? kI : DI, KI[iI++] = nI & 1 ? kI : DI;
                     for (; bI < yI; bI++)
-                      II === 0 && (nI = ZI[E++], II = 128), KI[iI++] = nI & II ? kI : DI, II >>= 1;
+                      II === 0 && (nI = ZI[U++], II = 128), KI[iI++] = nI & II ? kI : DI, II >>= 1;
                   }
                   for (; iI < PI; )
                     KI[iI++] = 0;
@@ -10171,13 +10171,13 @@ function requirePdf() {
               } else if (p.kind === l.ImageKind.RGBA_32BPP) {
                 const LI = !!(uI || RI || pI);
                 for (mI = 0, YI = T * M * 4, GI = 0; GI < K; GI++) {
-                  if (aI.set(ZI.subarray(E, E + YI)), E += YI, LI)
+                  if (aI.set(ZI.subarray(U, U + YI)), U += YI, LI)
                     for (let KI = 0; KI < YI; KI += 4)
                       uI && (aI[KI + 0] = uI[aI[KI + 0]]), RI && (aI[KI + 1] = RI[aI[KI + 1]]), pI && (aI[KI + 2] = pI[aI[KI + 2]]);
                   gI.putImageData(L, 0, mI), mI += M;
                 }
                 if (GI < J) {
-                  if (YI = T * N * 4, aI.set(ZI.subarray(E, E + YI)), LI)
+                  if (YI = T * N * 4, aI.set(ZI.subarray(U, U + YI)), LI)
                     for (let KI = 0; KI < YI; KI += 4)
                       uI && (aI[KI + 0] = uI[aI[KI + 0]]), RI && (aI[KI + 1] = RI[aI[KI + 1]]), pI && (aI[KI + 2] = pI[aI[KI + 2]]);
                   gI.putImageData(L, 0, mI);
@@ -10186,7 +10186,7 @@ function requirePdf() {
                 const LI = !!(uI || RI || pI);
                 for (wI = M, YI = T * wI, GI = 0; GI < J; GI++) {
                   for (GI >= K && (wI = N, YI = T * wI), iI = 0, mI = YI; mI--; )
-                    aI[iI++] = ZI[E++], aI[iI++] = ZI[E++], aI[iI++] = ZI[E++], aI[iI++] = 255;
+                    aI[iI++] = ZI[U++], aI[iI++] = ZI[U++], aI[iI++] = ZI[U++], aI[iI++] = 255;
                   if (LI)
                     for (let KI = 0; KI < iI; KI += 4)
                       uI && (aI[KI + 0] = uI[aI[KI + 0]]), RI && (aI[KI + 1] = RI[aI[KI + 1]]), pI && (aI[KI + 2] = pI[aI[KI + 2]]);
@@ -10200,26 +10200,26 @@ function requirePdf() {
                 gI.drawImage(p.bitmap, 0, 0);
                 return;
               }
-              const H = p.height, U = p.width, T = H % M, N = (H - T) / M, K = T === 0 ? N : N + 1, J = gI.createImageData(U, M);
+              const H = p.height, P = p.width, T = H % M, N = (H - T) / M, K = T === 0 ? N : N + 1, J = gI.createImageData(P, M);
               let L = 0;
-              const E = p.data, iI = J.data;
+              const U = p.data, iI = J.data;
               for (let ZI = 0; ZI < K; ZI++) {
                 const aI = ZI < N ? M : T;
                 ({
                   srcPos: L
                 } = (0, s.applyMaskImageData)({
-                  src: E,
+                  src: U,
                   srcPos: L,
                   dest: iI,
-                  width: U,
+                  width: P,
                   height: aI
                 })), gI.putImageData(J, 0, ZI * M);
               }
             }
             function r(gI, p) {
               const H = ["strokeStyle", "fillStyle", "fillRule", "globalAlpha", "lineWidth", "lineCap", "lineJoin", "miterLimit", "globalCompositeOperation", "font"];
-              for (let U = 0, T = H.length; U < T; U++) {
-                const N = H[U];
+              for (let P = 0, T = H.length; P < T; P++) {
+                const N = H[P];
                 gI[N] !== void 0 && (p[N] = gI[N]);
               }
               gI.setLineDash !== void 0 && (p.setLineDash(gI.getLineDash()), p.lineDashOffset = gI.lineDashOffset);
@@ -10227,57 +10227,57 @@ function requirePdf() {
             function k(gI, p) {
               gI.strokeStyle = gI.fillStyle = p || "#000000", gI.fillRule = "nonzero", gI.globalAlpha = 1, gI.lineWidth = 1, gI.lineCap = "butt", gI.lineJoin = "miter", gI.miterLimit = 10, gI.globalCompositeOperation = "source-over", gI.font = "10px sans-serif", gI.setLineDash !== void 0 && (gI.setLineDash([]), gI.lineDashOffset = 0);
             }
-            function S(gI, p, H, U) {
+            function S(gI, p, H, P) {
               const T = gI.length;
               for (let N = 3; N < T; N += 4) {
                 const K = gI[N];
                 if (K === 0)
-                  gI[N - 3] = p, gI[N - 2] = H, gI[N - 1] = U;
+                  gI[N - 3] = p, gI[N - 2] = H, gI[N - 1] = P;
                 else if (K < 255) {
                   const J = 255 - K;
-                  gI[N - 3] = gI[N - 3] * K + p * J >> 8, gI[N - 2] = gI[N - 2] * K + H * J >> 8, gI[N - 1] = gI[N - 1] * K + U * J >> 8;
+                  gI[N - 3] = gI[N - 3] * K + p * J >> 8, gI[N - 2] = gI[N - 2] * K + H * J >> 8, gI[N - 1] = gI[N - 1] * K + P * J >> 8;
                 }
               }
             }
             function $(gI, p, H) {
-              const U = gI.length, T = 1 / 255;
-              for (let N = 3; N < U; N += 4) {
+              const P = gI.length, T = 1 / 255;
+              for (let N = 3; N < P; N += 4) {
                 const K = H ? H[gI[N]] : gI[N];
                 p[N] = p[N] * K * T | 0;
               }
             }
             function O(gI, p, H) {
-              const U = gI.length;
-              for (let T = 3; T < U; T += 4) {
+              const P = gI.length;
+              for (let T = 3; T < P; T += 4) {
                 const N = gI[T - 3] * 77 + gI[T - 2] * 152 + gI[T - 1] * 28;
                 p[T] = H ? p[T] * H[N >> 8] >> 8 : p[T] * N >> 16;
               }
             }
-            function _(gI, p, H, U, T, N, K, J, L, E, iI) {
+            function _(gI, p, H, P, T, N, K, J, L, U, iI) {
               const ZI = !!N, aI = ZI ? N[0] : 0, GI = ZI ? N[1] : 0, mI = ZI ? N[2] : 0;
               let wI;
               T === "Luminosity" ? wI = O : wI = $;
-              const uI = Math.min(U, Math.ceil(1048576 / H));
-              for (let RI = 0; RI < U; RI += uI) {
-                const pI = Math.min(uI, U - RI), rI = gI.getImageData(J - E, RI + (L - iI), H, pI), LI = p.getImageData(J, RI + L, H, pI);
+              const uI = Math.min(P, Math.ceil(1048576 / H));
+              for (let RI = 0; RI < P; RI += uI) {
+                const pI = Math.min(uI, P - RI), rI = gI.getImageData(J - U, RI + (L - iI), H, pI), LI = p.getImageData(J, RI + L, H, pI);
                 ZI && S(rI.data, aI, GI, mI), wI(rI.data, LI.data, K), p.putImageData(LI, J, RI + L);
               }
             }
-            function AI(gI, p, H, U) {
-              const T = U[0], N = U[1], K = U[2] - T, J = U[3] - N;
+            function AI(gI, p, H, P) {
+              const T = P[0], N = P[1], K = P[2] - T, J = P[3] - N;
               K === 0 || J === 0 || (_(p.context, H, K, J, p.subtype, p.backdrop, p.transferMap, T, N, p.offsetX, p.offsetY), gI.save(), gI.globalAlpha = 1, gI.globalCompositeOperation = "source-over", gI.setTransform(1, 0, 0, 1, 0, 0), gI.drawImage(H.canvas, 0, 0), gI.restore());
             }
             function j(gI, p) {
               const H = l.Util.singularValueDecompose2dScale(gI);
               H[0] = Math.fround(H[0]), H[1] = Math.fround(H[1]);
-              const U = Math.fround((globalThis.devicePixelRatio || 1) * A.PixelsPerInch.PDF_TO_CSS_UNITS);
-              return p !== void 0 ? p : H[0] <= U || H[1] <= U;
+              const P = Math.fround((globalThis.devicePixelRatio || 1) * A.PixelsPerInch.PDF_TO_CSS_UNITS);
+              return p !== void 0 ? p : H[0] <= P || H[1] <= P;
             }
             const v = ["butt", "round", "square"], Q = ["miter", "round", "bevel"], z = {}, lI = {};
             var oI = /* @__PURE__ */ new WeakSet();
             class hI {
-              constructor(p, H, U, T, N, K, J, L) {
-                Z(this, oI), this.ctx = p, this.current = new n(this.ctx.canvas.width, this.ctx.canvas.height), this.stateStack = [], this.pendingClip = null, this.pendingEOFill = !1, this.res = null, this.xobjs = null, this.commonObjs = H, this.objs = U, this.canvasFactory = T, this.imageLayer = N, this.groupStack = [], this.processingType3 = null, this.baseTransform = null, this.baseTransformStack = [], this.groupLevel = 0, this.smaskStack = [], this.smaskCounter = 0, this.tempSMask = null, this.suspendedCtx = null, this.contentVisible = !0, this.markedContentStack = [], this.optionalContentConfig = K, this.cachedCanvases = new h(this.canvasFactory), this.cachedPatterns = /* @__PURE__ */ new Map(), this.annotationCanvasMap = J, this.viewportScale = 1, this.outputScaleX = 1, this.outputScaleY = 1, this.backgroundColor = (L == null ? void 0 : L.background) || null, this.foregroundColor = (L == null ? void 0 : L.foreground) || null, this._cachedScaleForStroking = null, this._cachedGetSinglePixelWidth = null, this._cachedBitmapsMap = /* @__PURE__ */ new Map();
+              constructor(p, H, P, T, N, K, J, L) {
+                Z(this, oI), this.ctx = p, this.current = new n(this.ctx.canvas.width, this.ctx.canvas.height), this.stateStack = [], this.pendingClip = null, this.pendingEOFill = !1, this.res = null, this.xobjs = null, this.commonObjs = H, this.objs = P, this.canvasFactory = T, this.imageLayer = N, this.groupStack = [], this.processingType3 = null, this.baseTransform = null, this.baseTransformStack = [], this.groupLevel = 0, this.smaskStack = [], this.smaskCounter = 0, this.tempSMask = null, this.suspendedCtx = null, this.contentVisible = !0, this.markedContentStack = [], this.optionalContentConfig = K, this.cachedCanvases = new h(this.canvasFactory), this.cachedPatterns = /* @__PURE__ */ new Map(), this.annotationCanvasMap = J, this.viewportScale = 1, this.outputScaleX = 1, this.outputScaleY = 1, this.backgroundColor = (L == null ? void 0 : L.background) || null, this.foregroundColor = (L == null ? void 0 : L.foreground) || null, this._cachedScaleForStroking = null, this._cachedGetSinglePixelWidth = null, this._cachedBitmapsMap = /* @__PURE__ */ new Map();
               }
               getObject(p) {
                 let H = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : null;
@@ -10286,59 +10286,59 @@ function requirePdf() {
               beginDrawing(p) {
                 let {
                   transform: H,
-                  viewport: U,
+                  viewport: P,
                   transparency: T = !1,
                   background: N = null
                 } = p;
                 const K = this.ctx.canvas.width, J = this.ctx.canvas.height, L = N || "#ffffff";
                 if (this.ctx.save(), this.foregroundColor && this.backgroundColor) {
                   this.ctx.fillStyle = this.foregroundColor;
-                  const E = this.foregroundColor = this.ctx.fillStyle;
+                  const U = this.foregroundColor = this.ctx.fillStyle;
                   this.ctx.fillStyle = this.backgroundColor;
                   const iI = this.backgroundColor = this.ctx.fillStyle;
                   let ZI = !0, aI = L;
-                  if (this.ctx.fillStyle = L, aI = this.ctx.fillStyle, ZI = typeof aI == "string" && /^#[0-9A-Fa-f]{6}$/.test(aI), E === "#000000" && iI === "#ffffff" || E === iI || !ZI)
+                  if (this.ctx.fillStyle = L, aI = this.ctx.fillStyle, ZI = typeof aI == "string" && /^#[0-9A-Fa-f]{6}$/.test(aI), U === "#000000" && iI === "#ffffff" || U === iI || !ZI)
                     this.foregroundColor = this.backgroundColor = null;
                   else {
                     const [GI, mI, wI] = (0, A.getRGB)(aI), YI = (RI) => (RI /= 255, RI <= 0.03928 ? RI / 12.92 : ((RI + 0.055) / 1.055) ** 2.4), uI = Math.round(0.2126 * YI(GI) + 0.7152 * YI(mI) + 0.0722 * YI(wI));
                     this.selectColor = (RI, pI, rI) => {
                       const LI = 0.2126 * YI(RI) + 0.7152 * YI(pI) + 0.0722 * YI(rI);
-                      return Math.round(LI) === uI ? iI : E;
+                      return Math.round(LI) === uI ? iI : U;
                     };
                   }
                 }
                 if (this.ctx.fillStyle = this.backgroundColor || L, this.ctx.fillRect(0, 0, K, J), this.ctx.restore(), T) {
-                  const E = this.cachedCanvases.getCanvas("transparent", K, J);
-                  this.compositeCtx = this.ctx, this.transparentCanvas = E.canvas, this.ctx = E.context, this.ctx.save(), this.ctx.transform(...(0, A.getCurrentTransform)(this.compositeCtx));
+                  const U = this.cachedCanvases.getCanvas("transparent", K, J);
+                  this.compositeCtx = this.ctx, this.transparentCanvas = U.canvas, this.ctx = U.context, this.ctx.save(), this.ctx.transform(...(0, A.getCurrentTransform)(this.compositeCtx));
                 }
-                this.ctx.save(), k(this.ctx, this.foregroundColor), H && (this.ctx.transform(...H), this.outputScaleX = H[0], this.outputScaleY = H[0]), this.ctx.transform(...U.transform), this.viewportScale = U.scale, this.baseTransform = (0, A.getCurrentTransform)(this.ctx), this.imageLayer && ((0, A.deprecated)("The `imageLayer` functionality will be removed in the future."), this.imageLayer.beginLayout());
+                this.ctx.save(), k(this.ctx, this.foregroundColor), H && (this.ctx.transform(...H), this.outputScaleX = H[0], this.outputScaleY = H[0]), this.ctx.transform(...P.transform), this.viewportScale = P.scale, this.baseTransform = (0, A.getCurrentTransform)(this.ctx), this.imageLayer && ((0, A.deprecated)("The `imageLayer` functionality will be removed in the future."), this.imageLayer.beginLayout());
               }
-              executeOperatorList(p, H, U, T) {
+              executeOperatorList(p, H, P, T) {
                 const N = p.argsArray, K = p.fnArray;
                 let J = H || 0;
                 const L = N.length;
                 if (L === J)
                   return J;
-                const E = L - J > Y && typeof U == "function", iI = E ? Date.now() + V : 0;
+                const U = L - J > Y && typeof P == "function", iI = U ? Date.now() + V : 0;
                 let ZI = 0;
                 const aI = this.commonObjs, GI = this.objs;
                 let mI;
                 for (; ; ) {
                   if (T !== void 0 && J === T.nextBreakPoint)
-                    return T.breakIt(J, U), J;
+                    return T.breakIt(J, P), J;
                   if (mI = K[J], mI !== l.OPS.dependency)
                     this[mI].apply(this, N[J]);
                   else
                     for (const wI of N[J]) {
                       const YI = wI.startsWith("g_") ? aI : GI;
                       if (!YI.has(wI))
-                        return YI.get(wI, U), J;
+                        return YI.get(wI, P), J;
                     }
                   if (J++, J === L)
                     return J;
-                  if (E && ++ZI > Y) {
+                  if (U && ++ZI > Y) {
                     if (Date.now() > iI)
-                      return U(), J;
+                      return P(), J;
                     ZI = 0;
                   }
                 }
@@ -10353,11 +10353,11 @@ function requirePdf() {
                 this._cachedBitmapsMap.clear(), this.imageLayer && this.imageLayer.endLayout();
               }
               _scaleImage(p, H) {
-                const U = p.width, T = p.height;
-                let N = Math.max(Math.hypot(H[0], H[1]), 1), K = Math.max(Math.hypot(H[2], H[3]), 1), J = U, L = T, E = "prescale1", iI, ZI;
+                const P = p.width, T = p.height;
+                let N = Math.max(Math.hypot(H[0], H[1]), 1), K = Math.max(Math.hypot(H[2], H[3]), 1), J = P, L = T, U = "prescale1", iI, ZI;
                 for (; N > 2 && J > 1 || K > 2 && L > 1; ) {
                   let aI = J, GI = L;
-                  N > 2 && J > 1 && (aI = Math.ceil(J / 2), N /= J / aI), K > 2 && L > 1 && (GI = Math.ceil(L / 2), K /= L / GI), iI = this.cachedCanvases.getCanvas(E, aI, GI), ZI = iI.context, ZI.clearRect(0, 0, aI, GI), ZI.drawImage(p, 0, 0, J, L, 0, 0, aI, GI), p = iI.canvas, J = aI, L = GI, E = E === "prescale1" ? "prescale2" : "prescale1";
+                  N > 2 && J > 1 && (aI = Math.ceil(J / 2), N /= J / aI), K > 2 && L > 1 && (GI = Math.ceil(L / 2), K /= L / GI), iI = this.cachedCanvases.getCanvas(U, aI, GI), ZI = iI.context, ZI.clearRect(0, 0, aI, GI), ZI.drawImage(p, 0, 0, J, L, 0, 0, aI, GI), p = iI.canvas, J = aI, L = GI, U = U === "prescale1" ? "prescale2" : "prescale1";
                 }
                 return {
                   img: p,
@@ -10367,14 +10367,14 @@ function requirePdf() {
               }
               _createMaskCanvas(p) {
                 const H = this.ctx, {
-                  width: U,
+                  width: P,
                   height: T
                 } = p, N = this.current.fillColor, K = this.current.patternFill, J = (0, A.getCurrentTransform)(H);
-                let L, E, iI, ZI;
+                let L, U, iI, ZI;
                 if ((p.bitmap || p.data) && p.count > 1) {
                   const PI = p.bitmap || p.data.buffer, OI = J.slice(0, 4);
-                  E = JSON.stringify(K ? OI : [OI, N]), L = this._cachedBitmapsMap.get(PI), L || (L = /* @__PURE__ */ new Map(), this._cachedBitmapsMap.set(PI, L));
-                  const kI = L.get(E);
+                  U = JSON.stringify(K ? OI : [OI, N]), L = this._cachedBitmapsMap.get(PI), L || (L = /* @__PURE__ */ new Map(), this._cachedBitmapsMap.set(PI, L));
+                  const kI = L.get(U);
                   if (kI && !K) {
                     const DI = Math.round(Math.min(J[0], J[2]) + J[4]), F = Math.round(Math.min(J[1], J[3]) + J[5]);
                     return {
@@ -10385,13 +10385,13 @@ function requirePdf() {
                   }
                   iI = kI;
                 }
-                iI || (ZI = this.cachedCanvases.getCanvas("maskCanvas", U, T), R(ZI.context, p));
-                let aI = l.Util.transform(J, [1 / U, 0, 0, -1 / T, 0, 0]);
+                iI || (ZI = this.cachedCanvases.getCanvas("maskCanvas", P, T), R(ZI.context, p));
+                let aI = l.Util.transform(J, [1 / P, 0, 0, -1 / T, 0, 0]);
                 aI = l.Util.transform(aI, [1, 0, 0, 1, 0, -T]);
-                const GI = l.Util.applyTransform([0, 0], aI), mI = l.Util.applyTransform([U, T], aI), wI = l.Util.normalizeRect([GI[0], GI[1], mI[0], mI[1]]), YI = Math.round(wI[2] - wI[0]) || 1, uI = Math.round(wI[3] - wI[1]) || 1, RI = this.cachedCanvases.getCanvas("fillCanvas", YI, uI), pI = RI.context, rI = Math.min(GI[0], mI[0]), LI = Math.min(GI[1], mI[1]);
-                pI.translate(-rI, -LI), pI.transform(...aI), iI || (iI = this._scaleImage(ZI.canvas, (0, A.getCurrentTransformInverse)(pI)), iI = iI.img, L && K && L.set(E, iI)), pI.imageSmoothingEnabled = j((0, A.getCurrentTransform)(pI), p.interpolate), u(pI, iI, 0, 0, iI.width, iI.height, 0, 0, U, T), pI.globalCompositeOperation = "source-in";
+                const GI = l.Util.applyTransform([0, 0], aI), mI = l.Util.applyTransform([P, T], aI), wI = l.Util.normalizeRect([GI[0], GI[1], mI[0], mI[1]]), YI = Math.round(wI[2] - wI[0]) || 1, uI = Math.round(wI[3] - wI[1]) || 1, RI = this.cachedCanvases.getCanvas("fillCanvas", YI, uI), pI = RI.context, rI = Math.min(GI[0], mI[0]), LI = Math.min(GI[1], mI[1]);
+                pI.translate(-rI, -LI), pI.transform(...aI), iI || (iI = this._scaleImage(ZI.canvas, (0, A.getCurrentTransformInverse)(pI)), iI = iI.img, L && K && L.set(U, iI)), pI.imageSmoothingEnabled = j((0, A.getCurrentTransform)(pI), p.interpolate), u(pI, iI, 0, 0, iI.width, iI.height, 0, 0, P, T), pI.globalCompositeOperation = "source-in";
                 const KI = l.Util.transform((0, A.getCurrentTransformInverse)(pI), [1, 0, 0, 1, -rI, -LI]);
-                return pI.fillStyle = K ? N.getPattern(H, this, KI, d.PathType.FILL) : N, pI.fillRect(0, 0, U, T), L && !K && (this.cachedCanvases.delete("fillCanvas"), L.set(E, RI.canvas)), {
+                return pI.fillStyle = K ? N.getPattern(H, this, KI, d.PathType.FILL) : N, pI.fillRect(0, 0, P, T), L && !K && (this.cachedCanvases.delete("fillCanvas"), L.set(U, RI.canvas)), {
                   canvas: RI.canvas,
                   offsetX: Math.round(rI),
                   offsetY: Math.round(LI)
@@ -10410,15 +10410,15 @@ function requirePdf() {
                 this.ctx.miterLimit = p;
               }
               setDash(p, H) {
-                const U = this.ctx;
-                U.setLineDash !== void 0 && (U.setLineDash(p), U.lineDashOffset = H);
+                const P = this.ctx;
+                P.setLineDash !== void 0 && (P.setLineDash(p), P.lineDashOffset = H);
               }
               setRenderingIntent(p) {
               }
               setFlatness(p) {
               }
               setGState(p) {
-                for (let H = 0, U = p.length; H < U; H++) {
+                for (let H = 0, P = p.length; H < P; H++) {
                   const T = p[H], N = T[0], K = T[1];
                   switch (N) {
                     case "LW":
@@ -10472,7 +10472,7 @@ function requirePdf() {
               beginSMaskMode() {
                 if (this.inSMaskMode)
                   throw new Error("beginSMaskMode called while already in smask mode");
-                const p = this.ctx.canvas.width, H = this.ctx.canvas.height, U = "smaskGroupAt" + this.groupLevel, T = this.cachedCanvases.getCanvas(U, p, H);
+                const p = this.ctx.canvas.width, H = this.ctx.canvas.height, P = "smaskGroupAt" + this.groupLevel, T = this.cachedCanvases.getCanvas(P, p, H);
                 this.suspendedCtx = this.ctx, this.ctx = T.context;
                 const N = this.ctx;
                 N.setTransform(...(0, A.getCurrentTransform)(this.suspendedCtx)), r(this.suspendedCtx, N), B(N, this.suspendedCtx), this.setGState([["BM", "source-over"], ["ca", 1], ["CA", 1]]);
@@ -10486,8 +10486,8 @@ function requirePdf() {
                 if (!this.current.activeSMask)
                   return;
                 p ? (p[0] = Math.floor(p[0]), p[1] = Math.floor(p[1]), p[2] = Math.ceil(p[2]), p[3] = Math.ceil(p[3])) : p = [0, 0, this.ctx.canvas.width, this.ctx.canvas.height];
-                const H = this.current.activeSMask, U = this.suspendedCtx;
-                AI(U, H, this.ctx, p), this.ctx.save(), this.ctx.setTransform(1, 0, 0, 1, 0, 0), this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height), this.ctx.restore();
+                const H = this.current.activeSMask, P = this.suspendedCtx;
+                AI(P, H, this.ctx, p), this.ctx.save(), this.ctx.setTransform(1, 0, 0, 1, 0, 0), this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height), this.ctx.restore();
               }
               save() {
                 this.inSMaskMode ? (r(this.ctx, this.suspendedCtx), this.suspendedCtx.save()) : this.ctx.save();
@@ -10497,13 +10497,13 @@ function requirePdf() {
               restore() {
                 this.stateStack.length === 0 && this.inSMaskMode && this.endSMaskMode(), this.stateStack.length !== 0 && (this.current = this.stateStack.pop(), this.inSMaskMode ? (this.suspendedCtx.restore(), r(this.suspendedCtx, this.ctx)) : this.ctx.restore(), this.checkSMaskState(), this.pendingClip = null, this._cachedScaleForStroking = null, this._cachedGetSinglePixelWidth = null);
               }
-              transform(p, H, U, T, N, K) {
-                this.ctx.transform(p, H, U, T, N, K), this._cachedScaleForStroking = null, this._cachedGetSinglePixelWidth = null;
+              transform(p, H, P, T, N, K) {
+                this.ctx.transform(p, H, P, T, N, K), this._cachedScaleForStroking = null, this._cachedGetSinglePixelWidth = null;
               }
-              constructPath(p, H, U) {
+              constructPath(p, H, P) {
                 const T = this.ctx, N = this.current;
-                let K = N.x, J = N.y, L, E;
-                const iI = (0, A.getCurrentTransform)(T), ZI = iI[0] === 0 && iI[3] === 0 || iI[1] === 0 && iI[2] === 0, aI = ZI ? U.slice(0) : null;
+                let K = N.x, J = N.y, L, U;
+                const iI = (0, A.getCurrentTransform)(T), ZI = iI[0] === 0 && iI[3] === 0 || iI[1] === 0 && iI[2] === 0, aI = ZI ? P.slice(0) : null;
                 for (let GI = 0, mI = 0, wI = p.length; GI < wI; GI++)
                   switch (p[GI] | 0) {
                     case l.OPS.rectangle:
@@ -10518,13 +10518,13 @@ function requirePdf() {
                       K = H[mI++], J = H[mI++], T.lineTo(K, J), ZI || N.updatePathMinMax(iI, K, J);
                       break;
                     case l.OPS.curveTo:
-                      L = K, E = J, K = H[mI + 4], J = H[mI + 5], T.bezierCurveTo(H[mI], H[mI + 1], H[mI + 2], H[mI + 3], K, J), N.updateCurvePathMinMax(iI, L, E, H[mI], H[mI + 1], H[mI + 2], H[mI + 3], K, J, aI), mI += 6;
+                      L = K, U = J, K = H[mI + 4], J = H[mI + 5], T.bezierCurveTo(H[mI], H[mI + 1], H[mI + 2], H[mI + 3], K, J), N.updateCurvePathMinMax(iI, L, U, H[mI], H[mI + 1], H[mI + 2], H[mI + 3], K, J, aI), mI += 6;
                       break;
                     case l.OPS.curveTo2:
-                      L = K, E = J, T.bezierCurveTo(K, J, H[mI], H[mI + 1], H[mI + 2], H[mI + 3]), N.updateCurvePathMinMax(iI, L, E, K, J, H[mI], H[mI + 1], H[mI + 2], H[mI + 3], aI), K = H[mI + 2], J = H[mI + 3], mI += 4;
+                      L = K, U = J, T.bezierCurveTo(K, J, H[mI], H[mI + 1], H[mI + 2], H[mI + 3]), N.updateCurvePathMinMax(iI, L, U, K, J, H[mI], H[mI + 1], H[mI + 2], H[mI + 3], aI), K = H[mI + 2], J = H[mI + 3], mI += 4;
                       break;
                     case l.OPS.curveTo3:
-                      L = K, E = J, K = H[mI + 2], J = H[mI + 3], T.bezierCurveTo(H[mI], H[mI + 1], K, J, K, J), N.updateCurvePathMinMax(iI, L, E, H[mI], H[mI + 1], K, J, K, J, aI), mI += 4;
+                      L = K, U = J, K = H[mI + 2], J = H[mI + 3], T.bezierCurveTo(H[mI], H[mI + 1], K, J, K, J), N.updateCurvePathMinMax(iI, L, U, H[mI], H[mI + 1], K, J, K, J, aI), mI += 4;
                       break;
                     case l.OPS.closePath:
                       T.closePath();
@@ -10537,17 +10537,17 @@ function requirePdf() {
               }
               stroke(p) {
                 p = typeof p != "undefined" ? p : !0;
-                const H = this.ctx, U = this.current.strokeColor;
-                H.globalAlpha = this.current.strokeAlpha, this.contentVisible && (typeof U == "object" && U !== null && U !== void 0 && U.getPattern ? (H.save(), H.strokeStyle = U.getPattern(H, this, (0, A.getCurrentTransformInverse)(H), d.PathType.STROKE), this.rescaleAndStroke(!1), H.restore()) : this.rescaleAndStroke(!0)), p && this.consumePath(this.current.getClippedPathBoundingBox()), H.globalAlpha = this.current.fillAlpha;
+                const H = this.ctx, P = this.current.strokeColor;
+                H.globalAlpha = this.current.strokeAlpha, this.contentVisible && (typeof P == "object" && P !== null && P !== void 0 && P.getPattern ? (H.save(), H.strokeStyle = P.getPattern(H, this, (0, A.getCurrentTransformInverse)(H), d.PathType.STROKE), this.rescaleAndStroke(!1), H.restore()) : this.rescaleAndStroke(!0)), p && this.consumePath(this.current.getClippedPathBoundingBox()), H.globalAlpha = this.current.fillAlpha;
               }
               closeStroke() {
                 this.closePath(), this.stroke();
               }
               fill(p) {
                 p = typeof p != "undefined" ? p : !0;
-                const H = this.ctx, U = this.current.fillColor, T = this.current.patternFill;
+                const H = this.ctx, P = this.current.fillColor, T = this.current.patternFill;
                 let N = !1;
-                T && (H.save(), H.fillStyle = U.getPattern(H, this, (0, A.getCurrentTransformInverse)(H), d.PathType.FILL), N = !0);
+                T && (H.save(), H.fillStyle = P.getPattern(H, this, (0, A.getCurrentTransformInverse)(H), d.PathType.FILL), N = !0);
                 const K = this.current.getClippedPathBoundingBox();
                 this.contentVisible && K !== null && (this.pendingEOFill ? (H.fill("evenodd"), this.pendingEOFill = !1) : H.fill()), N && H.restore(), p && this.consumePath(K);
               }
@@ -10585,8 +10585,8 @@ function requirePdf() {
                   return;
                 }
                 H.save(), H.beginPath();
-                for (const U of p)
-                  H.setTransform(...U.transform), H.translate(U.x, U.y), U.addToPath(H, U.fontSize);
+                for (const P of p)
+                  H.setTransform(...P.transform), H.translate(P.x, P.y), P.addToPath(H, P.fontSize);
                 H.restore(), H.clip(), H.beginPath(), delete this.pendingTextPaths;
               }
               setCharSpacing(p) {
@@ -10602,17 +10602,17 @@ function requirePdf() {
                 this.current.leading = -p;
               }
               setFont(p, H) {
-                const U = this.commonObjs.get(p), T = this.current;
-                if (!U)
+                const P = this.commonObjs.get(p), T = this.current;
+                if (!P)
                   throw new Error(`Can't find font for ${p}`);
-                if (T.fontMatrix = U.fontMatrix || l.FONT_IDENTITY_MATRIX, (T.fontMatrix[0] === 0 || T.fontMatrix[3] === 0) && (0, l.warn)("Invalid font matrix for font " + p), H < 0 ? (H = -H, T.fontDirection = -1) : T.fontDirection = 1, this.current.font = U, this.current.fontSize = H, U.isType3Font)
+                if (T.fontMatrix = P.fontMatrix || l.FONT_IDENTITY_MATRIX, (T.fontMatrix[0] === 0 || T.fontMatrix[3] === 0) && (0, l.warn)("Invalid font matrix for font " + p), H < 0 ? (H = -H, T.fontDirection = -1) : T.fontDirection = 1, this.current.font = P, this.current.fontSize = H, P.isType3Font)
                   return;
-                const N = U.loadedName || "sans-serif";
+                const N = P.loadedName || "sans-serif";
                 let K = "normal";
-                U.black ? K = "900" : U.bold && (K = "bold");
-                const J = U.italic ? "italic" : "normal", L = `"${N}", ${U.fallbackName}`;
-                let E = H;
-                H < G ? E = G : H > b && (E = b), this.current.fontSizeScale = H / E, this.ctx.font = `${J} ${K} ${E}px ${L}`;
+                P.black ? K = "900" : P.bold && (K = "bold");
+                const J = P.italic ? "italic" : "normal", L = `"${N}", ${P.fallbackName}`;
+                let U = H;
+                H < G ? U = G : H > b && (U = b), this.current.fontSizeScale = H / U, this.ctx.font = `${J} ${K} ${U}px ${L}`;
               }
               setTextRenderingMode(p) {
                 this.current.textRenderingMode = p;
@@ -10626,20 +10626,20 @@ function requirePdf() {
               setLeadingMoveText(p, H) {
                 this.setLeading(-H), this.moveText(p, H);
               }
-              setTextMatrix(p, H, U, T, N, K) {
-                this.current.textMatrix = [p, H, U, T, N, K], this.current.textMatrixScale = Math.hypot(p, H), this.current.x = this.current.lineX = 0, this.current.y = this.current.lineY = 0;
+              setTextMatrix(p, H, P, T, N, K) {
+                this.current.textMatrix = [p, H, P, T, N, K], this.current.textMatrixScale = Math.hypot(p, H), this.current.x = this.current.lineX = 0, this.current.y = this.current.lineY = 0;
               }
               nextLine() {
                 this.moveText(0, this.current.leading);
               }
-              paintChar(p, H, U, T) {
-                const N = this.ctx, K = this.current, J = K.font, L = K.textRenderingMode, E = K.fontSize / K.fontSizeScale, iI = L & l.TextRenderingMode.FILL_STROKE_MASK, ZI = !!(L & l.TextRenderingMode.ADD_TO_PATH_FLAG), aI = K.patternFill && !J.missingFile;
+              paintChar(p, H, P, T) {
+                const N = this.ctx, K = this.current, J = K.font, L = K.textRenderingMode, U = K.fontSize / K.fontSizeScale, iI = L & l.TextRenderingMode.FILL_STROKE_MASK, ZI = !!(L & l.TextRenderingMode.ADD_TO_PATH_FLAG), aI = K.patternFill && !J.missingFile;
                 let GI;
-                (J.disableFontFace || ZI || aI) && (GI = J.getPathGenerator(this.commonObjs, p)), J.disableFontFace || aI ? (N.save(), N.translate(H, U), N.beginPath(), GI(N, E), T && N.setTransform(...T), (iI === l.TextRenderingMode.FILL || iI === l.TextRenderingMode.FILL_STROKE) && N.fill(), (iI === l.TextRenderingMode.STROKE || iI === l.TextRenderingMode.FILL_STROKE) && N.stroke(), N.restore()) : ((iI === l.TextRenderingMode.FILL || iI === l.TextRenderingMode.FILL_STROKE) && N.fillText(p, H, U), (iI === l.TextRenderingMode.STROKE || iI === l.TextRenderingMode.FILL_STROKE) && N.strokeText(p, H, U)), ZI && (this.pendingTextPaths || (this.pendingTextPaths = [])).push({
+                (J.disableFontFace || ZI || aI) && (GI = J.getPathGenerator(this.commonObjs, p)), J.disableFontFace || aI ? (N.save(), N.translate(H, P), N.beginPath(), GI(N, U), T && N.setTransform(...T), (iI === l.TextRenderingMode.FILL || iI === l.TextRenderingMode.FILL_STROKE) && N.fill(), (iI === l.TextRenderingMode.STROKE || iI === l.TextRenderingMode.FILL_STROKE) && N.stroke(), N.restore()) : ((iI === l.TextRenderingMode.FILL || iI === l.TextRenderingMode.FILL_STROKE) && N.fillText(p, H, P), (iI === l.TextRenderingMode.STROKE || iI === l.TextRenderingMode.FILL_STROKE) && N.strokeText(p, H, P)), ZI && (this.pendingTextPaths || (this.pendingTextPaths = [])).push({
                   transform: (0, A.getCurrentTransform)(N),
                   x: H,
-                  y: U,
-                  fontSize: E,
+                  y: P,
+                  fontSize: U,
                   addToPath: GI
                 });
               }
@@ -10649,23 +10649,23 @@ function requirePdf() {
                 } = this.cachedCanvases.getCanvas("isFontSubpixelAAEnabled", 10, 10);
                 p.scale(1.5, 1), p.fillText("I", 0, 10);
                 const H = p.getImageData(0, 0, 10, 10).data;
-                let U = !1;
+                let P = !1;
                 for (let T = 3; T < H.length; T += 4)
                   if (H[T] > 0 && H[T] < 255) {
-                    U = !0;
+                    P = !0;
                     break;
                   }
-                return (0, l.shadow)(this, "isFontSubpixelAAEnabled", U);
+                return (0, l.shadow)(this, "isFontSubpixelAAEnabled", P);
               }
               showText(p) {
-                const H = this.current, U = H.font;
-                if (U.isType3Font)
+                const H = this.current, P = H.font;
+                if (P.isType3Font)
                   return this.showType3Text(p);
                 const T = H.fontSize;
                 if (T === 0)
                   return;
-                const N = this.ctx, K = H.fontSizeScale, J = H.charSpacing, L = H.wordSpacing, E = H.fontDirection, iI = H.textHScale * E, ZI = p.length, aI = U.vertical, GI = aI ? 1 : -1, mI = U.defaultVMetrics, wI = T * H.fontMatrix[0], YI = H.textRenderingMode === l.TextRenderingMode.FILL && !U.disableFontFace && !H.patternFill;
-                N.save(), N.transform(...H.textMatrix), N.translate(H.x, H.y + H.textRise), E > 0 ? N.scale(iI, -1) : N.scale(iI, 1);
+                const N = this.ctx, K = H.fontSizeScale, J = H.charSpacing, L = H.wordSpacing, U = H.fontDirection, iI = H.textHScale * U, ZI = p.length, aI = P.vertical, GI = aI ? 1 : -1, mI = P.defaultVMetrics, wI = T * H.fontMatrix[0], YI = H.textRenderingMode === l.TextRenderingMode.FILL && !P.disableFontFace && !H.patternFill;
+                N.save(), N.transform(...H.textMatrix), N.translate(H.x, H.y + H.textRise), U > 0 ? N.scale(iI, -1) : N.scale(iI, 1);
                 let uI;
                 if (H.patternFill) {
                   N.save();
@@ -10695,14 +10695,14 @@ function requirePdf() {
                     yI = II ? -II[0] : yI, F = nI / K, bI = (rI + x) / K;
                   } else
                     F = rI / K, bI = 0;
-                  if (U.remeasure && yI > 0) {
+                  if (P.remeasure && yI > 0) {
                     const II = N.measureText(kI).width * 1e3 / T * K;
                     if (yI < II && this.isFontSubpixelAAEnabled) {
                       const nI = yI / II;
                       PI = !0, N.save(), N.scale(nI, 1), F /= nI;
                     } else yI !== II && (F += (yI - II) / 2e3 * T / K);
                   }
-                  if (this.contentVisible && (KI.isInFont || U.missingFile)) {
+                  if (this.contentVisible && (KI.isInFont || P.missingFile)) {
                     if (YI && !DI)
                       N.fillText(kI, F, bI);
                     else if (this.paintChar(kI, F, bI, uI), DI) {
@@ -10711,41 +10711,41 @@ function requirePdf() {
                     }
                   }
                   let HI;
-                  aI ? HI = yI * wI - OI * E : HI = yI * wI + OI * E, rI += HI, PI && N.restore();
+                  aI ? HI = yI * wI - OI * U : HI = yI * wI + OI * U, rI += HI, PI && N.restore();
                 }
                 aI ? H.y -= rI : H.x += rI * iI, N.restore(), this.compose();
               }
               showType3Text(p) {
-                const H = this.ctx, U = this.current, T = U.font, N = U.fontSize, K = U.fontDirection, J = T.vertical ? 1 : -1, L = U.charSpacing, E = U.wordSpacing, iI = U.textHScale * K, ZI = U.fontMatrix || l.FONT_IDENTITY_MATRIX, aI = p.length, GI = U.textRenderingMode === l.TextRenderingMode.INVISIBLE;
+                const H = this.ctx, P = this.current, T = P.font, N = P.fontSize, K = P.fontDirection, J = T.vertical ? 1 : -1, L = P.charSpacing, U = P.wordSpacing, iI = P.textHScale * K, ZI = P.fontMatrix || l.FONT_IDENTITY_MATRIX, aI = p.length, GI = P.textRenderingMode === l.TextRenderingMode.INVISIBLE;
                 let mI, wI, YI, uI;
                 if (!(GI || N === 0)) {
-                  for (this._cachedScaleForStroking = null, this._cachedGetSinglePixelWidth = null, H.save(), H.transform(...U.textMatrix), H.translate(U.x, U.y), H.scale(iI, K), mI = 0; mI < aI; ++mI) {
+                  for (this._cachedScaleForStroking = null, this._cachedGetSinglePixelWidth = null, H.save(), H.transform(...P.textMatrix), H.translate(P.x, P.y), H.scale(iI, K), mI = 0; mI < aI; ++mI) {
                     if (wI = p[mI], typeof wI == "number") {
-                      uI = J * wI * N / 1e3, this.ctx.translate(uI, 0), U.x += uI * iI;
+                      uI = J * wI * N / 1e3, this.ctx.translate(uI, 0), P.x += uI * iI;
                       continue;
                     }
-                    const RI = (wI.isSpace ? E : 0) + L, pI = T.charProcOperatorList[wI.operatorListId];
+                    const RI = (wI.isSpace ? U : 0) + L, pI = T.charProcOperatorList[wI.operatorListId];
                     if (!pI) {
                       (0, l.warn)(`Type3 character "${wI.operatorListId}" is not available.`);
                       continue;
                     }
-                    this.contentVisible && (this.processingType3 = wI, this.save(), H.scale(N, N), H.transform(...ZI), this.executeOperatorList(pI), this.restore()), YI = l.Util.applyTransform([wI.width, 0], ZI)[0] * N + RI, H.translate(YI, 0), U.x += YI * iI;
+                    this.contentVisible && (this.processingType3 = wI, this.save(), H.scale(N, N), H.transform(...ZI), this.executeOperatorList(pI), this.restore()), YI = l.Util.applyTransform([wI.width, 0], ZI)[0] * N + RI, H.translate(YI, 0), P.x += YI * iI;
                   }
                   H.restore(), this.processingType3 = null;
                 }
               }
               setCharWidth(p, H) {
               }
-              setCharWidthAndBounds(p, H, U, T, N, K) {
-                this.ctx.rect(U, T, N - U, K - T), this.ctx.clip(), this.endPath();
+              setCharWidthAndBounds(p, H, P, T, N, K) {
+                this.ctx.rect(P, T, N - P, K - T), this.ctx.clip(), this.endPath();
               }
               getColorN_Pattern(p) {
                 let H;
                 if (p[0] === "TilingPattern") {
-                  const U = p[1], T = this.baseTransform || (0, A.getCurrentTransform)(this.ctx), N = {
+                  const P = p[1], T = this.baseTransform || (0, A.getCurrentTransform)(this.ctx), N = {
                     createCanvasGraphics: (K) => new hI(K, this.commonObjs, this.objs, this.canvasFactory)
                   };
-                  H = new d.TilingPattern(p, U, this.ctx, N, T);
+                  H = new d.TilingPattern(p, P, this.ctx, N, T);
                 } else
                   H = this._getPattern(p[1], p[2]);
                 return H;
@@ -10756,30 +10756,30 @@ function requirePdf() {
               setFillColorN() {
                 this.current.fillColor = this.getColorN_Pattern(arguments), this.current.patternFill = !0;
               }
-              setStrokeRGBColor(p, H, U) {
+              setStrokeRGBColor(p, H, P) {
                 var T;
-                const N = ((T = this.selectColor) === null || T === void 0 ? void 0 : T.call(this, p, H, U)) || l.Util.makeHexColor(p, H, U);
+                const N = ((T = this.selectColor) === null || T === void 0 ? void 0 : T.call(this, p, H, P)) || l.Util.makeHexColor(p, H, P);
                 this.ctx.strokeStyle = N, this.current.strokeColor = N;
               }
-              setFillRGBColor(p, H, U) {
+              setFillRGBColor(p, H, P) {
                 var T;
-                const N = ((T = this.selectColor) === null || T === void 0 ? void 0 : T.call(this, p, H, U)) || l.Util.makeHexColor(p, H, U);
+                const N = ((T = this.selectColor) === null || T === void 0 ? void 0 : T.call(this, p, H, P)) || l.Util.makeHexColor(p, H, P);
                 this.ctx.fillStyle = N, this.current.fillColor = N, this.current.patternFill = !1;
               }
               _getPattern(p) {
-                let H = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : null, U;
-                return this.cachedPatterns.has(p) ? U = this.cachedPatterns.get(p) : (U = (0, d.getShadingPattern)(this.objs.get(p)), this.cachedPatterns.set(p, U)), H && (U.matrix = H), U;
+                let H = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : null, P;
+                return this.cachedPatterns.has(p) ? P = this.cachedPatterns.get(p) : (P = (0, d.getShadingPattern)(this.objs.get(p)), this.cachedPatterns.set(p, P)), H && (P.matrix = H), P;
               }
               shadingFill(p) {
                 if (!this.contentVisible)
                   return;
                 const H = this.ctx;
                 this.save();
-                const U = this._getPattern(p);
-                H.fillStyle = U.getPattern(H, this, (0, A.getCurrentTransformInverse)(H), d.PathType.SHADING);
+                const P = this._getPattern(p);
+                H.fillStyle = P.getPattern(H, this, (0, A.getCurrentTransformInverse)(H), d.PathType.SHADING);
                 const T = (0, A.getCurrentTransformInverse)(H);
                 if (T) {
-                  const N = H.canvas, K = N.width, J = N.height, L = l.Util.applyTransform([0, 0], T), E = l.Util.applyTransform([0, J], T), iI = l.Util.applyTransform([K, 0], T), ZI = l.Util.applyTransform([K, J], T), aI = Math.min(L[0], E[0], iI[0], ZI[0]), GI = Math.min(L[1], E[1], iI[1], ZI[1]), mI = Math.max(L[0], E[0], iI[0], ZI[0]), wI = Math.max(L[1], E[1], iI[1], ZI[1]);
+                  const N = H.canvas, K = N.width, J = N.height, L = l.Util.applyTransform([0, 0], T), U = l.Util.applyTransform([0, J], T), iI = l.Util.applyTransform([K, 0], T), ZI = l.Util.applyTransform([K, J], T), aI = Math.min(L[0], U[0], iI[0], ZI[0]), GI = Math.min(L[1], U[1], iI[1], ZI[1]), mI = Math.max(L[0], U[0], iI[0], ZI[0]), wI = Math.max(L[1], U[1], iI[1], ZI[1]);
                   this.ctx.fillRect(aI, GI, mI - aI, wI - GI);
                 } else
                   this.ctx.fillRect(-1e10, -1e10, 2e10, 2e10);
@@ -10793,8 +10793,8 @@ function requirePdf() {
               }
               paintFormXObjectBegin(p, H) {
                 if (this.contentVisible && (this.save(), this.baseTransformStack.push(this.baseTransform), Array.isArray(p) && p.length === 6 && this.transform(...p), this.baseTransform = (0, A.getCurrentTransform)(this.ctx), H)) {
-                  const U = H[2] - H[0], T = H[3] - H[1];
-                  this.ctx.rect(H[0], H[1], U, T), this.current.updateRectMinMax((0, A.getCurrentTransform)(this.ctx), H), this.clip(), this.endPath();
+                  const P = H[2] - H[0], T = H[3] - H[1];
+                  this.ctx.rect(H[0], H[1], P, T), this.current.updateRectMinMax((0, A.getCurrentTransform)(this.ctx), H), this.clip(), this.endPath();
                 }
               }
               paintFormXObjectEnd() {
@@ -10806,19 +10806,19 @@ function requirePdf() {
                 this.save(), this.inSMaskMode && (this.endSMaskMode(), this.current.activeSMask = null);
                 const H = this.ctx;
                 p.isolated || (0, l.info)("TODO: Support non-isolated groups."), p.knockout && (0, l.warn)("Knockout groups not supported.");
-                const U = (0, A.getCurrentTransform)(H);
+                const P = (0, A.getCurrentTransform)(H);
                 if (p.matrix && H.transform(...p.matrix), !p.bbox)
                   throw new Error("Bounding box is required.");
                 let T = l.Util.getAxialAlignedBoundingBox(p.bbox, (0, A.getCurrentTransform)(H));
                 const N = [0, 0, H.canvas.width, H.canvas.height];
                 T = l.Util.intersect(T, N) || [0, 0, 0, 0];
                 const K = Math.floor(T[0]), J = Math.floor(T[1]);
-                let L = Math.max(Math.ceil(T[2]) - K, 1), E = Math.max(Math.ceil(T[3]) - J, 1), iI = 1, ZI = 1;
-                L > m && (iI = L / m, L = m), E > m && (ZI = E / m, E = m), this.current.startNewPathAndClipBox([0, 0, L, E]);
+                let L = Math.max(Math.ceil(T[2]) - K, 1), U = Math.max(Math.ceil(T[3]) - J, 1), iI = 1, ZI = 1;
+                L > m && (iI = L / m, L = m), U > m && (ZI = U / m, U = m), this.current.startNewPathAndClipBox([0, 0, L, U]);
                 let aI = "groupAt" + this.groupLevel;
                 p.smask && (aI += "_smask_" + this.smaskCounter++ % 2);
-                const GI = this.cachedCanvases.getCanvas(aI, L, E), mI = GI.context;
-                mI.scale(1 / iI, 1 / ZI), mI.translate(-K, -J), mI.transform(...U), p.smask ? this.smaskStack.push({
+                const GI = this.cachedCanvases.getCanvas(aI, L, U), mI = GI.context;
+                mI.scale(1 / iI, 1 / ZI), mI.translate(-K, -J), mI.transform(...P), p.smask ? this.smaskStack.push({
                   canvas: GI.canvas,
                   context: mI,
                   offsetX: K,
@@ -10835,8 +10835,8 @@ function requirePdf() {
                 if (!this.contentVisible)
                   return;
                 this.groupLevel--;
-                const H = this.ctx, U = this.groupStack.pop();
-                if (this.ctx = U, this.ctx.imageSmoothingEnabled = !1, p.smask)
+                const H = this.ctx, P = this.groupStack.pop();
+                if (this.ctx = P, this.ctx.imageSmoothingEnabled = !1, p.smask)
                   this.tempSMask = this.smaskStack.pop(), this.restore();
                 else {
                   this.ctx.restore();
@@ -10846,12 +10846,12 @@ function requirePdf() {
                   this.ctx.drawImage(H.canvas, 0, 0), this.ctx.restore(), this.compose(N);
                 }
               }
-              beginAnnotation(p, H, U, T, N) {
+              beginAnnotation(p, H, P, T, N) {
                 if (a(this, oI, BI).call(this), k(this.ctx, this.foregroundColor), this.ctx.save(), this.save(), this.baseTransform && this.ctx.setTransform(...this.baseTransform), Array.isArray(H) && H.length === 4) {
                   const K = H[2] - H[0], J = H[3] - H[1];
                   if (N && this.annotationCanvasMap) {
-                    U = U.slice(), U[4] -= H[0], U[5] -= H[1], H = H.slice(), H[0] = H[1] = 0, H[2] = K, H[3] = J;
-                    const [L, E] = l.Util.singularValueDecompose2dScale((0, A.getCurrentTransform)(this.ctx)), {
+                    P = P.slice(), P[4] -= H[0], P[5] -= H[1], H = H.slice(), H[0] = H[1] = 0, H[2] = K, H[3] = J;
+                    const [L, U] = l.Util.singularValueDecompose2dScale((0, A.getCurrentTransform)(this.ctx)), {
                       viewportScale: iI
                     } = this, ZI = Math.ceil(K * this.outputScaleX * iI), aI = Math.ceil(J * this.outputScaleY * iI);
                     this.annotationCanvas = this.canvasFactory.create(ZI, aI);
@@ -10859,11 +10859,11 @@ function requirePdf() {
                       canvas: GI,
                       context: mI
                     } = this.annotationCanvas;
-                    this.annotationCanvasMap.set(p, GI), this.annotationCanvas.savedCtx = this.ctx, this.ctx = mI, this.ctx.setTransform(L, 0, 0, -E, 0, J * E), k(this.ctx, this.foregroundColor);
+                    this.annotationCanvasMap.set(p, GI), this.annotationCanvas.savedCtx = this.ctx, this.ctx = mI, this.ctx.setTransform(L, 0, 0, -U, 0, J * U), k(this.ctx, this.foregroundColor);
                   } else
                     k(this.ctx, this.foregroundColor), this.ctx.rect(H[0], H[1], K, J), this.ctx.clip(), this.endPath();
                 }
-                this.current = new n(this.ctx.canvas.width, this.ctx.canvas.height), this.transform(...U), this.transform(...T);
+                this.current = new n(this.ctx.canvas.width, this.ctx.canvas.height), this.transform(...P), this.transform(...T);
               }
               endAnnotation() {
                 this.annotationCanvas && (this.ctx = this.annotationCanvas.savedCtx, delete this.annotationCanvas.savedCtx, delete this.annotationCanvas);
@@ -10873,45 +10873,45 @@ function requirePdf() {
                   return;
                 const H = p.count;
                 p = this.getObject(p.data, p), p.count = H;
-                const U = this.ctx, T = this.processingType3;
+                const P = this.ctx, T = this.processingType3;
                 if (T && (T.compiled === void 0 && (T.compiled = t(p)), T.compiled)) {
-                  T.compiled(U);
+                  T.compiled(P);
                   return;
                 }
                 const N = this._createMaskCanvas(p), K = N.canvas;
-                U.save(), U.setTransform(1, 0, 0, 1, 0, 0), U.drawImage(K, N.offsetX, N.offsetY), U.restore(), this.compose();
+                P.save(), P.setTransform(1, 0, 0, 1, 0, 0), P.drawImage(K, N.offsetX, N.offsetY), P.restore(), this.compose();
               }
               paintImageMaskXObjectRepeat(p, H) {
-                let U = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : 0, T = arguments.length > 3 && arguments[3] !== void 0 ? arguments[3] : 0, N = arguments.length > 4 ? arguments[4] : void 0, K = arguments.length > 5 ? arguments[5] : void 0;
+                let P = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : 0, T = arguments.length > 3 && arguments[3] !== void 0 ? arguments[3] : 0, N = arguments.length > 4 ? arguments[4] : void 0, K = arguments.length > 5 ? arguments[5] : void 0;
                 if (!this.contentVisible)
                   return;
                 p = this.getObject(p.data, p);
                 const J = this.ctx;
                 J.save();
                 const L = (0, A.getCurrentTransform)(J);
-                J.transform(H, U, T, N, 0, 0);
-                const E = this._createMaskCanvas(p);
+                J.transform(H, P, T, N, 0, 0);
+                const U = this._createMaskCanvas(p);
                 J.setTransform(1, 0, 0, 1, 0, 0);
                 for (let iI = 0, ZI = K.length; iI < ZI; iI += 2) {
-                  const aI = l.Util.transform(L, [H, U, T, N, K[iI], K[iI + 1]]), [GI, mI] = l.Util.applyTransform([0, 0], aI);
-                  J.drawImage(E.canvas, GI, mI);
+                  const aI = l.Util.transform(L, [H, P, T, N, K[iI], K[iI + 1]]), [GI, mI] = l.Util.applyTransform([0, 0], aI);
+                  J.drawImage(U.canvas, GI, mI);
                 }
                 J.restore(), this.compose();
               }
               paintImageMaskXObjectGroup(p) {
                 if (!this.contentVisible)
                   return;
-                const H = this.ctx, U = this.current.fillColor, T = this.current.patternFill;
+                const H = this.ctx, P = this.current.fillColor, T = this.current.patternFill;
                 for (const N of p) {
                   const {
                     data: K,
                     width: J,
                     height: L,
-                    transform: E
+                    transform: U
                   } = N, iI = this.cachedCanvases.getCanvas("maskCanvas", J, L), ZI = iI.context;
                   ZI.save();
                   const aI = this.getObject(K, N);
-                  R(ZI, aI), ZI.globalCompositeOperation = "source-in", ZI.fillStyle = T ? U.getPattern(ZI, this, (0, A.getCurrentTransformInverse)(H), d.PathType.FILL) : U, ZI.fillRect(0, 0, J, L), ZI.restore(), H.save(), H.transform(...E), H.scale(1, -1), u(H, iI.canvas, 0, 0, J, L, 0, -1, 1, 1), H.restore();
+                  R(ZI, aI), ZI.globalCompositeOperation = "source-in", ZI.fillStyle = T ? P.getPattern(ZI, this, (0, A.getCurrentTransformInverse)(H), d.PathType.FILL) : P, ZI.fillRect(0, 0, J, L), ZI.restore(), H.save(), H.transform(...U), H.scale(1, -1), u(H, iI.canvas, 0, 0, J, L, 0, -1, 1, 1), H.restore();
                 }
                 this.compose();
               }
@@ -10925,7 +10925,7 @@ function requirePdf() {
                 }
                 this.paintInlineImageXObject(H);
               }
-              paintImageXObjectRepeat(p, H, U, T) {
+              paintImageXObjectRepeat(p, H, P, T) {
                 if (!this.contentVisible)
                   return;
                 const N = this.getObject(p);
@@ -10934,9 +10934,9 @@ function requirePdf() {
                   return;
                 }
                 const K = N.width, J = N.height, L = [];
-                for (let E = 0, iI = T.length; E < iI; E += 2)
+                for (let U = 0, iI = T.length; U < iI; U += 2)
                   L.push({
-                    transform: [H, 0, 0, U, T[E], T[E + 1]],
+                    transform: [H, 0, 0, P, T[U], T[U + 1]],
                     x: 0,
                     y: 0,
                     w: K,
@@ -10947,23 +10947,23 @@ function requirePdf() {
               paintInlineImageXObject(p) {
                 if (!this.contentVisible)
                   return;
-                const H = p.width, U = p.height, T = this.ctx;
-                this.save(), T.scale(1 / H, -1 / U);
+                const H = p.width, P = p.height, T = this.ctx;
+                this.save(), T.scale(1 / H, -1 / P);
                 let N;
                 if (typeof HTMLElement == "function" && p instanceof HTMLElement || !p.data)
                   N = p;
                 else {
-                  const E = this.cachedCanvases.getCanvas("inlineImage", H, U), iI = E.context;
-                  X(iI, p, this.current.transferMaps), N = E.canvas;
+                  const U = this.cachedCanvases.getCanvas("inlineImage", H, P), iI = U.context;
+                  X(iI, p, this.current.transferMaps), N = U.canvas;
                 }
                 const K = this._scaleImage(N, (0, A.getCurrentTransformInverse)(T));
                 T.imageSmoothingEnabled = j((0, A.getCurrentTransform)(T), p.interpolate);
-                const [J, L] = u(T, K.img, 0, 0, K.paintWidth, K.paintHeight, 0, -U, H, U);
+                const [J, L] = u(T, K.img, 0, 0, K.paintWidth, K.paintHeight, 0, -P, H, P);
                 if (this.imageLayer) {
-                  const [E, iI] = l.Util.applyTransform([0, -U], (0, A.getCurrentTransform)(this.ctx));
+                  const [U, iI] = l.Util.applyTransform([0, -P], (0, A.getCurrentTransform)(this.ctx));
                   this.imageLayer.appendImage({
                     imgData: p,
-                    left: E,
+                    left: U,
                     top: iI,
                     width: J,
                     height: L
@@ -10974,20 +10974,20 @@ function requirePdf() {
               paintInlineImageXObjectGroup(p, H) {
                 if (!this.contentVisible)
                   return;
-                const U = this.ctx, T = p.width, N = p.height, K = this.cachedCanvases.getCanvas("inlineImage", T, N), J = K.context;
+                const P = this.ctx, T = p.width, N = p.height, K = this.cachedCanvases.getCanvas("inlineImage", T, N), J = K.context;
                 X(J, p, this.current.transferMaps);
                 for (const L of H) {
-                  if (U.save(), U.transform(...L.transform), U.scale(1, -1), u(U, K.canvas, L.x, L.y, L.w, L.h, 0, -1, 1, 1), this.imageLayer) {
-                    const [E, iI] = l.Util.applyTransform([L.x, L.y], (0, A.getCurrentTransform)(this.ctx));
+                  if (P.save(), P.transform(...L.transform), P.scale(1, -1), u(P, K.canvas, L.x, L.y, L.w, L.h, 0, -1, 1, 1), this.imageLayer) {
+                    const [U, iI] = l.Util.applyTransform([L.x, L.y], (0, A.getCurrentTransform)(this.ctx));
                     this.imageLayer.appendImage({
                       imgData: p,
-                      left: E,
+                      left: U,
                       top: iI,
                       width: T,
                       height: N
                     });
                   }
-                  U.restore();
+                  P.restore();
                 }
                 this.compose();
               }
@@ -11020,8 +11020,8 @@ function requirePdf() {
               consumePath(p) {
                 const H = this.current.isEmptyClip();
                 this.pendingClip && this.current.updateClipFromPath(), this.pendingClip || this.compose(p);
-                const U = this.ctx;
-                this.pendingClip && (H || (this.pendingClip === lI ? U.clip("evenodd") : U.clip()), this.pendingClip = null), this.current.startNewPathAndClipBox(this.current.clipBox), U.beginPath();
+                const P = this.ctx;
+                this.pendingClip && (H || (this.pendingClip === lI ? P.clip("evenodd") : P.clip()), this.pendingClip = null), this.current.startNewPathAndClipBox(this.current.clipBox), P.beginPath();
               }
               getSinglePixelWidth() {
                 if (!this._cachedGetSinglePixelWidth) {
@@ -11029,8 +11029,8 @@ function requirePdf() {
                   if (p[1] === 0 && p[2] === 0)
                     this._cachedGetSinglePixelWidth = 1 / Math.min(Math.abs(p[0]), Math.abs(p[3]));
                   else {
-                    const H = Math.abs(p[0] * p[3] - p[2] * p[1]), U = Math.hypot(p[0], p[2]), T = Math.hypot(p[1], p[3]);
-                    this._cachedGetSinglePixelWidth = Math.max(U, T) / H;
+                    const H = Math.abs(p[0] * p[3] - p[2] * p[1]), P = Math.hypot(p[0], p[2]), T = Math.hypot(p[1], p[3]);
+                    this._cachedGetSinglePixelWidth = Math.max(P, T) / H;
                   }
                 }
                 return this._cachedGetSinglePixelWidth;
@@ -11040,25 +11040,25 @@ function requirePdf() {
                   const {
                     lineWidth: p
                   } = this.current, H = (0, A.getCurrentTransform)(this.ctx);
-                  let U, T;
+                  let P, T;
                   if (H[1] === 0 && H[2] === 0) {
                     const N = Math.abs(H[0]), K = Math.abs(H[3]);
                     if (p === 0)
-                      U = 1 / N, T = 1 / K;
+                      P = 1 / N, T = 1 / K;
                     else {
                       const J = N * p, L = K * p;
-                      U = J < 1 ? 1 / J : 1, T = L < 1 ? 1 / L : 1;
+                      P = J < 1 ? 1 / J : 1, T = L < 1 ? 1 / L : 1;
                     }
                   } else {
                     const N = Math.abs(H[0] * H[3] - H[2] * H[1]), K = Math.hypot(H[0], H[1]), J = Math.hypot(H[2], H[3]);
                     if (p === 0)
-                      U = J / N, T = K / N;
+                      P = J / N, T = K / N;
                     else {
                       const L = p * N;
-                      U = J > L ? J / L : 1, T = K > L ? K / L : 1;
+                      P = J > L ? J / L : 1, T = K > L ? K / L : 1;
                     }
                   }
-                  this._cachedScaleForStroking = [U, T];
+                  this._cachedScaleForStroking = [P, T];
                 }
                 return this._cachedScaleForStroking;
               }
@@ -11066,16 +11066,16 @@ function requirePdf() {
                 const {
                   ctx: H
                 } = this, {
-                  lineWidth: U
+                  lineWidth: P
                 } = this.current, [T, N] = this.getScaleForStroking();
-                if (H.lineWidth = U || 1, T === 1 && N === 1) {
+                if (H.lineWidth = P || 1, T === 1 && N === 1) {
                   H.stroke();
                   return;
                 }
                 let K, J, L;
                 p && (K = (0, A.getCurrentTransform)(H), J = H.getLineDash().slice(), L = H.lineDashOffset), H.scale(T, N);
-                const E = Math.max(T, N);
-                H.setLineDash(H.getLineDash().map((iI) => iI / E)), H.lineDashOffset /= E, H.stroke(), p && (H.setTransform(...K), H.setLineDash(J), H.lineDashOffset = L);
+                const U = Math.max(T, N);
+                H.setLineDash(H.getLineDash().map((iI) => iI / U)), H.lineDashOffset /= U, H.stroke(), p && (H.setTransform(...K), H.setLineDash(J), H.lineDashOffset = L);
               }
               isContentVisible() {
                 for (let p = this.markedContentStack.length - 1; p >= 0; p--)
@@ -11154,22 +11154,22 @@ function requirePdf() {
               const _ = (r[h] + B.offsetX) * B.scaleX, AI = (r[h + 1] + B.offsetY) * B.scaleY, j = (r[u] + B.offsetX) * B.scaleX, v = (r[u + 1] + B.offsetY) * B.scaleY, Q = (r[t] + B.offsetX) * B.scaleX, z = (r[t + 1] + B.offsetY) * B.scaleY;
               if (AI >= z)
                 return;
-              const lI = k[n], oI = k[n + 1], hI = k[n + 2], BI = k[X], gI = k[X + 1], p = k[X + 2], H = k[R], U = k[R + 1], T = k[R + 2], N = Math.round(AI), K = Math.round(z);
-              let J, L, E, iI, ZI, aI, GI, mI;
+              const lI = k[n], oI = k[n + 1], hI = k[n + 2], BI = k[X], gI = k[X + 1], p = k[X + 2], H = k[R], P = k[R + 1], T = k[R + 2], N = Math.round(AI), K = Math.round(z);
+              let J, L, U, iI, ZI, aI, GI, mI;
               for (let wI = N; wI <= K; wI++) {
                 if (wI < v) {
                   let rI;
-                  wI < AI ? rI = 0 : rI = (AI - wI) / (AI - v), J = _ - (_ - j) * rI, L = lI - (lI - BI) * rI, E = oI - (oI - gI) * rI, iI = hI - (hI - p) * rI;
+                  wI < AI ? rI = 0 : rI = (AI - wI) / (AI - v), J = _ - (_ - j) * rI, L = lI - (lI - BI) * rI, U = oI - (oI - gI) * rI, iI = hI - (hI - p) * rI;
                 } else {
                   let rI;
-                  wI > z ? rI = 1 : v === z ? rI = 0 : rI = (v - wI) / (v - z), J = j - (j - Q) * rI, L = BI - (BI - H) * rI, E = gI - (gI - U) * rI, iI = p - (p - T) * rI;
+                  wI > z ? rI = 1 : v === z ? rI = 0 : rI = (v - wI) / (v - z), J = j - (j - Q) * rI, L = BI - (BI - H) * rI, U = gI - (gI - P) * rI, iI = p - (p - T) * rI;
                 }
                 let YI;
-                wI < AI ? YI = 0 : wI > z ? YI = 1 : YI = (AI - wI) / (AI - z), ZI = _ - (_ - Q) * YI, aI = lI - (lI - H) * YI, GI = oI - (oI - U) * YI, mI = hI - (hI - T) * YI;
+                wI < AI ? YI = 0 : wI > z ? YI = 1 : YI = (AI - wI) / (AI - z), ZI = _ - (_ - Q) * YI, aI = lI - (lI - H) * YI, GI = oI - (oI - P) * YI, mI = hI - (hI - T) * YI;
                 const uI = Math.round(Math.min(J, ZI)), RI = Math.round(Math.max(J, ZI));
                 let pI = $ * wI + uI * 4;
                 for (let rI = uI; rI <= RI; rI++)
-                  YI = (J - rI) / (J - ZI), YI < 0 ? YI = 0 : YI > 1 && (YI = 1), S[pI++] = L - (L - aI) * YI | 0, S[pI++] = E - (E - GI) * YI | 0, S[pI++] = iI - (iI - mI) * YI | 0, S[pI++] = 255;
+                  YI = (J - rI) / (J - ZI), YI < 0 ? YI = 0 : YI > 1 && (YI = 1), S[pI++] = L - (L - aI) * YI | 0, S[pI++] = U - (U - GI) * YI | 0, S[pI++] = iI - (iI - mI) * YI | 0, S[pI++] = 255;
               }
             }
             function G(M, B, h) {
@@ -12802,63 +12802,63 @@ function requirePdf() {
               }
             });
             var A = g(1), l = g(131), d = g(150), s = g(132);
-            function c(P, q) {
-              a(P, q), q.add(P);
+            function c(E, q) {
+              a(E, q), q.add(E);
             }
-            function Z(P, q, VI) {
-              return q in P ? Object.defineProperty(P, q, { value: VI, enumerable: !0, configurable: !0, writable: !0 }) : P[q] = VI, P;
+            function Z(E, q, VI) {
+              return q in E ? Object.defineProperty(E, q, { value: VI, enumerable: !0, configurable: !0, writable: !0 }) : E[q] = VI, E;
             }
-            function o(P, q, VI) {
-              a(P, q), q.set(P, VI);
+            function o(E, q, VI) {
+              a(E, q), q.set(E, VI);
             }
-            function a(P, q) {
-              if (q.has(P))
+            function a(E, q) {
+              if (q.has(E))
                 throw new TypeError("Cannot initialize the same private elements twice on an object");
             }
-            function G(P, q, VI) {
-              return b(P, q), VI;
+            function G(E, q, VI) {
+              return b(E, q), VI;
             }
-            function b(P, q) {
-              if (P !== q)
+            function b(E, q) {
+              if (E !== q)
                 throw new TypeError("Private static access of wrong provenance");
             }
-            function m(P, q, VI) {
-              var XI = y(P, q, "set");
-              return V(P, XI, VI), VI;
+            function m(E, q, VI) {
+              var XI = y(E, q, "set");
+              return V(E, XI, VI), VI;
             }
-            function V(P, q, VI) {
+            function V(E, q, VI) {
               if (q.set)
-                q.set.call(P, VI);
+                q.set.call(E, VI);
               else {
                 if (!q.writable)
                   throw new TypeError("attempted to set read only private field");
                 q.value = VI;
               }
             }
-            function Y(P, q) {
-              var VI = y(P, q, "get");
-              return M(P, VI);
+            function Y(E, q) {
+              var VI = y(E, q, "get");
+              return M(E, VI);
             }
-            function y(P, q, VI) {
-              if (!q.has(P))
+            function y(E, q, VI) {
+              if (!q.has(E))
                 throw new TypeError("attempted to " + VI + " private field on non-instance");
-              return q.get(P);
+              return q.get(E);
             }
-            function M(P, q) {
-              return q.get ? q.get.call(P) : q.value;
+            function M(E, q) {
+              return q.get ? q.get.call(E) : q.value;
             }
-            function B(P, q, VI) {
-              if (!q.has(P))
+            function B(E, q, VI) {
+              if (!q.has(E))
                 throw new TypeError("attempted to get private field on non-instance");
               return VI;
             }
             const h = 16;
-            var u = /* @__PURE__ */ new WeakMap(), t = /* @__PURE__ */ new WeakMap(), n = /* @__PURE__ */ new WeakMap(), X = /* @__PURE__ */ new WeakMap(), R = /* @__PURE__ */ new WeakMap(), r = /* @__PURE__ */ new WeakMap(), k = /* @__PURE__ */ new WeakMap(), S = /* @__PURE__ */ new WeakMap(), $ = /* @__PURE__ */ new WeakMap(), O = /* @__PURE__ */ new WeakMap(), _ = /* @__PURE__ */ new WeakMap(), AI = /* @__PURE__ */ new WeakMap(), j = /* @__PURE__ */ new WeakMap(), v = /* @__PURE__ */ new WeakMap(), Q = /* @__PURE__ */ new WeakSet(), z = /* @__PURE__ */ new WeakSet(), lI = /* @__PURE__ */ new WeakSet(), oI = /* @__PURE__ */ new WeakSet(), hI = /* @__PURE__ */ new WeakSet(), BI = /* @__PURE__ */ new WeakSet(), gI = /* @__PURE__ */ new WeakSet(), p = /* @__PURE__ */ new WeakSet(), H = /* @__PURE__ */ new WeakSet(), U = /* @__PURE__ */ new WeakSet(), T = /* @__PURE__ */ new WeakSet(), N = /* @__PURE__ */ new WeakSet(), K = /* @__PURE__ */ new WeakSet(), J = /* @__PURE__ */ new WeakSet(), L = /* @__PURE__ */ new WeakSet(), E = /* @__PURE__ */ new WeakSet(), iI = /* @__PURE__ */ new WeakSet(), ZI = /* @__PURE__ */ new WeakSet(), aI = /* @__PURE__ */ new WeakSet(), GI = /* @__PURE__ */ new WeakSet(), mI = /* @__PURE__ */ new WeakSet(), wI = /* @__PURE__ */ new WeakSet();
+            var u = /* @__PURE__ */ new WeakMap(), t = /* @__PURE__ */ new WeakMap(), n = /* @__PURE__ */ new WeakMap(), X = /* @__PURE__ */ new WeakMap(), R = /* @__PURE__ */ new WeakMap(), r = /* @__PURE__ */ new WeakMap(), k = /* @__PURE__ */ new WeakMap(), S = /* @__PURE__ */ new WeakMap(), $ = /* @__PURE__ */ new WeakMap(), O = /* @__PURE__ */ new WeakMap(), _ = /* @__PURE__ */ new WeakMap(), AI = /* @__PURE__ */ new WeakMap(), j = /* @__PURE__ */ new WeakMap(), v = /* @__PURE__ */ new WeakMap(), Q = /* @__PURE__ */ new WeakSet(), z = /* @__PURE__ */ new WeakSet(), lI = /* @__PURE__ */ new WeakSet(), oI = /* @__PURE__ */ new WeakSet(), hI = /* @__PURE__ */ new WeakSet(), BI = /* @__PURE__ */ new WeakSet(), gI = /* @__PURE__ */ new WeakSet(), p = /* @__PURE__ */ new WeakSet(), H = /* @__PURE__ */ new WeakSet(), P = /* @__PURE__ */ new WeakSet(), T = /* @__PURE__ */ new WeakSet(), N = /* @__PURE__ */ new WeakSet(), K = /* @__PURE__ */ new WeakSet(), J = /* @__PURE__ */ new WeakSet(), L = /* @__PURE__ */ new WeakSet(), U = /* @__PURE__ */ new WeakSet(), iI = /* @__PURE__ */ new WeakSet(), ZI = /* @__PURE__ */ new WeakSet(), aI = /* @__PURE__ */ new WeakSet(), GI = /* @__PURE__ */ new WeakSet(), mI = /* @__PURE__ */ new WeakSet(), wI = /* @__PURE__ */ new WeakSet();
             class YI extends l.AnnotationEditor {
               constructor(q) {
                 super(oC(fg({}, q), {
                   name: "inkEditor"
-                })), c(this, wI), c(this, mI), c(this, GI), c(this, aI), c(this, ZI), c(this, iI), c(this, E), c(this, L), c(this, J), c(this, K), c(this, N), c(this, T), c(this, U), c(this, H), c(this, p), c(this, gI), c(this, BI), c(this, hI), c(this, oI), c(this, lI), c(this, z), c(this, Q), o(this, u, {
+                })), c(this, wI), c(this, mI), c(this, GI), c(this, aI), c(this, ZI), c(this, iI), c(this, U), c(this, L), c(this, J), c(this, K), c(this, N), c(this, T), c(this, P), c(this, H), c(this, p), c(this, gI), c(this, BI), c(this, hI), c(this, oI), c(this, lI), c(this, z), c(this, Q), o(this, u, {
                   writable: !0,
                   value: 0
                 }), o(this, t, {
@@ -12969,10 +12969,10 @@ function requirePdf() {
                 q.stopPropagation(), B(this, gI, PI).call(this, q.offsetX, q.offsetY);
               }
               canvasPointerup(q) {
-                q.button === 0 && this.isInEditMode() && this.currentPath.length !== 0 && (q.stopPropagation(), B(this, U, DI).call(this, q), this.setInBackground());
+                q.button === 0 && this.isInEditMode() && this.currentPath.length !== 0 && (q.stopPropagation(), B(this, P, DI).call(this, q), this.setInBackground());
               }
               canvasPointerleave(q) {
-                B(this, U, DI).call(this, q), this.setInBackground();
+                B(this, P, DI).call(this, q), this.setInBackground();
               }
               render() {
                 if (this.div)
@@ -13028,7 +13028,7 @@ function requirePdf() {
                   color: XI,
                   thickness: this.thickness,
                   opacity: this.opacity,
-                  paths: B(this, E, x).call(this, this.scaleFactor / this.parent.scaleFactor, this.translationX, this.translationY, VI),
+                  paths: B(this, U, x).call(this, this.scaleFactor / this.parent.scaleFactor, this.translationX, this.translationY, VI),
                   pageIndex: this.parent.pageIndex,
                   rect: q,
                   rotation: this.rotation
@@ -13036,11 +13036,11 @@ function requirePdf() {
               }
             }
             I.InkEditor = YI;
-            function uI(P) {
+            function uI(E) {
               const q = this.thickness;
               this.parent.addCommands({
                 cmd: () => {
-                  this.thickness = P, B(this, mI, WI).call(this);
+                  this.thickness = E, B(this, mI, WI).call(this);
                 },
                 undo: () => {
                   this.thickness = q, B(this, mI, WI).call(this);
@@ -13051,11 +13051,11 @@ function requirePdf() {
                 keepUndo: !0
               });
             }
-            function RI(P) {
+            function RI(E) {
               const q = this.color;
               this.parent.addCommands({
                 cmd: () => {
-                  this.color = P, B(this, H, kI).call(this);
+                  this.color = E, B(this, H, kI).call(this);
                 },
                 undo: () => {
                   this.color = q, B(this, H, kI).call(this);
@@ -13066,12 +13066,12 @@ function requirePdf() {
                 keepUndo: !0
               });
             }
-            function pI(P) {
-              P /= 100;
+            function pI(E) {
+              E /= 100;
               const q = this.opacity;
               this.parent.addCommands({
                 cmd: () => {
-                  this.opacity = P, B(this, H, kI).call(this);
+                  this.opacity = E, B(this, H, kI).call(this);
                 },
                 undo: () => {
                   this.opacity = q, B(this, H, kI).call(this);
@@ -13084,46 +13084,46 @@ function requirePdf() {
             }
             function rI() {
               const {
-                width: P,
+                width: E,
                 height: q,
                 rotation: VI
               } = this.parent.viewport;
               switch (VI) {
                 case 90:
-                  return [0, P, P, q];
+                  return [0, E, E, q];
                 case 180:
-                  return [P, q, P, q];
+                  return [E, q, E, q];
                 case 270:
-                  return [q, 0, P, q];
+                  return [q, 0, E, q];
                 default:
-                  return [0, 0, P, q];
+                  return [0, 0, E, q];
               }
             }
             function LI() {
               this.ctx.lineWidth = this.thickness * this.parent.scaleFactor / this.scaleFactor, this.ctx.lineCap = "round", this.ctx.lineJoin = "round", this.ctx.miterLimit = 10, this.ctx.strokeStyle = `${this.color}${(0, s.opacityToHex)(this.opacity)}`;
             }
-            function KI(P, q) {
+            function KI(E, q) {
               if (this.isEditing = !0, !Y(this, $)) {
                 var VI;
                 m(this, $, !0), B(this, K, yI).call(this), this.thickness || (this.thickness = YI._defaultThickness), this.color || (this.color = YI._defaultColor || l.AnnotationEditor._defaultLineColor), (VI = this.opacity) !== null && VI !== void 0 || (this.opacity = YI._defaultOpacity);
               }
-              this.currentPath.push([P, q]), m(this, O, null), B(this, hI, LI).call(this), this.ctx.beginPath(), this.ctx.moveTo(P, q), m(this, v, () => {
+              this.currentPath.push([E, q]), m(this, O, null), B(this, hI, LI).call(this), this.ctx.beginPath(), this.ctx.moveTo(E, q), m(this, v, () => {
                 Y(this, v) && (Y(this, O) && (this.isEmpty() ? (this.ctx.setTransform(1, 0, 0, 1, 0, 0), this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)) : B(this, H, kI).call(this), this.ctx.lineTo(...Y(this, O)), m(this, O, null), this.ctx.stroke()), window.requestAnimationFrame(Y(this, v)));
               }), window.requestAnimationFrame(Y(this, v));
             }
-            function PI(P, q) {
+            function PI(E, q) {
               const [VI, XI] = this.currentPath.at(-1);
-              P === VI && q === XI || (this.currentPath.push([P, q]), m(this, O, [P, q]));
+              E === VI && q === XI || (this.currentPath.push([E, q]), m(this, O, [E, q]));
             }
-            function OI(P, q) {
-              this.ctx.closePath(), m(this, v, null), P = Math.min(Math.max(P, 0), this.canvas.width), q = Math.min(Math.max(q, 0), this.canvas.height);
+            function OI(E, q) {
+              this.ctx.closePath(), m(this, v, null), E = Math.min(Math.max(E, 0), this.canvas.width), q = Math.min(Math.max(q, 0), this.canvas.height);
               const [VI, XI] = this.currentPath.at(-1);
-              (P !== VI || q !== XI) && this.currentPath.push([P, q]);
+              (E !== VI || q !== XI) && this.currentPath.push([E, q]);
               let MI;
               if (this.currentPath.length !== 1)
                 MI = (0, d.fitCurve)(this.currentPath, 30, null);
               else {
-                const SI = [P, q];
+                const SI = [E, q];
                 MI = [[SI, SI.slice(), SI.slice(), SI]];
               }
               const zI = G(YI, YI, nI).call(YI, MI);
@@ -13146,57 +13146,57 @@ function requirePdf() {
               }
               B(this, hI, LI).call(this);
               const {
-                canvas: P,
+                canvas: E,
                 ctx: q
               } = this;
-              q.setTransform(1, 0, 0, 1, 0, 0), q.clearRect(0, 0, P.width, P.height), B(this, L, II).call(this);
+              q.setTransform(1, 0, 0, 1, 0, 0), q.clearRect(0, 0, E.width, E.height), B(this, L, II).call(this);
               for (const VI of this.bezierPath2D)
                 q.stroke(VI);
             }
-            function DI(P) {
-              B(this, p, OI).call(this, P.offsetX, P.offsetY), this.canvas.removeEventListener("pointerleave", Y(this, R)), this.canvas.removeEventListener("pointermove", Y(this, X)), this.parent.addToAnnotationStorage(this);
+            function DI(E) {
+              B(this, p, OI).call(this, E.offsetX, E.offsetY), this.canvas.removeEventListener("pointerleave", Y(this, R)), this.canvas.removeEventListener("pointermove", Y(this, X)), this.parent.addToAnnotationStorage(this);
             }
             function F() {
-              this.canvas = document.createElement("canvas"), this.canvas.width = this.canvas.height = 0, this.canvas.className = "inkEditorCanvas", YI._l10nPromise.get("editor_ink_canvas_aria_label").then((P) => {
+              this.canvas = document.createElement("canvas"), this.canvas.width = this.canvas.height = 0, this.canvas.className = "inkEditorCanvas", YI._l10nPromise.get("editor_ink_canvas_aria_label").then((E) => {
                 var q;
-                return (q = this.canvas) === null || q === void 0 ? void 0 : q.setAttribute("aria-label", P);
+                return (q = this.canvas) === null || q === void 0 ? void 0 : q.setAttribute("aria-label", E);
               }), this.div.append(this.canvas), this.ctx = this.canvas.getContext("2d");
             }
             function bI() {
-              m(this, _, new ResizeObserver((P) => {
-                const q = P[0].contentRect;
+              m(this, _, new ResizeObserver((E) => {
+                const q = E[0].contentRect;
                 q.width && q.height && this.setDimensions(q.width, q.height);
               })), Y(this, _).observe(this.div);
             }
             function yI() {
               if (!Y(this, $))
                 return;
-              const [P, q] = this.parent.viewportBaseDimensions;
-              this.canvas.width = Math.ceil(this.width * P), this.canvas.height = Math.ceil(this.height * q), B(this, L, II).call(this);
+              const [E, q] = this.parent.viewportBaseDimensions;
+              this.canvas.width = Math.ceil(this.width * E), this.canvas.height = Math.ceil(this.height * q), B(this, L, II).call(this);
             }
-            function HI(P, q) {
-              const VI = B(this, GI, dI).call(this), XI = (P - VI) / Y(this, n), MI = (q - VI) / Y(this, t);
+            function HI(E, q) {
+              const VI = B(this, GI, dI).call(this), XI = (E - VI) / Y(this, n), MI = (q - VI) / Y(this, t);
               this.scaleFactor = Math.min(XI, MI);
             }
             function II() {
-              const P = B(this, GI, dI).call(this) / 2;
-              this.ctx.setTransform(this.scaleFactor, 0, 0, this.scaleFactor, this.translationX * this.scaleFactor + P, this.translationY * this.scaleFactor + P);
+              const E = B(this, GI, dI).call(this) / 2;
+              this.ctx.setTransform(this.scaleFactor, 0, 0, this.scaleFactor, this.translationX * this.scaleFactor + E, this.translationY * this.scaleFactor + E);
             }
-            function nI(P) {
+            function nI(E) {
               const q = new Path2D();
-              for (let VI = 0, XI = P.length; VI < XI; VI++) {
-                const [MI, zI, TI, xI] = P[VI];
+              for (let VI = 0, XI = E.length; VI < XI; VI++) {
+                const [MI, zI, TI, xI] = E[VI];
                 VI === 0 && q.moveTo(...MI), q.bezierCurveTo(zI[0], zI[1], TI[0], TI[1], xI[0], xI[1]);
               }
               return q;
             }
-            function x(P, q, VI, XI) {
+            function x(E, q, VI, XI) {
               const zI = [], TI = this.thickness / 2;
               let xI, SI;
               for (const fI of this.paths) {
                 xI = [], SI = [];
                 for (let $I = 0, jI = fI.length; $I < jI; $I++) {
-                  const [gg, lg, UI, Cg] = fI[$I], qI = P * (gg[0] + q) + TI, cg = XI - P * (gg[1] + VI) - TI, Zg = P * (lg[0] + q) + TI, ag = XI - P * (lg[1] + VI) - TI, Sg = P * (UI[0] + q) + TI, jg = XI - P * (UI[1] + VI) - TI, Fg = P * (Cg[0] + q) + TI, Gg = XI - P * (Cg[1] + VI) - TI;
+                  const [gg, lg, UI, Cg] = fI[$I], qI = E * (gg[0] + q) + TI, cg = XI - E * (gg[1] + VI) - TI, Zg = E * (lg[0] + q) + TI, ag = XI - E * (lg[1] + VI) - TI, Sg = E * (UI[0] + q) + TI, jg = XI - E * (UI[1] + VI) - TI, Fg = E * (Cg[0] + q) + TI, Gg = XI - E * (Cg[1] + VI) - TI;
                   $I === 0 && (xI.push(qI, cg), SI.push(qI, cg)), xI.push(Zg, ag, Sg, jg, Fg, Gg), B(this, iI, cI).call(this, qI, cg, Zg, ag, Sg, jg, Fg, Gg, 4, SI);
                 }
                 zI.push({
@@ -13206,37 +13206,37 @@ function requirePdf() {
               }
               return zI;
             }
-            function cI(P, q, VI, XI, MI, zI, TI, xI, SI, fI) {
-              if (B(this, ZI, sI).call(this, P, q, VI, XI, MI, zI, TI, xI)) {
+            function cI(E, q, VI, XI, MI, zI, TI, xI, SI, fI) {
+              if (B(this, ZI, sI).call(this, E, q, VI, XI, MI, zI, TI, xI)) {
                 fI.push(TI, xI);
                 return;
               }
               for (let $I = 1; $I < SI - 1; $I++) {
                 const jI = $I / SI, gg = 1 - jI;
-                let lg = jI * P + gg * VI, UI = jI * q + gg * XI, Cg = jI * VI + gg * MI, qI = jI * XI + gg * zI;
+                let lg = jI * E + gg * VI, UI = jI * q + gg * XI, Cg = jI * VI + gg * MI, qI = jI * XI + gg * zI;
                 const cg = jI * MI + gg * TI, Zg = jI * zI + gg * xI;
                 lg = jI * lg + gg * Cg, UI = jI * UI + gg * qI, Cg = jI * Cg + gg * cg, qI = jI * qI + gg * Zg, lg = jI * lg + gg * Cg, UI = jI * UI + gg * qI, fI.push(lg, UI);
               }
               fI.push(TI, xI);
             }
-            function sI(P, q, VI, XI, MI, zI, TI, xI) {
-              const fI = (3 * VI - 2 * P - TI) ** 2, $I = (3 * XI - 2 * q - xI) ** 2, jI = (3 * MI - P - 2 * TI) ** 2, gg = (3 * zI - q - 2 * xI) ** 2;
+            function sI(E, q, VI, XI, MI, zI, TI, xI) {
+              const fI = (3 * VI - 2 * E - TI) ** 2, $I = (3 * XI - 2 * q - xI) ** 2, jI = (3 * MI - E - 2 * TI) ** 2, gg = (3 * zI - q - 2 * xI) ** 2;
               return Math.max(fI, jI) + Math.max($I, gg) <= 10;
             }
             function w() {
-              let P = 1 / 0, q = -1 / 0, VI = 1 / 0, XI = -1 / 0;
+              let E = 1 / 0, q = -1 / 0, VI = 1 / 0, XI = -1 / 0;
               for (const MI of this.paths)
                 for (const [zI, TI, xI, SI] of MI) {
                   const fI = A.Util.bezierBoundingBox(...zI, ...TI, ...xI, ...SI);
-                  P = Math.min(P, fI[0]), VI = Math.min(VI, fI[1]), q = Math.max(q, fI[2]), XI = Math.max(XI, fI[3]);
+                  E = Math.min(E, fI[0]), VI = Math.min(VI, fI[1]), q = Math.max(q, fI[2]), XI = Math.max(XI, fI[3]);
                 }
-              return [P, VI, q, XI];
+              return [E, VI, q, XI];
             }
             function dI() {
               return Y(this, S) ? Math.ceil(this.thickness * this.parent.scaleFactor) : 0;
             }
             function WI() {
-              let P = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : !1;
+              let E = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : !1;
               if (this.isEmpty())
                 return;
               if (!Y(this, S)) {
@@ -13249,14 +13249,14 @@ function requirePdf() {
               this.width = XI / zI, this.height = MI / TI, m(this, u, XI / MI), B(this, wI, f).call(this);
               const xI = this.translationX, SI = this.translationY;
               this.translationX = -q[0], this.translationY = -q[1], B(this, K, yI).call(this), B(this, H, kI).call(this), m(this, AI, XI), m(this, j, MI), this.setDims(XI, MI);
-              const fI = P ? VI / this.scaleFactor / 2 : 0;
+              const fI = E ? VI / this.scaleFactor / 2 : 0;
               this.translate(xI - this.translationX - fI, SI - this.translationY - fI);
             }
             function f() {
               const {
-                style: P
+                style: E
               } = this.div;
-              Y(this, u) >= 1 ? (P.minHeight = `${h}px`, P.minWidth = `${Math.round(Y(this, u) * h)}px`) : (P.minWidth = `${h}px`, P.minHeight = `${Math.round(h / Y(this, u))}px`);
+              Y(this, u) >= 1 ? (E.minHeight = `${h}px`, E.minWidth = `${Math.round(Y(this, u) * h)}px`) : (E.minWidth = `${h}px`, E.minHeight = `${Math.round(h / Y(this, u))}px`);
             }
             Z(YI, "_defaultColor", null), Z(YI, "_defaultOpacity", 1), Z(YI, "_defaultThickness", 1), Z(YI, "_l10nPromise", void 0), Z(YI, "_type", "ink");
           }),
@@ -13500,28 +13500,28 @@ function requirePdf() {
               }
               _createContainer() {
                 let N = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : !1;
-                const K = this.data, J = this.page, L = this.viewport, E = document.createElement("section"), {
+                const K = this.data, J = this.page, L = this.viewport, U = document.createElement("section"), {
                   width: iI,
                   height: ZI
                 } = m(K.rect), [aI, GI, mI, wI] = L.viewBox, YI = mI - aI, uI = wI - GI;
-                E.setAttribute("data-annotation-id", K.id);
+                U.setAttribute("data-annotation-id", K.id);
                 const RI = A.Util.normalizeRect([K.rect[0], J.view[3] - K.rect[1] + J.view[1], K.rect[2], J.view[3] - K.rect[3] + J.view[1]]);
                 if (!N && K.borderStyle.width > 0) {
-                  E.style.borderWidth = `${K.borderStyle.width}px`;
+                  U.style.borderWidth = `${K.borderStyle.width}px`;
                   const rI = K.borderStyle.horizontalCornerRadius, LI = K.borderStyle.verticalCornerRadius;
                   if (rI > 0 || LI > 0) {
                     const PI = `calc(${rI}px * var(--scale-factor)) / calc(${LI}px * var(--scale-factor))`;
-                    E.style.borderRadius = PI;
+                    U.style.borderRadius = PI;
                   } else if (this instanceof t) {
                     const PI = `calc(${iI}px * var(--scale-factor)) / calc(${ZI}px * var(--scale-factor))`;
-                    E.style.borderRadius = PI;
+                    U.style.borderRadius = PI;
                   }
                   switch (K.borderStyle.style) {
                     case A.AnnotationBorderStyleType.SOLID:
-                      E.style.borderStyle = "solid";
+                      U.style.borderStyle = "solid";
                       break;
                     case A.AnnotationBorderStyleType.DASHED:
-                      E.style.borderStyle = "dashed";
+                      U.style.borderStyle = "dashed";
                       break;
                     case A.AnnotationBorderStyleType.BEVELED:
                       (0, A.warn)("Unimplemented border style: beveled");
@@ -13530,21 +13530,21 @@ function requirePdf() {
                       (0, A.warn)("Unimplemented border style: inset");
                       break;
                     case A.AnnotationBorderStyleType.UNDERLINE:
-                      E.style.borderBottomStyle = "solid";
+                      U.style.borderBottomStyle = "solid";
                       break;
                   }
                   const KI = K.borderColor || null;
-                  KI ? E.style.borderColor = A.Util.makeHexColor(KI[0] | 0, KI[1] | 0, KI[2] | 0) : E.style.borderWidth = 0;
+                  KI ? U.style.borderColor = A.Util.makeHexColor(KI[0] | 0, KI[1] | 0, KI[2] | 0) : U.style.borderWidth = 0;
                 }
-                E.style.left = `${100 * (RI[0] - aI) / YI}%`, E.style.top = `${100 * (RI[1] - GI) / uI}%`;
+                U.style.left = `${100 * (RI[0] - aI) / YI}%`, U.style.top = `${100 * (RI[1] - GI) / uI}%`;
                 const {
                   rotation: pI
                 } = K;
-                return K.hasOwnCanvas || pI === 0 ? (E.style.width = `${100 * iI / YI}%`, E.style.height = `${100 * ZI / uI}%`) : this.setRotation(pI, E), E;
+                return K.hasOwnCanvas || pI === 0 ? (U.style.width = `${100 * iI / YI}%`, U.style.height = `${100 * ZI / uI}%`) : this.setRotation(pI, U), U;
               }
               setRotation(N) {
                 let K = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : this.container;
-                const [J, L, E, iI] = this.viewport.viewBox, ZI = E - J, aI = iI - L, {
+                const [J, L, U, iI] = this.viewport.viewBox, ZI = U - J, aI = iI - L, {
                   width: GI,
                   height: mI
                 } = m(this.data.rect);
@@ -13553,8 +13553,8 @@ function requirePdf() {
               }
               get _commonActions() {
                 const N = (K, J, L) => {
-                  const E = L.detail[K];
-                  L.target.style[J] = s.ColorConverters[`${E[0]}_HTML`](E.slice(1));
+                  const U = L.detail[K];
+                  L.target.style[J] = s.ColorConverters[`${U[0]}_HTML`](U.slice(1));
                 };
                 return (0, A.shadow)(this, "_commonActions", {
                   display: (K) => {
@@ -13617,8 +13617,8 @@ function requirePdf() {
               _dispatchEventFromSandbox(N, K) {
                 const J = this._commonActions;
                 for (const L of Object.keys(K.detail)) {
-                  const E = N[L] || J[L];
-                  E && E(K);
+                  const U = N[L] || J[L];
+                  U && U(K);
                 }
               }
               _setDefaultPropertiesFromJS(N) {
@@ -13628,12 +13628,12 @@ function requirePdf() {
                 if (!K)
                   return;
                 const J = this._commonActions;
-                for (const [L, E] of Object.entries(K)) {
+                for (const [L, U] of Object.entries(K)) {
                   const iI = J[L];
                   if (iI) {
                     const ZI = {
                       detail: {
-                        [L]: E
+                        [L]: U
                       },
                       target: N
                     };
@@ -13653,7 +13653,7 @@ function requirePdf() {
               _createPopup(N, K) {
                 let J = this.container;
                 this.quadrilaterals && (N = N || this.quadrilaterals, J = this.quadrilaterals[0]), N || (N = document.createElement("div"), N.className = "popupTriggerArea", J.append(N));
-                const E = new r({
+                const U = new r({
                   container: J,
                   trigger: N,
                   color: K.color,
@@ -13663,7 +13663,7 @@ function requirePdf() {
                   richText: K.richText,
                   hideWrapper: !0
                 }).render();
-                E.style.left = "100%", J.append(E);
+                U.style.left = "100%", J.append(U);
               }
               _renderQuadrilaterals(N) {
                 for (const K of this.quadrilaterals)
@@ -13680,11 +13680,11 @@ function requirePdf() {
                   const L = this._fieldObjects[N];
                   if (L)
                     for (const {
-                      page: E,
+                      page: U,
                       id: iI,
                       exportValues: ZI
                     } of L) {
-                      if (E === -1 || iI === K)
+                      if (U === -1 || iI === K)
                         continue;
                       const aI = typeof ZI == "string" ? ZI : null, GI = document.querySelector(`[data-element-id="${iI}"]`);
                       if (GI && !b.has(GI)) {
@@ -13701,11 +13701,11 @@ function requirePdf() {
                 }
                 for (const L of document.getElementsByName(N)) {
                   const {
-                    id: E,
+                    id: U,
                     exportValue: iI
                   } = L;
-                  E !== K && b.has(L) && J.push({
-                    id: E,
+                  U !== K && b.has(L) && J.push({
+                    id: U,
                     exportValue: iI,
                     domElement: L
                   });
@@ -13736,9 +13736,9 @@ function requirePdf() {
                 } = this, J = document.createElement("a");
                 J.setAttribute("data-element-id", N.id);
                 let L = !1;
-                return N.url ? (K.addLinkAttributes(J, N.url, N.newWindow), L = !0) : N.action ? (this._bindNamedAction(J, N.action), L = !0) : N.dest ? (this._bindLink(J, N.dest), L = !0) : (N.actions && (N.actions.Action || N.actions["Mouse Up"] || N.actions["Mouse Down"]) && this.enableScripting && this.hasJSActions && (this._bindJSAction(J, N), L = !0), N.resetForm ? (this._bindResetFormAction(J, N.resetForm), L = !0) : this.isTooltipOnly && !L && (this._bindLink(J, ""), L = !0)), this.quadrilaterals ? this._renderQuadrilaterals("linkAnnotation").map((E, iI) => {
+                return N.url ? (K.addLinkAttributes(J, N.url, N.newWindow), L = !0) : N.action ? (this._bindNamedAction(J, N.action), L = !0) : N.dest ? (this._bindLink(J, N.dest), L = !0) : (N.actions && (N.actions.Action || N.actions["Mouse Up"] || N.actions["Mouse Down"]) && this.enableScripting && this.hasJSActions && (this._bindJSAction(J, N), L = !0), N.resetForm ? (this._bindResetFormAction(J, N.resetForm), L = !0) : this.isTooltipOnly && !L && (this._bindLink(J, ""), L = !0)), this.quadrilaterals ? this._renderQuadrilaterals("linkAnnotation").map((U, iI) => {
                   const ZI = iI === 0 ? J : J.cloneNode();
-                  return E.append(ZI), E;
+                  return U.append(ZI), U;
                 }) : (this.container.className = "linkAnnotation", L && this.container.append(J), this.container);
               }
               _bindLink(N, K) {
@@ -13751,8 +13751,8 @@ function requirePdf() {
                 N.href = this.linkService.getAnchorUrl("");
                 const J = /* @__PURE__ */ new Map([["Action", "onclick"], ["Mouse Up", "onmouseup"], ["Mouse Down", "onmousedown"]]);
                 for (const L of Object.keys(K.actions)) {
-                  const E = J.get(L);
-                  E && (N[E] = () => {
+                  const U = J.get(L);
+                  U && (N[U] = () => {
                     var iI;
                     return (iI = this.linkService.eventBus) === null || iI === void 0 || iI.dispatch("dispatcheventinsandbox", {
                       source: this,
@@ -13775,11 +13775,11 @@ function requirePdf() {
                   J && J();
                   const {
                     fields: L,
-                    refs: E,
+                    refs: U,
                     include: iI
                   } = K, ZI = [];
-                  if (L.length !== 0 || E.length !== 0) {
-                    const wI = new Set(E);
+                  if (L.length !== 0 || U.length !== 0) {
+                    const wI = new Set(U);
                     for (const YI of L) {
                       const uI = this._fieldObjects[YI] || [];
                       for (const {
@@ -13852,9 +13852,9 @@ function requirePdf() {
             class M extends Y {
               constructor(N) {
                 var K, J, L;
-                const E = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
+                const U = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
                 super(N, {
-                  isRenderable: E
+                  isRenderable: U
                 });
               }
               render() {
@@ -13877,34 +13877,34 @@ function requirePdf() {
                 return K && N.ctrlKey || J && N.metaKey;
               }
               _setEventListener(N, K, J, L) {
-                K.includes("mouse") ? N.addEventListener(K, (E) => {
+                K.includes("mouse") ? N.addEventListener(K, (U) => {
                   var iI;
                   (iI = this.linkService.eventBus) === null || iI === void 0 || iI.dispatch("dispatcheventinsandbox", {
                     source: this,
                     detail: {
                       id: this.data.id,
                       name: J,
-                      value: L(E),
-                      shift: E.shiftKey,
-                      modifier: this._getKeyModifier(E)
+                      value: L(U),
+                      shift: U.shiftKey,
+                      modifier: this._getKeyModifier(U)
                     }
                   });
-                }) : N.addEventListener(K, (E) => {
+                }) : N.addEventListener(K, (U) => {
                   var iI;
                   (iI = this.linkService.eventBus) === null || iI === void 0 || iI.dispatch("dispatcheventinsandbox", {
                     source: this,
                     detail: {
                       id: this.data.id,
                       name: J,
-                      value: L(E)
+                      value: L(U)
                     }
                   });
                 });
               }
               _setEventListeners(N, K, J) {
-                for (const [E, iI] of K) {
+                for (const [U, iI] of K) {
                   var L;
-                  (iI === "Action" || (L = this.data.actions) !== null && L !== void 0 && L[iI]) && this._setEventListener(N, E, iI, J);
+                  (iI === "Action" || (L = this.data.actions) !== null && L !== void 0 && L[iI]) && this._setEventListener(N, U, iI, J);
                 }
               }
               _setBackgroundColor(N) {
@@ -13914,7 +13914,7 @@ function requirePdf() {
               _setTextStyle(N) {
                 const K = ["left", "center", "right"], {
                   fontColor: J
-                } = this.data.defaultAppearanceData, L = this.data.defaultAppearanceData.fontSize || G, E = N.style;
+                } = this.data.defaultAppearanceData, L = this.data.defaultAppearanceData.fontSize || G, U = N.style;
                 let iI;
                 if (this.data.multiLine) {
                   const ZI = Math.abs(this.data.rect[3] - this.data.rect[1]), aI = Math.round(ZI / (A.LINE_FACTOR * L)) || 1, GI = ZI / aI;
@@ -13923,7 +13923,7 @@ function requirePdf() {
                   const ZI = Math.abs(this.data.rect[3] - this.data.rect[1]);
                   iI = Math.min(L, Math.round(ZI / A.LINE_FACTOR));
                 }
-                E.fontSize = `calc(${iI}px * var(--scale-factor))`, E.color = A.Util.makeHexColor(J[0], J[1], J[2]), this.data.textAlignment !== null && (E.textAlign = K[this.data.textAlignment]);
+                U.fontSize = `calc(${iI}px * var(--scale-factor))`, U.color = A.Util.makeHexColor(J[0], J[1], J[2]), this.data.textAlignment !== null && (U.textAlign = K[this.data.textAlignment]);
               }
               _setRequired(N, K) {
                 K ? N.setAttribute("required", !0) : N.removeAttribute("required"), N.setAttribute("aria-required", K);
@@ -13937,9 +13937,9 @@ function requirePdf() {
                 });
               }
               setPropertyOnSiblings(N, K, J, L) {
-                const E = this.annotationStorage;
+                const U = this.annotationStorage;
                 for (const iI of this._getElementsByName(N.name, N.id))
-                  iI.domElement && (iI.domElement[K] = J), E.setValue(iI.id, {
+                  iI.domElement && (iI.domElement[K] = J), U.setValue(iI.id, {
                     [L]: J
                   });
               }
@@ -13948,10 +13948,10 @@ function requirePdf() {
                 this.container.className = "textWidgetAnnotation";
                 let J = null;
                 if (this.renderForms) {
-                  const E = N.getValue(K, {
+                  const U = N.getValue(K, {
                     value: this.data.fieldValue
                   });
-                  let iI = E.formattedValue || E.value || "";
+                  let iI = U.formattedValue || U.value || "";
                   const ZI = N.getValue(K, {
                     charLimit: this.data.maxLen
                   }).charLimit;
@@ -14137,8 +14137,8 @@ function requirePdf() {
                 typeof L == "string" && (L = L !== "Off", N.setValue(J, {
                   value: L
                 })), this.container.className = "buttonWidgetAnnotation checkBox";
-                const E = document.createElement("input");
-                return b.add(E), E.setAttribute("data-element-id", J), E.disabled = K.readOnly, this._setRequired(E, this.data.required), E.type = "checkbox", E.name = K.fieldName, L && E.setAttribute("checked", !0), E.setAttribute("exportValue", K.exportValue), E.tabIndex = a, E.addEventListener("change", (iI) => {
+                const U = document.createElement("input");
+                return b.add(U), U.setAttribute("data-element-id", J), U.disabled = K.readOnly, this._setRequired(U, this.data.required), U.type = "checkbox", U.name = K.fieldName, L && U.setAttribute("checked", !0), U.setAttribute("exportValue", K.exportValue), U.tabIndex = a, U.addEventListener("change", (iI) => {
                   const {
                     name: ZI,
                     checked: aI
@@ -14152,10 +14152,10 @@ function requirePdf() {
                   N.setValue(J, {
                     value: aI
                   });
-                }), E.addEventListener("resetform", (iI) => {
+                }), U.addEventListener("resetform", (iI) => {
                   const ZI = K.defaultFieldValue || "Off";
                   iI.target.checked = ZI === K.exportValue;
-                }), this.enableScripting && this.hasJSActions && (E.addEventListener("updatefromsandbox", (iI) => {
+                }), this.enableScripting && this.hasJSActions && (U.addEventListener("updatefromsandbox", (iI) => {
                   const ZI = {
                     value(aI) {
                       aI.target.checked = aI.detail.value !== "Off", N.setValue(J, {
@@ -14164,7 +14164,7 @@ function requirePdf() {
                     }
                   };
                   this._dispatchEventFromSandbox(ZI, iI);
-                }), this._setEventListeners(E, [["change", "Validate"], ["change", "Action"], ["focus", "Focus"], ["blur", "Blur"], ["mousedown", "Mouse Down"], ["mouseenter", "Mouse Enter"], ["mouseleave", "Mouse Exit"], ["mouseup", "Mouse Up"]], (iI) => iI.target.checked)), this._setBackgroundColor(E), this._setDefaultPropertiesFromJS(E), this.container.append(E), this.container;
+                }), this._setEventListeners(U, [["change", "Validate"], ["change", "Action"], ["focus", "Focus"], ["blur", "Blur"], ["mousedown", "Mouse Down"], ["mouseenter", "Mouse Enter"], ["mouseleave", "Mouse Exit"], ["mouseup", "Mouse Up"]], (iI) => iI.target.checked)), this._setBackgroundColor(U), this._setDefaultPropertiesFromJS(U), this.container.append(U), this.container;
               }
             }
             class t extends B {
@@ -14182,8 +14182,8 @@ function requirePdf() {
                 typeof L == "string" && (L = L !== K.buttonValue, N.setValue(J, {
                   value: L
                 }));
-                const E = document.createElement("input");
-                if (b.add(E), E.setAttribute("data-element-id", J), E.disabled = K.readOnly, this._setRequired(E, this.data.required), E.type = "radio", E.name = K.fieldName, L && E.setAttribute("checked", !0), E.tabIndex = a, E.addEventListener("change", (iI) => {
+                const U = document.createElement("input");
+                if (b.add(U), U.setAttribute("data-element-id", J), U.disabled = K.readOnly, this._setRequired(U, this.data.required), U.type = "radio", U.name = K.fieldName, L && U.setAttribute("checked", !0), U.tabIndex = a, U.addEventListener("change", (iI) => {
                   const {
                     name: ZI,
                     checked: aI
@@ -14195,12 +14195,12 @@ function requirePdf() {
                   N.setValue(J, {
                     value: aI
                   });
-                }), E.addEventListener("resetform", (iI) => {
+                }), U.addEventListener("resetform", (iI) => {
                   const ZI = K.defaultFieldValue;
                   iI.target.checked = ZI != null && ZI === K.buttonValue;
                 }), this.enableScripting && this.hasJSActions) {
                   const iI = K.buttonValue;
-                  E.addEventListener("updatefromsandbox", (ZI) => {
+                  U.addEventListener("updatefromsandbox", (ZI) => {
                     const aI = {
                       value: (GI) => {
                         const mI = iI === GI.detail.value;
@@ -14213,9 +14213,9 @@ function requirePdf() {
                       }
                     };
                     this._dispatchEventFromSandbox(aI, ZI);
-                  }), this._setEventListeners(E, [["change", "Validate"], ["change", "Action"], ["focus", "Focus"], ["blur", "Blur"], ["mousedown", "Mouse Down"], ["mouseenter", "Mouse Enter"], ["mouseleave", "Mouse Exit"], ["mouseup", "Mouse Up"]], (ZI) => ZI.target.checked);
+                  }), this._setEventListeners(U, [["change", "Validate"], ["change", "Action"], ["focus", "Focus"], ["blur", "Blur"], ["mousedown", "Mouse Down"], ["mouseenter", "Mouse Enter"], ["mouseleave", "Mouse Exit"], ["mouseup", "Mouse Up"]], (ZI) => ZI.target.checked);
                 }
-                return this._setBackgroundColor(E), this._setDefaultPropertiesFromJS(E), this.container.append(E), this.container;
+                return this._setBackgroundColor(U), this._setDefaultPropertiesFromJS(U), this.container.append(U), this.container;
               }
             }
             class n extends y {
@@ -14245,7 +14245,7 @@ function requirePdf() {
                   value: this.data.fieldValue
                 }), L = document.createElement("select");
                 b.add(L), L.setAttribute("data-element-id", K), L.disabled = this.data.readOnly, this._setRequired(L, this.data.required), L.name = this.data.fieldName, L.tabIndex = a;
-                let E = this.data.combo && this.data.options.length > 0;
+                let U = this.data.combo && this.data.options.length > 0;
                 this.data.combo || (L.size = this.data.options.length, this.data.multiSelect && (L.multiple = !0)), L.addEventListener("resetform", (GI) => {
                   const mI = this.data.defaultFieldValue;
                   for (const wI of L.options)
@@ -14253,10 +14253,10 @@ function requirePdf() {
                 });
                 for (const GI of this.data.options) {
                   const mI = document.createElement("option");
-                  mI.textContent = GI.displayValue, mI.value = GI.exportValue, J.value.includes(GI.exportValue) && (mI.setAttribute("selected", !0), E = !1), L.append(mI);
+                  mI.textContent = GI.displayValue, mI.value = GI.exportValue, J.value.includes(GI.exportValue) && (mI.setAttribute("selected", !0), U = !1), L.append(mI);
                 }
                 let iI = null;
-                if (E) {
+                if (U) {
                   const GI = document.createElement("option");
                   GI.value = " ", GI.setAttribute("hidden", !0), GI.setAttribute("selected", !0), L.prepend(GI), iI = () => {
                     GI.remove(), L.removeEventListener("input", iI), iI = null;
@@ -14371,9 +14371,9 @@ function requirePdf() {
             class R extends Y {
               constructor(N) {
                 var K, J, L;
-                const E = !!((K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
+                const U = !!((K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
                 super(N, {
-                  isRenderable: E
+                  isRenderable: U
                 });
               }
               render() {
@@ -14391,7 +14391,7 @@ function requirePdf() {
                   modificationDate: this.data.modificationDate,
                   contentsObj: this.data.contentsObj,
                   richText: this.data.richText
-                }), E = this.page, iI = A.Util.normalizeRect([this.data.parentRect[0], E.view[3] - this.data.parentRect[1] + E.view[1], this.data.parentRect[2], E.view[3] - this.data.parentRect[3] + E.view[1]]), ZI = iI[0] + this.data.parentRect[2] - this.data.parentRect[0], aI = iI[1], [GI, mI, wI, YI] = this.viewport.viewBox, uI = wI - GI, RI = YI - mI;
+                }), U = this.page, iI = A.Util.normalizeRect([this.data.parentRect[0], U.view[3] - this.data.parentRect[1] + U.view[1], this.data.parentRect[2], U.view[3] - this.data.parentRect[3] + U.view[1]]), ZI = iI[0] + this.data.parentRect[2] - this.data.parentRect[0], aI = iI[1], [GI, mI, wI, YI] = this.viewport.viewBox, uI = wI - GI, RI = YI - mI;
                 return this.container.style.left = `${100 * (ZI - GI) / uI}%`, this.container.style.top = `${100 * (aI - mI) / RI}%`, this.container.append(L.render()), this.container;
               }
             }
@@ -14403,37 +14403,37 @@ function requirePdf() {
                 var N, K;
                 const L = document.createElement("div");
                 L.className = "popupWrapper", this.hideElement = this.hideWrapper ? L : this.container, this.hideElement.hidden = !0;
-                const E = document.createElement("div");
-                E.className = "popup";
+                const U = document.createElement("div");
+                U.className = "popup";
                 const iI = this.color;
                 if (iI) {
                   const GI = 0.7 * (255 - iI[0]) + iI[0], mI = 0.7 * (255 - iI[1]) + iI[1], wI = 0.7 * (255 - iI[2]) + iI[2];
-                  E.style.backgroundColor = A.Util.makeHexColor(GI | 0, mI | 0, wI | 0);
+                  U.style.backgroundColor = A.Util.makeHexColor(GI | 0, mI | 0, wI | 0);
                 }
                 const ZI = document.createElement("h1");
-                ZI.dir = this.titleObj.dir, ZI.textContent = this.titleObj.str, E.append(ZI);
+                ZI.dir = this.titleObj.dir, ZI.textContent = this.titleObj.str, U.append(ZI);
                 const aI = l.PDFDateString.toDateObject(this.modificationDate);
                 if (aI) {
                   const GI = document.createElement("span");
                   GI.className = "popupDate", GI.textContent = "{{date}}, {{time}}", GI.dataset.l10nId = "annotation_date_string", GI.dataset.l10nArgs = JSON.stringify({
                     date: aI.toLocaleDateString(),
                     time: aI.toLocaleTimeString()
-                  }), E.append(GI);
+                  }), U.append(GI);
                 }
                 if ((N = this.richText) !== null && N !== void 0 && N.str && (!((K = this.contentsObj) !== null && K !== void 0 && K.str) || this.contentsObj.str === this.richText.str))
                   c.XfaLayer.render({
                     xfaHtml: this.richText.html,
                     intent: "richText",
-                    div: E
-                  }), E.lastChild.className = "richText popupContent";
+                    div: U
+                  }), U.lastChild.className = "richText popupContent";
                 else {
                   const GI = this._formatContents(this.contentsObj);
-                  E.append(GI);
+                  U.append(GI);
                 }
                 Array.isArray(this.trigger) || (this.trigger = [this.trigger]);
                 for (const GI of this.trigger)
                   GI.addEventListener("click", this._toggle.bind(this)), GI.addEventListener("mouseover", this._show.bind(this, !1)), GI.addEventListener("mouseout", this._hide.bind(this, !1));
-                return E.addEventListener("click", this._hide.bind(this, !0)), L.append(E), L;
+                return U.addEventListener("click", this._hide.bind(this, !0)), L.append(U), L;
               }
               _formatContents(N) {
                 let {
@@ -14442,9 +14442,9 @@ function requirePdf() {
                 } = N;
                 const L = document.createElement("p");
                 L.className = "popupContent", L.dir = J;
-                const E = K.split(/(?:\r\n?|\n)/);
-                for (let iI = 0, ZI = E.length; iI < ZI; ++iI) {
-                  const aI = E[iI];
+                const U = K.split(/(?:\r\n?|\n)/);
+                for (let iI = 0, ZI = U.length; iI < ZI; ++iI) {
+                  const aI = U[iI];
                   L.append(document.createTextNode(aI)), iI < ZI - 1 && L.append(document.createElement("br"));
                 }
                 return L;
@@ -14462,9 +14462,9 @@ function requirePdf() {
             class k extends Y {
               constructor(N) {
                 var K, J, L;
-                const E = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
+                const U = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
                 super(N, {
-                  isRenderable: E,
+                  isRenderable: U,
                   ignoreBorder: !0
                 }), this.textContent = N.data.textContent;
               }
@@ -14484,9 +14484,9 @@ function requirePdf() {
             class S extends Y {
               constructor(N) {
                 var K, J, L;
-                const E = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
+                const U = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
                 super(N, {
-                  isRenderable: E,
+                  isRenderable: U,
                   ignoreBorder: !0
                 });
               }
@@ -14495,16 +14495,16 @@ function requirePdf() {
                 const N = this.data, {
                   width: K,
                   height: J
-                } = m(N.rect), L = this.svgFactory.create(K, J, !0), E = this.svgFactory.createElement("svg:line");
-                return E.setAttribute("x1", N.rect[2] - N.lineCoordinates[0]), E.setAttribute("y1", N.rect[3] - N.lineCoordinates[1]), E.setAttribute("x2", N.rect[2] - N.lineCoordinates[2]), E.setAttribute("y2", N.rect[3] - N.lineCoordinates[3]), E.setAttribute("stroke-width", N.borderStyle.width || 1), E.setAttribute("stroke", "transparent"), E.setAttribute("fill", "transparent"), L.append(E), this.container.append(L), this._createPopup(E, N), this.container;
+                } = m(N.rect), L = this.svgFactory.create(K, J, !0), U = this.svgFactory.createElement("svg:line");
+                return U.setAttribute("x1", N.rect[2] - N.lineCoordinates[0]), U.setAttribute("y1", N.rect[3] - N.lineCoordinates[1]), U.setAttribute("x2", N.rect[2] - N.lineCoordinates[2]), U.setAttribute("y2", N.rect[3] - N.lineCoordinates[3]), U.setAttribute("stroke-width", N.borderStyle.width || 1), U.setAttribute("stroke", "transparent"), U.setAttribute("fill", "transparent"), L.append(U), this.container.append(L), this._createPopup(U, N), this.container;
               }
             }
             class $ extends Y {
               constructor(N) {
                 var K, J, L;
-                const E = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
+                const U = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
                 super(N, {
-                  isRenderable: E,
+                  isRenderable: U,
                   ignoreBorder: !0
                 });
               }
@@ -14513,16 +14513,16 @@ function requirePdf() {
                 const N = this.data, {
                   width: K,
                   height: J
-                } = m(N.rect), L = this.svgFactory.create(K, J, !0), E = N.borderStyle.width, iI = this.svgFactory.createElement("svg:rect");
-                return iI.setAttribute("x", E / 2), iI.setAttribute("y", E / 2), iI.setAttribute("width", K - E), iI.setAttribute("height", J - E), iI.setAttribute("stroke-width", E || 1), iI.setAttribute("stroke", "transparent"), iI.setAttribute("fill", "transparent"), L.append(iI), this.container.append(L), this._createPopup(iI, N), this.container;
+                } = m(N.rect), L = this.svgFactory.create(K, J, !0), U = N.borderStyle.width, iI = this.svgFactory.createElement("svg:rect");
+                return iI.setAttribute("x", U / 2), iI.setAttribute("y", U / 2), iI.setAttribute("width", K - U), iI.setAttribute("height", J - U), iI.setAttribute("stroke-width", U || 1), iI.setAttribute("stroke", "transparent"), iI.setAttribute("fill", "transparent"), L.append(iI), this.container.append(L), this._createPopup(iI, N), this.container;
               }
             }
             class O extends Y {
               constructor(N) {
                 var K, J, L;
-                const E = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
+                const U = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
                 super(N, {
-                  isRenderable: E,
+                  isRenderable: U,
                   ignoreBorder: !0
                 });
               }
@@ -14531,16 +14531,16 @@ function requirePdf() {
                 const N = this.data, {
                   width: K,
                   height: J
-                } = m(N.rect), L = this.svgFactory.create(K, J, !0), E = N.borderStyle.width, iI = this.svgFactory.createElement("svg:ellipse");
-                return iI.setAttribute("cx", K / 2), iI.setAttribute("cy", J / 2), iI.setAttribute("rx", K / 2 - E / 2), iI.setAttribute("ry", J / 2 - E / 2), iI.setAttribute("stroke-width", E || 1), iI.setAttribute("stroke", "transparent"), iI.setAttribute("fill", "transparent"), L.append(iI), this.container.append(L), this._createPopup(iI, N), this.container;
+                } = m(N.rect), L = this.svgFactory.create(K, J, !0), U = N.borderStyle.width, iI = this.svgFactory.createElement("svg:ellipse");
+                return iI.setAttribute("cx", K / 2), iI.setAttribute("cy", J / 2), iI.setAttribute("rx", K / 2 - U / 2), iI.setAttribute("ry", J / 2 - U / 2), iI.setAttribute("stroke-width", U || 1), iI.setAttribute("stroke", "transparent"), iI.setAttribute("fill", "transparent"), L.append(iI), this.container.append(L), this._createPopup(iI, N), this.container;
               }
             }
             class _ extends Y {
               constructor(N) {
                 var K, J, L;
-                const E = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
+                const U = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
                 super(N, {
-                  isRenderable: E,
+                  isRenderable: U,
                   ignoreBorder: !0
                 }), this.containerClassName = "polylineAnnotation", this.svgElementName = "svg:polyline";
               }
@@ -14550,14 +14550,14 @@ function requirePdf() {
                   width: K,
                   height: J
                 } = m(N.rect), L = this.svgFactory.create(K, J, !0);
-                let E = [];
+                let U = [];
                 for (const ZI of N.vertices) {
                   const aI = ZI.x - N.rect[0], GI = N.rect[3] - ZI.y;
-                  E.push(aI + "," + GI);
+                  U.push(aI + "," + GI);
                 }
-                E = E.join(" ");
+                U = U.join(" ");
                 const iI = this.svgFactory.createElement(this.svgElementName);
-                return iI.setAttribute("points", E), iI.setAttribute("stroke-width", N.borderStyle.width || 1), iI.setAttribute("stroke", "transparent"), iI.setAttribute("fill", "transparent"), L.append(iI), this.container.append(L), this._createPopup(iI, N), this.container;
+                return iI.setAttribute("points", U), iI.setAttribute("stroke-width", N.borderStyle.width || 1), iI.setAttribute("stroke", "transparent"), iI.setAttribute("fill", "transparent"), L.append(iI), this.container.append(L), this._createPopup(iI, N), this.container;
               }
             }
             class AI extends _ {
@@ -14568,9 +14568,9 @@ function requirePdf() {
             class j extends Y {
               constructor(N) {
                 var K, J, L;
-                const E = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
+                const U = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
                 super(N, {
-                  isRenderable: E,
+                  isRenderable: U,
                   ignoreBorder: !0
                 });
               }
@@ -14581,9 +14581,9 @@ function requirePdf() {
             class v extends Y {
               constructor(N) {
                 var K, J, L;
-                const E = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
+                const U = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
                 super(N, {
-                  isRenderable: E,
+                  isRenderable: U,
                   ignoreBorder: !0
                 }), this.containerClassName = "inkAnnotation", this.svgElementName = "svg:polyline";
               }
@@ -14593,9 +14593,9 @@ function requirePdf() {
                   width: K,
                   height: J
                 } = m(N.rect), L = this.svgFactory.create(K, J, !0);
-                for (const E of N.inkLists) {
+                for (const U of N.inkLists) {
                   let iI = [];
-                  for (const aI of E) {
+                  for (const aI of U) {
                     const GI = aI.x - N.rect[0], mI = N.rect[3] - aI.y;
                     iI.push(`${GI},${mI}`);
                   }
@@ -14609,9 +14609,9 @@ function requirePdf() {
             class Q extends Y {
               constructor(N) {
                 var K, J, L;
-                const E = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
+                const U = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
                 super(N, {
-                  isRenderable: E,
+                  isRenderable: U,
                   ignoreBorder: !0,
                   createQuadrilaterals: !0
                 });
@@ -14623,9 +14623,9 @@ function requirePdf() {
             class z extends Y {
               constructor(N) {
                 var K, J, L;
-                const E = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
+                const U = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
                 super(N, {
-                  isRenderable: E,
+                  isRenderable: U,
                   ignoreBorder: !0,
                   createQuadrilaterals: !0
                 });
@@ -14637,9 +14637,9 @@ function requirePdf() {
             class lI extends Y {
               constructor(N) {
                 var K, J, L;
-                const E = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
+                const U = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
                 super(N, {
-                  isRenderable: E,
+                  isRenderable: U,
                   ignoreBorder: !0,
                   createQuadrilaterals: !0
                 });
@@ -14651,9 +14651,9 @@ function requirePdf() {
             class oI extends Y {
               constructor(N) {
                 var K, J, L;
-                const E = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
+                const U = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
                 super(N, {
-                  isRenderable: E,
+                  isRenderable: U,
                   ignoreBorder: !0,
                   createQuadrilaterals: !0
                 });
@@ -14665,9 +14665,9 @@ function requirePdf() {
             class hI extends Y {
               constructor(N) {
                 var K, J, L;
-                const E = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
+                const U = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
                 super(N, {
-                  isRenderable: E,
+                  isRenderable: U,
                   ignoreBorder: !0
                 });
               }
@@ -14708,7 +14708,7 @@ function requirePdf() {
                   annotations: K,
                   div: J,
                   viewport: L,
-                  accessibilityManager: E
+                  accessibilityManager: U
                 } = N;
                 Z(this, gI, H).call(this, J, L);
                 let iI = 0;
@@ -14743,12 +14743,12 @@ function requirePdf() {
                     const GI = aI.render();
                     if (ZI.hidden && (GI.style.visibility = "hidden"), Array.isArray(GI))
                       for (const mI of GI)
-                        mI.style.zIndex = iI++, Z(gI, gI, p).call(gI, mI, ZI.id, J, E);
+                        mI.style.zIndex = iI++, Z(gI, gI, p).call(gI, mI, ZI.id, J, U);
                     else
-                      GI.style.zIndex = iI++, aI instanceof R ? J.prepend(GI) : Z(gI, gI, p).call(gI, GI, ZI.id, J, E);
+                      GI.style.zIndex = iI++, aI instanceof R ? J.prepend(GI) : Z(gI, gI, p).call(gI, GI, ZI.id, J, U);
                   }
                 }
-                Z(this, gI, U).call(this, J, N.annotationCanvasMap);
+                Z(this, gI, P).call(this, J, N.annotationCanvasMap);
               }
               static update(N) {
                 const {
@@ -14756,7 +14756,7 @@ function requirePdf() {
                   div: J,
                   viewport: L
                 } = N;
-                Z(this, gI, H).call(this, J, L), Z(this, gI, U).call(this, J, K), J.hidden = !1;
+                Z(this, gI, H).call(this, J, L), Z(this, gI, P).call(this, J, K), J.hidden = !1;
               }
             }
             I.AnnotationLayer = gI;
@@ -14771,20 +14771,20 @@ function requirePdf() {
                 rotation: L
               } = N;
               const {
-                style: E
+                style: U
               } = T, iI = L % 180 !== 0, ZI = Math.floor(K) + "px", aI = Math.floor(J) + "px";
-              E.width = iI ? aI : ZI, E.height = iI ? ZI : aI, T.setAttribute("data-main-rotation", L);
+              U.width = iI ? aI : ZI, U.height = iI ? ZI : aI, T.setAttribute("data-main-rotation", L);
             }
-            function U(T, N) {
+            function P(T, N) {
               if (N) {
                 for (const [K, J] of N) {
                   const L = T.querySelector(`[data-annotation-id="${K}"]`);
                   if (!L)
                     continue;
                   const {
-                    firstChild: E
+                    firstChild: U
                   } = L;
-                  E ? E.nodeName === "CANVAS" ? E.replaceWith(J) : E.before(J) : L.append(J);
+                  U ? U.nodeName === "CANVAS" ? U.replaceWith(J) : U.before(J) : L.append(J);
                 }
                 N.clear();
               }
@@ -15493,13 +15493,13 @@ function requirePdf() {
                     p = 0;
                     for (let L = 0; L < z; L++) {
                       p++;
-                      for (let E = 0; E < hI; E++)
+                      for (let U = 0; U < hI; U++)
                         gI[p++] ^= 255;
                     }
                   }
-                  const U = new Uint8Array([Q >> 24 & 255, Q >> 16 & 255, Q >> 8 & 255, Q & 255, z >> 24 & 255, z >> 16 & 255, z >> 8 & 255, z & 255, lI, oI, 0, 0, 0]), T = S(gI), N = t.length + n * 3 + U.length + T.length, K = new Uint8Array(N);
+                  const P = new Uint8Array([Q >> 24 & 255, Q >> 16 & 255, Q >> 8 & 255, Q & 255, z >> 24 & 255, z >> 16 & 255, z >> 8 & 255, z & 255, lI, oI, 0, 0, 0]), T = S(gI), N = t.length + n * 3 + P.length + T.length, K = new Uint8Array(N);
                   let J = 0;
-                  return K.set(t, J), J += t.length, r("IHDR", U, K, J), J += n + U.length, r("IDATA", T, K, J), J += n + T.length, r("IEND", new Uint8Array(0), K, J), b(K, "image/png", j);
+                  return K.set(t, J), J += t.length, r("IHDR", P, K, J), J += n + P.length, r("IDATA", T, K, J), J += n + T.length, r("IEND", new Uint8Array(0), K, J), b(K, "image/png", j);
                 }
                 return function(AI, j, v) {
                   const Q = AI.kind === void 0 ? l.ImageKind.GRAYSCALE_1BPP : AI.kind;
@@ -15774,8 +15774,8 @@ function requirePdf() {
                     } else
                       gI = Q / r, p = 0;
                     (oI.isInFont || X.missingFile) && (n.xcoords.push(n.x + gI), _ && n.ycoords.push(-n.y + p), n.tspan.textContent += BI);
-                    let U;
-                    _ ? U = H * v - hI * $ : U = H * v + hI * $, Q += U;
+                    let P;
+                    _ ? P = H * v - hI * $ : P = H * v + hI * $, Q += P;
                   }
                   n.tspan.setAttributeNS(null, "x", n.xcoords.map(y).join(" ")), _ ? n.tspan.setAttributeNS(null, "y", n.ycoords.map(y).join(" ")) : n.tspan.setAttributeNS(null, "y", y(-n.y)), _ ? n.y -= Q : n.x += Q * O, n.tspan.setAttributeNS(null, "font-family", n.fontFamily), n.tspan.setAttributeNS(null, "font-size", `${y(n.fontSize)}px`), n.fontStyle !== c.fontStyle && n.tspan.setAttributeNS(null, "font-style", n.fontStyle), n.fontWeight !== c.fontWeight && n.tspan.setAttributeNS(null, "font-weight", n.fontWeight);
                   const z = n.textRenderingMode & l.TextRenderingMode.FILL_STROKE_MASK;
@@ -15851,12 +15851,12 @@ function requirePdf() {
                 _makeTilingPattern(t) {
                   const n = t[1], X = t[2], R = t[3] || l.IDENTITY_MATRIX, [r, k, S, $] = t[4], O = t[5], _ = t[6], AI = t[7], j = `shading${u++}`, [v, Q, z, lI] = l.Util.normalizeRect([...l.Util.applyTransform([r, k], R), ...l.Util.applyTransform([S, $], R)]), [oI, hI] = l.Util.singularValueDecompose2dScale(R), BI = O * oI, gI = _ * hI, p = this.svgFactory.createElement("svg:pattern");
                   p.setAttributeNS(null, "id", j), p.setAttributeNS(null, "patternUnits", "userSpaceOnUse"), p.setAttributeNS(null, "width", BI), p.setAttributeNS(null, "height", gI), p.setAttributeNS(null, "x", `${v}`), p.setAttributeNS(null, "y", `${Q}`);
-                  const H = this.svg, U = this.transformMatrix, T = this.current.fillColor, N = this.current.strokeColor, K = this.svgFactory.create(z - v, lI - Q);
+                  const H = this.svg, P = this.transformMatrix, T = this.current.fillColor, N = this.current.strokeColor, K = this.svgFactory.create(z - v, lI - Q);
                   if (this.svg = K, this.transformMatrix = R, AI === 2) {
                     const J = l.Util.makeHexColor(...n);
                     this.current.fillColor = J, this.current.strokeColor = J;
                   }
-                  return this.executeOpTree(this.convertOpList(X)), this.svg = H, this.transformMatrix = U, this.current.fillColor = T, this.current.strokeColor = N, p.append(K.childNodes[0]), this.defs.append(p), `url(#${j})`;
+                  return this.executeOpTree(this.convertOpList(X)), this.svg = H, this.transformMatrix = P, this.current.fillColor = T, this.current.strokeColor = N, p.append(K.childNodes[0]), this.defs.append(p), `url(#${j})`;
                 }
                 _makeShadingPattern(t) {
                   switch (typeof t == "string" && (t = this.objs.get(t)), t[0]) {
@@ -17521,15 +17521,15 @@ function Panzoom(C, I) {
     if (!BI.force && (BI.disablePan || BI.panOnlyWhenZoomed && Z === BI.startScale))
       return gI;
     if (z = parseFloat(z), lI = parseFloat(lI), BI.disableXAxis || (gI.x = (BI.relative ? s : 0) + z), BI.disableYAxis || (gI.y = (BI.relative ? c : 0) + lI), BI.contain) {
-      var p = getDimensions(C), H = p.elem.width / Z, U = p.elem.height / Z, T = H * oI, N = U * oI, K = (T - H) / 2, J = (N - U) / 2;
+      var p = getDimensions(C), H = p.elem.width / Z, P = p.elem.height / Z, T = H * oI, N = P * oI, K = (T - H) / 2, J = (N - P) / 2;
       if (BI.contain === "inside") {
-        var L = (-p.elem.margin.left - p.parent.padding.left + K) / oI, E = (p.parent.width - T - p.parent.padding.left - p.elem.margin.left - p.parent.border.left - p.parent.border.right + K) / oI;
-        gI.x = Math.max(Math.min(gI.x, E), L);
+        var L = (-p.elem.margin.left - p.parent.padding.left + K) / oI, U = (p.parent.width - T - p.parent.padding.left - p.elem.margin.left - p.parent.border.left - p.parent.border.right + K) / oI;
+        gI.x = Math.max(Math.min(gI.x, U), L);
         var iI = (-p.elem.margin.top - p.parent.padding.top + J) / oI, ZI = (p.parent.height - N - p.parent.padding.top - p.elem.margin.top - p.parent.border.top - p.parent.border.bottom + J) / oI;
         gI.y = Math.max(Math.min(gI.y, ZI), iI);
       } else if (BI.contain === "outside") {
-        var L = (-(T - p.parent.width) - p.parent.padding.left - p.parent.border.left - p.parent.border.right + K) / oI, E = (K - p.parent.padding.left) / oI;
-        gI.x = Math.max(Math.min(gI.x, E), L);
+        var L = (-(T - p.parent.width) - p.parent.padding.left - p.parent.border.left - p.parent.border.right + K) / oI, U = (K - p.parent.padding.left) / oI;
+        gI.x = Math.max(Math.min(gI.x, U), L);
         var iI = (-(N - p.parent.height) - p.parent.padding.top - p.parent.border.top - p.parent.border.bottom + J) / oI, ZI = (J - p.parent.padding.top) / oI;
         gI.y = Math.max(Math.min(gI.y, ZI), iI);
       }
@@ -17542,9 +17542,9 @@ function Panzoom(C, I) {
       return hI;
     var BI = I.minScale, gI = I.maxScale;
     if (oI.contain) {
-      var p = getDimensions(C), H = p.elem.width / Z, U = p.elem.height / Z;
-      if (H > 1 && U > 1) {
-        var T = p.parent.width - p.parent.border.left - p.parent.border.right, N = p.parent.height - p.parent.border.top - p.parent.border.bottom, K = T / H, J = N / U;
+      var p = getDimensions(C), H = p.elem.width / Z, P = p.elem.height / Z;
+      if (H > 1 && P > 1) {
+        var T = p.parent.width - p.parent.border.left - p.parent.border.right, N = p.parent.height - p.parent.border.top - p.parent.border.bottom, K = T / H, J = N / P;
         I.contain === "inside" ? gI = Math.min(gI, K, J) : I.contain === "outside" && (BI = Math.max(BI, K, J));
       }
     }
@@ -17563,8 +17563,8 @@ function Panzoom(C, I) {
         var H = BI.focal;
         gI = (H.x / z - H.x / Z + s * z) / z, p = (H.y / z - H.y / Z + c * z) / z;
       }
-      var U = b(gI, p, z, { relative: !1, force: !0 });
-      return s = U.x, c = U.y, Z = z, G("panzoomzoom", BI, oI);
+      var P = b(gI, p, z, { relative: !1, force: !0 });
+      return s = P.x, c = P.y, Z = z, G("panzoomzoom", BI, oI);
     }
   }
   function y(z, lI) {
@@ -17583,11 +17583,11 @@ function Panzoom(C, I) {
       height: BI.parent.height - BI.parent.padding.top - BI.parent.padding.bottom - BI.parent.border.top - BI.parent.border.bottom
     }, p = lI.clientX - BI.parent.left - BI.parent.padding.left - BI.parent.border.left - BI.elem.margin.left, H = lI.clientY - BI.parent.top - BI.parent.padding.top - BI.parent.border.top - BI.elem.margin.top;
     g || (p -= BI.elem.width / Z / 2, H -= BI.elem.height / Z / 2);
-    var U = {
+    var P = {
       x: p / gI.width * (gI.width * z),
       y: H / gI.height * (gI.height * z)
     };
-    return Y(z, __assign$1(__assign$1({}, oI), { animate: !1, focal: U }), hI);
+    return Y(z, __assign$1(__assign$1({}, oI), { animate: !1, focal: P }), hI);
   }
   function u(z, lI) {
     z.preventDefault();
@@ -18450,7 +18450,7 @@ function requireTrees() {
   function H(F, bI, yI) {
     F.bi_valid > B - yI ? (F.bi_buf |= bI << F.bi_valid & 65535, p(F, F.bi_buf), F.bi_buf = bI >> B - F.bi_valid, F.bi_valid += yI - B) : (F.bi_buf |= bI << F.bi_valid & 65535, F.bi_valid += yI);
   }
-  function U(F, bI, yI) {
+  function P(F, bI, yI) {
     H(
       F,
       yI[bI * 2],
@@ -18469,11 +18469,11 @@ function requireTrees() {
     F.bi_valid === 16 ? (p(F, F.bi_buf), F.bi_buf = 0, F.bi_valid = 0) : F.bi_valid >= 8 && (F.pending_buf[F.pending++] = F.bi_buf & 255, F.bi_buf >>= 8, F.bi_valid -= 8);
   }
   function K(F, bI) {
-    var yI = bI.dyn_tree, HI = bI.max_code, II = bI.stat_desc.static_tree, nI = bI.stat_desc.has_stree, x = bI.stat_desc.extra_bits, cI = bI.stat_desc.extra_base, sI = bI.stat_desc.max_length, w, dI, WI, f, P, q, VI = 0;
+    var yI = bI.dyn_tree, HI = bI.max_code, II = bI.stat_desc.static_tree, nI = bI.stat_desc.has_stree, x = bI.stat_desc.extra_bits, cI = bI.stat_desc.extra_base, sI = bI.stat_desc.max_length, w, dI, WI, f, E, q, VI = 0;
     for (f = 0; f <= M; f++)
       F.bl_count[f] = 0;
     for (yI[F.heap[F.heap_max] * 2 + 1] = 0, w = F.heap_max + 1; w < y; w++)
-      dI = F.heap[w], f = yI[yI[dI * 2 + 1] * 2 + 1] + 1, f > sI && (f = sI, VI++), yI[dI * 2 + 1] = f, !(dI > HI) && (F.bl_count[f]++, P = 0, dI >= cI && (P = x[dI - cI]), q = yI[dI * 2], F.opt_len += q * (f + P), nI && (F.static_len += q * (II[dI * 2 + 1] + P)));
+      dI = F.heap[w], f = yI[yI[dI * 2 + 1] * 2 + 1] + 1, f > sI && (f = sI, VI++), yI[dI * 2 + 1] = f, !(dI > HI) && (F.bl_count[f]++, E = 0, dI >= cI && (E = x[dI - cI]), q = yI[dI * 2], F.opt_len += q * (f + E), nI && (F.static_len += q * (II[dI * 2 + 1] + E)));
     if (VI !== 0) {
       do {
         for (f = sI - 1; F.bl_count[f] === 0; )
@@ -18519,7 +18519,7 @@ function requireTrees() {
       _[F * 2 + 1] = 5, _[F * 2] = T(F, 5);
     lI = new z(O, R, b + 1, m, M), oI = new z(_, r, 0, V, M), hI = new z(new Array(0), k, 0, Y, h);
   }
-  function E(F) {
+  function U(F) {
     var bI;
     for (bI = 0; bI < m; bI++)
       F.dyn_ltree[bI * 2] = 0;
@@ -18548,9 +18548,9 @@ function requireTrees() {
     var HI, II, nI = 0, x, cI;
     if (F.last_lit !== 0)
       do
-        HI = F.pending_buf[F.d_buf + nI * 2] << 8 | F.pending_buf[F.d_buf + nI * 2 + 1], II = F.pending_buf[F.l_buf + nI], nI++, HI === 0 ? U(F, II, bI) : (x = j[II], U(F, x + b + 1, bI), cI = R[x], cI !== 0 && (II -= v[x], H(F, II, cI)), HI--, x = gI(HI), U(F, x, yI), cI = r[x], cI !== 0 && (HI -= Q[x], H(F, HI, cI)));
+        HI = F.pending_buf[F.d_buf + nI * 2] << 8 | F.pending_buf[F.d_buf + nI * 2 + 1], II = F.pending_buf[F.l_buf + nI], nI++, HI === 0 ? P(F, II, bI) : (x = j[II], P(F, x + b + 1, bI), cI = R[x], cI !== 0 && (II -= v[x], H(F, II, cI)), HI--, x = gI(HI), P(F, x, yI), cI = r[x], cI !== 0 && (HI -= Q[x], H(F, HI, cI)));
       while (nI < F.last_lit);
-    U(F, u, bI);
+    P(F, u, bI);
   }
   function wI(F, bI) {
     var yI = bI.dyn_tree, HI = bI.stat_desc.static_tree, II = bI.stat_desc.has_stree, nI = bI.stat_desc.elems, x, cI, sI = -1, w;
@@ -18602,9 +18602,9 @@ function requireTrees() {
       if (nI = x, x = bI[(HI + 1) * 2 + 1], !(++cI < sI && nI === x)) {
         if (cI < w)
           do
-            U(F, nI, F.bl_tree);
+            P(F, nI, F.bl_tree);
           while (--cI !== 0);
-        else nI !== 0 ? (nI !== II && (U(F, nI, F.bl_tree), cI--), U(F, t, F.bl_tree), H(F, cI - 3, 2)) : cI <= 10 ? (U(F, n, F.bl_tree), H(F, cI - 3, 3)) : (U(F, X, F.bl_tree), H(F, cI - 11, 7));
+        else nI !== 0 ? (nI !== II && (P(F, nI, F.bl_tree), cI--), P(F, t, F.bl_tree), H(F, cI - 3, 2)) : cI <= 10 ? (P(F, n, F.bl_tree), H(F, cI - 3, 3)) : (P(F, X, F.bl_tree), H(F, cI - 11, 7));
         cI = 0, II = nI, x === 0 ? (sI = 138, w = 3) : nI === x ? (sI = 6, w = 3) : (sI = 7, w = 4);
       }
   }
@@ -18634,17 +18634,17 @@ function requireTrees() {
   }
   var LI = !1;
   function KI(F) {
-    LI || (L(), LI = !0), F.l_desc = new BI(F.dyn_ltree, lI), F.d_desc = new BI(F.dyn_dtree, oI), F.bl_desc = new BI(F.bl_tree, hI), F.bi_buf = 0, F.bi_valid = 0, E(F);
+    LI || (L(), LI = !0), F.l_desc = new BI(F.dyn_ltree, lI), F.d_desc = new BI(F.dyn_dtree, oI), F.bl_desc = new BI(F.bl_tree, hI), F.bi_buf = 0, F.bi_valid = 0, U(F);
   }
   function PI(F, bI, yI, HI) {
     H(F, (s << 1) + (HI ? 1 : 0), 3), ZI(F, bI, yI);
   }
   function OI(F) {
-    H(F, c << 1, 3), U(F, u, O), N(F);
+    H(F, c << 1, 3), P(F, u, O), N(F);
   }
   function kI(F, bI, yI, HI) {
     var II, nI, x = 0;
-    F.level > 0 ? (F.strm.data_type === l && (F.strm.data_type = rI(F)), wI(F, F.l_desc), wI(F, F.d_desc), x = RI(F), II = F.opt_len + 3 + 7 >>> 3, nI = F.static_len + 3 + 7 >>> 3, nI <= II && (II = nI)) : II = nI = yI + 5, yI + 4 <= II && bI !== -1 ? PI(F, bI, yI, HI) : F.strategy === I || nI === II ? (H(F, (c << 1) + (HI ? 1 : 0), 3), mI(F, O, _)) : (H(F, (Z << 1) + (HI ? 1 : 0), 3), pI(F, F.l_desc.max_code + 1, F.d_desc.max_code + 1, x + 1), mI(F, F.dyn_ltree, F.dyn_dtree)), E(F), HI && iI(F);
+    F.level > 0 ? (F.strm.data_type === l && (F.strm.data_type = rI(F)), wI(F, F.l_desc), wI(F, F.d_desc), x = RI(F), II = F.opt_len + 3 + 7 >>> 3, nI = F.static_len + 3 + 7 >>> 3, nI <= II && (II = nI)) : II = nI = yI + 5, yI + 4 <= II && bI !== -1 ? PI(F, bI, yI, HI) : F.strategy === I || nI === II ? (H(F, (c << 1) + (HI ? 1 : 0), 3), mI(F, O, _)) : (H(F, (Z << 1) + (HI ? 1 : 0), 3), pI(F, F.l_desc.max_code + 1, F.d_desc.max_code + 1, x + 1), mI(F, F.dyn_ltree, F.dyn_dtree)), U(F), HI && iI(F);
   }
   function DI(F, bI, yI) {
     return F.pending_buf[F.d_buf + F.last_lit * 2] = bI >>> 8 & 255, F.pending_buf[F.d_buf + F.last_lit * 2 + 1] = bI & 255, F.pending_buf[F.l_buf + F.last_lit] = yI & 255, F.last_lit++, bI === 0 ? F.dyn_ltree[yI * 2]++ : (F.matches++, bI--, F.dyn_ltree[(j[yI] + b + 1) * 2]++, F.dyn_dtree[gI(bI) * 2]++), F.last_lit === F.lit_bufsize - 1;
@@ -18717,8 +18717,8 @@ var hasRequiredDeflate$1;
 function requireDeflate$1() {
   if (hasRequiredDeflate$1) return deflate;
   hasRequiredDeflate$1 = 1;
-  var C = requireCommon(), I = requireTrees(), g = requireAdler32(), A = requireCrc32(), l = requireMessages(), d = 0, s = 1, c = 3, Z = 4, o = 5, a = 0, G = 1, b = -2, m = -3, V = -5, Y = -1, y = 1, M = 2, B = 3, h = 4, u = 0, t = 2, n = 8, X = 9, R = 15, r = 8, k = 29, S = 256, $ = S + 1 + k, O = 30, _ = 19, AI = 2 * $ + 1, j = 15, v = 3, Q = 258, z = Q + v + 1, lI = 32, oI = 42, hI = 69, BI = 73, gI = 91, p = 103, H = 113, U = 666, T = 1, N = 2, K = 3, J = 4, L = 3;
-  function E(w, dI) {
+  var C = requireCommon(), I = requireTrees(), g = requireAdler32(), A = requireCrc32(), l = requireMessages(), d = 0, s = 1, c = 3, Z = 4, o = 5, a = 0, G = 1, b = -2, m = -3, V = -5, Y = -1, y = 1, M = 2, B = 3, h = 4, u = 0, t = 2, n = 8, X = 9, R = 15, r = 8, k = 29, S = 256, $ = S + 1 + k, O = 30, _ = 19, AI = 2 * $ + 1, j = 15, v = 3, Q = 258, z = Q + v + 1, lI = 32, oI = 42, hI = 69, BI = 73, gI = 91, p = 103, H = 113, P = 666, T = 1, N = 2, K = 3, J = 4, L = 3;
+  function U(w, dI) {
     return w.msg = l[dI], dI;
   }
   function iI(w) {
@@ -18742,18 +18742,18 @@ function requireDeflate$1() {
     w.pending_buf[w.pending++] = dI >>> 8 & 255, w.pending_buf[w.pending++] = dI & 255;
   }
   function YI(w, dI, WI, f) {
-    var P = w.avail_in;
-    return P > f && (P = f), P === 0 ? 0 : (w.avail_in -= P, C.arraySet(dI, w.input, w.next_in, P, WI), w.state.wrap === 1 ? w.adler = g(w.adler, dI, P, WI) : w.state.wrap === 2 && (w.adler = A(w.adler, dI, P, WI)), w.next_in += P, w.total_in += P, P);
+    var E = w.avail_in;
+    return E > f && (E = f), E === 0 ? 0 : (w.avail_in -= E, C.arraySet(dI, w.input, w.next_in, E, WI), w.state.wrap === 1 ? w.adler = g(w.adler, dI, E, WI) : w.state.wrap === 2 && (w.adler = A(w.adler, dI, E, WI)), w.next_in += E, w.total_in += E, E);
   }
   function uI(w, dI) {
-    var WI = w.max_chain_length, f = w.strstart, P, q, VI = w.prev_length, XI = w.nice_match, MI = w.strstart > w.w_size - z ? w.strstart - (w.w_size - z) : 0, zI = w.window, TI = w.w_mask, xI = w.prev, SI = w.strstart + Q, fI = zI[f + VI - 1], $I = zI[f + VI];
+    var WI = w.max_chain_length, f = w.strstart, E, q, VI = w.prev_length, XI = w.nice_match, MI = w.strstart > w.w_size - z ? w.strstart - (w.w_size - z) : 0, zI = w.window, TI = w.w_mask, xI = w.prev, SI = w.strstart + Q, fI = zI[f + VI - 1], $I = zI[f + VI];
     w.prev_length >= w.good_match && (WI >>= 2), XI > w.lookahead && (XI = w.lookahead);
     do
-      if (P = dI, !(zI[P + VI] !== $I || zI[P + VI - 1] !== fI || zI[P] !== zI[f] || zI[++P] !== zI[f + 1])) {
-        f += 2, P++;
+      if (E = dI, !(zI[E + VI] !== $I || zI[E + VI - 1] !== fI || zI[E] !== zI[f] || zI[++E] !== zI[f + 1])) {
+        f += 2, E++;
         do
           ;
-        while (zI[++f] === zI[++P] && zI[++f] === zI[++P] && zI[++f] === zI[++P] && zI[++f] === zI[++P] && zI[++f] === zI[++P] && zI[++f] === zI[++P] && zI[++f] === zI[++P] && zI[++f] === zI[++P] && f < SI);
+        while (zI[++f] === zI[++E] && zI[++f] === zI[++E] && zI[++f] === zI[++E] && zI[++f] === zI[++E] && zI[++f] === zI[++E] && zI[++f] === zI[++E] && zI[++f] === zI[++E] && zI[++f] === zI[++E] && f < SI);
         if (q = Q - (SI - f), f = SI - Q, q > VI) {
           if (w.match_start = dI, VI = q, q >= XI)
             break;
@@ -18764,16 +18764,16 @@ function requireDeflate$1() {
     return VI <= w.lookahead ? VI : w.lookahead;
   }
   function RI(w) {
-    var dI = w.w_size, WI, f, P, q, VI;
+    var dI = w.w_size, WI, f, E, q, VI;
     do {
       if (q = w.window_size - w.lookahead - w.strstart, w.strstart >= dI + (dI - z)) {
         C.arraySet(w.window, w.window, dI, dI, 0), w.match_start -= dI, w.strstart -= dI, w.block_start -= dI, f = w.hash_size, WI = f;
         do
-          P = w.head[--WI], w.head[WI] = P >= dI ? P - dI : 0;
+          E = w.head[--WI], w.head[WI] = E >= dI ? E - dI : 0;
         while (--f);
         f = dI, WI = f;
         do
-          P = w.prev[--WI], w.prev[WI] = P >= dI ? P - dI : 0;
+          E = w.prev[--WI], w.prev[WI] = E >= dI ? E - dI : 0;
         while (--f);
         q += dI;
       }
@@ -18825,7 +18825,7 @@ function requireDeflate$1() {
     return w.insert = w.strstart < v - 1 ? w.strstart : v - 1, dI === Z ? (GI(w, !0), w.strm.avail_out === 0 ? K : J) : w.last_lit && (GI(w, !1), w.strm.avail_out === 0) ? T : N;
   }
   function LI(w, dI) {
-    for (var WI, f, P; ; ) {
+    for (var WI, f, E; ; ) {
       if (w.lookahead < z) {
         if (RI(w), w.lookahead < z && dI === d)
           return T;
@@ -18833,9 +18833,9 @@ function requireDeflate$1() {
           break;
       }
       if (WI = 0, w.lookahead >= v && (w.ins_h = (w.ins_h << w.hash_shift ^ w.window[w.strstart + v - 1]) & w.hash_mask, WI = w.prev[w.strstart & w.w_mask] = w.head[w.ins_h], w.head[w.ins_h] = w.strstart), w.prev_length = w.match_length, w.prev_match = w.match_start, w.match_length = v - 1, WI !== 0 && w.prev_length < w.max_lazy_match && w.strstart - WI <= w.w_size - z && (w.match_length = uI(w, WI), w.match_length <= 5 && (w.strategy === y || w.match_length === v && w.strstart - w.match_start > 4096) && (w.match_length = v - 1)), w.prev_length >= v && w.match_length <= w.prev_length) {
-        P = w.strstart + w.lookahead - v, f = I._tr_tally(w, w.strstart - 1 - w.prev_match, w.prev_length - v), w.lookahead -= w.prev_length - 1, w.prev_length -= 2;
+        E = w.strstart + w.lookahead - v, f = I._tr_tally(w, w.strstart - 1 - w.prev_match, w.prev_length - v), w.lookahead -= w.prev_length - 1, w.prev_length -= 2;
         do
-          ++w.strstart <= P && (w.ins_h = (w.ins_h << w.hash_shift ^ w.window[w.strstart + v - 1]) & w.hash_mask, WI = w.prev[w.strstart & w.w_mask] = w.head[w.ins_h], w.head[w.ins_h] = w.strstart);
+          ++w.strstart <= E && (w.ins_h = (w.ins_h << w.hash_shift ^ w.window[w.strstart + v - 1]) & w.hash_mask, WI = w.prev[w.strstart & w.w_mask] = w.head[w.ins_h], w.head[w.ins_h] = w.strstart);
         while (--w.prev_length !== 0);
         if (w.match_available = 0, w.match_length = v - 1, w.strstart++, f && (GI(w, !1), w.strm.avail_out === 0))
           return T;
@@ -18848,19 +18848,19 @@ function requireDeflate$1() {
     return w.match_available && (f = I._tr_tally(w, 0, w.window[w.strstart - 1]), w.match_available = 0), w.insert = w.strstart < v - 1 ? w.strstart : v - 1, dI === Z ? (GI(w, !0), w.strm.avail_out === 0 ? K : J) : w.last_lit && (GI(w, !1), w.strm.avail_out === 0) ? T : N;
   }
   function KI(w, dI) {
-    for (var WI, f, P, q, VI = w.window; ; ) {
+    for (var WI, f, E, q, VI = w.window; ; ) {
       if (w.lookahead <= Q) {
         if (RI(w), w.lookahead <= Q && dI === d)
           return T;
         if (w.lookahead === 0)
           break;
       }
-      if (w.match_length = 0, w.lookahead >= v && w.strstart > 0 && (P = w.strstart - 1, f = VI[P], f === VI[++P] && f === VI[++P] && f === VI[++P])) {
+      if (w.match_length = 0, w.lookahead >= v && w.strstart > 0 && (E = w.strstart - 1, f = VI[E], f === VI[++E] && f === VI[++E] && f === VI[++E])) {
         q = w.strstart + Q;
         do
           ;
-        while (f === VI[++P] && f === VI[++P] && f === VI[++P] && f === VI[++P] && f === VI[++P] && f === VI[++P] && f === VI[++P] && f === VI[++P] && P < q);
-        w.match_length = Q - (q - P), w.match_length > w.lookahead && (w.match_length = w.lookahead);
+        while (f === VI[++E] && f === VI[++E] && f === VI[++E] && f === VI[++E] && f === VI[++E] && f === VI[++E] && f === VI[++E] && f === VI[++E] && E < q);
+        w.match_length = Q - (q - E), w.match_length > w.lookahead && (w.match_length = w.lookahead);
       }
       if (w.match_length >= v ? (WI = I._tr_tally(w, 1, w.match_length - v), w.lookahead -= w.match_length, w.strstart += w.match_length, w.match_length = 0) : (WI = I._tr_tally(w, 0, w.window[w.strstart]), w.lookahead--, w.strstart++), WI && (GI(w, !1), w.strm.avail_out === 0))
         return T;
@@ -18879,8 +18879,8 @@ function requireDeflate$1() {
     }
     return w.insert = 0, dI === Z ? (GI(w, !0), w.strm.avail_out === 0 ? K : J) : w.last_lit && (GI(w, !1), w.strm.avail_out === 0) ? T : N;
   }
-  function OI(w, dI, WI, f, P) {
-    this.good_length = w, this.max_lazy = dI, this.nice_length = WI, this.max_chain = f, this.func = P;
+  function OI(w, dI, WI, f, E) {
+    this.good_length = w, this.max_lazy = dI, this.nice_length = WI, this.max_chain = f, this.func = E;
   }
   var kI;
   kI = [
@@ -18914,7 +18914,7 @@ function requireDeflate$1() {
   }
   function bI(w) {
     var dI;
-    return !w || !w.state ? E(w, b) : (w.total_in = w.total_out = 0, w.data_type = t, dI = w.state, dI.pending = 0, dI.pending_out = 0, dI.wrap < 0 && (dI.wrap = -dI.wrap), dI.status = dI.wrap ? oI : H, w.adler = dI.wrap === 2 ? 0 : 1, dI.last_flush = d, I._tr_init(dI), a);
+    return !w || !w.state ? U(w, b) : (w.total_in = w.total_out = 0, w.data_type = t, dI = w.state, dI.pending = 0, dI.pending_out = 0, dI.wrap < 0 && (dI.wrap = -dI.wrap), dI.status = dI.wrap ? oI : H, w.adler = dI.wrap === 2 ? 0 : 1, dI.last_flush = d, I._tr_init(dI), a);
   }
   function yI(w) {
     var dI = bI(w);
@@ -18923,25 +18923,25 @@ function requireDeflate$1() {
   function HI(w, dI) {
     return !w || !w.state || w.state.wrap !== 2 ? b : (w.state.gzhead = dI, a);
   }
-  function II(w, dI, WI, f, P, q) {
+  function II(w, dI, WI, f, E, q) {
     if (!w)
       return b;
     var VI = 1;
-    if (dI === Y && (dI = 6), f < 0 ? (VI = 0, f = -f) : f > 15 && (VI = 2, f -= 16), P < 1 || P > X || WI !== n || f < 8 || f > 15 || dI < 0 || dI > 9 || q < 0 || q > h)
-      return E(w, b);
+    if (dI === Y && (dI = 6), f < 0 ? (VI = 0, f = -f) : f > 15 && (VI = 2, f -= 16), E < 1 || E > X || WI !== n || f < 8 || f > 15 || dI < 0 || dI > 9 || q < 0 || q > h)
+      return U(w, b);
     f === 8 && (f = 9);
     var XI = new F();
-    return w.state = XI, XI.strm = w, XI.wrap = VI, XI.gzhead = null, XI.w_bits = f, XI.w_size = 1 << XI.w_bits, XI.w_mask = XI.w_size - 1, XI.hash_bits = P + 7, XI.hash_size = 1 << XI.hash_bits, XI.hash_mask = XI.hash_size - 1, XI.hash_shift = ~~((XI.hash_bits + v - 1) / v), XI.window = new C.Buf8(XI.w_size * 2), XI.head = new C.Buf16(XI.hash_size), XI.prev = new C.Buf16(XI.w_size), XI.lit_bufsize = 1 << P + 6, XI.pending_buf_size = XI.lit_bufsize * 4, XI.pending_buf = new C.Buf8(XI.pending_buf_size), XI.d_buf = 1 * XI.lit_bufsize, XI.l_buf = 3 * XI.lit_bufsize, XI.level = dI, XI.strategy = q, XI.method = WI, yI(w);
+    return w.state = XI, XI.strm = w, XI.wrap = VI, XI.gzhead = null, XI.w_bits = f, XI.w_size = 1 << XI.w_bits, XI.w_mask = XI.w_size - 1, XI.hash_bits = E + 7, XI.hash_size = 1 << XI.hash_bits, XI.hash_mask = XI.hash_size - 1, XI.hash_shift = ~~((XI.hash_bits + v - 1) / v), XI.window = new C.Buf8(XI.w_size * 2), XI.head = new C.Buf16(XI.hash_size), XI.prev = new C.Buf16(XI.w_size), XI.lit_bufsize = 1 << E + 6, XI.pending_buf_size = XI.lit_bufsize * 4, XI.pending_buf = new C.Buf8(XI.pending_buf_size), XI.d_buf = 1 * XI.lit_bufsize, XI.l_buf = 3 * XI.lit_bufsize, XI.level = dI, XI.strategy = q, XI.method = WI, yI(w);
   }
   function nI(w, dI) {
     return II(w, dI, n, R, r, u);
   }
   function x(w, dI) {
-    var WI, f, P, q;
+    var WI, f, E, q;
     if (!w || !w.state || dI > o || dI < 0)
-      return w ? E(w, b) : b;
-    if (f = w.state, !w.output || !w.input && w.avail_in !== 0 || f.status === U && dI !== Z)
-      return E(w, w.avail_out === 0 ? V : b);
+      return w ? U(w, b) : b;
+    if (f = w.state, !w.output || !w.input && w.avail_in !== 0 || f.status === P && dI !== Z)
+      return U(w, w.avail_out === 0 ? V : b);
     if (f.strm = w, WI = f.last_flush, f.last_flush = dI, f.status === oI)
       if (f.wrap === 2)
         w.adler = 0, mI(f, 31), mI(f, 139), mI(f, 8), f.gzhead ? (mI(
@@ -18954,47 +18954,47 @@ function requireDeflate$1() {
       }
     if (f.status === hI)
       if (f.gzhead.extra) {
-        for (P = f.pending; f.gzindex < (f.gzhead.extra.length & 65535) && !(f.pending === f.pending_buf_size && (f.gzhead.hcrc && f.pending > P && (w.adler = A(w.adler, f.pending_buf, f.pending - P, P)), aI(w), P = f.pending, f.pending === f.pending_buf_size)); )
+        for (E = f.pending; f.gzindex < (f.gzhead.extra.length & 65535) && !(f.pending === f.pending_buf_size && (f.gzhead.hcrc && f.pending > E && (w.adler = A(w.adler, f.pending_buf, f.pending - E, E)), aI(w), E = f.pending, f.pending === f.pending_buf_size)); )
           mI(f, f.gzhead.extra[f.gzindex] & 255), f.gzindex++;
-        f.gzhead.hcrc && f.pending > P && (w.adler = A(w.adler, f.pending_buf, f.pending - P, P)), f.gzindex === f.gzhead.extra.length && (f.gzindex = 0, f.status = BI);
+        f.gzhead.hcrc && f.pending > E && (w.adler = A(w.adler, f.pending_buf, f.pending - E, E)), f.gzindex === f.gzhead.extra.length && (f.gzindex = 0, f.status = BI);
       } else
         f.status = BI;
     if (f.status === BI)
       if (f.gzhead.name) {
-        P = f.pending;
+        E = f.pending;
         do {
-          if (f.pending === f.pending_buf_size && (f.gzhead.hcrc && f.pending > P && (w.adler = A(w.adler, f.pending_buf, f.pending - P, P)), aI(w), P = f.pending, f.pending === f.pending_buf_size)) {
+          if (f.pending === f.pending_buf_size && (f.gzhead.hcrc && f.pending > E && (w.adler = A(w.adler, f.pending_buf, f.pending - E, E)), aI(w), E = f.pending, f.pending === f.pending_buf_size)) {
             q = 1;
             break;
           }
           f.gzindex < f.gzhead.name.length ? q = f.gzhead.name.charCodeAt(f.gzindex++) & 255 : q = 0, mI(f, q);
         } while (q !== 0);
-        f.gzhead.hcrc && f.pending > P && (w.adler = A(w.adler, f.pending_buf, f.pending - P, P)), q === 0 && (f.gzindex = 0, f.status = gI);
+        f.gzhead.hcrc && f.pending > E && (w.adler = A(w.adler, f.pending_buf, f.pending - E, E)), q === 0 && (f.gzindex = 0, f.status = gI);
       } else
         f.status = gI;
     if (f.status === gI)
       if (f.gzhead.comment) {
-        P = f.pending;
+        E = f.pending;
         do {
-          if (f.pending === f.pending_buf_size && (f.gzhead.hcrc && f.pending > P && (w.adler = A(w.adler, f.pending_buf, f.pending - P, P)), aI(w), P = f.pending, f.pending === f.pending_buf_size)) {
+          if (f.pending === f.pending_buf_size && (f.gzhead.hcrc && f.pending > E && (w.adler = A(w.adler, f.pending_buf, f.pending - E, E)), aI(w), E = f.pending, f.pending === f.pending_buf_size)) {
             q = 1;
             break;
           }
           f.gzindex < f.gzhead.comment.length ? q = f.gzhead.comment.charCodeAt(f.gzindex++) & 255 : q = 0, mI(f, q);
         } while (q !== 0);
-        f.gzhead.hcrc && f.pending > P && (w.adler = A(w.adler, f.pending_buf, f.pending - P, P)), q === 0 && (f.status = p);
+        f.gzhead.hcrc && f.pending > E && (w.adler = A(w.adler, f.pending_buf, f.pending - E, E)), q === 0 && (f.status = p);
       } else
         f.status = p;
     if (f.status === p && (f.gzhead.hcrc ? (f.pending + 2 > f.pending_buf_size && aI(w), f.pending + 2 <= f.pending_buf_size && (mI(f, w.adler & 255), mI(f, w.adler >> 8 & 255), w.adler = 0, f.status = H)) : f.status = H), f.pending !== 0) {
       if (aI(w), w.avail_out === 0)
         return f.last_flush = -1, a;
     } else if (w.avail_in === 0 && iI(dI) <= iI(WI) && dI !== Z)
-      return E(w, V);
-    if (f.status === U && w.avail_in !== 0)
-      return E(w, V);
-    if (w.avail_in !== 0 || f.lookahead !== 0 || dI !== d && f.status !== U) {
+      return U(w, V);
+    if (f.status === P && w.avail_in !== 0)
+      return U(w, V);
+    if (w.avail_in !== 0 || f.lookahead !== 0 || dI !== d && f.status !== P) {
       var MI = f.strategy === M ? PI(f, dI) : f.strategy === B ? KI(f, dI) : kI[f.level].func(f, dI);
-      if ((MI === K || MI === J) && (f.status = U), MI === T || MI === K)
+      if ((MI === K || MI === J) && (f.status = P), MI === T || MI === K)
         return w.avail_out === 0 && (f.last_flush = -1), a;
       if (MI === N && (dI === s ? I._tr_align(f) : dI !== o && (I._tr_stored_block(f, 0, 0, !1), dI === c && (ZI(f.head), f.lookahead === 0 && (f.strstart = 0, f.block_start = 0, f.insert = 0))), aI(w), w.avail_out === 0))
         return f.last_flush = -1, a;
@@ -19003,18 +19003,18 @@ function requireDeflate$1() {
   }
   function cI(w) {
     var dI;
-    return !w || !w.state ? b : (dI = w.state.status, dI !== oI && dI !== hI && dI !== BI && dI !== gI && dI !== p && dI !== H && dI !== U ? E(w, b) : (w.state = null, dI === H ? E(w, m) : a));
+    return !w || !w.state ? b : (dI = w.state.status, dI !== oI && dI !== hI && dI !== BI && dI !== gI && dI !== p && dI !== H && dI !== P ? U(w, b) : (w.state = null, dI === H ? U(w, m) : a));
   }
   function sI(w, dI) {
-    var WI = dI.length, f, P, q, VI, XI, MI, zI, TI;
+    var WI = dI.length, f, E, q, VI, XI, MI, zI, TI;
     if (!w || !w.state || (f = w.state, VI = f.wrap, VI === 2 || VI === 1 && f.status !== oI || f.lookahead))
       return b;
     for (VI === 1 && (w.adler = g(w.adler, dI, WI, 0)), f.wrap = 0, WI >= f.w_size && (VI === 0 && (ZI(f.head), f.strstart = 0, f.block_start = 0, f.insert = 0), TI = new C.Buf8(f.w_size), C.arraySet(TI, dI, WI - f.w_size, f.w_size, 0), dI = TI, WI = f.w_size), XI = w.avail_in, MI = w.next_in, zI = w.input, w.avail_in = WI, w.next_in = 0, w.input = dI, RI(f); f.lookahead >= v; ) {
-      P = f.strstart, q = f.lookahead - (v - 1);
+      E = f.strstart, q = f.lookahead - (v - 1);
       do
-        f.ins_h = (f.ins_h << f.hash_shift ^ f.window[P + v - 1]) & f.hash_mask, f.prev[P & f.w_mask] = f.head[f.ins_h], f.head[f.ins_h] = P, P++;
+        f.ins_h = (f.ins_h << f.hash_shift ^ f.window[E + v - 1]) & f.hash_mask, f.prev[E & f.w_mask] = f.head[f.ins_h], f.head[f.ins_h] = E, E++;
       while (--q);
-      f.strstart = P, f.lookahead = v - 1, RI(f);
+      f.strstart = E, f.lookahead = v - 1, RI(f);
     }
     return f.strstart += f.lookahead, f.block_start = f.strstart, f.insert = f.lookahead, f.lookahead = 0, f.match_length = f.prev_length = v - 1, f.match_available = 0, w.next_in = MI, w.input = zI, w.avail_in = XI, f.wrap = VI, a;
   }
@@ -19392,7 +19392,7 @@ function requireInftrees() {
     64
   ];
   return inftrees = function(b, m, V, Y, y, M, B, h) {
-    var u = h.bits, t = 0, n = 0, X = 0, R = 0, r = 0, k = 0, S = 0, $ = 0, O = 0, _ = 0, AI, j, v, Q, z, lI = null, oI = 0, hI, BI = new C.Buf16(I + 1), gI = new C.Buf16(I + 1), p = null, H = 0, U, T, N;
+    var u = h.bits, t = 0, n = 0, X = 0, R = 0, r = 0, k = 0, S = 0, $ = 0, O = 0, _ = 0, AI, j, v, Q, z, lI = null, oI = 0, hI, BI = new C.Buf16(I + 1), gI = new C.Buf16(I + 1), p = null, H = 0, P, T, N;
     for (t = 0; t <= I; t++)
       BI[t] = 0;
     for (n = 0; n < Y; n++)
@@ -19415,9 +19415,9 @@ function requireInftrees() {
     if (b === l ? (lI = p = B, hI = 19) : b === d ? (lI = c, oI -= 257, p = Z, H -= 257, hI = 256) : (lI = o, p = a, hI = -1), _ = 0, n = 0, t = X, z = M, k = r, S = 0, v = -1, O = 1 << r, Q = O - 1, b === d && O > g || b === s && O > A)
       return 1;
     for (; ; ) {
-      U = t - S, B[n] < hI ? (T = 0, N = B[n]) : B[n] > hI ? (T = p[H + B[n]], N = lI[oI + B[n]]) : (T = 96, N = 0), AI = 1 << t - S, j = 1 << k, X = j;
+      P = t - S, B[n] < hI ? (T = 0, N = B[n]) : B[n] > hI ? (T = p[H + B[n]], N = lI[oI + B[n]]) : (T = 96, N = 0), AI = 1 << t - S, j = 1 << k, X = j;
       do
-        j -= AI, y[z + (_ >> S) + j] = U << 24 | T << 16 | N | 0;
+        j -= AI, y[z + (_ >> S) + j] = P << 24 | T << 16 | N | 0;
       while (j !== 0);
       for (AI = 1 << t - 1; _ & AI; )
         AI >>= 1;
@@ -19441,7 +19441,7 @@ var hasRequiredInflate$1;
 function requireInflate$1() {
   if (hasRequiredInflate$1) return inflate;
   hasRequiredInflate$1 = 1;
-  var C = requireCommon(), I = requireAdler32(), g = requireCrc32(), A = requireInffast(), l = requireInftrees(), d = 0, s = 1, c = 2, Z = 4, o = 5, a = 6, G = 0, b = 1, m = 2, V = -2, Y = -3, y = -4, M = -5, B = 8, h = 1, u = 2, t = 3, n = 4, X = 5, R = 6, r = 7, k = 8, S = 9, $ = 10, O = 11, _ = 12, AI = 13, j = 14, v = 15, Q = 16, z = 17, lI = 18, oI = 19, hI = 20, BI = 21, gI = 22, p = 23, H = 24, U = 25, T = 26, N = 27, K = 28, J = 29, L = 30, E = 31, iI = 32, ZI = 852, aI = 592, GI = 15, mI = GI;
+  var C = requireCommon(), I = requireAdler32(), g = requireCrc32(), A = requireInffast(), l = requireInftrees(), d = 0, s = 1, c = 2, Z = 4, o = 5, a = 6, G = 0, b = 1, m = 2, V = -2, Y = -3, y = -4, M = -5, B = 8, h = 1, u = 2, t = 3, n = 4, X = 5, R = 6, r = 7, k = 8, S = 9, $ = 10, O = 11, _ = 12, AI = 13, j = 14, v = 15, Q = 16, z = 17, lI = 18, oI = 19, hI = 20, BI = 21, gI = 22, p = 23, H = 24, P = 25, T = 26, N = 27, K = 28, J = 29, L = 30, U = 31, iI = 32, ZI = 852, aI = 592, GI = 15, mI = GI;
   function wI(II) {
     return (II >>> 24 & 255) + (II >>> 8 & 65280) + ((II & 65280) << 8) + ((II & 255) << 24);
   }
@@ -19490,13 +19490,13 @@ function requireInflate$1() {
     return w.window === null && (w.wsize = 1 << w.wbits, w.wnext = 0, w.whave = 0, w.window = new C.Buf8(w.wsize)), cI >= w.wsize ? (C.arraySet(w.window, nI, x - w.wsize, w.wsize, 0), w.wnext = 0, w.whave = w.wsize) : (sI = w.wsize - w.wnext, sI > cI && (sI = cI), C.arraySet(w.window, nI, x - cI, sI, w.wnext), cI -= sI, cI ? (C.arraySet(w.window, nI, x - cI, cI, 0), w.wnext = cI, w.whave = w.wsize) : (w.wnext += sI, w.wnext === w.wsize && (w.wnext = 0), w.whave < w.wsize && (w.whave += sI))), 0;
   }
   function F(II, nI) {
-    var x, cI, sI, w, dI, WI, f, P, q, VI, XI, MI, zI, TI, xI = 0, SI, fI, $I, jI, gg, lg, UI, Cg, qI = new C.Buf8(4), cg, Zg, ag = (
+    var x, cI, sI, w, dI, WI, f, E, q, VI, XI, MI, zI, TI, xI = 0, SI, fI, $I, jI, gg, lg, UI, Cg, qI = new C.Buf8(4), cg, Zg, ag = (
       /* permutation of code lengths */
       [16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15]
     );
     if (!II || !II.state || !II.output || !II.input && II.avail_in !== 0)
       return V;
-    x = II.state, x.mode === _ && (x.mode = AI), dI = II.next_out, sI = II.output, f = II.avail_out, w = II.next_in, cI = II.input, WI = II.avail_in, P = x.hold, q = x.bits, VI = WI, XI = f, Cg = G;
+    x = II.state, x.mode === _ && (x.mode = AI), dI = II.next_out, sI = II.output, f = II.avail_out, w = II.next_in, cI = II.input, WI = II.avail_in, E = x.hold, q = x.bits, VI = WI, XI = f, Cg = G;
     I:
       for (; ; )
         switch (x.mode) {
@@ -19508,36 +19508,36 @@ function requireInflate$1() {
             for (; q < 16; ) {
               if (WI === 0)
                 break I;
-              WI--, P += cI[w++] << q, q += 8;
+              WI--, E += cI[w++] << q, q += 8;
             }
-            if (x.wrap & 2 && P === 35615) {
-              x.check = 0, qI[0] = P & 255, qI[1] = P >>> 8 & 255, x.check = g(x.check, qI, 2, 0), P = 0, q = 0, x.mode = u;
+            if (x.wrap & 2 && E === 35615) {
+              x.check = 0, qI[0] = E & 255, qI[1] = E >>> 8 & 255, x.check = g(x.check, qI, 2, 0), E = 0, q = 0, x.mode = u;
               break;
             }
             if (x.flags = 0, x.head && (x.head.done = !1), !(x.wrap & 1) || /* check if zlib header allowed */
-            (((P & 255) << 8) + (P >> 8)) % 31) {
+            (((E & 255) << 8) + (E >> 8)) % 31) {
               II.msg = "incorrect header check", x.mode = L;
               break;
             }
-            if ((P & 15) !== B) {
+            if ((E & 15) !== B) {
               II.msg = "unknown compression method", x.mode = L;
               break;
             }
-            if (P >>>= 4, q -= 4, UI = (P & 15) + 8, x.wbits === 0)
+            if (E >>>= 4, q -= 4, UI = (E & 15) + 8, x.wbits === 0)
               x.wbits = UI;
             else if (UI > x.wbits) {
               II.msg = "invalid window size", x.mode = L;
               break;
             }
-            x.dmax = 1 << UI, II.adler = x.check = 1, x.mode = P & 512 ? $ : _, P = 0, q = 0;
+            x.dmax = 1 << UI, II.adler = x.check = 1, x.mode = E & 512 ? $ : _, E = 0, q = 0;
             break;
           case u:
             for (; q < 16; ) {
               if (WI === 0)
                 break I;
-              WI--, P += cI[w++] << q, q += 8;
+              WI--, E += cI[w++] << q, q += 8;
             }
-            if (x.flags = P, (x.flags & 255) !== B) {
+            if (x.flags = E, (x.flags & 255) !== B) {
               II.msg = "unknown compression method", x.mode = L;
               break;
             }
@@ -19545,32 +19545,32 @@ function requireInflate$1() {
               II.msg = "unknown header flags set", x.mode = L;
               break;
             }
-            x.head && (x.head.text = P >> 8 & 1), x.flags & 512 && (qI[0] = P & 255, qI[1] = P >>> 8 & 255, x.check = g(x.check, qI, 2, 0)), P = 0, q = 0, x.mode = t;
+            x.head && (x.head.text = E >> 8 & 1), x.flags & 512 && (qI[0] = E & 255, qI[1] = E >>> 8 & 255, x.check = g(x.check, qI, 2, 0)), E = 0, q = 0, x.mode = t;
           /* falls through */
           case t:
             for (; q < 32; ) {
               if (WI === 0)
                 break I;
-              WI--, P += cI[w++] << q, q += 8;
+              WI--, E += cI[w++] << q, q += 8;
             }
-            x.head && (x.head.time = P), x.flags & 512 && (qI[0] = P & 255, qI[1] = P >>> 8 & 255, qI[2] = P >>> 16 & 255, qI[3] = P >>> 24 & 255, x.check = g(x.check, qI, 4, 0)), P = 0, q = 0, x.mode = n;
+            x.head && (x.head.time = E), x.flags & 512 && (qI[0] = E & 255, qI[1] = E >>> 8 & 255, qI[2] = E >>> 16 & 255, qI[3] = E >>> 24 & 255, x.check = g(x.check, qI, 4, 0)), E = 0, q = 0, x.mode = n;
           /* falls through */
           case n:
             for (; q < 16; ) {
               if (WI === 0)
                 break I;
-              WI--, P += cI[w++] << q, q += 8;
+              WI--, E += cI[w++] << q, q += 8;
             }
-            x.head && (x.head.xflags = P & 255, x.head.os = P >> 8), x.flags & 512 && (qI[0] = P & 255, qI[1] = P >>> 8 & 255, x.check = g(x.check, qI, 2, 0)), P = 0, q = 0, x.mode = X;
+            x.head && (x.head.xflags = E & 255, x.head.os = E >> 8), x.flags & 512 && (qI[0] = E & 255, qI[1] = E >>> 8 & 255, x.check = g(x.check, qI, 2, 0)), E = 0, q = 0, x.mode = X;
           /* falls through */
           case X:
             if (x.flags & 1024) {
               for (; q < 16; ) {
                 if (WI === 0)
                   break I;
-                WI--, P += cI[w++] << q, q += 8;
+                WI--, E += cI[w++] << q, q += 8;
               }
-              x.length = P, x.head && (x.head.extra_len = P), x.flags & 512 && (qI[0] = P & 255, qI[1] = P >>> 8 & 255, x.check = g(x.check, qI, 2, 0)), P = 0, q = 0;
+              x.length = E, x.head && (x.head.extra_len = E), x.flags & 512 && (qI[0] = E & 255, qI[1] = E >>> 8 & 255, x.check = g(x.check, qI, 2, 0)), E = 0, q = 0;
             } else x.head && (x.head.extra = null);
             x.mode = R;
           /* falls through */
@@ -19619,13 +19619,13 @@ function requireInflate$1() {
               for (; q < 16; ) {
                 if (WI === 0)
                   break I;
-                WI--, P += cI[w++] << q, q += 8;
+                WI--, E += cI[w++] << q, q += 8;
               }
-              if (P !== (x.check & 65535)) {
+              if (E !== (x.check & 65535)) {
                 II.msg = "header crc mismatch", x.mode = L;
                 break;
               }
-              P = 0, q = 0;
+              E = 0, q = 0;
             }
             x.head && (x.head.hcrc = x.flags >> 9 & 1, x.head.done = !0), II.adler = x.check = 0, x.mode = _;
             break;
@@ -19633,13 +19633,13 @@ function requireInflate$1() {
             for (; q < 32; ) {
               if (WI === 0)
                 break I;
-              WI--, P += cI[w++] << q, q += 8;
+              WI--, E += cI[w++] << q, q += 8;
             }
-            II.adler = x.check = wI(P), P = 0, q = 0, x.mode = O;
+            II.adler = x.check = wI(E), E = 0, q = 0, x.mode = O;
           /* falls through */
           case O:
             if (x.havedict === 0)
-              return II.next_out = dI, II.avail_out = f, II.next_in = w, II.avail_in = WI, x.hold = P, x.bits = q, m;
+              return II.next_out = dI, II.avail_out = f, II.next_in = w, II.avail_in = WI, x.hold = E, x.bits = q, m;
             II.adler = x.check = 1, x.mode = _;
           /* falls through */
           case _:
@@ -19648,21 +19648,21 @@ function requireInflate$1() {
           /* falls through */
           case AI:
             if (x.last) {
-              P >>>= q & 7, q -= q & 7, x.mode = N;
+              E >>>= q & 7, q -= q & 7, x.mode = N;
               break;
             }
             for (; q < 3; ) {
               if (WI === 0)
                 break I;
-              WI--, P += cI[w++] << q, q += 8;
+              WI--, E += cI[w++] << q, q += 8;
             }
-            switch (x.last = P & 1, P >>>= 1, q -= 1, P & 3) {
+            switch (x.last = E & 1, E >>>= 1, q -= 1, E & 3) {
               case 0:
                 x.mode = j;
                 break;
               case 1:
                 if (kI(x), x.mode = hI, nI === a) {
-                  P >>>= 2, q -= 2;
+                  E >>>= 2, q -= 2;
                   break I;
                 }
                 break;
@@ -19672,19 +19672,19 @@ function requireInflate$1() {
               case 3:
                 II.msg = "invalid block type", x.mode = L;
             }
-            P >>>= 2, q -= 2;
+            E >>>= 2, q -= 2;
             break;
           case j:
-            for (P >>>= q & 7, q -= q & 7; q < 32; ) {
+            for (E >>>= q & 7, q -= q & 7; q < 32; ) {
               if (WI === 0)
                 break I;
-              WI--, P += cI[w++] << q, q += 8;
+              WI--, E += cI[w++] << q, q += 8;
             }
-            if ((P & 65535) !== (P >>> 16 ^ 65535)) {
+            if ((E & 65535) !== (E >>> 16 ^ 65535)) {
               II.msg = "invalid stored block lengths", x.mode = L;
               break;
             }
-            if (x.length = P & 65535, P = 0, q = 0, x.mode = v, nI === a)
+            if (x.length = E & 65535, E = 0, q = 0, x.mode = v, nI === a)
               break I;
           /* falls through */
           case v:
@@ -19703,9 +19703,9 @@ function requireInflate$1() {
             for (; q < 14; ) {
               if (WI === 0)
                 break I;
-              WI--, P += cI[w++] << q, q += 8;
+              WI--, E += cI[w++] << q, q += 8;
             }
-            if (x.nlen = (P & 31) + 257, P >>>= 5, q -= 5, x.ndist = (P & 31) + 1, P >>>= 5, q -= 5, x.ncode = (P & 15) + 4, P >>>= 4, q -= 4, x.nlen > 286 || x.ndist > 30) {
+            if (x.nlen = (E & 31) + 257, E >>>= 5, q -= 5, x.ndist = (E & 31) + 1, E >>>= 5, q -= 5, x.ncode = (E & 15) + 4, E >>>= 4, q -= 4, x.nlen > 286 || x.ndist > 30) {
               II.msg = "too many length or distance symbols", x.mode = L;
               break;
             }
@@ -19716,9 +19716,9 @@ function requireInflate$1() {
               for (; q < 3; ) {
                 if (WI === 0)
                   break I;
-                WI--, P += cI[w++] << q, q += 8;
+                WI--, E += cI[w++] << q, q += 8;
               }
-              x.lens[ag[x.have++]] = P & 7, P >>>= 3, q -= 3;
+              x.lens[ag[x.have++]] = E & 7, E >>>= 3, q -= 3;
             }
             for (; x.have < 19; )
               x.lens[ag[x.have++]] = 0;
@@ -19730,39 +19730,39 @@ function requireInflate$1() {
           /* falls through */
           case oI:
             for (; x.have < x.nlen + x.ndist; ) {
-              for (; xI = x.lencode[P & (1 << x.lenbits) - 1], SI = xI >>> 24, fI = xI >>> 16 & 255, $I = xI & 65535, !(SI <= q); ) {
+              for (; xI = x.lencode[E & (1 << x.lenbits) - 1], SI = xI >>> 24, fI = xI >>> 16 & 255, $I = xI & 65535, !(SI <= q); ) {
                 if (WI === 0)
                   break I;
-                WI--, P += cI[w++] << q, q += 8;
+                WI--, E += cI[w++] << q, q += 8;
               }
               if ($I < 16)
-                P >>>= SI, q -= SI, x.lens[x.have++] = $I;
+                E >>>= SI, q -= SI, x.lens[x.have++] = $I;
               else {
                 if ($I === 16) {
                   for (Zg = SI + 2; q < Zg; ) {
                     if (WI === 0)
                       break I;
-                    WI--, P += cI[w++] << q, q += 8;
+                    WI--, E += cI[w++] << q, q += 8;
                   }
-                  if (P >>>= SI, q -= SI, x.have === 0) {
+                  if (E >>>= SI, q -= SI, x.have === 0) {
                     II.msg = "invalid bit length repeat", x.mode = L;
                     break;
                   }
-                  UI = x.lens[x.have - 1], MI = 3 + (P & 3), P >>>= 2, q -= 2;
+                  UI = x.lens[x.have - 1], MI = 3 + (E & 3), E >>>= 2, q -= 2;
                 } else if ($I === 17) {
                   for (Zg = SI + 3; q < Zg; ) {
                     if (WI === 0)
                       break I;
-                    WI--, P += cI[w++] << q, q += 8;
+                    WI--, E += cI[w++] << q, q += 8;
                   }
-                  P >>>= SI, q -= SI, UI = 0, MI = 3 + (P & 7), P >>>= 3, q -= 3;
+                  E >>>= SI, q -= SI, UI = 0, MI = 3 + (E & 7), E >>>= 3, q -= 3;
                 } else {
                   for (Zg = SI + 7; q < Zg; ) {
                     if (WI === 0)
                       break I;
-                    WI--, P += cI[w++] << q, q += 8;
+                    WI--, E += cI[w++] << q, q += 8;
                   }
-                  P >>>= SI, q -= SI, UI = 0, MI = 11 + (P & 127), P >>>= 7, q -= 7;
+                  E >>>= SI, q -= SI, UI = 0, MI = 11 + (E & 127), E >>>= 7, q -= 7;
                 }
                 if (x.have + MI > x.nlen + x.ndist) {
                   II.msg = "invalid bit length repeat", x.mode = L;
@@ -19794,23 +19794,23 @@ function requireInflate$1() {
           /* falls through */
           case BI:
             if (WI >= 6 && f >= 258) {
-              II.next_out = dI, II.avail_out = f, II.next_in = w, II.avail_in = WI, x.hold = P, x.bits = q, A(II, XI), dI = II.next_out, sI = II.output, f = II.avail_out, w = II.next_in, cI = II.input, WI = II.avail_in, P = x.hold, q = x.bits, x.mode === _ && (x.back = -1);
+              II.next_out = dI, II.avail_out = f, II.next_in = w, II.avail_in = WI, x.hold = E, x.bits = q, A(II, XI), dI = II.next_out, sI = II.output, f = II.avail_out, w = II.next_in, cI = II.input, WI = II.avail_in, E = x.hold, q = x.bits, x.mode === _ && (x.back = -1);
               break;
             }
-            for (x.back = 0; xI = x.lencode[P & (1 << x.lenbits) - 1], SI = xI >>> 24, fI = xI >>> 16 & 255, $I = xI & 65535, !(SI <= q); ) {
+            for (x.back = 0; xI = x.lencode[E & (1 << x.lenbits) - 1], SI = xI >>> 24, fI = xI >>> 16 & 255, $I = xI & 65535, !(SI <= q); ) {
               if (WI === 0)
                 break I;
-              WI--, P += cI[w++] << q, q += 8;
+              WI--, E += cI[w++] << q, q += 8;
             }
             if (fI && (fI & 240) === 0) {
-              for (jI = SI, gg = fI, lg = $I; xI = x.lencode[lg + ((P & (1 << jI + gg) - 1) >> jI)], SI = xI >>> 24, fI = xI >>> 16 & 255, $I = xI & 65535, !(jI + SI <= q); ) {
+              for (jI = SI, gg = fI, lg = $I; xI = x.lencode[lg + ((E & (1 << jI + gg) - 1) >> jI)], SI = xI >>> 24, fI = xI >>> 16 & 255, $I = xI & 65535, !(jI + SI <= q); ) {
                 if (WI === 0)
                   break I;
-                WI--, P += cI[w++] << q, q += 8;
+                WI--, E += cI[w++] << q, q += 8;
               }
-              P >>>= jI, q -= jI, x.back += jI;
+              E >>>= jI, q -= jI, x.back += jI;
             }
-            if (P >>>= SI, q -= SI, x.back += SI, x.length = $I, fI === 0) {
+            if (E >>>= SI, q -= SI, x.back += SI, x.length = $I, fI === 0) {
               x.mode = T;
               break;
             }
@@ -19829,27 +19829,27 @@ function requireInflate$1() {
               for (Zg = x.extra; q < Zg; ) {
                 if (WI === 0)
                   break I;
-                WI--, P += cI[w++] << q, q += 8;
+                WI--, E += cI[w++] << q, q += 8;
               }
-              x.length += P & (1 << x.extra) - 1, P >>>= x.extra, q -= x.extra, x.back += x.extra;
+              x.length += E & (1 << x.extra) - 1, E >>>= x.extra, q -= x.extra, x.back += x.extra;
             }
             x.was = x.length, x.mode = p;
           /* falls through */
           case p:
-            for (; xI = x.distcode[P & (1 << x.distbits) - 1], SI = xI >>> 24, fI = xI >>> 16 & 255, $I = xI & 65535, !(SI <= q); ) {
+            for (; xI = x.distcode[E & (1 << x.distbits) - 1], SI = xI >>> 24, fI = xI >>> 16 & 255, $I = xI & 65535, !(SI <= q); ) {
               if (WI === 0)
                 break I;
-              WI--, P += cI[w++] << q, q += 8;
+              WI--, E += cI[w++] << q, q += 8;
             }
             if ((fI & 240) === 0) {
-              for (jI = SI, gg = fI, lg = $I; xI = x.distcode[lg + ((P & (1 << jI + gg) - 1) >> jI)], SI = xI >>> 24, fI = xI >>> 16 & 255, $I = xI & 65535, !(jI + SI <= q); ) {
+              for (jI = SI, gg = fI, lg = $I; xI = x.distcode[lg + ((E & (1 << jI + gg) - 1) >> jI)], SI = xI >>> 24, fI = xI >>> 16 & 255, $I = xI & 65535, !(jI + SI <= q); ) {
                 if (WI === 0)
                   break I;
-                WI--, P += cI[w++] << q, q += 8;
+                WI--, E += cI[w++] << q, q += 8;
               }
-              P >>>= jI, q -= jI, x.back += jI;
+              E >>>= jI, q -= jI, x.back += jI;
             }
-            if (P >>>= SI, q -= SI, x.back += SI, fI & 64) {
+            if (E >>>= SI, q -= SI, x.back += SI, fI & 64) {
               II.msg = "invalid distance code", x.mode = L;
               break;
             }
@@ -19860,17 +19860,17 @@ function requireInflate$1() {
               for (Zg = x.extra; q < Zg; ) {
                 if (WI === 0)
                   break I;
-                WI--, P += cI[w++] << q, q += 8;
+                WI--, E += cI[w++] << q, q += 8;
               }
-              x.offset += P & (1 << x.extra) - 1, P >>>= x.extra, q -= x.extra, x.back += x.extra;
+              x.offset += E & (1 << x.extra) - 1, E >>>= x.extra, q -= x.extra, x.back += x.extra;
             }
             if (x.offset > x.dmax) {
               II.msg = "invalid distance too far back", x.mode = L;
               break;
             }
-            x.mode = U;
+            x.mode = P;
           /* falls through */
-          case U:
+          case P:
             if (f === 0)
               break I;
             if (MI = XI - f, x.offset > MI) {
@@ -19897,14 +19897,14 @@ function requireInflate$1() {
               for (; q < 32; ) {
                 if (WI === 0)
                   break I;
-                WI--, P |= cI[w++] << q, q += 8;
+                WI--, E |= cI[w++] << q, q += 8;
               }
               if (XI -= f, II.total_out += XI, x.total += XI, XI && (II.adler = x.check = /*UPDATE(state.check, put - _out, _out);*/
-              x.flags ? g(x.check, sI, XI, dI - XI) : I(x.check, sI, XI, dI - XI)), XI = f, (x.flags ? P : wI(P)) !== x.check) {
+              x.flags ? g(x.check, sI, XI, dI - XI) : I(x.check, sI, XI, dI - XI)), XI = f, (x.flags ? E : wI(E)) !== x.check) {
                 II.msg = "incorrect data check", x.mode = L;
                 break;
               }
-              P = 0, q = 0;
+              E = 0, q = 0;
             }
             x.mode = K;
           /* falls through */
@@ -19913,13 +19913,13 @@ function requireInflate$1() {
               for (; q < 32; ) {
                 if (WI === 0)
                   break I;
-                WI--, P += cI[w++] << q, q += 8;
+                WI--, E += cI[w++] << q, q += 8;
               }
-              if (P !== (x.total & 4294967295)) {
+              if (E !== (x.total & 4294967295)) {
                 II.msg = "incorrect length check", x.mode = L;
                 break;
               }
-              P = 0, q = 0;
+              E = 0, q = 0;
             }
             x.mode = J;
           /* falls through */
@@ -19929,14 +19929,14 @@ function requireInflate$1() {
           case L:
             Cg = Y;
             break I;
-          case E:
+          case U:
             return y;
           case iI:
           /* falls through */
           default:
             return V;
         }
-    return II.next_out = dI, II.avail_out = f, II.next_in = w, II.avail_in = WI, x.hold = P, x.bits = q, (x.wsize || XI !== II.avail_out && x.mode < L && (x.mode < N || nI !== Z)) && DI(II, II.output, II.next_out, XI - II.avail_out), VI -= II.avail_in, XI -= II.avail_out, II.total_in += VI, II.total_out += XI, x.total += XI, x.wrap && XI && (II.adler = x.check = /*UPDATE(state.check, strm.next_out - _out, _out);*/
+    return II.next_out = dI, II.avail_out = f, II.next_in = w, II.avail_in = WI, x.hold = E, x.bits = q, (x.wsize || XI !== II.avail_out && x.mode < L && (x.mode < N || nI !== Z)) && DI(II, II.output, II.next_out, XI - II.avail_out), VI -= II.avail_in, XI -= II.avail_out, II.total_in += VI, II.total_out += XI, x.total += XI, x.wrap && XI && (II.adler = x.check = /*UPDATE(state.check, strm.next_out - _out, _out);*/
     x.flags ? g(x.check, sI, XI, II.next_out - XI) : I(x.check, sI, XI, II.next_out - XI)), II.data_type = x.bits + (x.last ? 64 : 0) + (x.mode === _ ? 128 : 0) + (x.mode === hI || x.mode === v ? 256 : 0), (VI === 0 && XI === 0 || nI === Z) && Cg === G && (Cg = M), Cg;
   }
   function bI(II) {
@@ -19951,7 +19951,7 @@ function requireInflate$1() {
   }
   function HI(II, nI) {
     var x = nI.length, cI, sI, w;
-    return !II || !II.state || (cI = II.state, cI.wrap !== 0 && cI.mode !== O) ? V : cI.mode === O && (sI = 1, sI = I(sI, nI, x, 0), sI !== cI.check) ? Y : (w = DI(II, nI, x, x), w ? (cI.mode = E, y) : (cI.havedict = 1, G));
+    return !II || !II.state || (cI = II.state, cI.wrap !== 0 && cI.mode !== O) ? V : cI.mode === O && (sI = 1, sI = I(sI, nI, x, 0), sI !== cI.check) ? Y : (w = DI(II, nI, x, x), w ? (cI.mode = U, y) : (cI.havedict = 1, G));
   }
   return inflate.inflateReset = RI, inflate.inflateReset2 = pI, inflate.inflateResetKeep = uI, inflate.inflateInit = LI, inflate.inflateInit2 = rI, inflate.inflate = F, inflate.inflateEnd = bI, inflate.inflateGetHeader = yI, inflate.inflateSetDictionary = HI, inflate.inflateInfo = "pako inflate (from Nodeca project)", inflate;
 }
@@ -22747,11 +22747,11 @@ UPNG.encode.compress = function(C, I, g, A, l) {
     if (z <= 256 && o == !1) {
       hI = Math.ceil(G * AI / 8);
       for (var gI = new Uint8Array(hI * lI), p = t[m], H = 0; H < lI; H++) {
-        var y = H * hI, U = H * AI;
-        if (G == 8) for (var T = 0; T < AI; T++) gI[y + T] = p[U + T];
-        else if (G == 4) for (var T = 0; T < AI; T++) gI[y + (T >> 1)] |= p[U + T] << 4 - (T & 1) * 4;
-        else if (G == 2) for (var T = 0; T < AI; T++) gI[y + (T >> 2)] |= p[U + T] << 6 - (T & 3) * 2;
-        else if (G == 1) for (var T = 0; T < AI; T++) gI[y + (T >> 3)] |= p[U + T] << 7 - (T & 7) * 1;
+        var y = H * hI, P = H * AI;
+        if (G == 8) for (var T = 0; T < AI; T++) gI[y + T] = p[P + T];
+        else if (G == 4) for (var T = 0; T < AI; T++) gI[y + (T >> 1)] |= p[P + T] << 4 - (T & 1) * 4;
+        else if (G == 2) for (var T = 0; T < AI; T++) gI[y + (T >> 2)] |= p[P + T] << 6 - (T & 3) * 2;
+        else if (G == 1) for (var T = 0; T < AI; T++) gI[y + (T >> 3)] |= p[P + T] << 7 - (T & 7) * 1;
       }
       oI = gI, a = 3, BI = 1;
     } else if (M == !1 && B.length == 1) {
@@ -28990,11 +28990,11 @@ function usePdfDocument(C, I, g, A, l) {
             clip(),
             endPath()
           ), b.forEach((H) => {
-            const U = H.getAttribute("d") || "";
-            if (!U) return;
-            const T = H.getAttribute("stroke") || "#000080", N = parseFloat(H.getAttribute("stroke-width") || "2"), K = H.getAttribute("stroke-linecap") || "round", J = V, L = Y, E = gI - J * oI, iI = p + BI + L * oI;
-            k.drawSvgPath(U, {
-              x: E,
+            const P = H.getAttribute("d") || "";
+            if (!P) return;
+            const T = H.getAttribute("stroke") || "#000080", N = parseFloat(H.getAttribute("stroke-width") || "2"), K = H.getAttribute("stroke-linecap") || "round", J = V, L = Y, U = gI - J * oI, iI = p + BI + L * oI;
+            k.drawSvgPath(P, {
+              x: U,
               y: iI,
               scale: oI,
               borderColor: hexToPdfRgb(T),
@@ -29110,33 +29110,33 @@ const _hoisted_1 = {
       if (g.signingPolicy === "any")
         return !0;
       if (g.signingPolicy === "all") {
-        const U = g.documents.filter((N) => !N.signed);
-        return U.length === 0 ? !0 : U.every((N) => l.value.has(N.key));
+        const T = g.documents.filter((K) => !K.signed);
+        return T.length === 0 ? !0 : T.every((K) => l.value.has(K.key));
       }
       return !1;
     }), Z = computed(() => {
-      var U;
-      return A.value && (U = g.documents.find((T) => T.key === A.value)) != null ? U : null;
+      var T;
+      return A.value && (T = g.documents.find((N) => N.key === A.value)) != null ? T : null;
     }), o = computed(() => {
-      var U, T;
-      return (T = (U = Z.value) == null ? void 0 : U.data) != null ? T : "";
+      var T, N;
+      return (N = (T = Z.value) == null ? void 0 : T.data) != null ? N : "";
     }), a = computed(() => {
-      var U, T;
-      return (T = (U = Z.value) == null ? void 0 : U.placements) != null ? T : [];
+      var T, N;
+      return (N = (T = Z.value) == null ? void 0 : T.placements) != null ? N : [];
     }), G = computed(() => {
-      var U;
-      return A.value && (U = d.value.get(A.value)) != null ? U : null;
+      var T;
+      return A.value && (T = d.value.get(A.value)) != null ? T : null;
     }), b = computed(() => {
-      var U, T;
-      return (T = (U = G.value) == null ? void 0 : U.svg) != null ? T : null;
+      var T, N;
+      return (N = (T = G.value) == null ? void 0 : T.svg) != null ? N : null;
     });
     watch(
       () => g.documents,
-      (U) => {
-        var T, N, K;
-        l.value.clear(), d.value.clear();
-        const J = U.find((L) => !L.signed);
-        A.value = (K = (N = J == null ? void 0 : J.key) != null ? N : (T = U[0]) == null ? void 0 : T.key) != null ? K : null;
+      (T) => {
+        var N, K, J;
+        BI();
+        const L = T.find((U) => !U.signed);
+        A.value = (J = (K = L == null ? void 0 : L.key) != null ? K : (N = T[0]) == null ? void 0 : N.key) != null ? J : null;
       },
       { immediate: !0 }
     );
@@ -29151,11 +29151,11 @@ const _hoisted_1 = {
       Y,
       y
     ), { isSignaturePadOpen: $, openSignaturePad: O, closeSignaturePad: _ } = useSignaturePad();
-    function AI(U) {
-      const T = processSignatureSVG(U.svg);
-      T && A.value && (d.value.set(A.value, {
-        svg: T,
-        png: U.png
+    function AI(T) {
+      const N = processSignatureSVG(T.svg);
+      N && A.value && (d.value.set(A.value, {
+        svg: N,
+        png: T.png
       }), l.value.add(A.value)), _();
     }
     const { isSaving: j, saveDocument: v } = usePdfDocument(
@@ -29173,12 +29173,15 @@ const _hoisted_1 = {
       z
     ), { log: oI, clearLogs: hI } = useDebugLogger();
     function BI() {
+      l.value.clear(), d.value.clear(), s.value = !1;
+    }
+    function gI() {
       isDebug.value && (hI(), oI("Debug session started"), typeof navigator != "undefined" && oI("navigator.userAgent", navigator.userAgent), typeof window != "undefined" && (oI("Viewport dimensions", {
         innerWidth: window.innerWidth,
         innerHeight: window.innerHeight
       }), oI("window.devicePixelRatio", window.devicePixelRatio)));
     }
-    async function gI() {
+    async function p() {
       if (!(u.value <= 1)) {
         r();
         try {
@@ -29188,7 +29191,7 @@ const _hoisted_1 = {
         }
       }
     }
-    async function p() {
+    async function H() {
       if (!(u.value >= t.value)) {
         r();
         try {
@@ -29198,72 +29201,72 @@ const _hoisted_1 = {
         }
       }
     }
-    function H() {
+    function P() {
       l.value.size > 0 ? window.confirm(Q.value.cancelWarning) && m("cancel") : m("cancel");
     }
     return onMounted(() => {
-      isDebug.value && BI(), B(o.value);
-    }), watch(o, (U, T) => {
-      U !== T && (r(), B(U));
-    }), watch(M, (U) => {
-      U && R();
+      isDebug.value && gI(), B(o.value);
+    }), watch(o, (T, N) => {
+      T !== N && (r(), B(T));
+    }), watch(M, (T) => {
+      T && R();
     }), watch(
       isDebug,
-      (U, T) => {
-        U && !T && BI();
+      (T, N) => {
+        T && !N && gI();
       },
       { flush: "post" }
     ), onBeforeUnmount(() => {
-    }), (U, T) => (openBlock(), createElementBlock("div", {
+    }), (T, N) => (openBlock(), createElementBlock("div", {
       class: "vue-pdf-signer",
-      onWheel: T[4] || (T[4] = withModifiers(() => {
+      onWheel: N[4] || (N[4] = withModifiers(() => {
       }, ["stop"]))
     }, [
       createElementVNode("div", _hoisted_1, [
         createElementVNode("div", _hoisted_2, [
           createElementVNode("button", {
-            onClick: H,
+            onClick: P,
             class: "btn",
             disabled: unref(j) || s.value,
             "data-cy": "sign-cancel"
           }, toDisplayString(unref(Q).cancel), 9, _hoisted_3),
           createElementVNode("button", {
-            onClick: T[0] || (T[0] = //@ts-ignore
-            (...N) => unref(v) && unref(v)(...N)),
+            onClick: N[0] || (N[0] = //@ts-ignore
+            (...K) => unref(v) && unref(v)(...K)),
             class: "btn btn-primary",
             disabled: !c.value || unref(j) || s.value,
             "data-cy": "save-sign"
           }, toDisplayString(unref(Q).save), 9, _hoisted_4)
         ]),
         createElementVNode("div", _hoisted_5, [
-          (openBlock(!0), createElementBlock(Fragment, null, renderList(U.documents, (N) => (openBlock(), createElementBlock("button", {
-            key: N.key,
-            onClick: (K) => A.value = N.key,
-            class: normalizeClass(["doc-tab", { active: A.value === N.key }]),
+          (openBlock(!0), createElementBlock(Fragment, null, renderList(T.documents, (K) => (openBlock(), createElementBlock("button", {
+            key: K.key,
+            onClick: (J) => A.value = K.key,
+            class: normalizeClass(["doc-tab", { active: A.value === K.key }]),
             disabled: unref(j) || s.value,
-            "data-cy": `doc-tab-${N.key}`
+            "data-cy": `doc-tab-${K.key}`
           }, [
-            N.signed || l.value.has(N.key) ? (openBlock(), createElementBlock("span", _hoisted_7, "✔")) : createCommentVNode("", !0),
-            createElementVNode("span", null, toDisplayString(N.name || N.key), 1)
+            K.signed || l.value.has(K.key) ? (openBlock(), createElementBlock("span", _hoisted_7, "✔")) : createCommentVNode("", !0),
+            createElementVNode("span", null, toDisplayString(K.name || K.key), 1)
           ], 10, _hoisted_6))), 128))
         ]),
         createElementVNode("div", _hoisted_8, [
           createElementVNode("button", {
-            onClick: T[1] || (T[1] = //@ts-ignore
-            (...N) => unref(O) && unref(O)(...N)),
+            onClick: N[1] || (N[1] = //@ts-ignore
+            (...K) => unref(O) && unref(O)(...K)),
             class: "btn btn-secondary",
             disabled: unref(Q).isSignActionDisabled || s.value,
             "data-cy": "update-sign"
           }, toDisplayString(unref(Q).actionButton), 9, _hoisted_9),
           unref(t) > 1 ? (openBlock(), createElementBlock("div", _hoisted_10, [
             createElementVNode("button", {
-              onClick: gI,
+              onClick: p,
               type: "button",
               class: "btn btn-icon pagination-button",
               "aria-label": unref(Q).previousPage,
               disabled: unref(u) === 1 || unref(j) || s.value,
               "data-cy": "pagination-prev"
-            }, T[5] || (T[5] = [
+            }, N[5] || (N[5] = [
               createElementVNode("span", {
                 "aria-hidden": "true",
                 class: "pagination-arrow"
@@ -29271,13 +29274,13 @@ const _hoisted_1 = {
             ]), 8, _hoisted_11),
             createElementVNode("span", _hoisted_12, toDisplayString(unref(Q).pageIndicator.replace("{currentPage}", String(unref(u))).replace("{totalPages}", String(unref(t)))), 1),
             createElementVNode("button", {
-              onClick: p,
+              onClick: H,
               type: "button",
               class: "btn btn-icon pagination-button",
               "aria-label": unref(Q).nextPage,
               disabled: unref(u) === unref(t) || unref(j) || s.value,
               "data-cy": "pagination-next"
-            }, T[6] || (T[6] = [
+            }, N[6] || (N[6] = [
               createElementVNode("span", {
                 "aria-hidden": "true",
                 class: "pagination-arrow"
@@ -29286,16 +29289,16 @@ const _hoisted_1 = {
           ])) : createCommentVNode("", !0),
           createElementVNode("div", _hoisted_14, [
             createElementVNode("button", {
-              onClick: T[2] || (T[2] = //@ts-ignore
-              (...N) => unref(S) && unref(S)(...N)),
+              onClick: N[2] || (N[2] = //@ts-ignore
+              (...K) => unref(S) && unref(S)(...K)),
               class: "btn btn-icon",
               disabled: unref(j) || s.value,
               "data-cy": "zoom-out-button"
             }, " - ", 8, _hoisted_15),
             createElementVNode("span", _hoisted_16, toDisplayString(unref(X)) + "%", 1),
             createElementVNode("button", {
-              onClick: T[3] || (T[3] = //@ts-ignore
-              (...N) => unref(k) && unref(k)(...N)),
+              onClick: N[3] || (N[3] = //@ts-ignore
+              (...K) => unref(k) && unref(k)(...K)),
               class: "btn btn-icon",
               disabled: unref(j) || s.value,
               "data-cy": "zoom-in-button"
@@ -29319,9 +29322,9 @@ const _hoisted_1 = {
             class: "pdf-render-view"
           }, null, 512),
           b.value ? (openBlock(), createElementBlock("div", _hoisted_18, [
-            (openBlock(!0), createElementBlock(Fragment, null, renderList(unref(lI), (N, K) => (openBlock(), createElementBlock("div", {
-              key: K,
-              style: normalizeStyle(N),
+            (openBlock(!0), createElementBlock(Fragment, null, renderList(unref(lI), (K, J) => (openBlock(), createElementBlock("div", {
+              key: J,
+              style: normalizeStyle(K),
               class: "signature-wrapper",
               innerHTML: b.value
             }, null, 12, _hoisted_19))), 128))
@@ -29341,7 +29344,7 @@ const _hoisted_1 = {
       g.debug ? (openBlock(), createBlock(DebugOverlay, { key: 1 })) : createCommentVNode("", !0)
     ], 32));
   }
-}), PdfSigner = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-9987f5d6"]]), index = {
+}), PdfSigner = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-675d6536"]]), index = {
   install(C) {
     C.component("PdfSigner", PdfSigner);
   }
