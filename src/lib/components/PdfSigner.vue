@@ -85,7 +85,16 @@ const activeSignatureSvg = computed(() => activeSignature.value?.svg ?? null)
 watch(
   () => props.documents,
   (docs) => {
-    resetSigningSession(docs)
+    const activeDocumentStillExists = activeDocumentKey.value
+      ? docs.some((doc) => doc.key === activeDocumentKey.value)
+      : false
+
+    if (activeDocumentStillExists && !activeDocument.value?.signed) {
+      return
+    }
+
+    const firstUnsignedDoc = docs.find((doc) => !doc.signed)
+    activeDocumentKey.value = firstUnsignedDoc?.key ?? docs[0]?.key ?? null
   },
   { immediate: true },
 )
@@ -161,17 +170,21 @@ function handleSignatureSave(payload: { svg: string; png: string }) {
 }
 
 // 4. PDF Document Generation (Saving Logic)
-// For now, we pass the active signature. This will be refactored in a later step
-// when we update usePdfDocument to handle the whole map.
 const { isSaving, saveDocument } = usePdfDocument(
   toRef(props, 'documents'),
   newlySignedKeys,
   emit,
   signatureDataMap,
-  () => {
-    isFinished.value = true
-  },
-)
+    () => {
+      const remainingUnsignedDocs = props.documents.filter(
+        (doc) => !doc.signed && !newlySignedKeys.value.has(doc.key),
+      )
+
+      if (remainingUnsignedDocs.length === 0) {
+        isFinished.value = true
+      }
+    },
+  )
 
 // 5. UI Text and Translations
 const { t } = useTranslations(props, isSaving, activeSignatureSvg, activeDocument)
