@@ -17,6 +17,7 @@ const props = withDefaults(
   defineProps<{
     documents: PdfDocument[]
     isOpen?: boolean
+    sessionKey?: string | number
     signingPolicy?: 'all' | 'any'
     translations?: Record<string, string>
     debug?: boolean
@@ -24,6 +25,7 @@ const props = withDefaults(
   }>(),
   {
     isOpen: false,
+    sessionKey: '',
     signingPolicy: 'all',
     translations: () => ({}),
     debug: false,
@@ -92,6 +94,16 @@ watch(
   () => props.isOpen,
   (isOpen, wasOpen) => {
     if (isOpen && !wasOpen) {
+      resetSigningSession()
+    }
+  },
+  { immediate: true },
+)
+
+watch(
+  () => props.sessionKey,
+  (sessionKey, previousSessionKey) => {
+    if (sessionKey !== previousSessionKey) {
       resetSigningSession()
     }
   },

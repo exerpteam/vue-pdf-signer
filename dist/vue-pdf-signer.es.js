@@ -29100,6 +29100,7 @@ const _hoisted_1 = {
   props: {
     documents: {},
     isOpen: { type: Boolean, default: !1 },
+    sessionKey: { default: "" },
     signingPolicy: { default: "all" },
     translations: { default: () => ({}) },
     debug: { type: Boolean, default: !1 },
@@ -29145,6 +29146,12 @@ const _hoisted_1 = {
       () => I.isOpen,
       (T, N) => {
         T && !N && BI();
+      },
+      { immediate: !0 }
+    ), watch(
+      () => I.sessionKey,
+      (T, N) => {
+        T !== N && BI();
       },
       { immediate: !0 }
     );
@@ -29355,7 +29362,7 @@ const _hoisted_1 = {
       I.debug ? (openBlock(), createBlock(DebugOverlay, { key: 1 })) : createCommentVNode("", !0)
     ], 32));
   }
-}), PdfSigner = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-2c65f0e5"]]), index = {
+}), PdfSigner = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-8bd4ee23"]]), index = {
   install(C) {
     C.component("PdfSigner", PdfSigner);
   }
