@@ -3,6 +3,14 @@ import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf.js'
 import { logger, isDebug } from '../utils/debug'
 import { getIosMajorVersion } from '../utils/device-detection'
 import { useDebugLogger } from './useDebugLogger'
+import {
+  statsCanvasCreated,
+  statsDocCreated,
+  statsLoadingTaskStarted,
+  statsRenderTaskCancelled,
+  statsRenderTaskCompleted,
+  statsRenderTaskStarted,
+} from '../utils/pdfSignerStats'
 
 import pdfjsWorker from 'pdfjs-dist/legacy/build/pdf.worker.js?url'
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker
@@ -114,6 +122,7 @@ export function usePdfRenderer(
     canvas.height = Math.floor(highResViewport.height * DPR)
     canvas.style.width = `${Math.floor(displayViewport.width)}px`
     canvas.style.height = `${Math.floor(displayViewport.height)}px`
+    statsCanvasCreated(canvas.width, canvas.height)
 
     if (pageNumber === 1) {
       firstCanvasRef.value = canvas
@@ -128,7 +137,16 @@ export function usePdfRenderer(
       canvas,
     }
 
-    await page.render(renderContext).promise
+    statsRenderTaskStarted()
+    try {
+      await page.render(renderContext).promise
+      statsRenderTaskCompleted()
+    } catch (error) {
+      if ((error as { name?: string } | null)?.name === 'RenderingCancelledException') {
+        statsRenderTaskCancelled()
+      }
+      throw error
+    }
 
     originalPdfDimensions.value = {
       width: unscaledViewport.width,
@@ -168,7 +186,9 @@ export function usePdfRenderer(
       }
 
       const loadingTask = pdfjsLib.getDocument({ data: pdfBytes, isEvalSupported: false })
+      statsLoadingTaskStarted()
       const pdf = await loadingTask.promise
+      statsDocCreated()
       pdfDocumentRef.value = markRaw(pdf)
       totalPages.value = pdf.numPages
       const firstPage = await pdf.getPage(1)

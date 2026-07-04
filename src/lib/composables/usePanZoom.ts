@@ -1,6 +1,7 @@
 import { ref, computed, onBeforeUnmount, type Ref } from 'vue'
 import Panzoom from '@panzoom/panzoom'
 import type { PanzoomObject } from '@panzoom/panzoom'
+import { statsListenerAdded } from '../utils/pdfSignerStats'
 
 interface PanzoomEventDetail {
   scale: number
@@ -95,19 +96,23 @@ export function usePanZoom(
     })
 
     viewportRef.value.addEventListener('wheel', pz.zoomWithWheel, { passive: false })
+    statsListenerAdded('viewport', 'wheel')
 
     panzoomContainer.value.addEventListener('panzoomstart', (e) => {
       e.preventDefault()
     })
+    statsListenerAdded('panzoomContainer', 'panzoomstart')
 
     panzoomContainer.value.addEventListener('panzoomzoom', (e) => {
       const event = e as PanzoomEvent
       currentZoom.value = event.detail.scale
     })
+    statsListenerAdded('panzoomContainer', 'panzoomzoom')
 
     panzoomContainer.value.addEventListener('panzoomend', () => {
       updatePanState()
     })
+    statsListenerAdded('panzoomContainer', 'panzoomend')
 
     panzoom.value = pz
     updatePanState() // Call this immediately after init
