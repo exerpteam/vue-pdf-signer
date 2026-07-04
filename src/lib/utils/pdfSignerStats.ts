@@ -12,6 +12,14 @@
 // preallocated objects; nothing is serialized outside the cycle-boundary
 // breadcrumbs (mount/unmount/sign-step), so the instrumentation cannot perturb
 // render or listener hot paths.
+//
+// Counter semantics: counters observe the library's EXPLICIT calls only. Element-
+// target listeners (viewport:*, panzoomContainer:*) are add-only in this lineage —
+// nothing removes them, and listeners reclaimed by GC when their element is
+// discarded at unmount do NOT decrement activeListeners. pdfDocsDestroyed and
+// loadingTasksDestroyed have no call sites here because the library never destroys
+// them. Consumers must therefore assert per-cycle deltas, never
+// return-to-baseline.
 
 export interface PdfSignerStatsCounters {
   componentMounts: number
@@ -60,16 +68,15 @@ export interface PdfSignerStats {
   counters: PdfSignerStatsCounters
   /** Per `target:type` listener add/remove counts, e.g. 'viewport:wheel'. */
   listenerBreakdown: Record<string, { added: number; removed: number }>
+  /** One entry per mount/unmount/sign-step boundary, unbounded. */
   snapshots: PdfSignerStatsSnapshot[]
-  snapshotsDropped: number
   /** Bounded ring buffer — oldest entries are dropped in chunks once full. */
   events: PdfSignerStatsEvent[]
   eventsDropped: number
 }
 
 const EVENT_BUFFER_SIZE = 500
-const SNAPSHOT_BUFFER_SIZE = 2000
-// Dropping oldest entries in chunks keeps the buffers bounded without paying an
+// Dropping oldest entries in chunks keeps the buffer bounded without paying an
 // array shift on every push.
 const DROP_CHUNK = 50
 
@@ -131,13 +138,14 @@ export function statsInit(): void {
     counters: createCounters(),
     listenerBreakdown: {},
     snapshots: [],
-    snapshotsDropped: 0,
     events: [],
     eventsDropped: 0,
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ;(window as any).__pdfSignerStats = stats
-  console.log('[PDFSIGNER-STATS] enabled')
+  // Deliberately NOT the [PDFSIGNER-STATS] prefix: boundary breadcrumbs must all
+  // parse as counter lines; this sentinel only proves the flag reached the library.
+  console.log('[PDFSIGNER-STATS-INIT] enabled')
 }
 
 /** True once statsInit() has run with the flag on. */
@@ -204,10 +212,6 @@ function snapshot(label: string, detail?: string): void {
   const counters = { ...s.counters }
   const previous = s.snapshots.length > 0 ? s.snapshots[s.snapshots.length - 1].counters : null
   const memory = readMemory()
-  if (s.snapshots.length >= SNAPSHOT_BUFFER_SIZE) {
-    s.snapshots.splice(0, DROP_CHUNK)
-    s.snapshotsDropped += DROP_CHUNK
-  }
   const entry: PdfSignerStatsSnapshot = {
     t: Date.now(),
     tMono: Math.round(performance.now()),
