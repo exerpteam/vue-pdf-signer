@@ -3,6 +3,7 @@ import { onMounted, onUnmounted, ref, watch } from 'vue'
 import SignaturePad, { type PointGroup } from 'signature_pad'
 import { useDebugLogger } from '../composables/useDebugLogger'
 import { isDebug } from '../utils/debug'
+import { statsListenerAdded, statsListenerRemoved } from '../utils/pdfSignerStats'
 
 // we define props for all user-facing text in this component.
 const props = defineProps<{
@@ -100,9 +101,11 @@ onMounted(() => {
   })
 
   window.addEventListener(drawSignatureEvent, handleExternalSignature as EventListener)
+  statsListenerAdded('window', drawSignatureEvent)
 
   // Set up the resize listener to handle orientation changes or window resizing.
   window.addEventListener('resize', resizeCanvas)
+  statsListenerAdded('window', 'resize')
   resizeCanvas() // Initial resize to set the correct dimensions on mount.
 
   if (isDebug.value) {
@@ -114,7 +117,9 @@ onUnmounted(() => {
   teardownPointerLogging()
   // Clean up the listener to prevent memory leaks.
   window.removeEventListener('resize', resizeCanvas)
+  statsListenerRemoved('window', 'resize')
   window.removeEventListener(drawSignatureEvent, handleExternalSignature as EventListener)
+  statsListenerRemoved('window', drawSignatureEvent)
 })
 
 function handlePointerEvent(event: PointerEvent) {

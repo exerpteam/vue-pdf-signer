@@ -12,6 +12,13 @@ import { useSignatureOverlay } from '../composables/useSignatureOverlay'
 import { usePdfDocument } from '../composables/usePdfDocument'
 import { useTranslations } from '../composables/useTranslations'
 import { useDebugLogger } from '../composables/useDebugLogger'
+import {
+  statsEnabled,
+  statsInit,
+  statsMounted,
+  statsSignStep,
+  statsUnmounted,
+} from '../utils/pdfSignerStats'
 
 const props = withDefaults(
   defineProps<{
@@ -32,6 +39,9 @@ const props = withDefaults(
 watchEffect(() => {
   isDebug.value = props.debug
 })
+
+// Runtime diagnostics opt-in: re-checks window.__PDF_SIGNER_DEBUG at every init.
+statsInit()
 
 // --- START: Multi-document state management ---
 const activeDocumentKey = ref<string | null>(null)
@@ -134,6 +144,7 @@ function handleSignatureSave(payload: { svg: string; png: string }) {
       png: payload.png,
     })
     newlySignedKeys.value.add(activeDocumentKey.value)
+    statsSignStep('signature-saved', activeDocumentKey.value)
   }
 
   // We always close the modal after an attempt.
@@ -150,6 +161,7 @@ const { isSaving, saveDocument } = usePdfDocument(
   signatureDataMap,
   () => {
     isFinished.value = true
+    statsSignStep('finished')
   },
 )
 
@@ -165,6 +177,17 @@ const { signatureStyles } = useSignatureOverlay(
   showSignatureBounds,
 )
 // --- END: Using Composables ---
+
+// Diagnostics watchers are only registered when the stats flag was on at init,
+// keeping the disabled path free of extra subscriptions.
+if (statsEnabled()) {
+  watch(activeDocumentKey, (key) => {
+    statsSignStep('doc-switch', key ?? undefined)
+  })
+  watch(isSaving, (saving) => {
+    statsSignStep(saving ? 'save-start' : 'save-end')
+  })
+}
 
 const { log, clearLogs } = useDebugLogger()
 
@@ -228,6 +251,8 @@ function handleCancel() {
 }
 
 onMounted(() => {
+  statsMounted()
+
   if (isDebug.value) {
     captureDebugContext()
   }
@@ -260,6 +285,7 @@ watch(
 
 onBeforeUnmount(() => {
   // The panzoom cleanup is handled within its own composable.
+  statsUnmounted()
 })
 </script>
 
