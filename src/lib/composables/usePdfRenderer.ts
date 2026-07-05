@@ -172,7 +172,17 @@ export function usePdfRenderer(
     const renderViewport = page.getViewport({ scale: renderScale })
     const displayViewport = page.getViewport({ scale })
 
+    // A superseded in-flight render (rapid pagination) must be cancelled and its
+    // never-tracked canvas released before this render takes over the container.
+    if (activeRenderTask) {
+      activeRenderTask.cancel()
+      activeRenderTask = null
+    }
     releaseRenderedCanvases()
+    for (const staleCanvas of pdfContainer.value.querySelectorAll('canvas')) {
+      staleCanvas.width = 0
+      staleCanvas.height = 0
+    }
     pdfContainer.value.innerHTML = ''
 
     const canvas = document.createElement('canvas')
@@ -207,6 +217,13 @@ export function usePdfRenderer(
     } catch (error) {
       if (isRenderingCancelled(error)) {
         statsRenderTaskCancelled()
+        // A cancelled render's canvas never reaches renderedPages, so release
+        // its backing store here instead of leaving it to GC.
+        canvas.width = 0
+        canvas.height = 0
+        if (firstCanvasRef.value === canvas) {
+          firstCanvasRef.value = null
+        }
       }
       throw error
     } finally {
@@ -234,19 +251,23 @@ export function usePdfRenderer(
    * Main function to load a PDF from base64 data, render it, and set up interactions.
    */
   async function loadAndRenderPdf(pdfData: string) {
-    if (!pdfData || !pdfContainer.value || !viewportRef.value) return
-
     // Tear down the previous document's resources before loading the new one,
     // and pin the generation so completions of a superseded load are dropped.
+    // This runs ahead of the guard so a switch to a document with empty data
+    // still frees the previous document instead of keeping it alive.
     teardownPdfResources()
     const generation = loadGeneration
 
     // Reset state before rendering a new PDF
-    pdfContainer.value.innerHTML = ''
+    if (pdfContainer.value) {
+      pdfContainer.value.innerHTML = ''
+    }
     isPdfRendered.value = false
     totalPages.value = 0
     currentPageNumber.value = 1
     teardownResizeObserver()
+
+    if (!pdfData || !pdfContainer.value || !viewportRef.value) return
 
     try {
       const pdfBinary = atob(pdfData)
@@ -338,11 +359,15 @@ export function usePdfRenderer(
       return
     }
 
+    const generation = loadGeneration
     try {
       await renderPage(pageNumber)
       currentPageNumber.value = pageNumber
     } catch (error) {
-      if (isRenderingCancelled(error)) return
+      if (generation !== loadGeneration || isRenderingCancelled(error)) {
+        // Intentional teardown or supersession mid-flight — not an error.
+        return
+      }
       logger.error(`Failed to render page ${pageNumber}`, error)
     }
   }
