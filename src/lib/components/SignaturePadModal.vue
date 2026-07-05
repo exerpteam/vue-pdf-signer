@@ -115,6 +115,10 @@ onMounted(() => {
 
 onUnmounted(() => {
   teardownPointerLogging()
+  // Detach signature_pad's internal canvas/window listeners deterministically;
+  // a mid-stroke unmount would otherwise leave window listeners pinning the pad.
+  signaturePadInstance.value?.off()
+  signaturePadInstance.value = null
   // Clean up the listener to prevent memory leaks.
   window.removeEventListener('resize', resizeCanvas)
   statsListenerRemoved('window', 'resize')
