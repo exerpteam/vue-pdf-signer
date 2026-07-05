@@ -958,11 +958,11 @@ function requireDommatrix() {
         }))
           throw TypeError('CSSMatrix: "' + h + '" must only have numbers.');
         if (u.length === 16) {
-          var t = u[0], n = u[1], y = u[2], R = u[3], M = u[4], k = u[5], S = u[6], _ = u[7], U = u[8], $ = u[9], iI = u[10], O = u[11], v = u[12], j = u[13], J = u[14], lI = u[15];
-          B.m11 = t, B.a = t, B.m21 = M, B.c = M, B.m31 = U, B.m41 = v, B.e = v, B.m12 = n, B.b = n, B.m22 = k, B.d = k, B.m32 = $, B.m42 = j, B.f = j, B.m13 = y, B.m23 = S, B.m33 = iI, B.m43 = J, B.m14 = R, B.m24 = _, B.m34 = O, B.m44 = lI;
+          var t = u[0], n = u[1], y = u[2], R = u[3], M = u[4], k = u[5], S = u[6], q = u[7], U = u[8], $ = u[9], iI = u[10], O = u[11], v = u[12], j = u[13], z = u[14], lI = u[15];
+          B.m11 = t, B.a = t, B.m21 = M, B.c = M, B.m31 = U, B.m41 = v, B.e = v, B.m12 = n, B.b = n, B.m22 = k, B.d = k, B.m32 = $, B.m42 = j, B.f = j, B.m13 = y, B.m23 = S, B.m33 = iI, B.m43 = z, B.m14 = R, B.m24 = q, B.m34 = O, B.m44 = lI;
         } else if (u.length === 6) {
-          var dI = u[0], wI = u[1], BI = u[2], gI = u[3], K = u[4], H = u[5];
-          B.m11 = dI, B.a = dI, B.m12 = wI, B.b = wI, B.m21 = BI, B.c = BI, B.m22 = gI, B.d = gI, B.m41 = K, B.e = K, B.m42 = H, B.f = H;
+          var oI = u[0], mI = u[1], BI = u[2], gI = u[3], p = u[4], H = u[5];
+          B.m11 = oI, B.a = oI, B.m12 = mI, B.b = mI, B.m21 = BI, B.c = BI, B.m22 = gI, B.d = gI, B.m41 = p, B.e = p, B.m42 = H, B.f = H;
         } else
           throw new TypeError("CSSMatrix: expecting an Array of 6/16 values.");
         return B;
@@ -1004,57 +1004,57 @@ function requireDommatrix() {
           var y = n.split("("), R = y[0], M = y[1];
           if (!M)
             throw TypeError(t);
-          var k = M.split(",").map(function(K) {
-            return K.includes("rad") ? parseFloat(K) * (180 / Math.PI) : parseFloat(K);
-          }), S = k[0], _ = k[1], U = k[2], $ = k[3], iI = [S, _, U], O = [S, _, U, $];
-          if (R === "perspective" && S && [_, U].every(function(K) {
-            return K === void 0;
+          var k = M.split(",").map(function(p) {
+            return p.includes("rad") ? parseFloat(p) * (180 / Math.PI) : parseFloat(p);
+          }), S = k[0], q = k[1], U = k[2], $ = k[3], iI = [S, q, U], O = [S, q, U, $];
+          if (R === "perspective" && S && [q, U].every(function(p) {
+            return p === void 0;
           }))
             u.m34 = -1 / S;
-          else if (R.includes("matrix") && [6, 16].includes(k.length) && k.every(function(K) {
-            return !Number.isNaN(+K);
+          else if (R.includes("matrix") && [6, 16].includes(k.length) && k.every(function(p) {
+            return !Number.isNaN(+p);
           })) {
-            var v = k.map(function(K) {
-              return Math.abs(K) < 1e-6 ? 0 : K;
+            var v = k.map(function(p) {
+              return Math.abs(p) < 1e-6 ? 0 : p;
             });
             u = u.multiply(I(v));
-          } else if (R === "translate3d" && iI.every(function(K) {
-            return !Number.isNaN(+K);
+          } else if (R === "translate3d" && iI.every(function(p) {
+            return !Number.isNaN(+p);
           }))
-            u = u.translate(S, _, U);
+            u = u.translate(S, q, U);
           else if (R === "translate" && S && U === void 0)
-            u = u.translate(S, _ || 0, 0);
-          else if (R === "rotate3d" && O.every(function(K) {
-            return !Number.isNaN(+K);
+            u = u.translate(S, q || 0, 0);
+          else if (R === "rotate3d" && O.every(function(p) {
+            return !Number.isNaN(+p);
           }) && $)
-            u = u.rotateAxisAngle(S, _, U, $);
-          else if (R === "rotate" && S && [_, U].every(function(K) {
-            return K === void 0;
+            u = u.rotateAxisAngle(S, q, U, $);
+          else if (R === "rotate" && S && [q, U].every(function(p) {
+            return p === void 0;
           }))
             u = u.rotate(0, 0, S);
-          else if (R === "scale3d" && iI.every(function(K) {
-            return !Number.isNaN(+K);
-          }) && iI.some(function(K) {
-            return K !== 1;
+          else if (R === "scale3d" && iI.every(function(p) {
+            return !Number.isNaN(+p);
+          }) && iI.some(function(p) {
+            return p !== 1;
           }))
-            u = u.scale(S, _, U);
+            u = u.scale(S, q, U);
           else if (R === "scale" && !Number.isNaN(S) && S !== 1 && U === void 0) {
-            var j = Number.isNaN(+_), J = j ? S : _;
-            u = u.scale(S, J, 1);
-          } else if (R === "skew" && (S || !Number.isNaN(S) && _) && U === void 0)
-            u = u.skew(S, _ || 0);
-          else if (/[XYZ]/.test(R) && S && [_, U].every(function(K) {
-            return K === void 0;
-          }) && ["translate", "rotate", "scale", "skew"].some(function(K) {
-            return R.includes(K);
+            var j = Number.isNaN(+q), z = j ? S : q;
+            u = u.scale(S, z, 1);
+          } else if (R === "skew" && (S || !Number.isNaN(S) && q) && U === void 0)
+            u = u.skew(S, q || 0);
+          else if (/[XYZ]/.test(R) && S && [q, U].every(function(p) {
+            return p === void 0;
+          }) && ["translate", "rotate", "scale", "skew"].some(function(p) {
+            return R.includes(p);
           }))
             if (["skewX", "skewY"].includes(R))
               u = u[R](S);
             else {
-              var lI = R.replace(/[XYZ]/, ""), dI = R.replace(lI, ""), wI = ["X", "Y", "Z"].indexOf(dI), BI = lI === "scale" ? 1 : 0, gI = [
-                wI === 0 ? S : BI,
-                wI === 1 ? S : BI,
-                wI === 2 ? S : BI
+              var lI = R.replace(/[XYZ]/, ""), oI = R.replace(lI, ""), mI = ["X", "Y", "Z"].indexOf(oI), BI = lI === "scale" ? 1 : 0, gI = [
+                mI === 0 ? S : BI,
+                mI === 1 ? S : BI,
+                mI === 2 ? S : BI
               ];
               u = u[lI].apply(u, gI);
             }
@@ -1087,25 +1087,25 @@ function requireDommatrix() {
         return t.m41 = h, t.e = h, t.m42 = B, t.f = B, t.m43 = u, t;
       }
       function c(h, B, u) {
-        var t = new V(), n = Math.PI / 180, y = h * n, R = B * n, M = u * n, k = Math.cos(y), S = -Math.sin(y), _ = Math.cos(R), U = -Math.sin(R), $ = Math.cos(M), iI = -Math.sin(M), O = _ * $, v = -_ * iI;
+        var t = new V(), n = Math.PI / 180, y = h * n, R = B * n, M = u * n, k = Math.cos(y), S = -Math.sin(y), q = Math.cos(R), U = -Math.sin(R), $ = Math.cos(M), iI = -Math.sin(M), O = q * $, v = -q * iI;
         t.m11 = O, t.a = O, t.m12 = v, t.b = v, t.m13 = U;
         var j = S * U * $ + k * iI;
         t.m21 = j, t.c = j;
-        var J = k * $ - S * U * iI;
-        return t.m22 = J, t.d = J, t.m23 = -S * _, t.m31 = S * iI - k * U * $, t.m32 = S * $ + k * U * iI, t.m33 = k * _, t;
+        var z = k * $ - S * U * iI;
+        return t.m22 = z, t.d = z, t.m23 = -S * q, t.m31 = S * iI - k * U * $, t.m32 = S * $ + k * U * iI, t.m33 = k * q, t;
       }
       function Z(h, B, u, t) {
         var n = new V(), y = Math.sqrt(h * h + B * B + u * u);
         if (y === 0)
           return n;
-        var R = h / y, M = B / y, k = u / y, S = t * (Math.PI / 360), _ = Math.sin(S), U = Math.cos(S), $ = _ * _, iI = R * R, O = M * M, v = k * k, j = 1 - 2 * (O + v) * $;
+        var R = h / y, M = B / y, k = u / y, S = t * (Math.PI / 360), q = Math.sin(S), U = Math.cos(S), $ = q * q, iI = R * R, O = M * M, v = k * k, j = 1 - 2 * (O + v) * $;
         n.m11 = j, n.a = j;
-        var J = 2 * (R * M * $ + k * _ * U);
-        n.m12 = J, n.b = J, n.m13 = 2 * (R * k * $ - M * _ * U);
-        var lI = 2 * (M * R * $ - k * _ * U);
+        var z = 2 * (R * M * $ + k * q * U);
+        n.m12 = z, n.b = z, n.m13 = 2 * (R * k * $ - M * q * U);
+        var lI = 2 * (M * R * $ - k * q * U);
         n.m21 = lI, n.c = lI;
-        var dI = 1 - 2 * (v + iI) * $;
-        return n.m22 = dI, n.d = dI, n.m23 = 2 * (M * k * $ + R * _ * U), n.m31 = 2 * (k * R * $ + M * _ * U), n.m32 = 2 * (k * M * $ - R * _ * U), n.m33 = 1 - 2 * (iI + O) * $, n;
+        var oI = 1 - 2 * (v + iI) * $;
+        return n.m22 = oI, n.d = oI, n.m23 = 2 * (M * k * $ + R * q * U), n.m31 = 2 * (k * R * $ + M * q * U), n.m32 = 2 * (k * M * $ - R * q * U), n.m33 = 1 - 2 * (iI + O) * $, n;
       }
       function o(h, B, u) {
         var t = new V();
@@ -1130,7 +1130,7 @@ function requireDommatrix() {
         return a(0, h);
       }
       function m(h, B) {
-        var u = B.m11 * h.m11 + B.m12 * h.m21 + B.m13 * h.m31 + B.m14 * h.m41, t = B.m11 * h.m12 + B.m12 * h.m22 + B.m13 * h.m32 + B.m14 * h.m42, n = B.m11 * h.m13 + B.m12 * h.m23 + B.m13 * h.m33 + B.m14 * h.m43, y = B.m11 * h.m14 + B.m12 * h.m24 + B.m13 * h.m34 + B.m14 * h.m44, R = B.m21 * h.m11 + B.m22 * h.m21 + B.m23 * h.m31 + B.m24 * h.m41, M = B.m21 * h.m12 + B.m22 * h.m22 + B.m23 * h.m32 + B.m24 * h.m42, k = B.m21 * h.m13 + B.m22 * h.m23 + B.m23 * h.m33 + B.m24 * h.m43, S = B.m21 * h.m14 + B.m22 * h.m24 + B.m23 * h.m34 + B.m24 * h.m44, _ = B.m31 * h.m11 + B.m32 * h.m21 + B.m33 * h.m31 + B.m34 * h.m41, U = B.m31 * h.m12 + B.m32 * h.m22 + B.m33 * h.m32 + B.m34 * h.m42, $ = B.m31 * h.m13 + B.m32 * h.m23 + B.m33 * h.m33 + B.m34 * h.m43, iI = B.m31 * h.m14 + B.m32 * h.m24 + B.m33 * h.m34 + B.m34 * h.m44, O = B.m41 * h.m11 + B.m42 * h.m21 + B.m43 * h.m31 + B.m44 * h.m41, v = B.m41 * h.m12 + B.m42 * h.m22 + B.m43 * h.m32 + B.m44 * h.m42, j = B.m41 * h.m13 + B.m42 * h.m23 + B.m43 * h.m33 + B.m44 * h.m43, J = B.m41 * h.m14 + B.m42 * h.m24 + B.m43 * h.m34 + B.m44 * h.m44;
+        var u = B.m11 * h.m11 + B.m12 * h.m21 + B.m13 * h.m31 + B.m14 * h.m41, t = B.m11 * h.m12 + B.m12 * h.m22 + B.m13 * h.m32 + B.m14 * h.m42, n = B.m11 * h.m13 + B.m12 * h.m23 + B.m13 * h.m33 + B.m14 * h.m43, y = B.m11 * h.m14 + B.m12 * h.m24 + B.m13 * h.m34 + B.m14 * h.m44, R = B.m21 * h.m11 + B.m22 * h.m21 + B.m23 * h.m31 + B.m24 * h.m41, M = B.m21 * h.m12 + B.m22 * h.m22 + B.m23 * h.m32 + B.m24 * h.m42, k = B.m21 * h.m13 + B.m22 * h.m23 + B.m23 * h.m33 + B.m24 * h.m43, S = B.m21 * h.m14 + B.m22 * h.m24 + B.m23 * h.m34 + B.m24 * h.m44, q = B.m31 * h.m11 + B.m32 * h.m21 + B.m33 * h.m31 + B.m34 * h.m41, U = B.m31 * h.m12 + B.m32 * h.m22 + B.m33 * h.m32 + B.m34 * h.m42, $ = B.m31 * h.m13 + B.m32 * h.m23 + B.m33 * h.m33 + B.m34 * h.m43, iI = B.m31 * h.m14 + B.m32 * h.m24 + B.m33 * h.m34 + B.m34 * h.m44, O = B.m41 * h.m11 + B.m42 * h.m21 + B.m43 * h.m31 + B.m44 * h.m41, v = B.m41 * h.m12 + B.m42 * h.m22 + B.m43 * h.m32 + B.m44 * h.m42, j = B.m41 * h.m13 + B.m42 * h.m23 + B.m43 * h.m33 + B.m44 * h.m43, z = B.m41 * h.m14 + B.m42 * h.m24 + B.m43 * h.m34 + B.m44 * h.m44;
         return I(
           [
             u,
@@ -1141,14 +1141,14 @@ function requireDommatrix() {
             M,
             k,
             S,
-            _,
+            q,
             U,
             $,
             iI,
             O,
             v,
             j,
-            J
+            z
           ]
         );
       }
@@ -1453,7 +1453,7 @@ function requirePonyfill() {
           throw new TypeError("Argument is not a function");
         return Function.prototype.apply.call(e, W, D);
       }
-      function _(e, W, D) {
+      function q(e, W, D) {
         try {
           return h(S(e, W, D));
         } catch (CI) {
@@ -1492,17 +1492,17 @@ function requirePonyfill() {
             return W._elements[D];
           }, e;
         })()
-      ), iI = A("[[AbortSteps]]"), O = A("[[ErrorSteps]]"), v = A("[[CancelSteps]]"), j = A("[[PullSteps]]"), J = A("[[ReleaseSteps]]");
+      ), iI = A("[[AbortSteps]]"), O = A("[[ErrorSteps]]"), v = A("[[CancelSteps]]"), j = A("[[PullSteps]]"), z = A("[[ReleaseSteps]]");
       function lI(e, W) {
-        e._ownerReadableStream = W, W._reader = e, W._state === "readable" ? gI(e) : W._state === "closed" ? H(e) : K(e, W._storedError);
+        e._ownerReadableStream = W, W._reader = e, W._state === "readable" ? gI(e) : W._state === "closed" ? H(e) : p(e, W._storedError);
       }
-      function dI(e, W) {
+      function oI(e, W) {
         var D = e._ownerReadableStream;
         return hg(D, W);
       }
-      function wI(e) {
+      function mI(e) {
         var W = e._ownerReadableStream;
-        W._state === "readable" ? Q(e, new TypeError("Reader was released and can no longer be used to monitor the stream's closedness")) : T(e, new TypeError("Reader was released and can no longer be used to monitor the stream's closedness")), W._readableStreamController[J](), W._reader = void 0, e._ownerReadableStream = void 0;
+        W._state === "readable" ? Q(e, new TypeError("Reader was released and can no longer be used to monitor the stream's closedness")) : T(e, new TypeError("Reader was released and can no longer be used to monitor the stream's closedness")), W._readableStreamController[z](), W._reader = void 0, e._ownerReadableStream = void 0;
       }
       function BI(e) {
         return new TypeError("Cannot " + e + " a stream using a released reader");
@@ -1512,7 +1512,7 @@ function requirePonyfill() {
           e._closedPromise_resolve = W, e._closedPromise_reject = D;
         });
       }
-      function K(e, W) {
+      function p(e, W) {
         gI(e), Q(e, W);
       }
       function H(e) {
@@ -1522,14 +1522,14 @@ function requirePonyfill() {
         e._closedPromise_reject !== void 0 && (M(e._closedPromise), e._closedPromise_reject(W), e._closedPromise_resolve = void 0, e._closedPromise_reject = void 0);
       }
       function T(e, W) {
-        K(e, W);
+        p(e, W);
       }
       function N(e) {
         e._closedPromise_resolve !== void 0 && (e._closedPromise_resolve(void 0), e._closedPromise_resolve = void 0, e._closedPromise_reject = void 0);
       }
-      var p = Number.isFinite || function(e) {
+      var K = Number.isFinite || function(e) {
         return typeof e == "number" && isFinite(e);
-      }, z = Math.trunc || function(e) {
+      }, J = Math.trunc || function(e) {
         return e < 0 ? Math.ceil(e) : Math.floor(e);
       };
       function L(e) {
@@ -1554,7 +1554,7 @@ function requirePonyfill() {
         if (e === void 0)
           throw new TypeError("Parameter ".concat(W, " is required in '").concat(D, "'."));
       }
-      function mI(e, W, D) {
+      function nI(e, W, D) {
         if (e === void 0)
           throw new TypeError("".concat(W, " is required in '").concat(D, "'."));
       }
@@ -1565,15 +1565,15 @@ function requirePonyfill() {
         return e === 0 ? 0 : e;
       }
       function uI(e) {
-        return YI(z(e));
+        return YI(J(e));
       }
       function RI(e, W) {
         var D = 0, CI = Number.MAX_SAFE_INTEGER, eI = Number(e);
-        if (eI = YI(eI), !p(eI))
+        if (eI = YI(eI), !K(eI))
           throw new TypeError("".concat(W, " is not a finite number"));
         if (eI = uI(eI), eI < D || eI > CI)
           throw new TypeError("".concat(W, " is outside the accepted range of ").concat(D, " to ").concat(CI, ", inclusive"));
-        return !p(eI) || eI === 0 ? 0 : eI;
+        return !K(eI) || eI === 0 ? 0 : eI;
       }
       function pI(e, W) {
         if (!Kg(e))
@@ -1615,7 +1615,7 @@ function requirePonyfill() {
             enumerable: !1,
             configurable: !0
           }), e.prototype.cancel = function(W) {
-            return W === void 0 && (W = void 0), DI(this) ? this._ownerReadableStream === void 0 ? B(BI("cancel")) : dI(this, W) : B(HI("cancel"));
+            return W === void 0 && (W = void 0), DI(this) ? this._ownerReadableStream === void 0 ? B(BI("cancel")) : oI(this, W) : B(HI("cancel"));
           }, e.prototype.read = function() {
             if (!DI(this))
               return B(HI("read"));
@@ -1659,7 +1659,7 @@ function requirePonyfill() {
         D._disturbed = !0, D._state === "closed" ? W._closeSteps() : D._state === "errored" ? W._errorSteps(D._storedError) : D._readableStreamController[j](W);
       }
       function bI(e) {
-        wI(e);
+        mI(e);
         var W = new TypeError("Reader was released");
         yI(e, W);
       }
@@ -1672,11 +1672,11 @@ function requirePonyfill() {
       function HI(e) {
         return new TypeError("ReadableStreamDefaultReader.prototype.".concat(e, " can only be used on a ReadableStreamDefaultReader"));
       }
-      var II, nI, x;
-      function oI(e) {
+      var II, WI, x;
+      function cI(e) {
         return e.slice();
       }
-      function cI(e, W, D, CI, eI) {
+      function dI(e, W, D, CI, eI) {
         new Uint8Array(e).set(new Uint8Array(D, CI, eI), W);
       }
       var w = function(e) {
@@ -1694,11 +1694,11 @@ function requirePonyfill() {
           return W.byteLength === 0;
         }, sI(e);
       };
-      function WI(e, W, D) {
+      function wI(e, W, D) {
         if (e.slice)
           return e.slice(W, D);
         var CI = D - W, eI = new ArrayBuffer(CI);
-        return cI(eI, 0, e, W, CI), eI;
+        return dI(eI, 0, e, W, CI), eI;
       }
       function f(e, W) {
         var D = e[W];
@@ -1729,11 +1729,11 @@ function requirePonyfill() {
         })(), eI = CI.next;
         return { iterator: CI, nextMethod: eI, done: !1 };
       }
-      var q = (x = (II = A.asyncIterator) !== null && II !== void 0 ? II : (nI = A.for) === null || nI === void 0 ? void 0 : nI.call(A, "Symbol.asyncIterator")) !== null && x !== void 0 ? x : "@@asyncIterator";
+      var _ = (x = (II = A.asyncIterator) !== null && II !== void 0 ? II : (WI = A.for) === null || WI === void 0 ? void 0 : WI.call(A, "Symbol.asyncIterator")) !== null && x !== void 0 ? x : "@@asyncIterator";
       function VI(e, W, D) {
         if (W === void 0 && (W = "sync"), D === void 0)
           if (W === "async") {
-            if (D = f(e, q), D === void 0) {
+            if (D = f(e, _), D === void 0) {
               var CI = f(e, A.iterator), eI = VI(e, "sync", CI);
               return P(eI);
             }
@@ -1761,10 +1761,10 @@ function requirePonyfill() {
       }
       var TI, xI = (TI = {}, // 25.1.3.1 %AsyncIteratorPrototype% [ @@asyncIterator ] ( )
       // https://tc39.github.io/ecma262/#sec-asynciteratorprototype-asynciterator
-      TI[q] = function() {
+      TI[_] = function() {
         return this;
       }, TI);
-      Object.defineProperty(xI, q, { enumerable: !1 });
+      Object.defineProperty(xI, _, { enumerable: !1 });
       var SI = (
         /** @class */
         (function() {
@@ -1794,10 +1794,10 @@ function requirePonyfill() {
                 });
               },
               _closeSteps: function() {
-                W._ongoingPromise = void 0, W._isFinished = !0, wI(D), CI({ value: void 0, done: !0 });
+                W._ongoingPromise = void 0, W._isFinished = !0, mI(D), CI({ value: void 0, done: !0 });
               },
               _errorSteps: function(JI) {
-                W._ongoingPromise = void 0, W._isFinished = !0, wI(D), eI(JI);
+                W._ongoingPromise = void 0, W._isFinished = !0, mI(D), eI(JI);
               }
             };
             return F(D, NI), tI;
@@ -1807,12 +1807,12 @@ function requirePonyfill() {
             this._isFinished = !0;
             var D = this._reader;
             if (!this._preventCancel) {
-              var CI = dI(D, W);
-              return wI(D), R(CI, function() {
+              var CI = oI(D, W);
+              return mI(D), R(CI, function() {
                 return { value: W, done: !0 };
               });
             }
-            return wI(D), h({ value: W, done: !0 });
+            return mI(D), h({ value: W, done: !0 });
           }, e;
         })()
       ), fI = {
@@ -1847,7 +1847,7 @@ function requirePonyfill() {
         return !(typeof e != "number" || lg(e) || e < 0);
       }
       function Cg(e) {
-        var W = WI(e.buffer, e.byteOffset, e.byteOffset + e.byteLength);
+        var W = wI(e.buffer, e.byteOffset, e.byteOffset + e.byteLength);
         return new Uint8Array(W);
       }
       function qI(e) {
@@ -2011,7 +2011,7 @@ function requirePonyfill() {
               this._pendingPullIntos.push(tI);
             }
             LI(D, W), zg(this);
-          }, e.prototype[J] = function() {
+          }, e.prototype[z] = function() {
             if (this._pendingPullIntos.length > 0) {
               var W = this._pendingPullIntos.peek();
               W.readerType = "none", this._pendingPullIntos = new $(), this._pendingPullIntos.push(W);
@@ -2070,7 +2070,7 @@ function requirePonyfill() {
       function ZA(e, W, D, CI) {
         var eI;
         try {
-          eI = WI(W, D, D + CI);
+          eI = wI(W, D, D + CI);
         } catch (tI) {
           throw ng(e, tI), tI;
         }
@@ -2084,7 +2084,7 @@ function requirePonyfill() {
         JI >= W.minimumFill && (eI = JI - W.bytesFilled, tI = !0);
         for (var vI = e._queue; eI > 0; ) {
           var FI = vI.peek(), QI = Math.min(eI, FI.byteLength), _I = W.byteOffset + W.bytesFilled;
-          cI(W.buffer, _I, FI.buffer, FI.byteOffset, QI), FI.byteLength === QI ? vI.shift() : (FI.byteOffset += QI, FI.byteLength -= QI), e._queueTotalSize -= QI, bA(e, QI, W), eI -= QI;
+          dI(W.buffer, _I, FI.buffer, FI.byteOffset, QI), FI.byteLength === QI ? vI.shift() : (FI.byteOffset += QI, FI.byteLength -= QI), e._queueTotalSize -= QI, bA(e, QI, W), eI -= QI;
         }
         return tI;
       }
@@ -2388,7 +2388,7 @@ function requirePonyfill() {
             enumerable: !1,
             configurable: !0
           }), e.prototype.cancel = function(W) {
-            return W === void 0 && (W = void 0), kg(this) ? this._ownerReadableStream === void 0 ? B(BI("cancel")) : dI(this, W) : B(tC("cancel"));
+            return W === void 0 && (W = void 0), kg(this) ? this._ownerReadableStream === void 0 ? B(BI("cancel")) : oI(this, W) : B(tC("cancel"));
           }, e.prototype.read = function(W, D) {
             if (D === void 0 && (D = {}), !kg(this))
               return B(tC("read"));
@@ -2454,7 +2454,7 @@ function requirePonyfill() {
         eI._disturbed = !0, eI._state === "errored" ? CI._errorSteps(eI._storedError) : Zi(eI._readableStreamController, W, D, CI);
       }
       function hi(e) {
-        wI(e);
+        mI(e);
         var W = new TypeError("Reader was released");
         VA(e, W);
       }
@@ -2507,12 +2507,12 @@ function requirePonyfill() {
       }
       function Vi(e, W, D) {
         return AI(e, D), function(CI) {
-          return _(e, W, [CI]);
+          return q(e, W, [CI]);
         };
       }
       function ui(e, W, D) {
         return AI(e, D), function() {
-          return _(e, W, []);
+          return q(e, W, []);
         };
       }
       function yi(e, W, D) {
@@ -2522,7 +2522,7 @@ function requirePonyfill() {
       }
       function Xi(e, W, D) {
         return AI(e, D), function(CI, eI) {
-          return _(e, W, [CI, eI]);
+          return q(e, W, [CI, eI]);
         };
       }
       function uA(e, W) {
@@ -3208,7 +3208,7 @@ function requirePonyfill() {
             }) : sg(EI, Ag));
           }
           function sg(EI, Ag) {
-            return MA(JI), wI(NI), tI !== void 0 && tI.removeEventListener("abort", Ig), EI ? _I(Ag) : QI(void 0), null;
+            return MA(JI), mI(NI), tI !== void 0 && tI.removeEventListener("abort", Ig), EI ? _I(Ag) : QI(void 0), null;
           }
         });
       }
@@ -3257,7 +3257,7 @@ function requirePonyfill() {
               this._closeRequested && this._queue.length === 0 ? (XC(this), dC(D)) : lC(this), W._chunkSteps(CI);
             } else
               LI(D, W), lC(this);
-          }, e.prototype[J] = function() {
+          }, e.prototype[z] = function() {
           }, e;
         })()
       );
@@ -3400,14 +3400,14 @@ function requirePonyfill() {
         }
         function tg(eg) {
           if (tI = !0, JI = eg, NI) {
-            var Vg = oI([JI, vI]), mg = hg(e, Vg);
+            var Vg = cI([JI, vI]), mg = hg(e, Vg);
             _I(mg);
           }
           return Ig;
         }
         function Wg(eg) {
           if (NI = !0, vI = eg, tI) {
-            var Vg = oI([JI, vI]), mg = hg(e, Vg);
+            var Vg = cI([JI, vI]), mg = hg(e, Vg);
             _I(mg);
           }
           return Ig;
@@ -3428,7 +3428,7 @@ function requirePonyfill() {
           });
         }
         function tg() {
-          kg(W) && (wI(W), W = MI(e), og(W));
+          kg(W) && (mI(W), W = MI(e), og(W));
           var sg = {
             _chunkSteps: function(EI) {
               k(function() {
@@ -3454,7 +3454,7 @@ function requirePonyfill() {
           F(W, sg);
         }
         function Wg(sg, EI) {
-          DI(W) && (wI(W), W = wA(e), og(W));
+          DI(W) && (mI(W), W = wA(e), og(W));
           var Ag = EI ? QI : FI, dg = EI ? FI : QI, ug = {
             _chunkSteps: function(Hg) {
               k(function() {
@@ -3502,14 +3502,14 @@ function requirePonyfill() {
         }
         function Vg(sg) {
           if (tI = !0, JI = sg, NI) {
-            var EI = oI([JI, vI]), Ag = hg(e, EI);
+            var EI = cI([JI, vI]), Ag = hg(e, EI);
             _I(Ag);
           }
           return Ig;
         }
         function mg(sg) {
           if (NI = !0, vI = sg, tI) {
-            var EI = oI([JI, vI]), Ag = hg(e, EI);
+            var EI = cI([JI, vI]), Ag = hg(e, EI);
             _I(Ag);
           }
           return Ig;
@@ -3611,12 +3611,12 @@ function requirePonyfill() {
       }
       function Gl(e, W, D) {
         return AI(e, D), function(CI) {
-          return _(e, W, [CI]);
+          return q(e, W, [CI]);
         };
       }
       function tl(e, W, D) {
         return AI(e, D), function(CI) {
-          return _(e, W, [CI]);
+          return q(e, W, [CI]);
         };
       }
       function ml(e, W, D) {
@@ -3651,9 +3651,9 @@ function requirePonyfill() {
       function hl(e, W) {
         E(e, W);
         var D = e == null ? void 0 : e.readable;
-        mI(D, "readable", "ReadableWritablePair"), pI(D, "".concat(W, " has member 'readable' that"));
+        nI(D, "readable", "ReadableWritablePair"), pI(D, "".concat(W, " has member 'readable' that"));
         var CI = e == null ? void 0 : e.writable;
-        return mI(CI, "writable", "ReadableWritablePair"), uA(CI, "".concat(W, " has member 'writable' that")), { readable: D, writable: CI };
+        return nI(CI, "writable", "ReadableWritablePair"), uA(CI, "".concat(W, " has member 'writable' that")), { readable: D, writable: CI };
       }
       var bg = (
         /** @class */
@@ -3718,13 +3718,13 @@ function requirePonyfill() {
             if (!Kg(this))
               throw Tg("tee");
             var W = sl(this);
-            return oI(W);
+            return cI(W);
           }, e.prototype.values = function(W) {
             if (W === void 0 && (W = void 0), !Kg(this))
               throw Tg("values");
             var D = Wl(W, "First parameter");
             return $I(this, D.preventCancel);
-          }, e.prototype[q] = function(W) {
+          }, e.prototype[_] = function(W) {
             return this.values(W);
           }, e.from = function(W) {
             return Zl(W);
@@ -3744,7 +3744,7 @@ function requirePonyfill() {
       }), m(bg.from, "from"), m(bg.prototype.cancel, "cancel"), m(bg.prototype.getReader, "getReader"), m(bg.prototype.pipeThrough, "pipeThrough"), m(bg.prototype.pipeTo, "pipeTo"), m(bg.prototype.tee, "tee"), m(bg.prototype.values, "values"), typeof A.toStringTag == "symbol" && Object.defineProperty(bg.prototype, A.toStringTag, {
         value: "ReadableStream",
         configurable: !0
-      }), Object.defineProperty(bg.prototype, q, {
+      }), Object.defineProperty(bg.prototype, _, {
         value: bg.prototype.values,
         writable: !0,
         configurable: !0
@@ -3810,7 +3810,7 @@ function requirePonyfill() {
       function QA(e, W) {
         E(e, W);
         var D = e == null ? void 0 : e.highWaterMark;
-        return mI(D, "highWaterMark", "QueuingStrategyInit"), {
+        return nI(D, "highWaterMark", "QueuingStrategyInit"), {
           highWaterMark: hI(D)
         };
       }
@@ -3925,7 +3925,7 @@ function requirePonyfill() {
       }
       function Yl(e, W, D) {
         return AI(e, D), function(CI) {
-          return _(e, W, [CI]);
+          return q(e, W, [CI]);
         };
       }
       function Vl(e, W, D) {
@@ -3935,12 +3935,12 @@ function requirePonyfill() {
       }
       function ul(e, W, D) {
         return AI(e, D), function(CI, eI) {
-          return _(e, W, [CI, eI]);
+          return q(e, W, [CI, eI]);
         };
       }
       function yl(e, W, D) {
         return AI(e, D), function(CI) {
-          return _(e, W, [CI]);
+          return q(e, W, [CI]);
         };
       }
       var MC = (
@@ -4223,7 +4223,7 @@ function requirePdf() {
           ((C, g, I) => {
             Object.defineProperty(g, "__esModule", {
               value: !0
-            }), g.VerbosityLevel = g.Util = g.UnknownErrorException = g.UnexpectedResponseException = g.UNSUPPORTED_FEATURES = g.TextRenderingMode = g.StreamType = g.RenderingIntentFlag = g.PermissionFlag = g.PasswordResponses = g.PasswordException = g.PageActionEventType = g.OPS = g.MissingPDFException = g.LINE_FACTOR = g.LINE_DESCENT_FACTOR = g.InvalidPDFException = g.ImageKind = g.IDENTITY_MATRIX = g.FormatError = g.FontType = g.FeatureTest = g.FONT_IDENTITY_MATRIX = g.DocumentActionEventType = g.CMapCompressionType = g.BaseException = g.AnnotationType = g.AnnotationStateModelType = g.AnnotationReviewState = g.AnnotationReplyType = g.AnnotationMode = g.AnnotationMarkedState = g.AnnotationFlag = g.AnnotationFieldFlag = g.AnnotationEditorType = g.AnnotationEditorPrefix = g.AnnotationEditorParamsType = g.AnnotationBorderStyleType = g.AnnotationActionEventType = g.AbortException = void 0, g.arrayByteLength = GI, g.arraysToBytes = mI, g.assert = BI, g.bytesToString = ZI, g.createPromiseCapability = x, g.createValidAbsoluteUrl = K, g.escapeString = kI, g.getModificationDate = nI, g.getVerbosityLevel = J, g.info = lI, g.isArrayBuffer = HI, g.isArrayEqual = II, g.isAscii = DI, g.objectFromMap = uI, g.objectSize = YI, g.setVerbosityLevel = j, g.shadow = H, g.string32 = hI, g.stringToBytes = aI, g.stringToPDFString = OI, g.stringToUTF16BEString = F, g.stringToUTF8String = bI, g.unreachable = wI, g.utf8StringToString = yI, g.warn = dI, I(2);
+            }), g.VerbosityLevel = g.Util = g.UnknownErrorException = g.UnexpectedResponseException = g.UNSUPPORTED_FEATURES = g.TextRenderingMode = g.StreamType = g.RenderingIntentFlag = g.PermissionFlag = g.PasswordResponses = g.PasswordException = g.PageActionEventType = g.OPS = g.MissingPDFException = g.LINE_FACTOR = g.LINE_DESCENT_FACTOR = g.InvalidPDFException = g.ImageKind = g.IDENTITY_MATRIX = g.FormatError = g.FontType = g.FeatureTest = g.FONT_IDENTITY_MATRIX = g.DocumentActionEventType = g.CMapCompressionType = g.BaseException = g.AnnotationType = g.AnnotationStateModelType = g.AnnotationReviewState = g.AnnotationReplyType = g.AnnotationMode = g.AnnotationMarkedState = g.AnnotationFlag = g.AnnotationFieldFlag = g.AnnotationEditorType = g.AnnotationEditorPrefix = g.AnnotationEditorParamsType = g.AnnotationBorderStyleType = g.AnnotationActionEventType = g.AbortException = void 0, g.arrayByteLength = GI, g.arraysToBytes = nI, g.assert = BI, g.bytesToString = ZI, g.createPromiseCapability = x, g.createValidAbsoluteUrl = p, g.escapeString = kI, g.getModificationDate = WI, g.getVerbosityLevel = z, g.info = lI, g.isArrayBuffer = HI, g.isArrayEqual = II, g.isAscii = DI, g.objectFromMap = uI, g.objectSize = YI, g.setVerbosityLevel = j, g.shadow = H, g.string32 = hI, g.stringToBytes = aI, g.stringToPDFString = OI, g.stringToUTF16BEString = F, g.stringToUTF8String = bI, g.unreachable = mI, g.utf8StringToString = yI, g.warn = oI, I(2);
             const A = [1, 0, 0, 1, 0, 0];
             g.IDENTITY_MATRIX = A;
             const l = [1e-3, 0, 0, 1e-3, 0, 0];
@@ -4450,12 +4450,12 @@ function requirePdf() {
               MMTYPE1: "MMTYPE1"
             };
             g.FontType = S;
-            const _ = {
+            const q = {
               ERRORS: 0,
               WARNINGS: 1,
               INFOS: 5
             };
-            g.VerbosityLevel = _;
+            g.VerbosityLevel = q;
             const U = {
               NONE: 0,
               BINARY: 1,
@@ -4586,29 +4586,29 @@ function requirePdf() {
               INCORRECT_PASSWORD: 2
             };
             g.PasswordResponses = O;
-            let v = _.WARNINGS;
-            function j(oI) {
-              Number.isInteger(oI) && (v = oI);
+            let v = q.WARNINGS;
+            function j(cI) {
+              Number.isInteger(cI) && (v = cI);
             }
-            function J() {
+            function z() {
               return v;
             }
-            function lI(oI) {
-              v >= _.INFOS && console.log(`Info: ${oI}`);
+            function lI(cI) {
+              v >= q.INFOS && console.log(`Info: ${cI}`);
             }
-            function dI(oI) {
-              v >= _.WARNINGS && console.log(`Warning: ${oI}`);
+            function oI(cI) {
+              v >= q.WARNINGS && console.log(`Warning: ${cI}`);
             }
-            function wI(oI) {
-              throw new Error(oI);
+            function mI(cI) {
+              throw new Error(cI);
             }
-            function BI(oI, cI) {
-              oI || wI(cI);
+            function BI(cI, dI) {
+              cI || mI(dI);
             }
-            function gI(oI) {
-              if (!oI)
+            function gI(cI) {
+              if (!cI)
                 return !1;
-              switch (oI.protocol) {
+              switch (cI.protocol) {
                 case "http:":
                 case "https:":
                 case "ftp:":
@@ -4619,31 +4619,31 @@ function requirePdf() {
                   return !1;
               }
             }
-            function K(oI) {
-              let cI = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : null, w = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : null;
-              if (!oI)
+            function p(cI) {
+              let dI = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : null, w = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : null;
+              if (!cI)
                 return null;
               try {
-                if (w && typeof oI == "string") {
-                  if (w.addDefaultProtocol && oI.startsWith("www.")) {
-                    const WI = oI.match(/\./g);
-                    WI && WI.length >= 2 && (oI = `http://${oI}`);
+                if (w && typeof cI == "string") {
+                  if (w.addDefaultProtocol && cI.startsWith("www.")) {
+                    const wI = cI.match(/\./g);
+                    wI && wI.length >= 2 && (cI = `http://${cI}`);
                   }
                   if (w.tryConvertEncoding)
                     try {
-                      oI = bI(oI);
-                    } catch (WI) {
+                      cI = bI(cI);
+                    } catch (wI) {
                     }
                 }
-                const sI = cI ? new URL(oI, cI) : new URL(oI);
+                const sI = dI ? new URL(cI, dI) : new URL(cI);
                 if (gI(sI))
                   return sI;
               } catch (sI) {
               }
               return null;
             }
-            function H(oI, cI, w) {
-              return Object.defineProperty(oI, cI, {
+            function H(cI, dI, w) {
+              return Object.defineProperty(cI, dI, {
                 value: w,
                 enumerable: !0,
                 configurable: !0,
@@ -4651,117 +4651,117 @@ function requirePdf() {
               }), w;
             }
             const Q = (function() {
-              function cI(w, sI) {
-                this.constructor === cI && wI("Cannot initialize BaseException."), this.message = w, this.name = sI;
+              function dI(w, sI) {
+                this.constructor === dI && mI("Cannot initialize BaseException."), this.message = w, this.name = sI;
               }
-              return cI.prototype = new Error(), cI.constructor = cI, cI;
+              return dI.prototype = new Error(), dI.constructor = dI, dI;
             })();
             g.BaseException = Q;
             class T extends Q {
-              constructor(cI, w) {
-                super(cI, "PasswordException"), this.code = w;
+              constructor(dI, w) {
+                super(dI, "PasswordException"), this.code = w;
               }
             }
             g.PasswordException = T;
             class N extends Q {
-              constructor(cI, w) {
-                super(cI, "UnknownErrorException"), this.details = w;
+              constructor(dI, w) {
+                super(dI, "UnknownErrorException"), this.details = w;
               }
             }
             g.UnknownErrorException = N;
-            class p extends Q {
-              constructor(cI) {
-                super(cI, "InvalidPDFException");
+            class K extends Q {
+              constructor(dI) {
+                super(dI, "InvalidPDFException");
               }
             }
-            g.InvalidPDFException = p;
-            class z extends Q {
-              constructor(cI) {
-                super(cI, "MissingPDFException");
+            g.InvalidPDFException = K;
+            class J extends Q {
+              constructor(dI) {
+                super(dI, "MissingPDFException");
               }
             }
-            g.MissingPDFException = z;
+            g.MissingPDFException = J;
             class L extends Q {
-              constructor(cI, w) {
-                super(cI, "UnexpectedResponseException"), this.status = w;
+              constructor(dI, w) {
+                super(dI, "UnexpectedResponseException"), this.status = w;
               }
             }
             g.UnexpectedResponseException = L;
             class E extends Q {
-              constructor(cI) {
-                super(cI, "FormatError");
+              constructor(dI) {
+                super(dI, "FormatError");
               }
             }
             g.FormatError = E;
             class AI extends Q {
-              constructor(cI) {
-                super(cI, "AbortException");
+              constructor(dI) {
+                super(dI, "AbortException");
               }
             }
             g.AbortException = AI;
-            function ZI(oI) {
-              (typeof oI != "object" || oI === null || oI.length === void 0) && wI("Invalid argument for bytesToString");
-              const cI = oI.length, w = 8192;
-              if (cI < w)
-                return String.fromCharCode.apply(null, oI);
+            function ZI(cI) {
+              (typeof cI != "object" || cI === null || cI.length === void 0) && mI("Invalid argument for bytesToString");
+              const dI = cI.length, w = 8192;
+              if (dI < w)
+                return String.fromCharCode.apply(null, cI);
               const sI = [];
-              for (let WI = 0; WI < cI; WI += w) {
-                const f = Math.min(WI + w, cI), P = oI.subarray(WI, f);
+              for (let wI = 0; wI < dI; wI += w) {
+                const f = Math.min(wI + w, dI), P = cI.subarray(wI, f);
                 sI.push(String.fromCharCode.apply(null, P));
               }
               return sI.join("");
             }
-            function aI(oI) {
-              typeof oI != "string" && wI("Invalid argument for stringToBytes");
-              const cI = oI.length, w = new Uint8Array(cI);
-              for (let sI = 0; sI < cI; ++sI)
-                w[sI] = oI.charCodeAt(sI) & 255;
+            function aI(cI) {
+              typeof cI != "string" && mI("Invalid argument for stringToBytes");
+              const dI = cI.length, w = new Uint8Array(dI);
+              for (let sI = 0; sI < dI; ++sI)
+                w[sI] = cI.charCodeAt(sI) & 255;
               return w;
             }
-            function GI(oI) {
-              if (oI.length !== void 0)
-                return oI.length;
-              if (oI.byteLength !== void 0)
-                return oI.byteLength;
-              wI("Invalid argument for arrayByteLength");
+            function GI(cI) {
+              if (cI.length !== void 0)
+                return cI.length;
+              if (cI.byteLength !== void 0)
+                return cI.byteLength;
+              mI("Invalid argument for arrayByteLength");
             }
-            function mI(oI) {
-              const cI = oI.length;
-              if (cI === 1 && oI[0] instanceof Uint8Array)
-                return oI[0];
+            function nI(cI) {
+              const dI = cI.length;
+              if (dI === 1 && cI[0] instanceof Uint8Array)
+                return cI[0];
               let w = 0;
-              for (let f = 0; f < cI; f++)
-                w += GI(oI[f]);
+              for (let f = 0; f < dI; f++)
+                w += GI(cI[f]);
               let sI = 0;
-              const WI = new Uint8Array(w);
-              for (let f = 0; f < cI; f++) {
-                let P = oI[f];
+              const wI = new Uint8Array(w);
+              for (let f = 0; f < dI; f++) {
+                let P = cI[f];
                 P instanceof Uint8Array || (typeof P == "string" ? P = aI(P) : P = new Uint8Array(P));
-                const q = P.byteLength;
-                WI.set(P, sI), sI += q;
+                const _ = P.byteLength;
+                wI.set(P, sI), sI += _;
               }
-              return WI;
+              return wI;
             }
-            function hI(oI) {
-              return String.fromCharCode(oI >> 24 & 255, oI >> 16 & 255, oI >> 8 & 255, oI & 255);
+            function hI(cI) {
+              return String.fromCharCode(cI >> 24 & 255, cI >> 16 & 255, cI >> 8 & 255, cI & 255);
             }
-            function YI(oI) {
-              return Object.keys(oI).length;
+            function YI(cI) {
+              return Object.keys(cI).length;
             }
-            function uI(oI) {
-              const cI = /* @__PURE__ */ Object.create(null);
-              for (const [w, sI] of oI)
-                cI[w] = sI;
-              return cI;
+            function uI(cI) {
+              const dI = /* @__PURE__ */ Object.create(null);
+              for (const [w, sI] of cI)
+                dI[w] = sI;
+              return dI;
             }
             function RI() {
-              const oI = new Uint8Array(4);
-              return oI[0] = 1, new Uint32Array(oI.buffer, 0, 1)[0] === 1;
+              const cI = new Uint8Array(4);
+              return cI[0] = 1, new Uint32Array(cI.buffer, 0, 1)[0] === 1;
             }
             function pI() {
               try {
                 return new Function(""), !0;
-              } catch (oI) {
+              } catch (cI) {
                 return !1;
               }
             }
@@ -4777,57 +4777,57 @@ function requirePdf() {
               }
             }
             g.FeatureTest = MI;
-            const LI = [...Array(256).keys()].map((oI) => oI.toString(16).padStart(2, "0"));
+            const LI = [...Array(256).keys()].map((cI) => cI.toString(16).padStart(2, "0"));
             class KI {
-              static makeHexColor(cI, w, sI) {
-                return `#${LI[cI]}${LI[w]}${LI[sI]}`;
+              static makeHexColor(dI, w, sI) {
+                return `#${LI[dI]}${LI[w]}${LI[sI]}`;
               }
-              static scaleMinMax(cI, w) {
+              static scaleMinMax(dI, w) {
                 let sI;
-                cI[0] ? (cI[0] < 0 && (sI = w[0], w[0] = w[1], w[1] = sI), w[0] *= cI[0], w[1] *= cI[0], cI[3] < 0 && (sI = w[2], w[2] = w[3], w[3] = sI), w[2] *= cI[3], w[3] *= cI[3]) : (sI = w[0], w[0] = w[2], w[2] = sI, sI = w[1], w[1] = w[3], w[3] = sI, cI[1] < 0 && (sI = w[2], w[2] = w[3], w[3] = sI), w[2] *= cI[1], w[3] *= cI[1], cI[2] < 0 && (sI = w[0], w[0] = w[1], w[1] = sI), w[0] *= cI[2], w[1] *= cI[2]), w[0] += cI[4], w[1] += cI[4], w[2] += cI[5], w[3] += cI[5];
+                dI[0] ? (dI[0] < 0 && (sI = w[0], w[0] = w[1], w[1] = sI), w[0] *= dI[0], w[1] *= dI[0], dI[3] < 0 && (sI = w[2], w[2] = w[3], w[3] = sI), w[2] *= dI[3], w[3] *= dI[3]) : (sI = w[0], w[0] = w[2], w[2] = sI, sI = w[1], w[1] = w[3], w[3] = sI, dI[1] < 0 && (sI = w[2], w[2] = w[3], w[3] = sI), w[2] *= dI[1], w[3] *= dI[1], dI[2] < 0 && (sI = w[0], w[0] = w[1], w[1] = sI), w[0] *= dI[2], w[1] *= dI[2]), w[0] += dI[4], w[1] += dI[4], w[2] += dI[5], w[3] += dI[5];
               }
-              static transform(cI, w) {
-                return [cI[0] * w[0] + cI[2] * w[1], cI[1] * w[0] + cI[3] * w[1], cI[0] * w[2] + cI[2] * w[3], cI[1] * w[2] + cI[3] * w[3], cI[0] * w[4] + cI[2] * w[5] + cI[4], cI[1] * w[4] + cI[3] * w[5] + cI[5]];
+              static transform(dI, w) {
+                return [dI[0] * w[0] + dI[2] * w[1], dI[1] * w[0] + dI[3] * w[1], dI[0] * w[2] + dI[2] * w[3], dI[1] * w[2] + dI[3] * w[3], dI[0] * w[4] + dI[2] * w[5] + dI[4], dI[1] * w[4] + dI[3] * w[5] + dI[5]];
               }
-              static applyTransform(cI, w) {
-                const sI = cI[0] * w[0] + cI[1] * w[2] + w[4], WI = cI[0] * w[1] + cI[1] * w[3] + w[5];
-                return [sI, WI];
+              static applyTransform(dI, w) {
+                const sI = dI[0] * w[0] + dI[1] * w[2] + w[4], wI = dI[0] * w[1] + dI[1] * w[3] + w[5];
+                return [sI, wI];
               }
-              static applyInverseTransform(cI, w) {
-                const sI = w[0] * w[3] - w[1] * w[2], WI = (cI[0] * w[3] - cI[1] * w[2] + w[2] * w[5] - w[4] * w[3]) / sI, f = (-cI[0] * w[1] + cI[1] * w[0] + w[4] * w[1] - w[5] * w[0]) / sI;
-                return [WI, f];
+              static applyInverseTransform(dI, w) {
+                const sI = w[0] * w[3] - w[1] * w[2], wI = (dI[0] * w[3] - dI[1] * w[2] + w[2] * w[5] - w[4] * w[3]) / sI, f = (-dI[0] * w[1] + dI[1] * w[0] + w[4] * w[1] - w[5] * w[0]) / sI;
+                return [wI, f];
               }
-              static getAxialAlignedBoundingBox(cI, w) {
-                const sI = KI.applyTransform(cI, w), WI = KI.applyTransform(cI.slice(2, 4), w), f = KI.applyTransform([cI[0], cI[3]], w), P = KI.applyTransform([cI[2], cI[1]], w);
-                return [Math.min(sI[0], WI[0], f[0], P[0]), Math.min(sI[1], WI[1], f[1], P[1]), Math.max(sI[0], WI[0], f[0], P[0]), Math.max(sI[1], WI[1], f[1], P[1])];
+              static getAxialAlignedBoundingBox(dI, w) {
+                const sI = KI.applyTransform(dI, w), wI = KI.applyTransform(dI.slice(2, 4), w), f = KI.applyTransform([dI[0], dI[3]], w), P = KI.applyTransform([dI[2], dI[1]], w);
+                return [Math.min(sI[0], wI[0], f[0], P[0]), Math.min(sI[1], wI[1], f[1], P[1]), Math.max(sI[0], wI[0], f[0], P[0]), Math.max(sI[1], wI[1], f[1], P[1])];
               }
-              static inverseTransform(cI) {
-                const w = cI[0] * cI[3] - cI[1] * cI[2];
-                return [cI[3] / w, -cI[1] / w, -cI[2] / w, cI[0] / w, (cI[2] * cI[5] - cI[4] * cI[3]) / w, (cI[4] * cI[1] - cI[5] * cI[0]) / w];
+              static inverseTransform(dI) {
+                const w = dI[0] * dI[3] - dI[1] * dI[2];
+                return [dI[3] / w, -dI[1] / w, -dI[2] / w, dI[0] / w, (dI[2] * dI[5] - dI[4] * dI[3]) / w, (dI[4] * dI[1] - dI[5] * dI[0]) / w];
               }
-              static apply3dTransform(cI, w) {
-                return [cI[0] * w[0] + cI[1] * w[1] + cI[2] * w[2], cI[3] * w[0] + cI[4] * w[1] + cI[5] * w[2], cI[6] * w[0] + cI[7] * w[1] + cI[8] * w[2]];
+              static apply3dTransform(dI, w) {
+                return [dI[0] * w[0] + dI[1] * w[1] + dI[2] * w[2], dI[3] * w[0] + dI[4] * w[1] + dI[5] * w[2], dI[6] * w[0] + dI[7] * w[1] + dI[8] * w[2]];
               }
-              static singularValueDecompose2dScale(cI) {
-                const w = [cI[0], cI[2], cI[1], cI[3]], sI = cI[0] * w[0] + cI[1] * w[2], WI = cI[0] * w[1] + cI[1] * w[3], f = cI[2] * w[0] + cI[3] * w[2], P = cI[2] * w[1] + cI[3] * w[3], q = (sI + P) / 2, VI = Math.sqrt((sI + P) ** 2 - 4 * (sI * P - f * WI)) / 2, XI = q + VI || 1, rI = q - VI || 1;
+              static singularValueDecompose2dScale(dI) {
+                const w = [dI[0], dI[2], dI[1], dI[3]], sI = dI[0] * w[0] + dI[1] * w[2], wI = dI[0] * w[1] + dI[1] * w[3], f = dI[2] * w[0] + dI[3] * w[2], P = dI[2] * w[1] + dI[3] * w[3], _ = (sI + P) / 2, VI = Math.sqrt((sI + P) ** 2 - 4 * (sI * P - f * wI)) / 2, XI = _ + VI || 1, rI = _ - VI || 1;
                 return [Math.sqrt(XI), Math.sqrt(rI)];
               }
-              static normalizeRect(cI) {
-                const w = cI.slice(0);
-                return cI[0] > cI[2] && (w[0] = cI[2], w[2] = cI[0]), cI[1] > cI[3] && (w[1] = cI[3], w[3] = cI[1]), w;
+              static normalizeRect(dI) {
+                const w = dI.slice(0);
+                return dI[0] > dI[2] && (w[0] = dI[2], w[2] = dI[0]), dI[1] > dI[3] && (w[1] = dI[3], w[3] = dI[1]), w;
               }
-              static intersect(cI, w) {
-                const sI = Math.max(Math.min(cI[0], cI[2]), Math.min(w[0], w[2])), WI = Math.min(Math.max(cI[0], cI[2]), Math.max(w[0], w[2]));
-                if (sI > WI)
+              static intersect(dI, w) {
+                const sI = Math.max(Math.min(dI[0], dI[2]), Math.min(w[0], w[2])), wI = Math.min(Math.max(dI[0], dI[2]), Math.max(w[0], w[2]));
+                if (sI > wI)
                   return null;
-                const f = Math.max(Math.min(cI[1], cI[3]), Math.min(w[1], w[3])), P = Math.min(Math.max(cI[1], cI[3]), Math.max(w[1], w[3]));
-                return f > P ? null : [sI, f, WI, P];
+                const f = Math.max(Math.min(dI[1], dI[3]), Math.min(w[1], w[3])), P = Math.min(Math.max(dI[1], dI[3]), Math.max(w[1], w[3]));
+                return f > P ? null : [sI, f, wI, P];
               }
-              static bezierBoundingBox(cI, w, sI, WI, f, P, q, VI) {
+              static bezierBoundingBox(dI, w, sI, wI, f, P, _, VI) {
                 const XI = [], rI = [[], []];
                 let zI, TI, xI, SI, fI, $I, jI, gg;
                 for (let qI = 0; qI < 2; ++qI) {
-                  if (qI === 0 ? (TI = 6 * cI - 12 * sI + 6 * f, zI = -3 * cI + 9 * sI - 9 * f + 3 * q, xI = 3 * sI - 3 * cI) : (TI = 6 * w - 12 * WI + 6 * P, zI = -3 * w + 9 * WI - 9 * P + 3 * VI, xI = 3 * WI - 3 * w), Math.abs(zI) < 1e-12) {
+                  if (qI === 0 ? (TI = 6 * dI - 12 * sI + 6 * f, zI = -3 * dI + 9 * sI - 9 * f + 3 * _, xI = 3 * sI - 3 * dI) : (TI = 6 * w - 12 * wI + 6 * P, zI = -3 * w + 9 * wI - 9 * P + 3 * VI, xI = 3 * wI - 3 * w), Math.abs(zI) < 1e-12) {
                     if (Math.abs(TI) < 1e-12)
                       continue;
                     SI = -xI / TI, 0 < SI && SI < 1 && XI.push(SI);
@@ -4838,82 +4838,82 @@ function requirePdf() {
                 let lg = XI.length, UI;
                 const Cg = lg;
                 for (; lg--; )
-                  SI = XI[lg], UI = 1 - SI, rI[0][lg] = UI * UI * UI * cI + 3 * UI * UI * SI * sI + 3 * UI * SI * SI * f + SI * SI * SI * q, rI[1][lg] = UI * UI * UI * w + 3 * UI * UI * SI * WI + 3 * UI * SI * SI * P + SI * SI * SI * VI;
-                return rI[0][Cg] = cI, rI[1][Cg] = w, rI[0][Cg + 1] = q, rI[1][Cg + 1] = VI, rI[0].length = rI[1].length = Cg + 2, [Math.min(...rI[0]), Math.min(...rI[1]), Math.max(...rI[0]), Math.max(...rI[1])];
+                  SI = XI[lg], UI = 1 - SI, rI[0][lg] = UI * UI * UI * dI + 3 * UI * UI * SI * sI + 3 * UI * SI * SI * f + SI * SI * SI * _, rI[1][lg] = UI * UI * UI * w + 3 * UI * UI * SI * wI + 3 * UI * SI * SI * P + SI * SI * SI * VI;
+                return rI[0][Cg] = dI, rI[1][Cg] = w, rI[0][Cg + 1] = _, rI[1][Cg + 1] = VI, rI[0].length = rI[1].length = Cg + 2, [Math.min(...rI[0]), Math.min(...rI[1]), Math.max(...rI[0]), Math.max(...rI[1])];
               }
             }
             g.Util = KI;
             const PI = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 728, 711, 710, 729, 733, 731, 730, 732, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8226, 8224, 8225, 8230, 8212, 8211, 402, 8260, 8249, 8250, 8722, 8240, 8222, 8220, 8221, 8216, 8217, 8218, 8482, 64257, 64258, 321, 338, 352, 376, 381, 305, 322, 339, 353, 382, 0, 8364];
-            function OI(oI) {
-              if (oI[0] >= "ï") {
+            function OI(cI) {
+              if (cI[0] >= "ï") {
                 let w;
-                if (oI[0] === "þ" && oI[1] === "ÿ" ? w = "utf-16be" : oI[0] === "ÿ" && oI[1] === "þ" ? w = "utf-16le" : oI[0] === "ï" && oI[1] === "»" && oI[2] === "¿" && (w = "utf-8"), w)
+                if (cI[0] === "þ" && cI[1] === "ÿ" ? w = "utf-16be" : cI[0] === "ÿ" && cI[1] === "þ" ? w = "utf-16le" : cI[0] === "ï" && cI[1] === "»" && cI[2] === "¿" && (w = "utf-8"), w)
                   try {
                     const sI = new TextDecoder(w, {
                       fatal: !0
-                    }), WI = aI(oI);
-                    return sI.decode(WI);
+                    }), wI = aI(cI);
+                    return sI.decode(wI);
                   } catch (sI) {
-                    dI(`stringToPDFString: "${sI}".`);
+                    oI(`stringToPDFString: "${sI}".`);
                   }
               }
-              const cI = [];
-              for (let w = 0, sI = oI.length; w < sI; w++) {
-                const WI = PI[oI.charCodeAt(w)];
-                cI.push(WI ? String.fromCharCode(WI) : oI.charAt(w));
+              const dI = [];
+              for (let w = 0, sI = cI.length; w < sI; w++) {
+                const wI = PI[cI.charCodeAt(w)];
+                dI.push(wI ? String.fromCharCode(wI) : cI.charAt(w));
               }
-              return cI.join("");
+              return dI.join("");
             }
-            function kI(oI) {
-              return oI.replace(/([()\\\n\r])/g, (cI) => cI === `
-` ? "\\n" : cI === "\r" ? "\\r" : `\\${cI}`);
+            function kI(cI) {
+              return cI.replace(/([()\\\n\r])/g, (dI) => dI === `
+` ? "\\n" : dI === "\r" ? "\\r" : `\\${dI}`);
             }
-            function DI(oI) {
-              return /^[\x00-\x7F]*$/.test(oI);
+            function DI(cI) {
+              return /^[\x00-\x7F]*$/.test(cI);
             }
-            function F(oI) {
-              const cI = ["þÿ"];
-              for (let w = 0, sI = oI.length; w < sI; w++) {
-                const WI = oI.charCodeAt(w);
-                cI.push(String.fromCharCode(WI >> 8 & 255), String.fromCharCode(WI & 255));
+            function F(cI) {
+              const dI = ["þÿ"];
+              for (let w = 0, sI = cI.length; w < sI; w++) {
+                const wI = cI.charCodeAt(w);
+                dI.push(String.fromCharCode(wI >> 8 & 255), String.fromCharCode(wI & 255));
               }
-              return cI.join("");
+              return dI.join("");
             }
-            function bI(oI) {
-              return decodeURIComponent(escape(oI));
+            function bI(cI) {
+              return decodeURIComponent(escape(cI));
             }
-            function yI(oI) {
-              return unescape(encodeURIComponent(oI));
+            function yI(cI) {
+              return unescape(encodeURIComponent(cI));
             }
-            function HI(oI) {
-              return typeof oI == "object" && oI !== null && oI.byteLength !== void 0;
+            function HI(cI) {
+              return typeof cI == "object" && cI !== null && cI.byteLength !== void 0;
             }
-            function II(oI, cI) {
-              if (oI.length !== cI.length)
+            function II(cI, dI) {
+              if (cI.length !== dI.length)
                 return !1;
-              for (let w = 0, sI = oI.length; w < sI; w++)
-                if (oI[w] !== cI[w])
+              for (let w = 0, sI = cI.length; w < sI; w++)
+                if (cI[w] !== dI[w])
                   return !1;
               return !0;
             }
-            function nI() {
-              let oI = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : /* @__PURE__ */ new Date();
-              return [oI.getUTCFullYear().toString(), (oI.getUTCMonth() + 1).toString().padStart(2, "0"), oI.getUTCDate().toString().padStart(2, "0"), oI.getUTCHours().toString().padStart(2, "0"), oI.getUTCMinutes().toString().padStart(2, "0"), oI.getUTCSeconds().toString().padStart(2, "0")].join("");
+            function WI() {
+              let cI = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : /* @__PURE__ */ new Date();
+              return [cI.getUTCFullYear().toString(), (cI.getUTCMonth() + 1).toString().padStart(2, "0"), cI.getUTCDate().toString().padStart(2, "0"), cI.getUTCHours().toString().padStart(2, "0"), cI.getUTCMinutes().toString().padStart(2, "0"), cI.getUTCSeconds().toString().padStart(2, "0")].join("");
             }
             function x() {
-              const oI = /* @__PURE__ */ Object.create(null);
-              let cI = !1;
-              return Object.defineProperty(oI, "settled", {
+              const cI = /* @__PURE__ */ Object.create(null);
+              let dI = !1;
+              return Object.defineProperty(cI, "settled", {
                 get() {
-                  return cI;
+                  return dI;
                 }
-              }), oI.promise = new Promise(function(w, sI) {
-                oI.resolve = function(WI) {
-                  cI = !0, w(WI);
-                }, oI.reject = function(WI) {
-                  cI = !0, sI(WI);
+              }), cI.promise = new Promise(function(w, sI) {
+                cI.resolve = function(wI) {
+                  dI = !0, w(wI);
+                }, cI.reject = function(wI) {
+                  dI = !0, sI(wI);
                 };
-              }), oI;
+              }), cI;
             }
           }),
           /* 2 */
@@ -5764,7 +5764,7 @@ function requirePdf() {
           /* 78 */
           /***/
           ((C, g, I) => {
-            var A = I(79), l = I(9), s = I(7), d = I(23), c = I(22), Z = I(40), o = I(80), a = I(33), G = I(45), b = I(49), m = I(46).f, V = I(26), Y = I(82), X = I(84), r = I(35), h = I(42), B = I(53), u = B.enforce, t = B.get, n = s.Int8Array, y = n && n.prototype, R = s.Uint8ClampedArray, M = R && R.prototype, k = n && Y(n), S = y && Y(y), _ = Object.prototype, U = s.TypeError, $ = r("toStringTag"), iI = h("TYPED_ARRAY_TAG"), O = "TypedArrayConstructor", v = A && !!X && o(s.opera) !== "Opera", j = !1, J, lI, dI, wI = {
+            var A = I(79), l = I(9), s = I(7), d = I(23), c = I(22), Z = I(40), o = I(80), a = I(33), G = I(45), b = I(49), m = I(46).f, V = I(26), Y = I(82), X = I(84), r = I(35), h = I(42), B = I(53), u = B.enforce, t = B.get, n = s.Int8Array, y = n && n.prototype, R = s.Uint8ClampedArray, M = R && R.prototype, k = n && Y(n), S = y && Y(y), q = Object.prototype, U = s.TypeError, $ = r("toStringTag"), iI = h("TYPED_ARRAY_TAG"), O = "TypedArrayConstructor", v = A && !!X && o(s.opera) !== "Opera", j = !1, z, lI, oI, mI = {
               Int8Array: 1,
               Uint8Array: 1,
               Uint8ClampedArray: 1,
@@ -5781,87 +5781,87 @@ function requirePdf() {
               if (!c(L))
                 return !1;
               var E = o(L);
-              return E === "DataView" || Z(wI, E) || Z(BI, E);
-            }, K = function(z) {
-              var L = Y(z);
+              return E === "DataView" || Z(mI, E) || Z(BI, E);
+            }, p = function(J) {
+              var L = Y(J);
               if (c(L)) {
                 var E = t(L);
-                return E && Z(E, O) ? E[O] : K(L);
+                return E && Z(E, O) ? E[O] : p(L);
               }
-            }, H = function(z) {
-              if (!c(z))
+            }, H = function(J) {
+              if (!c(J))
                 return !1;
-              var L = o(z);
-              return Z(wI, L) || Z(BI, L);
-            }, Q = function(z) {
-              if (H(z))
-                return z;
+              var L = o(J);
+              return Z(mI, L) || Z(BI, L);
+            }, Q = function(J) {
+              if (H(J))
+                return J;
               throw U("Target is not a typed array");
-            }, T = function(z) {
-              if (d(z) && (!X || V(k, z)))
-                return z;
-              throw U(a(z) + " is not a typed array constructor");
-            }, N = function(z, L, E, AI) {
+            }, T = function(J) {
+              if (d(J) && (!X || V(k, J)))
+                return J;
+              throw U(a(J) + " is not a typed array constructor");
+            }, N = function(J, L, E, AI) {
               if (l) {
                 if (E)
-                  for (var ZI in wI) {
+                  for (var ZI in mI) {
                     var aI = s[ZI];
-                    if (aI && Z(aI.prototype, z))
+                    if (aI && Z(aI.prototype, J))
                       try {
-                        delete aI.prototype[z];
+                        delete aI.prototype[J];
                       } catch (GI) {
                         try {
-                          aI.prototype[z] = L;
-                        } catch (mI) {
+                          aI.prototype[J] = L;
+                        } catch (nI) {
                         }
                       }
                   }
-                (!S[z] || E) && b(S, z, E ? L : v && y[z] || L, AI);
+                (!S[J] || E) && b(S, J, E ? L : v && y[J] || L, AI);
               }
-            }, p = function(z, L, E) {
+            }, K = function(J, L, E) {
               var AI, ZI;
               if (l) {
                 if (X) {
                   if (E) {
-                    for (AI in wI)
-                      if (ZI = s[AI], ZI && Z(ZI, z))
+                    for (AI in mI)
+                      if (ZI = s[AI], ZI && Z(ZI, J))
                         try {
-                          delete ZI[z];
+                          delete ZI[J];
                         } catch (aI) {
                         }
                   }
-                  if (!k[z] || E)
+                  if (!k[J] || E)
                     try {
-                      return b(k, z, E ? L : v && k[z] || L);
+                      return b(k, J, E ? L : v && k[J] || L);
                     } catch (aI) {
                     }
                   else
                     return;
                 }
-                for (AI in wI)
-                  ZI = s[AI], ZI && (!ZI[z] || E) && b(ZI, z, L);
+                for (AI in mI)
+                  ZI = s[AI], ZI && (!ZI[J] || E) && b(ZI, J, L);
               }
             };
-            for (J in wI)
-              lI = s[J], dI = lI && lI.prototype, dI ? u(dI)[O] = lI : v = !1;
-            for (J in BI)
-              lI = s[J], dI = lI && lI.prototype, dI && (u(dI)[O] = lI);
+            for (z in mI)
+              lI = s[z], oI = lI && lI.prototype, oI ? u(oI)[O] = lI : v = !1;
+            for (z in BI)
+              lI = s[z], oI = lI && lI.prototype, oI && (u(oI)[O] = lI);
             if ((!v || !d(k) || k === Function.prototype) && (k = function() {
               throw U("Incorrect invocation");
             }, v))
-              for (J in wI)
-                s[J] && X(s[J], k);
-            if ((!v || !S || S === _) && (S = k.prototype, v))
-              for (J in wI)
-                s[J] && X(s[J].prototype, S);
+              for (z in mI)
+                s[z] && X(s[z], k);
+            if ((!v || !S || S === q) && (S = k.prototype, v))
+              for (z in mI)
+                s[z] && X(s[z].prototype, S);
             if (v && Y(M) !== S && X(M, S), l && !Z(S, $)) {
               j = !0, m(S, $, {
                 get: function() {
                   return c(this) ? this[iI] : void 0;
                 }
               });
-              for (J in wI)
-                s[J] && G(s[J], iI, J);
+              for (z in mI)
+                s[z] && G(s[z], iI, z);
             }
             C.exports = {
               NATIVE_ARRAY_BUFFER_VIEWS: v,
@@ -5869,8 +5869,8 @@ function requirePdf() {
               aTypedArray: Q,
               aTypedArrayConstructor: T,
               exportTypedArrayMethod: N,
-              exportTypedArrayStaticMethod: p,
-              getTypedArrayConstructor: K,
+              exportTypedArrayStaticMethod: K,
+              getTypedArrayConstructor: p,
               isView: gI,
               isTypedArray: H,
               TypedArray: k,
@@ -6006,48 +6006,48 @@ function requirePdf() {
             var A = I(6), l = I(11), s = I(37), d = I(51), c = I(23), Z = I(90), o = I(82), a = I(84), G = I(92), b = I(45), m = I(49), V = I(35), Y = I(88), X = I(91), r = d.PROPER, h = d.CONFIGURABLE, B = X.IteratorPrototype, u = X.BUGGY_SAFARI_ITERATORS, t = V("iterator"), n = "keys", y = "values", R = "entries", M = function() {
               return this;
             };
-            C.exports = function(k, S, _, U, $, iI, O) {
-              Z(_, S, U);
+            C.exports = function(k, S, q, U, $, iI, O) {
+              Z(q, S, U);
               var v = function(Q) {
-                if (Q === $ && wI)
-                  return wI;
+                if (Q === $ && mI)
+                  return mI;
                 if (!u && Q in lI)
                   return lI[Q];
                 switch (Q) {
                   case n:
                     return function() {
-                      return new _(this, Q);
+                      return new q(this, Q);
                     };
                   case y:
                     return function() {
-                      return new _(this, Q);
+                      return new q(this, Q);
                     };
                   case R:
                     return function() {
-                      return new _(this, Q);
+                      return new q(this, Q);
                     };
                 }
                 return function() {
-                  return new _(this);
+                  return new q(this);
                 };
-              }, j = S + " Iterator", J = !1, lI = k.prototype, dI = lI[t] || lI["@@iterator"] || $ && lI[$], wI = !u && dI || v($), BI = S == "Array" && lI.entries || dI, gI, K, H;
-              if (BI && (gI = o(BI.call(new k())), gI !== Object.prototype && gI.next && (!s && o(gI) !== B && (a ? a(gI, B) : c(gI[t]) || m(gI, t, M)), G(gI, j, !0, !0), s && (Y[j] = M))), r && $ == y && dI && dI.name !== y && (!s && h ? b(lI, "name", y) : (J = !0, wI = function() {
-                return l(dI, this);
+              }, j = S + " Iterator", z = !1, lI = k.prototype, oI = lI[t] || lI["@@iterator"] || $ && lI[$], mI = !u && oI || v($), BI = S == "Array" && lI.entries || oI, gI, p, H;
+              if (BI && (gI = o(BI.call(new k())), gI !== Object.prototype && gI.next && (!s && o(gI) !== B && (a ? a(gI, B) : c(gI[t]) || m(gI, t, M)), G(gI, j, !0, !0), s && (Y[j] = M))), r && $ == y && oI && oI.name !== y && (!s && h ? b(lI, "name", y) : (z = !0, mI = function() {
+                return l(oI, this);
               })), $)
-                if (K = {
+                if (p = {
                   values: v(y),
-                  keys: iI ? wI : v(n),
+                  keys: iI ? mI : v(n),
                   entries: v(R)
                 }, O)
-                  for (H in K)
-                    (u || J || !(H in lI)) && m(lI, H, K[H]);
+                  for (H in p)
+                    (u || z || !(H in lI)) && m(lI, H, p[H]);
                 else
                   A({
                     target: S,
                     proto: !0,
-                    forced: u || J
-                  }, K);
-              return (!s || O) && lI[t] !== wI && m(lI, t, wI, { name: $ }), Y[S] = wI, K;
+                    forced: u || z
+                  }, p);
+              return (!s || O) && lI[t] !== mI && m(lI, t, mI, { name: $ }), Y[S] = mI, p;
             };
           }),
           /* 90 */
@@ -6123,22 +6123,22 @@ function requirePdf() {
             var A = I(6), l = I(7), s = I(17), d = I(69), c = I(49), Z = I(98), o = I(105), a = I(111), G = I(23), b = I(22), m = I(10), V = I(112), Y = I(92), X = I(113);
             C.exports = function(r, h, B) {
               var u = r.indexOf("Map") !== -1, t = r.indexOf("Weak") !== -1, n = u ? "set" : "add", y = l[r], R = y && y.prototype, M = y, k = {}, S = function(j) {
-                var J = s(R[j]);
-                c(R, j, j == "add" ? function(dI) {
-                  return J(this, dI === 0 ? 0 : dI), this;
+                var z = s(R[j]);
+                c(R, j, j == "add" ? function(oI) {
+                  return z(this, oI === 0 ? 0 : oI), this;
                 } : j == "delete" ? function(lI) {
-                  return t && !b(lI) ? !1 : J(this, lI === 0 ? 0 : lI);
-                } : j == "get" ? function(dI) {
-                  return t && !b(dI) ? void 0 : J(this, dI === 0 ? 0 : dI);
-                } : j == "has" ? function(dI) {
-                  return t && !b(dI) ? !1 : J(this, dI === 0 ? 0 : dI);
-                } : function(dI, wI) {
-                  return J(this, dI === 0 ? 0 : dI, wI), this;
+                  return t && !b(lI) ? !1 : z(this, lI === 0 ? 0 : lI);
+                } : j == "get" ? function(oI) {
+                  return t && !b(oI) ? void 0 : z(this, oI === 0 ? 0 : oI);
+                } : j == "has" ? function(oI) {
+                  return t && !b(oI) ? !1 : z(this, oI === 0 ? 0 : oI);
+                } : function(oI, mI) {
+                  return z(this, oI === 0 ? 0 : oI, mI), this;
                 });
-              }, _ = d(r, !G(y) || !(t || R.forEach && !m(function() {
+              }, q = d(r, !G(y) || !(t || R.forEach && !m(function() {
                 new y().entries().next();
               })));
-              if (_)
+              if (q)
                 M = B.getConstructor(h, r, u, n), Z.enable();
               else if (d(r, !0)) {
                 var U = new M(), $ = U[n](t ? {} : -0, 1) != U, iI = m(function() {
@@ -6146,14 +6146,14 @@ function requirePdf() {
                 }), O = V(function(j) {
                   new y(j);
                 }), v = !t && m(function() {
-                  for (var j = new y(), J = 5; J--; )
-                    j[n](J, J);
+                  for (var j = new y(), z = 5; z--; )
+                    j[n](z, z);
                   return !j.has(-0);
                 });
-                O || (M = h(function(j, J) {
+                O || (M = h(function(j, z) {
                   a(j, R);
                   var lI = X(new y(), j, M);
-                  return J != null && o(J, lI[n], {
+                  return z != null && o(z, lI[n], {
                     that: lI,
                     AS_ENTRIES: u
                   }), lI;
@@ -6203,9 +6203,9 @@ function requirePdf() {
               }, V = !0;
               var y = o.f, R = l([].splice), M = {};
               M[Y] = 1, y(M).length && (o.f = function(k) {
-                for (var S = y(k), _ = 0, U = S.length; _ < U; _++)
-                  if (S[_] === Y) {
-                    R(S, _, 1);
+                for (var S = y(k), q = 0, U = S.length; q < U; q++)
+                  if (S[q] === Y) {
+                    R(S, q, 1);
                     break;
                   }
                 return S;
@@ -6290,7 +6290,7 @@ function requirePdf() {
               this.stopped = X, this.result = r;
             }, Y = V.prototype;
             C.exports = function(X, r, h) {
-              var B = h && h.that, u = !!(h && h.AS_ENTRIES), t = !!(h && h.IS_RECORD), n = !!(h && h.IS_ITERATOR), y = !!(h && h.INTERRUPTED), R = A(r, B), M, k, S, _, U, $, iI, O = function(j) {
+              var B = h && h.that, u = !!(h && h.AS_ENTRIES), t = !!(h && h.IS_RECORD), n = !!(h && h.IS_ITERATOR), y = !!(h && h.INTERRUPTED), R = A(r, B), M, k, S, q, U, $, iI, O = function(j) {
                 return M && b(M, "normal", j), new V(!0, j);
               }, v = function(j) {
                 return u ? (s(j), y ? R(j[0], j[1], O) : R(j[0], j[1])) : y ? R(j, O) : R(j);
@@ -6303,7 +6303,7 @@ function requirePdf() {
                 if (k = G(X), !k)
                   throw m(d(X) + " is not iterable");
                 if (c(k)) {
-                  for (S = 0, _ = Z(X); _ > S; S++)
+                  for (S = 0, q = Z(X); q > S; S++)
                     if (U = v(X[S]), U && o(Y, U))
                       return U;
                   return new V(!1);
@@ -6459,40 +6459,40 @@ function requirePdf() {
                     AS_ENTRIES: h
                   });
                 }), t = u.prototype, n = Y(r), y = function(M, k, S) {
-                  var _ = n(M), U = R(M, k), $, iI;
-                  return U ? U.value = S : (_.last = U = {
+                  var q = n(M), U = R(M, k), $, iI;
+                  return U ? U.value = S : (q.last = U = {
                     index: iI = b(k, !0),
                     key: k,
                     value: S,
-                    previous: $ = _.last,
+                    previous: $ = q.last,
                     next: void 0,
                     removed: !1
-                  }, _.first || (_.first = U), $ && ($.next = U), G ? _.size++ : M.size++, iI !== "F" && (_.index[iI] = U)), M;
+                  }, q.first || (q.first = U), $ && ($.next = U), G ? q.size++ : M.size++, iI !== "F" && (q.index[iI] = U)), M;
                 }, R = function(M, k) {
-                  var S = n(M), _ = b(k), U;
-                  if (_ !== "F")
-                    return S.index[_];
+                  var S = n(M), q = b(k), U;
+                  if (q !== "F")
+                    return S.index[q];
                   for (U = S.first; U; U = U.next)
                     if (U.key == k)
                       return U;
                 };
                 return s(t, {
                   clear: function() {
-                    for (var k = this, S = n(k), _ = S.index, U = S.first; U; )
-                      U.removed = !0, U.previous && (U.previous = U.previous.next = void 0), delete _[U.index], U = U.next;
+                    for (var k = this, S = n(k), q = S.index, U = S.first; U; )
+                      U.removed = !0, U.previous && (U.previous = U.previous.next = void 0), delete q[U.index], U = U.next;
                     S.first = S.last = void 0, G ? S.size = 0 : k.size = 0;
                   },
                   delete: function(M) {
-                    var k = this, S = n(k), _ = R(k, M);
-                    if (_) {
-                      var U = _.next, $ = _.previous;
-                      delete S.index[_.index], _.removed = !0, $ && ($.next = U), U && (U.previous = $), S.first == _ && (S.first = U), S.last == _ && (S.last = $), G ? S.size-- : k.size--;
+                    var k = this, S = n(k), q = R(k, M);
+                    if (q) {
+                      var U = q.next, $ = q.previous;
+                      delete S.index[q.index], q.removed = !0, $ && ($.next = U), U && (U.previous = $), S.first == q && (S.first = U), S.last == q && (S.last = $), G ? S.size-- : k.size--;
                     }
-                    return !!_;
+                    return !!q;
                   },
                   forEach: function(k) {
-                    for (var S = n(this), _ = d(k, arguments.length > 1 ? arguments[1] : void 0), U; U = U ? U.next : S.first; )
-                      for (_(U.value, U.key, this); U && U.removed; )
+                    for (var S = n(this), q = d(k, arguments.length > 1 ? arguments[1] : void 0), U; U = U ? U.next : S.first; )
+                      for (q(U.value, U.key, this); U && U.removed; )
                         U = U.previous;
                   },
                   has: function(k) {
@@ -6591,51 +6591,51 @@ function requirePdf() {
           /* 119 */
           /***/
           ((C, g, I) => {
-            var A = I(37), l = I(6), s = I(7), d = I(25), c = I(17), Z = I(10), o = I(42), a = I(23), G = I(120), b = I(22), m = I(24), V = I(105), Y = I(48), X = I(80), r = I(40), h = I(101), B = I(45), u = I(65), t = I(121), n = I(122), y = I(124), R = I(29), M = I(125), k = I(126), S = I(127), _ = s.Object, U = s.Date, $ = s.Error, iI = s.EvalError, O = s.RangeError, v = s.ReferenceError, j = s.SyntaxError, J = s.TypeError, lI = s.URIError, dI = s.PerformanceMark, wI = s.WebAssembly, BI = wI && wI.CompileError || $, gI = wI && wI.LinkError || $, K = wI && wI.RuntimeError || $, H = d("DOMException"), Q = d("Set"), T = d("Map"), N = T.prototype, p = c(N.has), z = c(N.get), L = c(N.set), E = c(Q.prototype.add), AI = d("Object", "keys"), ZI = c([].push), aI = c((!0).valueOf), GI = c(1 .valueOf), mI = c("".valueOf), hI = c(U.prototype.getTime), YI = o("structuredClone"), uI = "DataCloneError", RI = "Transferring", pI = function(II) {
+            var A = I(37), l = I(6), s = I(7), d = I(25), c = I(17), Z = I(10), o = I(42), a = I(23), G = I(120), b = I(22), m = I(24), V = I(105), Y = I(48), X = I(80), r = I(40), h = I(101), B = I(45), u = I(65), t = I(121), n = I(122), y = I(124), R = I(29), M = I(125), k = I(126), S = I(127), q = s.Object, U = s.Date, $ = s.Error, iI = s.EvalError, O = s.RangeError, v = s.ReferenceError, j = s.SyntaxError, z = s.TypeError, lI = s.URIError, oI = s.PerformanceMark, mI = s.WebAssembly, BI = mI && mI.CompileError || $, gI = mI && mI.LinkError || $, p = mI && mI.RuntimeError || $, H = d("DOMException"), Q = d("Set"), T = d("Map"), N = T.prototype, K = c(N.has), J = c(N.get), L = c(N.set), E = c(Q.prototype.add), AI = d("Object", "keys"), ZI = c([].push), aI = c((!0).valueOf), GI = c(1 .valueOf), nI = c("".valueOf), hI = c(U.prototype.getTime), YI = o("structuredClone"), uI = "DataCloneError", RI = "Transferring", pI = function(II) {
               return !Z(function() {
-                var nI = new s.Set([7]), x = II(nI), oI = II(_(7));
-                return x == nI || !x.has(7) || typeof oI != "object" || oI != 7;
+                var WI = new s.Set([7]), x = II(WI), cI = II(q(7));
+                return x == WI || !x.has(7) || typeof cI != "object" || cI != 7;
               }) && II;
-            }, MI = function(II, nI) {
+            }, MI = function(II, WI) {
               return !Z(function() {
-                var x = new nI(), oI = II({
+                var x = new WI(), cI = II({
                   a: x,
                   b: x
                 });
-                return !(oI && oI.a === oI.b && oI.a instanceof nI && oI.a.stack === x.stack);
+                return !(cI && cI.a === cI.b && cI.a instanceof WI && cI.a.stack === x.stack);
               });
             }, LI = function(II) {
               return !Z(function() {
-                var nI = II(new s.AggregateError([1], YI, { cause: 3 }));
-                return nI.name != "AggregateError" || nI.errors[0] != 1 || nI.message != YI || nI.cause != 3;
+                var WI = II(new s.AggregateError([1], YI, { cause: 3 }));
+                return WI.name != "AggregateError" || WI.errors[0] != 1 || WI.message != YI || WI.cause != 3;
               });
             }, KI = s.structuredClone, PI = A || !MI(KI, $) || !MI(KI, H) || !LI(KI), OI = !KI && pI(function(II) {
-              return new dI(YI, { detail: II }).detail;
+              return new oI(YI, { detail: II }).detail;
             }), kI = pI(KI) || OI, DI = function(II) {
               throw new H("Uncloneable type: " + II, uI);
-            }, F = function(II, nI) {
-              throw new H((nI || "Cloning") + " of " + II + " cannot be properly polyfilled in this engine", uI);
-            }, bI = function(II, nI) {
+            }, F = function(II, WI) {
+              throw new H((WI || "Cloning") + " of " + II + " cannot be properly polyfilled in this engine", uI);
+            }, bI = function(II, WI) {
               if (m(II) && DI("Symbol"), !b(II))
                 return II;
-              if (nI) {
-                if (p(nI, II))
-                  return z(nI, II);
+              if (WI) {
+                if (K(WI, II))
+                  return J(WI, II);
               } else
-                nI = new T();
-              var x = X(II), oI = !1, cI, w, sI, WI, f, P, q, VI, XI, rI;
+                WI = new T();
+              var x = X(II), cI = !1, dI, w, sI, wI, f, P, _, VI, XI, rI;
               switch (x) {
                 case "Array":
-                  sI = [], oI = !0;
+                  sI = [], cI = !0;
                   break;
                 case "Object":
-                  sI = {}, oI = !0;
+                  sI = {}, cI = !0;
                   break;
                 case "Map":
-                  sI = new T(), oI = !0;
+                  sI = new T(), cI = !0;
                   break;
                 case "Set":
-                  sI = new Q(), oI = !0;
+                  sI = new Q(), cI = !0;
                   break;
                 case "RegExp":
                   sI = new RegExp(II.source, n(II));
@@ -6658,7 +6658,7 @@ function requirePdf() {
                       sI = j();
                       break;
                     case "TypeError":
-                      sI = J();
+                      sI = z();
                       break;
                     case "URIError":
                       sI = lI();
@@ -6670,15 +6670,15 @@ function requirePdf() {
                       sI = gI();
                       break;
                     case "RuntimeError":
-                      sI = K();
+                      sI = p();
                       break;
                     default:
                       sI = $();
                   }
-                  oI = !0;
+                  cI = !0;
                   break;
                 case "DOMException":
-                  sI = new H(II.message, II.name), oI = !0;
+                  sI = new H(II.message, II.name), cI = !0;
                   break;
                 case "DataView":
                 case "Int8Array":
@@ -6692,25 +6692,25 @@ function requirePdf() {
                 case "Float64Array":
                 case "BigInt64Array":
                 case "BigUint64Array":
-                  cI = s[x], b(cI) || F(x), sI = new cI(bI(II.buffer, nI), II.byteOffset, x === "DataView" ? II.byteLength : II.length);
+                  dI = s[x], b(dI) || F(x), sI = new dI(bI(II.buffer, WI), II.byteOffset, x === "DataView" ? II.byteLength : II.length);
                   break;
                 case "DOMQuad":
                   try {
-                    sI = new DOMQuad(bI(II.p1, nI), bI(II.p2, nI), bI(II.p3, nI), bI(II.p4, nI));
+                    sI = new DOMQuad(bI(II.p1, WI), bI(II.p2, WI), bI(II.p3, WI), bI(II.p4, WI));
                   } catch (zI) {
                     kI ? sI = kI(II) : F(x);
                   }
                   break;
                 case "FileList":
-                  if (cI = s.DataTransfer, G(cI)) {
-                    for (WI = new cI(), f = 0, P = u(II); f < P; f++)
-                      WI.items.add(bI(II[f], nI));
-                    sI = WI.files;
+                  if (dI = s.DataTransfer, G(dI)) {
+                    for (wI = new dI(), f = 0, P = u(II); f < P; f++)
+                      wI.items.add(bI(II[f], WI));
+                    sI = wI.files;
                   } else kI ? sI = kI(II) : F(x);
                   break;
                 case "ImageData":
                   try {
-                    sI = new ImageData(bI(II.data, nI), II.width, II.height, { colorSpace: II.colorSpace });
+                    sI = new ImageData(bI(II.data, WI), II.width, II.height, { colorSpace: II.colorSpace });
                   } catch (zI) {
                     kI ? sI = kI(II) : F(x);
                   }
@@ -6721,27 +6721,27 @@ function requirePdf() {
                   else
                     switch (x) {
                       case "BigInt":
-                        sI = _(II.valueOf());
+                        sI = q(II.valueOf());
                         break;
                       case "Boolean":
-                        sI = _(aI(II));
+                        sI = q(aI(II));
                         break;
                       case "Number":
-                        sI = _(GI(II));
+                        sI = q(GI(II));
                         break;
                       case "String":
-                        sI = _(mI(II));
+                        sI = q(nI(II));
                         break;
                       case "Date":
                         sI = new U(hI(II));
                         break;
                       case "ArrayBuffer":
-                        cI = s.DataView, !cI && typeof II.slice != "function" && F(x);
+                        dI = s.DataView, !dI && typeof II.slice != "function" && F(x);
                         try {
                           if (typeof II.slice == "function")
                             sI = II.slice(0);
                           else
-                            for (P = II.byteLength, sI = new ArrayBuffer(P), XI = new cI(II), rI = new cI(sI), f = 0; f < P; f++)
+                            for (P = II.byteLength, sI = new ArrayBuffer(P), XI = new dI(II), rI = new dI(sI), f = 0; f < P; f++)
                               rI.setUint8(f, XI.getUint8(f));
                         } catch (zI) {
                           throw new H("ArrayBuffer is detached", uI);
@@ -6759,27 +6759,27 @@ function requirePdf() {
                         break;
                       case "DOMPoint":
                       case "DOMPointReadOnly":
-                        cI = s[x];
+                        dI = s[x];
                         try {
-                          sI = cI.fromPoint ? cI.fromPoint(II) : new cI(II.x, II.y, II.z, II.w);
+                          sI = dI.fromPoint ? dI.fromPoint(II) : new dI(II.x, II.y, II.z, II.w);
                         } catch (zI) {
                           F(x);
                         }
                         break;
                       case "DOMRect":
                       case "DOMRectReadOnly":
-                        cI = s[x];
+                        dI = s[x];
                         try {
-                          sI = cI.fromRect ? cI.fromRect(II) : new cI(II.x, II.y, II.width, II.height);
+                          sI = dI.fromRect ? dI.fromRect(II) : new dI(II.x, II.y, II.width, II.height);
                         } catch (zI) {
                           F(x);
                         }
                         break;
                       case "DOMMatrix":
                       case "DOMMatrixReadOnly":
-                        cI = s[x];
+                        dI = s[x];
                         try {
-                          sI = cI.fromMatrix ? cI.fromMatrix(II) : new cI(II);
+                          sI = dI.fromMatrix ? dI.fromMatrix(II) : new dI(II);
                         } catch (zI) {
                           F(x);
                         }
@@ -6811,54 +6811,54 @@ function requirePdf() {
                         DI(x);
                     }
               }
-              if (L(nI, II, sI), oI)
+              if (L(WI, II, sI), cI)
                 switch (x) {
                   case "Array":
                   case "Object":
-                    for (q = AI(II), f = 0, P = u(q); f < P; f++)
-                      VI = q[f], h(sI, VI, bI(II[VI], nI));
+                    for (_ = AI(II), f = 0, P = u(_); f < P; f++)
+                      VI = _[f], h(sI, VI, bI(II[VI], WI));
                     break;
                   case "Map":
                     II.forEach(function(zI, TI) {
-                      L(sI, bI(TI, nI), bI(zI, nI));
+                      L(sI, bI(TI, WI), bI(zI, WI));
                     });
                     break;
                   case "Set":
                     II.forEach(function(zI) {
-                      E(sI, bI(zI, nI));
+                      E(sI, bI(zI, WI));
                     });
                     break;
                   case "Error":
-                    B(sI, "message", bI(II.message, nI)), r(II, "cause") && B(sI, "cause", bI(II.cause, nI)), w == "AggregateError" && (sI.errors = bI(II.errors, nI));
+                    B(sI, "message", bI(II.message, WI)), r(II, "cause") && B(sI, "cause", bI(II.cause, WI)), w == "AggregateError" && (sI.errors = bI(II.errors, WI));
                   case "DOMException":
-                    y && B(sI, "stack", bI(II.stack, nI));
+                    y && B(sI, "stack", bI(II.stack, WI));
                 }
               return sI;
             }, yI = KI && !Z(function() {
               if (k && R > 92 || S && R > 94 || M && R > 97)
                 return !1;
-              var II = new ArrayBuffer(8), nI = KI(II, { transfer: [II] });
-              return II.byteLength != 0 || nI.byteLength != 8;
-            }), HI = function(II, nI) {
+              var II = new ArrayBuffer(8), WI = KI(II, { transfer: [II] });
+              return II.byteLength != 0 || WI.byteLength != 8;
+            }), HI = function(II, WI) {
               if (!b(II))
-                throw J("Transfer option cannot be converted to a sequence");
+                throw z("Transfer option cannot be converted to a sequence");
               var x = [];
               V(II, function(XI) {
                 ZI(x, Y(XI));
               });
-              var oI = 0, cI = u(x), w, sI, WI, f, P, q, VI;
+              var cI = 0, dI = u(x), w, sI, wI, f, P, _, VI;
               if (yI)
-                for (f = KI(x, { transfer: x }); oI < cI; )
-                  L(nI, x[oI], f[oI++]);
+                for (f = KI(x, { transfer: x }); cI < dI; )
+                  L(WI, x[cI], f[cI++]);
               else
-                for (; oI < cI; ) {
-                  if (w = x[oI++], p(nI, w))
+                for (; cI < dI; ) {
+                  if (w = x[cI++], K(WI, w))
                     throw new H("Duplicate transferable", uI);
                   switch (sI = X(w), sI) {
                     case "ImageBitmap":
-                      WI = s.OffscreenCanvas, G(WI) || F(sI, RI);
+                      wI = s.OffscreenCanvas, G(wI) || F(sI, RI);
                       try {
-                        q = new WI(w.width, w.height), VI = q.getContext("bitmaprenderer"), VI.transferFromImageBitmap(w), P = q.transferToImageBitmap();
+                        _ = new wI(w.width, w.height), VI = _.getContext("bitmaprenderer"), VI.transferFromImageBitmap(w), P = _.transferToImageBitmap();
                       } catch (XI) {
                       }
                       break;
@@ -6880,7 +6880,7 @@ function requirePdf() {
                   }
                   if (P === void 0)
                     throw new H("This object cannot be transferred: " + sI, uI);
-                  L(nI, w, P);
+                  L(WI, w, P);
                 }
             };
             l({
@@ -6889,9 +6889,9 @@ function requirePdf() {
               sham: !yI,
               forced: PI
             }, {
-              structuredClone: function(nI) {
-                var x = t(arguments.length, 1) > 1 && arguments[1] != null ? Y(arguments[1]) : void 0, oI = x ? x.transfer : void 0, cI;
-                return oI !== void 0 && (cI = new T(), HI(oI, cI)), bI(nI, cI);
+              structuredClone: function(WI) {
+                var x = t(arguments.length, 1) > 1 && arguments[1] != null ? Y(arguments[1]) : void 0, cI = x ? x.transfer : void 0, dI;
+                return cI !== void 0 && (dI = new T(), HI(cI, dI)), bI(WI, dI);
               }
             });
           }),
@@ -8752,31 +8752,31 @@ function requirePdf() {
                 t.ctrlKey && !n || t.shiftKey || t.metaKey && n ? this.parent.toggleSelected(this) : this.parent.setSelected(this), Z(this, Y, !0);
               }
               getRect(t, n) {
-                const [y, R] = this.parent.viewportBaseDimensions, [M, k] = this.parent.pageDimensions, S = M * t / y, _ = k * n / R, U = this.x * M, $ = this.y * k, iI = this.width * M, O = this.height * k;
+                const [y, R] = this.parent.viewportBaseDimensions, [M, k] = this.parent.pageDimensions, S = M * t / y, q = k * n / R, U = this.x * M, $ = this.y * k, iI = this.width * M, O = this.height * k;
                 switch (this.rotation) {
                   case 0:
-                    return [U + S, k - $ - _ - O, U + S + iI, k - $ - _];
+                    return [U + S, k - $ - q - O, U + S + iI, k - $ - q];
                   case 90:
-                    return [U + _, k - $ + S, U + _ + O, k - $ + S + iI];
+                    return [U + q, k - $ + S, U + q + O, k - $ + S + iI];
                   case 180:
-                    return [U - S - iI, k - $ + _, U - S, k - $ + _ + O];
+                    return [U - S - iI, k - $ + q, U - S, k - $ + q + O];
                   case 270:
-                    return [U - _ - O, k - $ - S - iI, U - _, k - $ - S];
+                    return [U - q - O, k - $ - S - iI, U - q, k - $ - S];
                   default:
                     throw new Error("Invalid rotation");
                 }
               }
               getRectInCurrentCoords(t, n) {
-                const [y, R, M, k] = t, S = M - y, _ = k - R;
+                const [y, R, M, k] = t, S = M - y, q = k - R;
                 switch (this.rotation) {
                   case 0:
-                    return [y, n - k, S, _];
+                    return [y, n - k, S, q];
                   case 90:
-                    return [y, n - R, _, S];
+                    return [y, n - R, q, S];
                   case 180:
-                    return [M, n - R, S, _];
+                    return [M, n - R, S, q];
                   case 270:
-                    return [M, n - k, _, S];
+                    return [M, n - k, q, S];
                   default:
                     throw new Error("Invalid rotation");
                 }
@@ -8814,8 +8814,8 @@ function requirePdf() {
                   id: n.getNextId()
                 });
                 y.rotation = t.rotation;
-                const [R, M] = n.pageDimensions, [k, S, _, U] = y.getRectInCurrentCoords(t.rect, M);
-                return y.x = k / R, y.y = S / M, y.width = _ / R, y.height = U / M, y;
+                const [R, M] = n.pageDimensions, [k, S, q, U] = y.getRectInCurrentCoords(t.rect, M);
+                return y.x = k / R, y.y = S / M, y.width = q / R, y.height = U / M, y;
               }
               remove() {
                 this.div.removeEventListener("focusin", a(this, m)), this.div.removeEventListener("focusout", a(this, V)), this.isEmpty() || this.commit(), this.parent.remove(this);
@@ -8943,26 +8943,26 @@ function requirePdf() {
                   undo: yI,
                   mustExec: HI,
                   type: II = NaN,
-                  overwriteIfSameType: nI = !1,
+                  overwriteIfSameType: WI = !1,
                   keepUndo: x = !1
                 } = F;
                 if (HI && bI(), b(this, u))
                   return;
-                const oI = {
+                const cI = {
                   cmd: bI,
                   undo: yI,
                   type: II
                 };
                 if (b(this, n) === -1) {
-                  b(this, B).length > 0 && (b(this, B).length = 0), a(this, n, 0), b(this, B).push(oI);
+                  b(this, B).length > 0 && (b(this, B).length = 0), a(this, n, 0), b(this, B).push(cI);
                   return;
                 }
-                if (nI && b(this, B)[b(this, n)].type === II) {
-                  x && (oI.undo = b(this, B)[b(this, n)].undo), b(this, B)[b(this, n)] = oI;
+                if (WI && b(this, B)[b(this, n)].type === II) {
+                  x && (cI.undo = b(this, B)[b(this, n)].undo), b(this, B)[b(this, n)] = cI;
                   return;
                 }
-                const cI = b(this, n) + 1;
-                cI === b(this, t) ? b(this, B).splice(0, 1) : (a(this, n, cI), cI < b(this, B).length && b(this, B).splice(cI)), b(this, B).push(oI);
+                const dI = b(this, n) + 1;
+                dI === b(this, t) ? b(this, B).splice(0, 1) : (a(this, n, dI), dI < b(this, B).length && b(this, B).splice(dI)), b(this, B).push(cI);
               }
               undo() {
                 b(this, n) !== -1 && (a(this, u, !0), b(this, B)[b(this, n)].undo(), a(this, u, !1), a(this, n, b(this, n) - 1));
@@ -8988,8 +8988,8 @@ function requirePdf() {
                 const bI = M.platform.isMac;
                 for (const [yI, HI] of F)
                   for (const II of yI) {
-                    const nI = II.startsWith("mac+");
-                    bI && nI ? (this.callbacks.set(II.slice(4), HI), this.allKeys.add(II.split("+").at(-1))) : !bI && !nI && (this.callbacks.set(II, HI), this.allKeys.add(II.split("+").at(-1)));
+                    const WI = II.startsWith("mac+");
+                    bI && WI ? (this.callbacks.set(II.slice(4), HI), this.allKeys.add(II.split("+").at(-1))) : !bI && !WI && (this.callbacks.set(II, HI), this.allKeys.add(II.split("+").at(-1)));
                   }
               }
               static get platform() {
@@ -9013,7 +9013,7 @@ function requirePdf() {
               return this.buffer.length = 0, F;
             }
             var S = /* @__PURE__ */ new WeakMap();
-            class _ {
+            class q {
               constructor() {
                 Z(this, S, {
                   writable: !0,
@@ -9043,7 +9043,7 @@ function requirePdf() {
                 if (!window.matchMedia("(forced-colors: active)").matches)
                   return bI;
                 for (const [yI, HI] of this._colors)
-                  if (HI.every((II, nI) => II === bI[nI]))
+                  if (HI.every((II, WI) => II === bI[WI]))
                     return U._colorsMapping.get(yI);
                 return bI;
               }
@@ -9053,10 +9053,10 @@ function requirePdf() {
               }
             }
             g.ColorManager = U, s(U, "_colorsMapping", /* @__PURE__ */ new Map([["CanvasText", [0, 0, 0]], ["Canvas", [255, 255, 255]]]));
-            var $ = /* @__PURE__ */ new WeakMap(), iI = /* @__PURE__ */ new WeakMap(), O = /* @__PURE__ */ new WeakMap(), v = /* @__PURE__ */ new WeakMap(), j = /* @__PURE__ */ new WeakMap(), J = /* @__PURE__ */ new WeakMap(), lI = /* @__PURE__ */ new WeakMap(), dI = /* @__PURE__ */ new WeakMap(), wI = /* @__PURE__ */ new WeakMap(), BI = /* @__PURE__ */ new WeakMap(), gI = /* @__PURE__ */ new WeakMap(), K = /* @__PURE__ */ new WeakMap(), H = /* @__PURE__ */ new WeakMap(), Q = /* @__PURE__ */ new WeakMap(), T = /* @__PURE__ */ new WeakMap(), N = /* @__PURE__ */ new WeakMap(), p = /* @__PURE__ */ new WeakMap(), z = /* @__PURE__ */ new WeakSet(), L = /* @__PURE__ */ new WeakSet(), E = /* @__PURE__ */ new WeakSet(), AI = /* @__PURE__ */ new WeakSet(), ZI = /* @__PURE__ */ new WeakSet(), aI = /* @__PURE__ */ new WeakSet(), GI = /* @__PURE__ */ new WeakSet(), mI = /* @__PURE__ */ new WeakSet(), hI = /* @__PURE__ */ new WeakSet();
+            var $ = /* @__PURE__ */ new WeakMap(), iI = /* @__PURE__ */ new WeakMap(), O = /* @__PURE__ */ new WeakMap(), v = /* @__PURE__ */ new WeakMap(), j = /* @__PURE__ */ new WeakMap(), z = /* @__PURE__ */ new WeakMap(), lI = /* @__PURE__ */ new WeakMap(), oI = /* @__PURE__ */ new WeakMap(), mI = /* @__PURE__ */ new WeakMap(), BI = /* @__PURE__ */ new WeakMap(), gI = /* @__PURE__ */ new WeakMap(), p = /* @__PURE__ */ new WeakMap(), H = /* @__PURE__ */ new WeakMap(), Q = /* @__PURE__ */ new WeakMap(), T = /* @__PURE__ */ new WeakMap(), N = /* @__PURE__ */ new WeakMap(), K = /* @__PURE__ */ new WeakMap(), J = /* @__PURE__ */ new WeakSet(), L = /* @__PURE__ */ new WeakSet(), E = /* @__PURE__ */ new WeakSet(), AI = /* @__PURE__ */ new WeakSet(), ZI = /* @__PURE__ */ new WeakSet(), aI = /* @__PURE__ */ new WeakSet(), GI = /* @__PURE__ */ new WeakSet(), nI = /* @__PURE__ */ new WeakSet(), hI = /* @__PURE__ */ new WeakSet();
             class YI {
               constructor(F, bI) {
-                d(this, hI), d(this, mI), d(this, GI), d(this, aI), d(this, ZI), d(this, AI), d(this, E), d(this, L), d(this, z), Z(this, $, {
+                d(this, hI), d(this, nI), d(this, GI), d(this, aI), d(this, ZI), d(this, AI), d(this, E), d(this, L), d(this, J), Z(this, $, {
                   writable: !0,
                   value: null
                 }), Z(this, iI, {
@@ -9067,20 +9067,20 @@ function requirePdf() {
                   value: /* @__PURE__ */ new Map()
                 }), Z(this, v, {
                   writable: !0,
-                  value: new _()
+                  value: new q()
                 }), Z(this, j, {
                   writable: !0,
                   value: new y()
-                }), Z(this, J, {
+                }), Z(this, z, {
                   writable: !0,
                   value: 0
                 }), Z(this, lI, {
                   writable: !0,
                   value: null
-                }), Z(this, dI, {
+                }), Z(this, oI, {
                   writable: !0,
                   value: null
-                }), Z(this, wI, {
+                }), Z(this, mI, {
                   writable: !0,
                   value: new h()
                 }), Z(this, BI, {
@@ -9089,7 +9089,7 @@ function requirePdf() {
                 }), Z(this, gI, {
                   writable: !0,
                   value: A.AnnotationEditorType.NONE
-                }), Z(this, K, {
+                }), Z(this, p, {
                   writable: !0,
                   value: /* @__PURE__ */ new Set()
                 }), Z(this, H, {
@@ -9111,25 +9111,25 @@ function requirePdf() {
                     hasSomethingToRedo: !1,
                     hasSelectedEditor: !1
                   }
-                }), Z(this, p, {
+                }), Z(this, K, {
                   writable: !0,
                   value: null
-                }), a(this, p, F), a(this, dI, bI), b(this, dI)._on("editingaction", b(this, Q)), b(this, dI)._on("pagechanging", b(this, T));
+                }), a(this, K, F), a(this, oI, bI), b(this, oI)._on("editingaction", b(this, Q)), b(this, oI)._on("pagechanging", b(this, T));
               }
               destroy() {
-                c(this, L, RI).call(this), b(this, dI)._off("editingaction", b(this, Q)), b(this, dI)._off("pagechanging", b(this, T));
+                c(this, L, RI).call(this), b(this, oI)._off("editingaction", b(this, Q)), b(this, oI)._off("pagechanging", b(this, T));
                 for (const F of b(this, O).values())
                   F.destroy();
-                b(this, O).clear(), b(this, iI).clear(), a(this, $, null), b(this, K).clear(), b(this, v).destroy(), b(this, j).destroy();
+                b(this, O).clear(), b(this, iI).clear(), a(this, $, null), b(this, p).clear(), b(this, v).destroy(), b(this, j).destroy();
               }
               onPageChanging(F) {
                 let {
                   pageNumber: bI
                 } = F;
-                a(this, J, bI - 1);
+                a(this, z, bI - 1);
               }
               focusMainContainer() {
-                b(this, p).focus();
+                b(this, K).focus();
               }
               keydown(F) {
                 var bI;
@@ -9139,9 +9139,9 @@ function requirePdf() {
                 ["undo", "redo", "cut", "copy", "paste", "delete", "selectAll"].includes(F.name) && this[F.name]();
               }
               setEditingState(F) {
-                F ? (c(this, z, uI).call(this), c(this, E, pI).call(this, {
+                F ? (c(this, J, uI).call(this), c(this, E, pI).call(this, {
                   isEditing: b(this, gI) !== A.AnnotationEditorType.NONE,
-                  isEmpty: c(this, mI, OI).call(this),
+                  isEmpty: c(this, nI, OI).call(this),
                   hasSomethingToUndo: b(this, j).hasSomethingToUndo(),
                   hasSomethingToRedo: b(this, j).hasSomethingToRedo(),
                   hasSelectedEditor: !1,
@@ -9156,7 +9156,7 @@ function requirePdf() {
                   c(this, AI, MI).call(this, bI.defaultPropertiesToUpdate);
               }
               getId() {
-                return b(this, wI).getId();
+                return b(this, mI).getId();
               }
               addLayer(F) {
                 b(this, O).set(F.pageIndex, F), b(this, BI) ? F.enable() : F.disable();
@@ -9174,13 +9174,13 @@ function requirePdf() {
                 }
               }
               updateToolbar(F) {
-                F !== b(this, gI) && b(this, dI).dispatch("switchannotationeditormode", {
+                F !== b(this, gI) && b(this, oI).dispatch("switchannotationeditormode", {
                   source: this,
                   mode: F
                 });
               }
               updateParams(F, bI) {
-                for (const yI of b(this, K))
+                for (const yI of b(this, p))
                   yI.updateParams(F, bI);
                 for (const yI of b(this, lI))
                   yI.updateDefaultParams(F, bI);
@@ -9204,59 +9204,59 @@ function requirePdf() {
                 b(this, $) !== F && (a(this, $, F), F && c(this, AI, MI).call(this, F.propertiesToUpdate));
               }
               toggleSelected(F) {
-                if (b(this, K).has(F)) {
-                  b(this, K).delete(F), F.unselect(), c(this, E, pI).call(this, {
+                if (b(this, p).has(F)) {
+                  b(this, p).delete(F), F.unselect(), c(this, E, pI).call(this, {
                     hasSelectedEditor: this.hasSelection
                   });
                   return;
                 }
-                b(this, K).add(F), F.select(), c(this, AI, MI).call(this, F.propertiesToUpdate), c(this, E, pI).call(this, {
+                b(this, p).add(F), F.select(), c(this, AI, MI).call(this, F.propertiesToUpdate), c(this, E, pI).call(this, {
                   hasSelectedEditor: !0
                 });
               }
               setSelected(F) {
-                for (const bI of b(this, K))
+                for (const bI of b(this, p))
                   bI !== F && bI.unselect();
-                b(this, K).clear(), b(this, K).add(F), F.select(), c(this, AI, MI).call(this, F.propertiesToUpdate), c(this, E, pI).call(this, {
+                b(this, p).clear(), b(this, p).add(F), F.select(), c(this, AI, MI).call(this, F.propertiesToUpdate), c(this, E, pI).call(this, {
                   hasSelectedEditor: !0
                 });
               }
               isSelected(F) {
-                return b(this, K).has(F);
+                return b(this, p).has(F);
               }
               unselect(F) {
-                F.unselect(), b(this, K).delete(F), c(this, E, pI).call(this, {
+                F.unselect(), b(this, p).delete(F), c(this, E, pI).call(this, {
                   hasSelectedEditor: this.hasSelection
                 });
               }
               get hasSelection() {
-                return b(this, K).size !== 0;
+                return b(this, p).size !== 0;
               }
               undo() {
                 b(this, j).undo(), c(this, E, pI).call(this, {
                   hasSomethingToUndo: b(this, j).hasSomethingToUndo(),
                   hasSomethingToRedo: !0,
-                  isEmpty: c(this, mI, OI).call(this)
+                  isEmpty: c(this, nI, OI).call(this)
                 });
               }
               redo() {
                 b(this, j).redo(), c(this, E, pI).call(this, {
                   hasSomethingToUndo: !0,
                   hasSomethingToRedo: b(this, j).hasSomethingToRedo(),
-                  isEmpty: c(this, mI, OI).call(this)
+                  isEmpty: c(this, nI, OI).call(this)
                 });
               }
               addCommands(F) {
                 b(this, j).add(F), c(this, E, pI).call(this, {
                   hasSomethingToUndo: !0,
                   hasSomethingToRedo: !1,
-                  isEmpty: c(this, mI, OI).call(this)
+                  isEmpty: c(this, nI, OI).call(this)
                 });
               }
               delete() {
                 if (b(this, $) && b(this, $).commitOrRemove(), !this.hasSelection)
                   return;
-                const F = [...b(this, K)], bI = () => {
+                const F = [...b(this, p)], bI = () => {
                   for (const HI of F)
                     HI.remove();
                 }, yI = () => {
@@ -9272,7 +9272,7 @@ function requirePdf() {
               copy() {
                 if (b(this, $) && b(this, $).commitOrRemove(), this.hasSelection) {
                   const F = [];
-                  for (const bI of b(this, K))
+                  for (const bI of b(this, p))
                     bI.isEmpty() || F.push(bI);
                   if (F.length === 0)
                     return;
@@ -9288,7 +9288,7 @@ function requirePdf() {
                 if (b(this, v).isEmpty())
                   return;
                 this.unselectAll();
-                const F = b(this, O).get(b(this, J)), bI = b(this, v).paste().map((II) => F.deserialize(II)), yI = () => {
+                const F = b(this, O).get(b(this, z)), bI = b(this, v).paste().map((II) => F.deserialize(II)), yI = () => {
                   for (const II of bI)
                     c(this, GI, PI).call(this, II);
                   c(this, hI, kI).call(this, bI);
@@ -9303,7 +9303,7 @@ function requirePdf() {
                 });
               }
               selectAll() {
-                for (const F of b(this, K))
+                for (const F of b(this, p))
                   F.commit();
                 c(this, hI, kI).call(this, b(this, iI).values());
               }
@@ -9313,9 +9313,9 @@ function requirePdf() {
                   return;
                 }
                 if (c(this, hI, kI).size !== 0) {
-                  for (const F of b(this, K))
+                  for (const F of b(this, p))
                     F.unselect();
-                  b(this, K).clear(), c(this, E, pI).call(this, {
+                  b(this, p).clear(), c(this, E, pI).call(this, {
                     hasSelectedEditor: !1
                   });
                 }
@@ -9332,22 +9332,22 @@ function requirePdf() {
             }
             g.AnnotationEditorUIManager = YI;
             function uI() {
-              b(this, p).addEventListener("keydown", b(this, H));
+              b(this, K).addEventListener("keydown", b(this, H));
             }
             function RI() {
-              b(this, p).removeEventListener("keydown", b(this, H));
+              b(this, K).removeEventListener("keydown", b(this, H));
             }
             function pI(DI) {
               Object.entries(DI).some((bI) => {
                 let [yI, HI] = bI;
                 return b(this, N)[yI] !== HI;
-              }) && b(this, dI).dispatch("annotationeditorstateschanged", {
+              }) && b(this, oI).dispatch("annotationeditorstateschanged", {
                 source: this,
                 details: Object.assign(b(this, N), DI)
               });
             }
             function MI(DI) {
-              b(this, dI).dispatch("annotationeditorparamschanged", {
+              b(this, oI).dispatch("annotationeditorparamschanged", {
                 source: this,
                 details: DI
               });
@@ -9379,9 +9379,9 @@ function requirePdf() {
               return !1;
             }
             function kI(DI) {
-              b(this, K).clear();
+              b(this, p).clear();
               for (const F of DI)
-                F.isEmpty() || (b(this, K).add(F), F.select());
+                F.isEmpty() || (b(this, p).add(F), F.select());
               c(this, E, pI).call(this, {
                 hasSelectedEditor: !0
               });
@@ -9393,7 +9393,7 @@ function requirePdf() {
           ((C, g, I) => {
             Object.defineProperty(g, "__esModule", {
               value: !0
-            }), g.StatTimer = g.RenderingCancelledException = g.PixelsPerInch = g.PageViewport = g.PDFDateString = g.DOMStandardFontDataFactory = g.DOMSVGFactory = g.DOMCanvasFactory = g.DOMCMapReaderFactory = g.AnnotationPrefix = void 0, g.deprecated = y, g.getColorValues = _, g.getCurrentTransform = U, g.getCurrentTransformInverse = $, g.getFilenameFromUrl = h, g.getPdfFilenameFromUrl = B, g.getRGB = S, g.getXfaPageViewport = k, g.isDataScheme = X, g.isPdfFile = r, g.isValidFetchUrl = t, g.loadScript = n;
+            }), g.StatTimer = g.RenderingCancelledException = g.PixelsPerInch = g.PageViewport = g.PDFDateString = g.DOMStandardFontDataFactory = g.DOMSVGFactory = g.DOMCanvasFactory = g.DOMCMapReaderFactory = g.AnnotationPrefix = void 0, g.deprecated = y, g.getColorValues = q, g.getCurrentTransform = U, g.getCurrentTransformInverse = $, g.getFilenameFromUrl = h, g.getPdfFilenameFromUrl = B, g.getRGB = S, g.getXfaPageViewport = k, g.isDataScheme = X, g.isPdfFile = r, g.isValidFetchUrl = t, g.loadScript = n;
             var A = I(134), l = I(1);
             function s(iI, O, v) {
               return O in iI ? Object.defineProperty(iI, O, { value: v, enumerable: !0, configurable: !0, writable: !0 }) : iI[O] = v, iI;
@@ -9425,19 +9425,19 @@ function requirePdf() {
                 return O ? new Uint8Array(await v.arrayBuffer()) : (0, l.stringToBytes)(await v.text());
               }
               return new Promise((v, j) => {
-                const J = new XMLHttpRequest();
-                J.open("GET", iI, !0), O && (J.responseType = "arraybuffer"), J.onreadystatechange = () => {
-                  if (J.readyState === XMLHttpRequest.DONE) {
-                    if (J.status === 200 || J.status === 0) {
+                const z = new XMLHttpRequest();
+                z.open("GET", iI, !0), O && (z.responseType = "arraybuffer"), z.onreadystatechange = () => {
+                  if (z.readyState === XMLHttpRequest.DONE) {
+                    if (z.status === 200 || z.status === 0) {
                       let lI;
-                      if (O && J.response ? lI = new Uint8Array(J.response) : !O && J.responseText && (lI = (0, l.stringToBytes)(J.responseText)), lI) {
+                      if (O && z.response ? lI = new Uint8Array(z.response) : !O && z.responseText && (lI = (0, l.stringToBytes)(z.responseText)), lI) {
                         v(lI);
                         return;
                       }
                     }
-                    j(new Error(J.statusText));
+                    j(new Error(z.statusText));
                   }
-                }, J.send(null);
+                }, z.send(null);
               });
             }
             class G extends A.BaseCMapReaderFactory {
@@ -9466,40 +9466,40 @@ function requirePdf() {
                 let {
                   viewBox: v,
                   scale: j,
-                  rotation: J,
+                  rotation: z,
                   offsetX: lI = 0,
-                  offsetY: dI = 0,
-                  dontFlip: wI = !1
+                  offsetY: oI = 0,
+                  dontFlip: mI = !1
                 } = O;
-                this.viewBox = v, this.scale = j, this.rotation = J, this.offsetX = lI, this.offsetY = dI;
+                this.viewBox = v, this.scale = j, this.rotation = z, this.offsetX = lI, this.offsetY = oI;
                 const BI = (v[2] + v[0]) / 2, gI = (v[3] + v[1]) / 2;
-                let K, H, Q, T;
-                switch (J %= 360, J < 0 && (J += 360), J) {
+                let p, H, Q, T;
+                switch (z %= 360, z < 0 && (z += 360), z) {
                   case 180:
-                    K = -1, H = 0, Q = 0, T = 1;
+                    p = -1, H = 0, Q = 0, T = 1;
                     break;
                   case 90:
-                    K = 0, H = 1, Q = 1, T = 0;
+                    p = 0, H = 1, Q = 1, T = 0;
                     break;
                   case 270:
-                    K = 0, H = -1, Q = -1, T = 0;
+                    p = 0, H = -1, Q = -1, T = 0;
                     break;
                   case 0:
-                    K = 1, H = 0, Q = 0, T = -1;
+                    p = 1, H = 0, Q = 0, T = -1;
                     break;
                   default:
                     throw new Error("PageViewport: Invalid rotation, must be a multiple of 90 degrees.");
                 }
-                wI && (Q = -Q, T = -T);
-                let N, p, z, L;
-                K === 0 ? (N = Math.abs(gI - v[1]) * j + lI, p = Math.abs(BI - v[0]) * j + dI, z = Math.abs(v[3] - v[1]) * j, L = Math.abs(v[2] - v[0]) * j) : (N = Math.abs(BI - v[0]) * j + lI, p = Math.abs(gI - v[1]) * j + dI, z = Math.abs(v[2] - v[0]) * j, L = Math.abs(v[3] - v[1]) * j), this.transform = [K * j, H * j, Q * j, T * j, N - K * j * BI - Q * j * gI, p - H * j * BI - T * j * gI], this.width = z, this.height = L;
+                mI && (Q = -Q, T = -T);
+                let N, K, J, L;
+                p === 0 ? (N = Math.abs(gI - v[1]) * j + lI, K = Math.abs(BI - v[0]) * j + oI, J = Math.abs(v[3] - v[1]) * j, L = Math.abs(v[2] - v[0]) * j) : (N = Math.abs(BI - v[0]) * j + lI, K = Math.abs(gI - v[1]) * j + oI, J = Math.abs(v[2] - v[0]) * j, L = Math.abs(v[3] - v[1]) * j), this.transform = [p * j, H * j, Q * j, T * j, N - p * j * BI - Q * j * gI, K - H * j * BI - T * j * gI], this.width = J, this.height = L;
               }
               clone() {
                 let {
                   scale: O = this.scale,
                   rotation: v = this.rotation,
                   offsetX: j = this.offsetX,
-                  offsetY: J = this.offsetY,
+                  offsetY: z = this.offsetY,
                   dontFlip: lI = !1
                 } = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
                 return new V({
@@ -9507,7 +9507,7 @@ function requirePdf() {
                   scale: O,
                   rotation: v,
                   offsetX: j,
-                  offsetY: J,
+                  offsetY: z,
                   dontFlip: lI
                 });
               }
@@ -9549,12 +9549,12 @@ function requirePdf() {
                 return O;
               if (X(iI))
                 return (0, l.warn)('getPdfFilenameFromUrl: ignore "data:"-URL for performance reasons.'), O;
-              const v = /^(?:(?:[^:]+:)?\/\/[^/]+)?([^?#]*)(\?[^#]*)?(#.*)?$/, j = /[^/?#=]+\.pdf\b(?!.*\.pdf\b)/i, J = v.exec(iI);
-              let lI = j.exec(J[1]) || j.exec(J[2]) || j.exec(J[3]);
+              const v = /^(?:(?:[^:]+:)?\/\/[^/]+)?([^?#]*)(\?[^#]*)?(#.*)?$/, j = /[^/?#=]+\.pdf\b(?!.*\.pdf\b)/i, z = v.exec(iI);
+              let lI = j.exec(z[1]) || j.exec(z[2]) || j.exec(z[3]);
               if (lI && (lI = lI[0], lI.includes("%")))
                 try {
                   lI = j.exec(decodeURIComponent(lI))[0];
-                } catch (dI) {
+                } catch (oI) {
                 }
               return lI || O;
             }
@@ -9576,12 +9576,12 @@ function requirePdf() {
                 const O = [];
                 let v = 0;
                 for (const j of this.times) {
-                  const J = j.name;
-                  J.length > v && (v = J.length);
+                  const z = j.name;
+                  z.length > v && (v = z.length);
                 }
                 for (const j of this.times) {
-                  const J = j.end - j.start;
-                  O.push(`${j.name.padEnd(v)} ${J}ms
+                  const z = j.end - j.start;
+                  O.push(`${j.name.padEnd(v)} ${z}ms
 `);
                 }
                 return O.join("");
@@ -9601,12 +9601,12 @@ function requirePdf() {
             function n(iI) {
               let O = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : !1;
               return new Promise((v, j) => {
-                const J = document.createElement("script");
-                J.src = iI, J.onload = function(lI) {
-                  O && J.remove(), v(lI);
-                }, J.onerror = function() {
-                  j(new Error(`Cannot load script at: ${J.src}`));
-                }, (document.head || document.documentElement).append(J);
+                const z = document.createElement("script");
+                z.src = iI, z.onload = function(lI) {
+                  O && z.remove(), v(lI);
+                }, z.onerror = function() {
+                  j(new Error(`Cannot load script at: ${z.src}`));
+                }, (document.head || document.documentElement).append(z);
               });
             }
             function y(iI) {
@@ -9622,21 +9622,21 @@ function requirePdf() {
                 if (!v)
                   return null;
                 const j = parseInt(v[1], 10);
-                let J = parseInt(v[2], 10);
-                J = J >= 1 && J <= 12 ? J - 1 : 0;
+                let z = parseInt(v[2], 10);
+                z = z >= 1 && z <= 12 ? z - 1 : 0;
                 let lI = parseInt(v[3], 10);
                 lI = lI >= 1 && lI <= 31 ? lI : 1;
-                let dI = parseInt(v[4], 10);
-                dI = dI >= 0 && dI <= 23 ? dI : 0;
-                let wI = parseInt(v[5], 10);
-                wI = wI >= 0 && wI <= 59 ? wI : 0;
+                let oI = parseInt(v[4], 10);
+                oI = oI >= 0 && oI <= 23 ? oI : 0;
+                let mI = parseInt(v[5], 10);
+                mI = mI >= 0 && mI <= 59 ? mI : 0;
                 let BI = parseInt(v[6], 10);
                 BI = BI >= 0 && BI <= 59 ? BI : 0;
                 const gI = v[7] || "Z";
-                let K = parseInt(v[8], 10);
-                K = K >= 0 && K <= 23 ? K : 0;
+                let p = parseInt(v[8], 10);
+                p = p >= 0 && p <= 23 ? p : 0;
                 let H = parseInt(v[9], 10) || 0;
-                return H = H >= 0 && H <= 59 ? H : 0, gI === "-" ? (dI += K, wI += H) : gI === "+" && (dI -= K, wI -= H), new Date(Date.UTC(j, J, lI, dI, wI, BI));
+                return H = H >= 0 && H <= 59 ? H : 0, gI === "-" ? (oI += p, mI += H) : gI === "+" && (oI -= p, mI -= H), new Date(Date.UTC(j, z, lI, oI, mI, BI));
               }
             }
             g.PDFDateString = M;
@@ -9646,11 +9646,11 @@ function requirePdf() {
                 rotation: j = 0
               } = O;
               const {
-                width: J,
+                width: z,
                 height: lI
-              } = iI.attributes.style, dI = [0, 0, parseInt(J), parseInt(lI)];
+              } = iI.attributes.style, oI = [0, 0, parseInt(z), parseInt(lI)];
               return new V({
-                viewBox: dI,
+                viewBox: oI,
                 scale: v,
                 rotation: j
               });
@@ -9662,7 +9662,7 @@ function requirePdf() {
               }
               return iI.startsWith("rgb(") ? iI.slice(4, -1).split(",").map((O) => parseInt(O)) : iI.startsWith("rgba(") ? iI.slice(5, -1).split(",").map((O) => parseInt(O)).slice(0, 3) : ((0, l.warn)(`Not a valid color format: "${iI}"`), [0, 0, 0]);
             }
-            function _(iI) {
+            function q(iI) {
               const O = document.createElement("span");
               O.style.visibility = "hidden", document.body.append(O);
               for (const v of iI.keys()) {
@@ -9677,22 +9677,22 @@ function requirePdf() {
                 a: O,
                 b: v,
                 c: j,
-                d: J,
+                d: z,
                 e: lI,
-                f: dI
+                f: oI
               } = iI.getTransform();
-              return [O, v, j, J, lI, dI];
+              return [O, v, j, z, lI, oI];
             }
             function $(iI) {
               const {
                 a: O,
                 b: v,
                 c: j,
-                d: J,
+                d: z,
                 e: lI,
-                f: dI
+                f: oI
               } = iI.getTransform().invertSelf();
-              return [O, v, j, J, lI, dI];
+              return [O, v, j, z, lI, oI];
             }
           }),
           /* 134 */
@@ -10006,14 +10006,14 @@ function requirePdf() {
                 for (const U of o)
                   S.push(U.loadedName);
                 S.push(B);
-                const _ = this._document.createElement("div");
-                _.style.visibility = "hidden", _.style.width = _.style.height = "10px", _.style.position = "absolute", _.style.top = _.style.left = "0px";
+                const q = this._document.createElement("div");
+                q.style.visibility = "hidden", q.style.width = q.style.height = "10px", q.style.position = "absolute", q.style.top = q.style.left = "0px";
                 for (const U of S) {
                   const $ = this._document.createElement("span");
-                  $.textContent = "Hi", $.style.fontFamily = U, _.append($);
+                  $.textContent = "Hi", $.style.fontFamily = U, q.append($);
                 }
-                this._document.body.append(_), h(B, () => {
-                  _.remove(), a.complete();
+                this._document.body.append(q), h(B, () => {
+                  q.remove(), a.complete();
                 });
               }
             };
@@ -10096,98 +10096,98 @@ function requirePdf() {
               value: !0
             }), g.CanvasGraphics = void 0;
             var A = I(133), l = I(1), s = I(138), d = I(139), c = I(3);
-            function Z(gI, K) {
-              o(gI, K), K.add(gI);
+            function Z(gI, p) {
+              o(gI, p), p.add(gI);
             }
-            function o(gI, K) {
-              if (K.has(gI))
+            function o(gI, p) {
+              if (p.has(gI))
                 throw new TypeError("Cannot initialize the same private elements twice on an object");
             }
-            function a(gI, K, H) {
-              if (!K.has(gI))
+            function a(gI, p, H) {
+              if (!p.has(gI))
                 throw new TypeError("attempted to get private field on non-instance");
               return H;
             }
             const G = 16, b = 100, m = 4096, V = 15, Y = 10, X = c.isNodeJS && typeof Path2D == "undefined" ? -1 : 1e3, r = 16;
-            function h(gI, K) {
+            function h(gI, p) {
               if (gI._removeMirroring)
                 throw new Error("Context is already forwarding operations.");
               gI.__originalSave = gI.save, gI.__originalRestore = gI.restore, gI.__originalRotate = gI.rotate, gI.__originalScale = gI.scale, gI.__originalTranslate = gI.translate, gI.__originalTransform = gI.transform, gI.__originalSetTransform = gI.setTransform, gI.__originalResetTransform = gI.resetTransform, gI.__originalClip = gI.clip, gI.__originalMoveTo = gI.moveTo, gI.__originalLineTo = gI.lineTo, gI.__originalBezierCurveTo = gI.bezierCurveTo, gI.__originalRect = gI.rect, gI.__originalClosePath = gI.closePath, gI.__originalBeginPath = gI.beginPath, gI._removeMirroring = () => {
                 gI.save = gI.__originalSave, gI.restore = gI.__originalRestore, gI.rotate = gI.__originalRotate, gI.scale = gI.__originalScale, gI.translate = gI.__originalTranslate, gI.transform = gI.__originalTransform, gI.setTransform = gI.__originalSetTransform, gI.resetTransform = gI.__originalResetTransform, gI.clip = gI.__originalClip, gI.moveTo = gI.__originalMoveTo, gI.lineTo = gI.__originalLineTo, gI.bezierCurveTo = gI.__originalBezierCurveTo, gI.rect = gI.__originalRect, gI.closePath = gI.__originalClosePath, gI.beginPath = gI.__originalBeginPath, delete gI._removeMirroring;
               }, gI.save = function() {
-                K.save(), this.__originalSave();
+                p.save(), this.__originalSave();
               }, gI.restore = function() {
-                K.restore(), this.__originalRestore();
+                p.restore(), this.__originalRestore();
               }, gI.translate = function(Q, T) {
-                K.translate(Q, T), this.__originalTranslate(Q, T);
+                p.translate(Q, T), this.__originalTranslate(Q, T);
               }, gI.scale = function(Q, T) {
-                K.scale(Q, T), this.__originalScale(Q, T);
-              }, gI.transform = function(Q, T, N, p, z, L) {
-                K.transform(Q, T, N, p, z, L), this.__originalTransform(Q, T, N, p, z, L);
-              }, gI.setTransform = function(Q, T, N, p, z, L) {
-                K.setTransform(Q, T, N, p, z, L), this.__originalSetTransform(Q, T, N, p, z, L);
+                p.scale(Q, T), this.__originalScale(Q, T);
+              }, gI.transform = function(Q, T, N, K, J, L) {
+                p.transform(Q, T, N, K, J, L), this.__originalTransform(Q, T, N, K, J, L);
+              }, gI.setTransform = function(Q, T, N, K, J, L) {
+                p.setTransform(Q, T, N, K, J, L), this.__originalSetTransform(Q, T, N, K, J, L);
               }, gI.resetTransform = function() {
-                K.resetTransform(), this.__originalResetTransform();
+                p.resetTransform(), this.__originalResetTransform();
               }, gI.rotate = function(Q) {
-                K.rotate(Q), this.__originalRotate(Q);
+                p.rotate(Q), this.__originalRotate(Q);
               }, gI.clip = function(Q) {
-                K.clip(Q), this.__originalClip(Q);
+                p.clip(Q), this.__originalClip(Q);
               }, gI.moveTo = function(H, Q) {
-                K.moveTo(H, Q), this.__originalMoveTo(H, Q);
+                p.moveTo(H, Q), this.__originalMoveTo(H, Q);
               }, gI.lineTo = function(H, Q) {
-                K.lineTo(H, Q), this.__originalLineTo(H, Q);
-              }, gI.bezierCurveTo = function(H, Q, T, N, p, z) {
-                K.bezierCurveTo(H, Q, T, N, p, z), this.__originalBezierCurveTo(H, Q, T, N, p, z);
+                p.lineTo(H, Q), this.__originalLineTo(H, Q);
+              }, gI.bezierCurveTo = function(H, Q, T, N, K, J) {
+                p.bezierCurveTo(H, Q, T, N, K, J), this.__originalBezierCurveTo(H, Q, T, N, K, J);
               }, gI.rect = function(H, Q, T, N) {
-                K.rect(H, Q, T, N), this.__originalRect(H, Q, T, N);
+                p.rect(H, Q, T, N), this.__originalRect(H, Q, T, N);
               }, gI.closePath = function() {
-                K.closePath(), this.__originalClosePath();
+                p.closePath(), this.__originalClosePath();
               }, gI.beginPath = function() {
-                K.beginPath(), this.__originalBeginPath();
+                p.beginPath(), this.__originalBeginPath();
               };
             }
             class B {
-              constructor(K) {
-                this.canvasFactory = K, this.cache = /* @__PURE__ */ Object.create(null);
+              constructor(p) {
+                this.canvasFactory = p, this.cache = /* @__PURE__ */ Object.create(null);
               }
-              getCanvas(K, H, Q) {
+              getCanvas(p, H, Q) {
                 let T;
-                return this.cache[K] !== void 0 ? (T = this.cache[K], this.canvasFactory.reset(T, H, Q)) : (T = this.canvasFactory.create(H, Q), this.cache[K] = T), T;
+                return this.cache[p] !== void 0 ? (T = this.cache[p], this.canvasFactory.reset(T, H, Q)) : (T = this.canvasFactory.create(H, Q), this.cache[p] = T), T;
               }
-              delete(K) {
-                delete this.cache[K];
+              delete(p) {
+                delete this.cache[p];
               }
               clear() {
-                for (const K in this.cache) {
-                  const H = this.cache[K];
-                  this.canvasFactory.destroy(H), delete this.cache[K];
+                for (const p in this.cache) {
+                  const H = this.cache[p];
+                  this.canvasFactory.destroy(H), delete this.cache[p];
                 }
               }
             }
-            function u(gI, K, H, Q, T, N, p, z, L, E) {
-              const [AI, ZI, aI, GI, mI, hI] = (0, A.getCurrentTransform)(gI);
+            function u(gI, p, H, Q, T, N, K, J, L, E) {
+              const [AI, ZI, aI, GI, nI, hI] = (0, A.getCurrentTransform)(gI);
               if (ZI === 0 && aI === 0) {
-                const RI = p * AI + mI, pI = Math.round(RI), MI = z * GI + hI, LI = Math.round(MI), KI = (p + L) * AI + mI, PI = Math.abs(Math.round(KI) - pI) || 1, OI = (z + E) * GI + hI, kI = Math.abs(Math.round(OI) - LI) || 1;
-                return gI.setTransform(Math.sign(AI), 0, 0, Math.sign(GI), pI, LI), gI.drawImage(K, H, Q, T, N, 0, 0, PI, kI), gI.setTransform(AI, ZI, aI, GI, mI, hI), [PI, kI];
+                const RI = K * AI + nI, pI = Math.round(RI), MI = J * GI + hI, LI = Math.round(MI), KI = (K + L) * AI + nI, PI = Math.abs(Math.round(KI) - pI) || 1, OI = (J + E) * GI + hI, kI = Math.abs(Math.round(OI) - LI) || 1;
+                return gI.setTransform(Math.sign(AI), 0, 0, Math.sign(GI), pI, LI), gI.drawImage(p, H, Q, T, N, 0, 0, PI, kI), gI.setTransform(AI, ZI, aI, GI, nI, hI), [PI, kI];
               }
               if (AI === 0 && GI === 0) {
-                const RI = z * aI + mI, pI = Math.round(RI), MI = p * ZI + hI, LI = Math.round(MI), KI = (z + E) * aI + mI, PI = Math.abs(Math.round(KI) - pI) || 1, OI = (p + L) * ZI + hI, kI = Math.abs(Math.round(OI) - LI) || 1;
-                return gI.setTransform(0, Math.sign(ZI), Math.sign(aI), 0, pI, LI), gI.drawImage(K, H, Q, T, N, 0, 0, kI, PI), gI.setTransform(AI, ZI, aI, GI, mI, hI), [kI, PI];
+                const RI = J * aI + nI, pI = Math.round(RI), MI = K * ZI + hI, LI = Math.round(MI), KI = (J + E) * aI + nI, PI = Math.abs(Math.round(KI) - pI) || 1, OI = (K + L) * ZI + hI, kI = Math.abs(Math.round(OI) - LI) || 1;
+                return gI.setTransform(0, Math.sign(ZI), Math.sign(aI), 0, pI, LI), gI.drawImage(p, H, Q, T, N, 0, 0, kI, PI), gI.setTransform(AI, ZI, aI, GI, nI, hI), [kI, PI];
               }
-              gI.drawImage(K, H, Q, T, N, p, z, L, E);
+              gI.drawImage(p, H, Q, T, N, K, J, L, E);
               const YI = Math.hypot(AI, ZI), uI = Math.hypot(aI, GI);
               return [YI * L, uI * E];
             }
             function t(gI) {
               const {
-                width: K,
+                width: p,
                 height: H
               } = gI;
-              if (K > X || H > X)
+              if (p > X || H > X)
                 return null;
-              const Q = 1e3, T = new Uint8Array([0, 2, 4, 0, 1, 0, 5, 4, 8, 10, 0, 8, 0, 2, 1, 0]), N = K + 1;
-              let p = new Uint8Array(N * (H + 1)), z, L, E;
-              const AI = K + 7 & -8;
+              const Q = 1e3, T = new Uint8Array([0, 2, 4, 0, 1, 0, 5, 4, 8, 10, 0, 8, 0, 2, 1, 0]), N = p + 1;
+              let K = new Uint8Array(N * (H + 1)), J, L, E;
+              const AI = p + 7 & -8;
               let ZI = new Uint8Array(AI * H), aI = 0;
               for (const uI of gI.data) {
                 let RI = 128;
@@ -10195,109 +10195,109 @@ function requirePdf() {
                   ZI[aI++] = uI & RI ? 0 : 255, RI >>= 1;
               }
               let GI = 0;
-              for (aI = 0, ZI[aI] !== 0 && (p[0] = 1, ++GI), L = 1; L < K; L++)
-                ZI[aI] !== ZI[aI + 1] && (p[L] = ZI[aI] ? 2 : 1, ++GI), aI++;
-              for (ZI[aI] !== 0 && (p[L] = 2, ++GI), z = 1; z < H; z++) {
-                aI = z * AI, E = z * N, ZI[aI - AI] !== ZI[aI] && (p[E] = ZI[aI] ? 1 : 8, ++GI);
+              for (aI = 0, ZI[aI] !== 0 && (K[0] = 1, ++GI), L = 1; L < p; L++)
+                ZI[aI] !== ZI[aI + 1] && (K[L] = ZI[aI] ? 2 : 1, ++GI), aI++;
+              for (ZI[aI] !== 0 && (K[L] = 2, ++GI), J = 1; J < H; J++) {
+                aI = J * AI, E = J * N, ZI[aI - AI] !== ZI[aI] && (K[E] = ZI[aI] ? 1 : 8, ++GI);
                 let uI = (ZI[aI] ? 4 : 0) + (ZI[aI - AI] ? 8 : 0);
-                for (L = 1; L < K; L++)
-                  uI = (uI >> 2) + (ZI[aI + 1] ? 4 : 0) + (ZI[aI - AI + 1] ? 8 : 0), T[uI] && (p[E + L] = T[uI], ++GI), aI++;
-                if (ZI[aI - AI] !== ZI[aI] && (p[E + L] = ZI[aI] ? 2 : 4, ++GI), GI > Q)
+                for (L = 1; L < p; L++)
+                  uI = (uI >> 2) + (ZI[aI + 1] ? 4 : 0) + (ZI[aI - AI + 1] ? 8 : 0), T[uI] && (K[E + L] = T[uI], ++GI), aI++;
+                if (ZI[aI - AI] !== ZI[aI] && (K[E + L] = ZI[aI] ? 2 : 4, ++GI), GI > Q)
                   return null;
               }
-              for (aI = AI * (H - 1), E = z * N, ZI[aI] !== 0 && (p[E] = 8, ++GI), L = 1; L < K; L++)
-                ZI[aI] !== ZI[aI + 1] && (p[E + L] = ZI[aI] ? 4 : 8, ++GI), aI++;
-              if (ZI[aI] !== 0 && (p[E + L] = 4, ++GI), GI > Q)
+              for (aI = AI * (H - 1), E = J * N, ZI[aI] !== 0 && (K[E] = 8, ++GI), L = 1; L < p; L++)
+                ZI[aI] !== ZI[aI + 1] && (K[E + L] = ZI[aI] ? 4 : 8, ++GI), aI++;
+              if (ZI[aI] !== 0 && (K[E + L] = 4, ++GI), GI > Q)
                 return null;
-              const mI = new Int32Array([0, N, -1, 0, -N, 0, 0, 0, 1]), hI = new Path2D();
-              for (z = 0; GI && z <= H; z++) {
-                let uI = z * N;
-                const RI = uI + K;
-                for (; uI < RI && !p[uI]; )
+              const nI = new Int32Array([0, N, -1, 0, -N, 0, 0, 0, 1]), hI = new Path2D();
+              for (J = 0; GI && J <= H; J++) {
+                let uI = J * N;
+                const RI = uI + p;
+                for (; uI < RI && !K[uI]; )
                   uI++;
                 if (uI === RI)
                   continue;
-                hI.moveTo(uI % N, z);
+                hI.moveTo(uI % N, J);
                 const pI = uI;
-                let MI = p[uI];
+                let MI = K[uI];
                 do {
-                  const LI = mI[MI];
+                  const LI = nI[MI];
                   do
                     uI += LI;
-                  while (!p[uI]);
-                  const KI = p[uI];
-                  KI !== 5 && KI !== 10 ? (MI = KI, p[uI] = 0) : (MI = KI & 51 * MI >> 4, p[uI] &= MI >> 2 | MI << 2), hI.lineTo(uI % N, uI / N | 0), p[uI] || --GI;
+                  while (!K[uI]);
+                  const KI = K[uI];
+                  KI !== 5 && KI !== 10 ? (MI = KI, K[uI] = 0) : (MI = KI & 51 * MI >> 4, K[uI] &= MI >> 2 | MI << 2), hI.lineTo(uI % N, uI / N | 0), K[uI] || --GI;
                 } while (pI !== uI);
-                --z;
+                --J;
               }
-              return ZI = null, p = null, function(uI) {
-                uI.save(), uI.scale(1 / K, -1 / H), uI.translate(0, -H), uI.fill(hI), uI.beginPath(), uI.restore();
+              return ZI = null, K = null, function(uI) {
+                uI.save(), uI.scale(1 / p, -1 / H), uI.translate(0, -H), uI.fill(hI), uI.beginPath(), uI.restore();
               };
             }
             class n {
-              constructor(K, H) {
-                this.alphaIsShape = !1, this.fontSize = 0, this.fontSizeScale = 1, this.textMatrix = l.IDENTITY_MATRIX, this.textMatrixScale = 1, this.fontMatrix = l.FONT_IDENTITY_MATRIX, this.leading = 0, this.x = 0, this.y = 0, this.lineX = 0, this.lineY = 0, this.charSpacing = 0, this.wordSpacing = 0, this.textHScale = 1, this.textRenderingMode = l.TextRenderingMode.FILL, this.textRise = 0, this.fillColor = "#000000", this.strokeColor = "#000000", this.patternFill = !1, this.fillAlpha = 1, this.strokeAlpha = 1, this.lineWidth = 1, this.activeSMask = null, this.transferMaps = null, this.startNewPathAndClipBox([0, 0, K, H]);
+              constructor(p, H) {
+                this.alphaIsShape = !1, this.fontSize = 0, this.fontSizeScale = 1, this.textMatrix = l.IDENTITY_MATRIX, this.textMatrixScale = 1, this.fontMatrix = l.FONT_IDENTITY_MATRIX, this.leading = 0, this.x = 0, this.y = 0, this.lineX = 0, this.lineY = 0, this.charSpacing = 0, this.wordSpacing = 0, this.textHScale = 1, this.textRenderingMode = l.TextRenderingMode.FILL, this.textRise = 0, this.fillColor = "#000000", this.strokeColor = "#000000", this.patternFill = !1, this.fillAlpha = 1, this.strokeAlpha = 1, this.lineWidth = 1, this.activeSMask = null, this.transferMaps = null, this.startNewPathAndClipBox([0, 0, p, H]);
               }
               clone() {
-                const K = Object.create(this);
-                return K.clipBox = this.clipBox.slice(), K;
+                const p = Object.create(this);
+                return p.clipBox = this.clipBox.slice(), p;
               }
-              setCurrentPoint(K, H) {
-                this.x = K, this.y = H;
+              setCurrentPoint(p, H) {
+                this.x = p, this.y = H;
               }
-              updatePathMinMax(K, H, Q) {
-                [H, Q] = l.Util.applyTransform([H, Q], K), this.minX = Math.min(this.minX, H), this.minY = Math.min(this.minY, Q), this.maxX = Math.max(this.maxX, H), this.maxY = Math.max(this.maxY, Q);
+              updatePathMinMax(p, H, Q) {
+                [H, Q] = l.Util.applyTransform([H, Q], p), this.minX = Math.min(this.minX, H), this.minY = Math.min(this.minY, Q), this.maxX = Math.max(this.maxX, H), this.maxY = Math.max(this.maxY, Q);
               }
-              updateRectMinMax(K, H) {
-                const Q = l.Util.applyTransform(H, K), T = l.Util.applyTransform(H.slice(2), K);
+              updateRectMinMax(p, H) {
+                const Q = l.Util.applyTransform(H, p), T = l.Util.applyTransform(H.slice(2), p);
                 this.minX = Math.min(this.minX, Q[0], T[0]), this.minY = Math.min(this.minY, Q[1], T[1]), this.maxX = Math.max(this.maxX, Q[0], T[0]), this.maxY = Math.max(this.maxY, Q[1], T[1]);
               }
-              updateScalingPathMinMax(K, H) {
-                l.Util.scaleMinMax(K, H), this.minX = Math.min(this.minX, H[0]), this.maxX = Math.max(this.maxX, H[1]), this.minY = Math.min(this.minY, H[2]), this.maxY = Math.max(this.maxY, H[3]);
+              updateScalingPathMinMax(p, H) {
+                l.Util.scaleMinMax(p, H), this.minX = Math.min(this.minX, H[0]), this.maxX = Math.max(this.maxX, H[1]), this.minY = Math.min(this.minY, H[2]), this.maxY = Math.max(this.maxY, H[3]);
               }
-              updateCurvePathMinMax(K, H, Q, T, N, p, z, L, E, AI) {
-                const ZI = l.Util.bezierBoundingBox(H, Q, T, N, p, z, L, E);
+              updateCurvePathMinMax(p, H, Q, T, N, K, J, L, E, AI) {
+                const ZI = l.Util.bezierBoundingBox(H, Q, T, N, K, J, L, E);
                 if (AI) {
                   AI[0] = Math.min(AI[0], ZI[0], ZI[2]), AI[1] = Math.max(AI[1], ZI[0], ZI[2]), AI[2] = Math.min(AI[2], ZI[1], ZI[3]), AI[3] = Math.max(AI[3], ZI[1], ZI[3]);
                   return;
                 }
-                this.updateRectMinMax(K, ZI);
+                this.updateRectMinMax(p, ZI);
               }
               getPathBoundingBox() {
-                let K = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : s.PathType.FILL, H = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : null;
+                let p = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : s.PathType.FILL, H = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : null;
                 const Q = [this.minX, this.minY, this.maxX, this.maxY];
-                if (K === s.PathType.STROKE) {
+                if (p === s.PathType.STROKE) {
                   H || (0, l.unreachable)("Stroke bounding box must include transform.");
-                  const T = l.Util.singularValueDecompose2dScale(H), N = T[0] * this.lineWidth / 2, p = T[1] * this.lineWidth / 2;
-                  Q[0] -= N, Q[1] -= p, Q[2] += N, Q[3] += p;
+                  const T = l.Util.singularValueDecompose2dScale(H), N = T[0] * this.lineWidth / 2, K = T[1] * this.lineWidth / 2;
+                  Q[0] -= N, Q[1] -= K, Q[2] += N, Q[3] += K;
                 }
                 return Q;
               }
               updateClipFromPath() {
-                const K = l.Util.intersect(this.clipBox, this.getPathBoundingBox());
-                this.startNewPathAndClipBox(K || [0, 0, 0, 0]);
+                const p = l.Util.intersect(this.clipBox, this.getPathBoundingBox());
+                this.startNewPathAndClipBox(p || [0, 0, 0, 0]);
               }
               isEmptyClip() {
                 return this.minX === 1 / 0;
               }
-              startNewPathAndClipBox(K) {
-                this.clipBox = K, this.minX = 1 / 0, this.minY = 1 / 0, this.maxX = 0, this.maxY = 0;
+              startNewPathAndClipBox(p) {
+                this.clipBox = p, this.minX = 1 / 0, this.minY = 1 / 0, this.maxX = 0, this.maxY = 0;
               }
               getClippedPathBoundingBox() {
-                let K = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : s.PathType.FILL, H = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : null;
-                return l.Util.intersect(this.clipBox, this.getPathBoundingBox(K, H));
+                let p = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : s.PathType.FILL, H = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : null;
+                return l.Util.intersect(this.clipBox, this.getPathBoundingBox(p, H));
               }
             }
-            function y(gI, K) {
+            function y(gI, p) {
               let H = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : null;
-              if (typeof ImageData != "undefined" && K instanceof ImageData) {
-                gI.putImageData(K, 0, 0);
+              if (typeof ImageData != "undefined" && p instanceof ImageData) {
+                gI.putImageData(p, 0, 0);
                 return;
               }
-              const Q = K.height, T = K.width, N = Q % r, p = (Q - N) / r, z = N === 0 ? p : p + 1, L = gI.createImageData(T, r);
+              const Q = p.height, T = p.width, N = Q % r, K = (Q - N) / r, J = N === 0 ? K : K + 1, L = gI.createImageData(T, r);
               let E = 0, AI;
-              const ZI = K.data, aI = L.data;
-              let GI, mI, hI, YI, uI, RI, pI, MI;
+              const ZI = p.data, aI = L.data;
+              let GI, nI, hI, YI, uI, RI, pI, MI;
               if (H)
                 switch (H.length) {
                   case 1:
@@ -10307,42 +10307,42 @@ function requirePdf() {
                     uI = H[0], RI = H[1], pI = H[2], MI = H[3];
                     break;
                 }
-              if (K.kind === l.ImageKind.GRAYSCALE_1BPP) {
+              if (p.kind === l.ImageKind.GRAYSCALE_1BPP) {
                 const LI = ZI.byteLength, KI = new Uint32Array(aI.buffer, 0, aI.byteLength >> 2), PI = KI.length, OI = T + 7 >> 3;
                 let kI = 4294967295, DI = l.FeatureTest.isLittleEndian ? 4278190080 : 255;
-                for (MI && MI[0] === 255 && MI[255] === 0 && ([kI, DI] = [DI, kI]), GI = 0; GI < z; GI++) {
-                  for (hI = GI < p ? r : N, AI = 0, mI = 0; mI < hI; mI++) {
+                for (MI && MI[0] === 255 && MI[255] === 0 && ([kI, DI] = [DI, kI]), GI = 0; GI < J; GI++) {
+                  for (hI = GI < K ? r : N, AI = 0, nI = 0; nI < hI; nI++) {
                     const F = LI - E;
                     let bI = 0;
                     const yI = F > OI ? T : F * 8 - 7, HI = yI & -8;
-                    let II = 0, nI = 0;
+                    let II = 0, WI = 0;
                     for (; bI < HI; bI += 8)
-                      nI = ZI[E++], KI[AI++] = nI & 128 ? kI : DI, KI[AI++] = nI & 64 ? kI : DI, KI[AI++] = nI & 32 ? kI : DI, KI[AI++] = nI & 16 ? kI : DI, KI[AI++] = nI & 8 ? kI : DI, KI[AI++] = nI & 4 ? kI : DI, KI[AI++] = nI & 2 ? kI : DI, KI[AI++] = nI & 1 ? kI : DI;
+                      WI = ZI[E++], KI[AI++] = WI & 128 ? kI : DI, KI[AI++] = WI & 64 ? kI : DI, KI[AI++] = WI & 32 ? kI : DI, KI[AI++] = WI & 16 ? kI : DI, KI[AI++] = WI & 8 ? kI : DI, KI[AI++] = WI & 4 ? kI : DI, KI[AI++] = WI & 2 ? kI : DI, KI[AI++] = WI & 1 ? kI : DI;
                     for (; bI < yI; bI++)
-                      II === 0 && (nI = ZI[E++], II = 128), KI[AI++] = nI & II ? kI : DI, II >>= 1;
+                      II === 0 && (WI = ZI[E++], II = 128), KI[AI++] = WI & II ? kI : DI, II >>= 1;
                   }
                   for (; AI < PI; )
                     KI[AI++] = 0;
                   gI.putImageData(L, 0, GI * r);
                 }
-              } else if (K.kind === l.ImageKind.RGBA_32BPP) {
+              } else if (p.kind === l.ImageKind.RGBA_32BPP) {
                 const LI = !!(uI || RI || pI);
-                for (mI = 0, YI = T * r * 4, GI = 0; GI < p; GI++) {
+                for (nI = 0, YI = T * r * 4, GI = 0; GI < K; GI++) {
                   if (aI.set(ZI.subarray(E, E + YI)), E += YI, LI)
                     for (let KI = 0; KI < YI; KI += 4)
                       uI && (aI[KI + 0] = uI[aI[KI + 0]]), RI && (aI[KI + 1] = RI[aI[KI + 1]]), pI && (aI[KI + 2] = pI[aI[KI + 2]]);
-                  gI.putImageData(L, 0, mI), mI += r;
+                  gI.putImageData(L, 0, nI), nI += r;
                 }
-                if (GI < z) {
+                if (GI < J) {
                   if (YI = T * N * 4, aI.set(ZI.subarray(E, E + YI)), LI)
                     for (let KI = 0; KI < YI; KI += 4)
                       uI && (aI[KI + 0] = uI[aI[KI + 0]]), RI && (aI[KI + 1] = RI[aI[KI + 1]]), pI && (aI[KI + 2] = pI[aI[KI + 2]]);
-                  gI.putImageData(L, 0, mI);
+                  gI.putImageData(L, 0, nI);
                 }
-              } else if (K.kind === l.ImageKind.RGB_24BPP) {
+              } else if (p.kind === l.ImageKind.RGB_24BPP) {
                 const LI = !!(uI || RI || pI);
-                for (hI = r, YI = T * hI, GI = 0; GI < z; GI++) {
-                  for (GI >= p && (hI = N, YI = T * hI), AI = 0, mI = YI; mI--; )
+                for (hI = r, YI = T * hI, GI = 0; GI < J; GI++) {
+                  for (GI >= K && (hI = N, YI = T * hI), AI = 0, nI = YI; nI--; )
                     aI[AI++] = ZI[E++], aI[AI++] = ZI[E++], aI[AI++] = ZI[E++], aI[AI++] = 255;
                   if (LI)
                     for (let KI = 0; KI < AI; KI += 4)
@@ -10350,17 +10350,17 @@ function requirePdf() {
                   gI.putImageData(L, 0, GI * r);
                 }
               } else
-                throw new Error(`bad image kind: ${K.kind}`);
+                throw new Error(`bad image kind: ${p.kind}`);
             }
-            function R(gI, K) {
-              if (K.bitmap) {
-                gI.drawImage(K.bitmap, 0, 0);
+            function R(gI, p) {
+              if (p.bitmap) {
+                gI.drawImage(p.bitmap, 0, 0);
                 return;
               }
-              const H = K.height, Q = K.width, T = H % r, N = (H - T) / r, p = T === 0 ? N : N + 1, z = gI.createImageData(Q, r);
+              const H = p.height, Q = p.width, T = H % r, N = (H - T) / r, K = T === 0 ? N : N + 1, J = gI.createImageData(Q, r);
               let L = 0;
-              const E = K.data, AI = z.data;
-              for (let ZI = 0; ZI < p; ZI++) {
+              const E = p.data, AI = J.data;
+              for (let ZI = 0; ZI < K; ZI++) {
                 const aI = ZI < N ? r : T;
                 ({
                   srcPos: L
@@ -10370,84 +10370,84 @@ function requirePdf() {
                   dest: AI,
                   width: Q,
                   height: aI
-                })), gI.putImageData(z, 0, ZI * r);
+                })), gI.putImageData(J, 0, ZI * r);
               }
             }
-            function M(gI, K) {
+            function M(gI, p) {
               const H = ["strokeStyle", "fillStyle", "fillRule", "globalAlpha", "lineWidth", "lineCap", "lineJoin", "miterLimit", "globalCompositeOperation", "font"];
               for (let Q = 0, T = H.length; Q < T; Q++) {
                 const N = H[Q];
-                gI[N] !== void 0 && (K[N] = gI[N]);
+                gI[N] !== void 0 && (p[N] = gI[N]);
               }
-              gI.setLineDash !== void 0 && (K.setLineDash(gI.getLineDash()), K.lineDashOffset = gI.lineDashOffset);
+              gI.setLineDash !== void 0 && (p.setLineDash(gI.getLineDash()), p.lineDashOffset = gI.lineDashOffset);
             }
-            function k(gI, K) {
-              gI.strokeStyle = gI.fillStyle = K || "#000000", gI.fillRule = "nonzero", gI.globalAlpha = 1, gI.lineWidth = 1, gI.lineCap = "butt", gI.lineJoin = "miter", gI.miterLimit = 10, gI.globalCompositeOperation = "source-over", gI.font = "10px sans-serif", gI.setLineDash !== void 0 && (gI.setLineDash([]), gI.lineDashOffset = 0);
+            function k(gI, p) {
+              gI.strokeStyle = gI.fillStyle = p || "#000000", gI.fillRule = "nonzero", gI.globalAlpha = 1, gI.lineWidth = 1, gI.lineCap = "butt", gI.lineJoin = "miter", gI.miterLimit = 10, gI.globalCompositeOperation = "source-over", gI.font = "10px sans-serif", gI.setLineDash !== void 0 && (gI.setLineDash([]), gI.lineDashOffset = 0);
             }
-            function S(gI, K, H, Q) {
+            function S(gI, p, H, Q) {
               const T = gI.length;
               for (let N = 3; N < T; N += 4) {
-                const p = gI[N];
-                if (p === 0)
-                  gI[N - 3] = K, gI[N - 2] = H, gI[N - 1] = Q;
-                else if (p < 255) {
-                  const z = 255 - p;
-                  gI[N - 3] = gI[N - 3] * p + K * z >> 8, gI[N - 2] = gI[N - 2] * p + H * z >> 8, gI[N - 1] = gI[N - 1] * p + Q * z >> 8;
+                const K = gI[N];
+                if (K === 0)
+                  gI[N - 3] = p, gI[N - 2] = H, gI[N - 1] = Q;
+                else if (K < 255) {
+                  const J = 255 - K;
+                  gI[N - 3] = gI[N - 3] * K + p * J >> 8, gI[N - 2] = gI[N - 2] * K + H * J >> 8, gI[N - 1] = gI[N - 1] * K + Q * J >> 8;
                 }
               }
             }
-            function _(gI, K, H) {
+            function q(gI, p, H) {
               const Q = gI.length, T = 1 / 255;
               for (let N = 3; N < Q; N += 4) {
-                const p = H ? H[gI[N]] : gI[N];
-                K[N] = K[N] * p * T | 0;
+                const K = H ? H[gI[N]] : gI[N];
+                p[N] = p[N] * K * T | 0;
               }
             }
-            function U(gI, K, H) {
+            function U(gI, p, H) {
               const Q = gI.length;
               for (let T = 3; T < Q; T += 4) {
                 const N = gI[T - 3] * 77 + gI[T - 2] * 152 + gI[T - 1] * 28;
-                K[T] = H ? K[T] * H[N >> 8] >> 8 : K[T] * N >> 16;
+                p[T] = H ? p[T] * H[N >> 8] >> 8 : p[T] * N >> 16;
               }
             }
-            function $(gI, K, H, Q, T, N, p, z, L, E, AI) {
-              const ZI = !!N, aI = ZI ? N[0] : 0, GI = ZI ? N[1] : 0, mI = ZI ? N[2] : 0;
+            function $(gI, p, H, Q, T, N, K, J, L, E, AI) {
+              const ZI = !!N, aI = ZI ? N[0] : 0, GI = ZI ? N[1] : 0, nI = ZI ? N[2] : 0;
               let hI;
-              T === "Luminosity" ? hI = U : hI = _;
+              T === "Luminosity" ? hI = U : hI = q;
               const uI = Math.min(Q, Math.ceil(1048576 / H));
               for (let RI = 0; RI < Q; RI += uI) {
-                const pI = Math.min(uI, Q - RI), MI = gI.getImageData(z - E, RI + (L - AI), H, pI), LI = K.getImageData(z, RI + L, H, pI);
-                ZI && S(MI.data, aI, GI, mI), hI(MI.data, LI.data, p), K.putImageData(LI, z, RI + L);
+                const pI = Math.min(uI, Q - RI), MI = gI.getImageData(J - E, RI + (L - AI), H, pI), LI = p.getImageData(J, RI + L, H, pI);
+                ZI && S(MI.data, aI, GI, nI), hI(MI.data, LI.data, K), p.putImageData(LI, J, RI + L);
               }
             }
-            function iI(gI, K, H, Q) {
-              const T = Q[0], N = Q[1], p = Q[2] - T, z = Q[3] - N;
-              p === 0 || z === 0 || ($(K.context, H, p, z, K.subtype, K.backdrop, K.transferMap, T, N, K.offsetX, K.offsetY), gI.save(), gI.globalAlpha = 1, gI.globalCompositeOperation = "source-over", gI.setTransform(1, 0, 0, 1, 0, 0), gI.drawImage(H.canvas, 0, 0), gI.restore());
+            function iI(gI, p, H, Q) {
+              const T = Q[0], N = Q[1], K = Q[2] - T, J = Q[3] - N;
+              K === 0 || J === 0 || ($(p.context, H, K, J, p.subtype, p.backdrop, p.transferMap, T, N, p.offsetX, p.offsetY), gI.save(), gI.globalAlpha = 1, gI.globalCompositeOperation = "source-over", gI.setTransform(1, 0, 0, 1, 0, 0), gI.drawImage(H.canvas, 0, 0), gI.restore());
             }
-            function O(gI, K) {
+            function O(gI, p) {
               const H = l.Util.singularValueDecompose2dScale(gI);
               H[0] = Math.fround(H[0]), H[1] = Math.fround(H[1]);
               const Q = Math.fround((globalThis.devicePixelRatio || 1) * A.PixelsPerInch.PDF_TO_CSS_UNITS);
-              return K !== void 0 ? K : H[0] <= Q || H[1] <= Q;
+              return p !== void 0 ? p : H[0] <= Q || H[1] <= Q;
             }
-            const v = ["butt", "round", "square"], j = ["miter", "round", "bevel"], J = {}, lI = {};
-            var dI = /* @__PURE__ */ new WeakSet();
-            class wI {
-              constructor(K, H, Q, T, N, p, z, L) {
-                Z(this, dI), this.ctx = K, this.current = new n(this.ctx.canvas.width, this.ctx.canvas.height), this.stateStack = [], this.pendingClip = null, this.pendingEOFill = !1, this.res = null, this.xobjs = null, this.commonObjs = H, this.objs = Q, this.canvasFactory = T, this.imageLayer = N, this.groupStack = [], this.processingType3 = null, this.baseTransform = null, this.baseTransformStack = [], this.groupLevel = 0, this.smaskStack = [], this.smaskCounter = 0, this.tempSMask = null, this.suspendedCtx = null, this.contentVisible = !0, this.markedContentStack = [], this.optionalContentConfig = p, this.cachedCanvases = new B(this.canvasFactory), this.cachedPatterns = /* @__PURE__ */ new Map(), this.annotationCanvasMap = z, this.viewportScale = 1, this.outputScaleX = 1, this.outputScaleY = 1, this.backgroundColor = (L == null ? void 0 : L.background) || null, this.foregroundColor = (L == null ? void 0 : L.foreground) || null, this._cachedScaleForStroking = null, this._cachedGetSinglePixelWidth = null, this._cachedBitmapsMap = /* @__PURE__ */ new Map();
+            const v = ["butt", "round", "square"], j = ["miter", "round", "bevel"], z = {}, lI = {};
+            var oI = /* @__PURE__ */ new WeakSet();
+            class mI {
+              constructor(p, H, Q, T, N, K, J, L) {
+                Z(this, oI), this.ctx = p, this.current = new n(this.ctx.canvas.width, this.ctx.canvas.height), this.stateStack = [], this.pendingClip = null, this.pendingEOFill = !1, this.res = null, this.xobjs = null, this.commonObjs = H, this.objs = Q, this.canvasFactory = T, this.imageLayer = N, this.groupStack = [], this.processingType3 = null, this.baseTransform = null, this.baseTransformStack = [], this.groupLevel = 0, this.smaskStack = [], this.smaskCounter = 0, this.tempSMask = null, this.suspendedCtx = null, this.contentVisible = !0, this.markedContentStack = [], this.optionalContentConfig = K, this.cachedCanvases = new B(this.canvasFactory), this.cachedPatterns = /* @__PURE__ */ new Map(), this.annotationCanvasMap = J, this.viewportScale = 1, this.outputScaleX = 1, this.outputScaleY = 1, this.backgroundColor = (L == null ? void 0 : L.background) || null, this.foregroundColor = (L == null ? void 0 : L.foreground) || null, this._cachedScaleForStroking = null, this._cachedGetSinglePixelWidth = null, this._cachedBitmapsMap = /* @__PURE__ */ new Map();
               }
-              getObject(K) {
+              getObject(p) {
                 let H = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : null;
-                return typeof K == "string" ? K.startsWith("g_") ? this.commonObjs.get(K) : this.objs.get(K) : H;
+                return typeof p == "string" ? p.startsWith("g_") ? this.commonObjs.get(p) : this.objs.get(p) : H;
               }
-              beginDrawing(K) {
+              beginDrawing(p) {
                 let {
                   transform: H,
                   viewport: Q,
                   transparency: T = !1,
                   background: N = null
-                } = K;
-                const p = this.ctx.canvas.width, z = this.ctx.canvas.height, L = N || "#ffffff";
+                } = p;
+                const K = this.ctx.canvas.width, J = this.ctx.canvas.height, L = N || "#ffffff";
                 if (this.ctx.save(), this.foregroundColor && this.backgroundColor) {
                   this.ctx.fillStyle = this.foregroundColor;
                   const E = this.foregroundColor = this.ctx.fillStyle;
@@ -10457,83 +10457,83 @@ function requirePdf() {
                   if (this.ctx.fillStyle = L, aI = this.ctx.fillStyle, ZI = typeof aI == "string" && /^#[0-9A-Fa-f]{6}$/.test(aI), E === "#000000" && AI === "#ffffff" || E === AI || !ZI)
                     this.foregroundColor = this.backgroundColor = null;
                   else {
-                    const [GI, mI, hI] = (0, A.getRGB)(aI), YI = (RI) => (RI /= 255, RI <= 0.03928 ? RI / 12.92 : ((RI + 0.055) / 1.055) ** 2.4), uI = Math.round(0.2126 * YI(GI) + 0.7152 * YI(mI) + 0.0722 * YI(hI));
+                    const [GI, nI, hI] = (0, A.getRGB)(aI), YI = (RI) => (RI /= 255, RI <= 0.03928 ? RI / 12.92 : ((RI + 0.055) / 1.055) ** 2.4), uI = Math.round(0.2126 * YI(GI) + 0.7152 * YI(nI) + 0.0722 * YI(hI));
                     this.selectColor = (RI, pI, MI) => {
                       const LI = 0.2126 * YI(RI) + 0.7152 * YI(pI) + 0.0722 * YI(MI);
                       return Math.round(LI) === uI ? AI : E;
                     };
                   }
                 }
-                if (this.ctx.fillStyle = this.backgroundColor || L, this.ctx.fillRect(0, 0, p, z), this.ctx.restore(), T) {
-                  const E = this.cachedCanvases.getCanvas("transparent", p, z);
+                if (this.ctx.fillStyle = this.backgroundColor || L, this.ctx.fillRect(0, 0, K, J), this.ctx.restore(), T) {
+                  const E = this.cachedCanvases.getCanvas("transparent", K, J);
                   this.compositeCtx = this.ctx, this.transparentCanvas = E.canvas, this.ctx = E.context, this.ctx.save(), this.ctx.transform(...(0, A.getCurrentTransform)(this.compositeCtx));
                 }
                 this.ctx.save(), k(this.ctx, this.foregroundColor), H && (this.ctx.transform(...H), this.outputScaleX = H[0], this.outputScaleY = H[0]), this.ctx.transform(...Q.transform), this.viewportScale = Q.scale, this.baseTransform = (0, A.getCurrentTransform)(this.ctx), this.imageLayer && ((0, A.deprecated)("The `imageLayer` functionality will be removed in the future."), this.imageLayer.beginLayout());
               }
-              executeOperatorList(K, H, Q, T) {
-                const N = K.argsArray, p = K.fnArray;
-                let z = H || 0;
+              executeOperatorList(p, H, Q, T) {
+                const N = p.argsArray, K = p.fnArray;
+                let J = H || 0;
                 const L = N.length;
-                if (L === z)
-                  return z;
-                const E = L - z > Y && typeof Q == "function", AI = E ? Date.now() + V : 0;
+                if (L === J)
+                  return J;
+                const E = L - J > Y && typeof Q == "function", AI = E ? Date.now() + V : 0;
                 let ZI = 0;
                 const aI = this.commonObjs, GI = this.objs;
-                let mI;
+                let nI;
                 for (; ; ) {
-                  if (T !== void 0 && z === T.nextBreakPoint)
-                    return T.breakIt(z, Q), z;
-                  if (mI = p[z], mI !== l.OPS.dependency)
-                    this[mI].apply(this, N[z]);
+                  if (T !== void 0 && J === T.nextBreakPoint)
+                    return T.breakIt(J, Q), J;
+                  if (nI = K[J], nI !== l.OPS.dependency)
+                    this[nI].apply(this, N[J]);
                   else
-                    for (const hI of N[z]) {
+                    for (const hI of N[J]) {
                       const YI = hI.startsWith("g_") ? aI : GI;
                       if (!YI.has(hI))
-                        return YI.get(hI, Q), z;
+                        return YI.get(hI, Q), J;
                     }
-                  if (z++, z === L)
-                    return z;
+                  if (J++, J === L)
+                    return J;
                   if (E && ++ZI > Y) {
                     if (Date.now() > AI)
-                      return Q(), z;
+                      return Q(), J;
                     ZI = 0;
                   }
                 }
               }
               endDrawing() {
-                a(this, dI, BI).call(this), this.cachedCanvases.clear(), this.cachedPatterns.clear();
-                for (const K of this._cachedBitmapsMap.values()) {
-                  for (const H of K.values())
+                a(this, oI, BI).call(this), this.cachedCanvases.clear(), this.cachedPatterns.clear();
+                for (const p of this._cachedBitmapsMap.values()) {
+                  for (const H of p.values())
                     typeof HTMLCanvasElement != "undefined" && H instanceof HTMLCanvasElement && (H.width = H.height = 0);
-                  K.clear();
+                  p.clear();
                 }
                 this._cachedBitmapsMap.clear(), this.imageLayer && this.imageLayer.endLayout();
               }
-              _scaleImage(K, H) {
-                const Q = K.width, T = K.height;
-                let N = Math.max(Math.hypot(H[0], H[1]), 1), p = Math.max(Math.hypot(H[2], H[3]), 1), z = Q, L = T, E = "prescale1", AI, ZI;
-                for (; N > 2 && z > 1 || p > 2 && L > 1; ) {
-                  let aI = z, GI = L;
-                  N > 2 && z > 1 && (aI = Math.ceil(z / 2), N /= z / aI), p > 2 && L > 1 && (GI = Math.ceil(L / 2), p /= L / GI), AI = this.cachedCanvases.getCanvas(E, aI, GI), ZI = AI.context, ZI.clearRect(0, 0, aI, GI), ZI.drawImage(K, 0, 0, z, L, 0, 0, aI, GI), K = AI.canvas, z = aI, L = GI, E = E === "prescale1" ? "prescale2" : "prescale1";
+              _scaleImage(p, H) {
+                const Q = p.width, T = p.height;
+                let N = Math.max(Math.hypot(H[0], H[1]), 1), K = Math.max(Math.hypot(H[2], H[3]), 1), J = Q, L = T, E = "prescale1", AI, ZI;
+                for (; N > 2 && J > 1 || K > 2 && L > 1; ) {
+                  let aI = J, GI = L;
+                  N > 2 && J > 1 && (aI = Math.ceil(J / 2), N /= J / aI), K > 2 && L > 1 && (GI = Math.ceil(L / 2), K /= L / GI), AI = this.cachedCanvases.getCanvas(E, aI, GI), ZI = AI.context, ZI.clearRect(0, 0, aI, GI), ZI.drawImage(p, 0, 0, J, L, 0, 0, aI, GI), p = AI.canvas, J = aI, L = GI, E = E === "prescale1" ? "prescale2" : "prescale1";
                 }
                 return {
-                  img: K,
-                  paintWidth: z,
+                  img: p,
+                  paintWidth: J,
                   paintHeight: L
                 };
               }
-              _createMaskCanvas(K) {
+              _createMaskCanvas(p) {
                 const H = this.ctx, {
                   width: Q,
                   height: T
-                } = K, N = this.current.fillColor, p = this.current.patternFill, z = (0, A.getCurrentTransform)(H);
+                } = p, N = this.current.fillColor, K = this.current.patternFill, J = (0, A.getCurrentTransform)(H);
                 let L, E, AI, ZI;
-                if ((K.bitmap || K.data) && K.count > 1) {
-                  const PI = K.bitmap || K.data.buffer, OI = z.slice(0, 4);
-                  E = JSON.stringify(p ? OI : [OI, N]), L = this._cachedBitmapsMap.get(PI), L || (L = /* @__PURE__ */ new Map(), this._cachedBitmapsMap.set(PI, L));
+                if ((p.bitmap || p.data) && p.count > 1) {
+                  const PI = p.bitmap || p.data.buffer, OI = J.slice(0, 4);
+                  E = JSON.stringify(K ? OI : [OI, N]), L = this._cachedBitmapsMap.get(PI), L || (L = /* @__PURE__ */ new Map(), this._cachedBitmapsMap.set(PI, L));
                   const kI = L.get(E);
-                  if (kI && !p) {
-                    const DI = Math.round(Math.min(z[0], z[2]) + z[4]), F = Math.round(Math.min(z[1], z[3]) + z[5]);
+                  if (kI && !K) {
+                    const DI = Math.round(Math.min(J[0], J[2]) + J[4]), F = Math.round(Math.min(J[1], J[3]) + J[5]);
                     return {
                       canvas: kI,
                       offsetX: DI,
@@ -10542,65 +10542,65 @@ function requirePdf() {
                   }
                   AI = kI;
                 }
-                AI || (ZI = this.cachedCanvases.getCanvas("maskCanvas", Q, T), R(ZI.context, K));
-                let aI = l.Util.transform(z, [1 / Q, 0, 0, -1 / T, 0, 0]);
+                AI || (ZI = this.cachedCanvases.getCanvas("maskCanvas", Q, T), R(ZI.context, p));
+                let aI = l.Util.transform(J, [1 / Q, 0, 0, -1 / T, 0, 0]);
                 aI = l.Util.transform(aI, [1, 0, 0, 1, 0, -T]);
-                const GI = l.Util.applyTransform([0, 0], aI), mI = l.Util.applyTransform([Q, T], aI), hI = l.Util.normalizeRect([GI[0], GI[1], mI[0], mI[1]]), YI = Math.round(hI[2] - hI[0]) || 1, uI = Math.round(hI[3] - hI[1]) || 1, RI = this.cachedCanvases.getCanvas("fillCanvas", YI, uI), pI = RI.context, MI = Math.min(GI[0], mI[0]), LI = Math.min(GI[1], mI[1]);
-                pI.translate(-MI, -LI), pI.transform(...aI), AI || (AI = this._scaleImage(ZI.canvas, (0, A.getCurrentTransformInverse)(pI)), AI = AI.img, L && p && L.set(E, AI)), pI.imageSmoothingEnabled = O((0, A.getCurrentTransform)(pI), K.interpolate), u(pI, AI, 0, 0, AI.width, AI.height, 0, 0, Q, T), pI.globalCompositeOperation = "source-in";
+                const GI = l.Util.applyTransform([0, 0], aI), nI = l.Util.applyTransform([Q, T], aI), hI = l.Util.normalizeRect([GI[0], GI[1], nI[0], nI[1]]), YI = Math.round(hI[2] - hI[0]) || 1, uI = Math.round(hI[3] - hI[1]) || 1, RI = this.cachedCanvases.getCanvas("fillCanvas", YI, uI), pI = RI.context, MI = Math.min(GI[0], nI[0]), LI = Math.min(GI[1], nI[1]);
+                pI.translate(-MI, -LI), pI.transform(...aI), AI || (AI = this._scaleImage(ZI.canvas, (0, A.getCurrentTransformInverse)(pI)), AI = AI.img, L && K && L.set(E, AI)), pI.imageSmoothingEnabled = O((0, A.getCurrentTransform)(pI), p.interpolate), u(pI, AI, 0, 0, AI.width, AI.height, 0, 0, Q, T), pI.globalCompositeOperation = "source-in";
                 const KI = l.Util.transform((0, A.getCurrentTransformInverse)(pI), [1, 0, 0, 1, -MI, -LI]);
-                return pI.fillStyle = p ? N.getPattern(H, this, KI, s.PathType.FILL) : N, pI.fillRect(0, 0, Q, T), L && !p && (this.cachedCanvases.delete("fillCanvas"), L.set(E, RI.canvas)), {
+                return pI.fillStyle = K ? N.getPattern(H, this, KI, s.PathType.FILL) : N, pI.fillRect(0, 0, Q, T), L && !K && (this.cachedCanvases.delete("fillCanvas"), L.set(E, RI.canvas)), {
                   canvas: RI.canvas,
                   offsetX: Math.round(MI),
                   offsetY: Math.round(LI)
                 };
               }
-              setLineWidth(K) {
-                K !== this.current.lineWidth && (this._cachedScaleForStroking = null), this.current.lineWidth = K, this.ctx.lineWidth = K;
+              setLineWidth(p) {
+                p !== this.current.lineWidth && (this._cachedScaleForStroking = null), this.current.lineWidth = p, this.ctx.lineWidth = p;
               }
-              setLineCap(K) {
-                this.ctx.lineCap = v[K];
+              setLineCap(p) {
+                this.ctx.lineCap = v[p];
               }
-              setLineJoin(K) {
-                this.ctx.lineJoin = j[K];
+              setLineJoin(p) {
+                this.ctx.lineJoin = j[p];
               }
-              setMiterLimit(K) {
-                this.ctx.miterLimit = K;
+              setMiterLimit(p) {
+                this.ctx.miterLimit = p;
               }
-              setDash(K, H) {
+              setDash(p, H) {
                 const Q = this.ctx;
-                Q.setLineDash !== void 0 && (Q.setLineDash(K), Q.lineDashOffset = H);
+                Q.setLineDash !== void 0 && (Q.setLineDash(p), Q.lineDashOffset = H);
               }
-              setRenderingIntent(K) {
+              setRenderingIntent(p) {
               }
-              setFlatness(K) {
+              setFlatness(p) {
               }
-              setGState(K) {
-                for (let H = 0, Q = K.length; H < Q; H++) {
-                  const T = K[H], N = T[0], p = T[1];
+              setGState(p) {
+                for (let H = 0, Q = p.length; H < Q; H++) {
+                  const T = p[H], N = T[0], K = T[1];
                   switch (N) {
                     case "LW":
-                      this.setLineWidth(p);
+                      this.setLineWidth(K);
                       break;
                     case "LC":
-                      this.setLineCap(p);
+                      this.setLineCap(K);
                       break;
                     case "LJ":
-                      this.setLineJoin(p);
+                      this.setLineJoin(K);
                       break;
                     case "ML":
-                      this.setMiterLimit(p);
+                      this.setMiterLimit(K);
                       break;
                     case "D":
-                      this.setDash(p[0], p[1]);
+                      this.setDash(K[0], K[1]);
                       break;
                     case "RI":
-                      this.setRenderingIntent(p);
+                      this.setRenderingIntent(K);
                       break;
                     case "FL":
-                      this.setFlatness(p);
+                      this.setFlatness(K);
                       break;
                     case "Font":
-                      this.setFont(p[0], p[1]);
+                      this.setFont(K[0], K[1]);
                       break;
                     case "CA":
                       this.current.strokeAlpha = T[1];
@@ -10609,13 +10609,13 @@ function requirePdf() {
                       this.current.fillAlpha = T[1], this.ctx.globalAlpha = T[1];
                       break;
                     case "BM":
-                      this.ctx.globalCompositeOperation = p;
+                      this.ctx.globalCompositeOperation = K;
                       break;
                     case "SMask":
-                      this.current.activeSMask = p ? this.tempSMask : null, this.tempSMask = null, this.checkSMaskState();
+                      this.current.activeSMask = K ? this.tempSMask : null, this.tempSMask = null, this.checkSMaskState();
                       break;
                     case "TR":
-                      this.current.transferMaps = p;
+                      this.current.transferMaps = K;
                   }
                 }
               }
@@ -10623,13 +10623,13 @@ function requirePdf() {
                 return !!this.suspendedCtx;
               }
               checkSMaskState() {
-                const K = this.inSMaskMode;
-                this.current.activeSMask && !K ? this.beginSMaskMode() : !this.current.activeSMask && K && this.endSMaskMode();
+                const p = this.inSMaskMode;
+                this.current.activeSMask && !p ? this.beginSMaskMode() : !this.current.activeSMask && p && this.endSMaskMode();
               }
               beginSMaskMode() {
                 if (this.inSMaskMode)
                   throw new Error("beginSMaskMode called while already in smask mode");
-                const K = this.ctx.canvas.width, H = this.ctx.canvas.height, Q = "smaskGroupAt" + this.groupLevel, T = this.cachedCanvases.getCanvas(Q, K, H);
+                const p = this.ctx.canvas.width, H = this.ctx.canvas.height, Q = "smaskGroupAt" + this.groupLevel, T = this.cachedCanvases.getCanvas(Q, p, H);
                 this.suspendedCtx = this.ctx, this.ctx = T.context;
                 const N = this.ctx;
                 N.setTransform(...(0, A.getCurrentTransform)(this.suspendedCtx)), M(this.suspendedCtx, N), h(N, this.suspendedCtx), this.setGState([["BM", "source-over"], ["ca", 1], ["CA", 1]]);
@@ -10639,74 +10639,74 @@ function requirePdf() {
                   throw new Error("endSMaskMode called while not in smask mode");
                 this.ctx._removeMirroring(), M(this.ctx, this.suspendedCtx), this.ctx = this.suspendedCtx, this.suspendedCtx = null;
               }
-              compose(K) {
+              compose(p) {
                 if (!this.current.activeSMask)
                   return;
-                K ? (K[0] = Math.floor(K[0]), K[1] = Math.floor(K[1]), K[2] = Math.ceil(K[2]), K[3] = Math.ceil(K[3])) : K = [0, 0, this.ctx.canvas.width, this.ctx.canvas.height];
+                p ? (p[0] = Math.floor(p[0]), p[1] = Math.floor(p[1]), p[2] = Math.ceil(p[2]), p[3] = Math.ceil(p[3])) : p = [0, 0, this.ctx.canvas.width, this.ctx.canvas.height];
                 const H = this.current.activeSMask, Q = this.suspendedCtx;
-                iI(Q, H, this.ctx, K), this.ctx.save(), this.ctx.setTransform(1, 0, 0, 1, 0, 0), this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height), this.ctx.restore();
+                iI(Q, H, this.ctx, p), this.ctx.save(), this.ctx.setTransform(1, 0, 0, 1, 0, 0), this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height), this.ctx.restore();
               }
               save() {
                 this.inSMaskMode ? (M(this.ctx, this.suspendedCtx), this.suspendedCtx.save()) : this.ctx.save();
-                const K = this.current;
-                this.stateStack.push(K), this.current = K.clone();
+                const p = this.current;
+                this.stateStack.push(p), this.current = p.clone();
               }
               restore() {
                 this.stateStack.length === 0 && this.inSMaskMode && this.endSMaskMode(), this.stateStack.length !== 0 && (this.current = this.stateStack.pop(), this.inSMaskMode ? (this.suspendedCtx.restore(), M(this.suspendedCtx, this.ctx)) : this.ctx.restore(), this.checkSMaskState(), this.pendingClip = null, this._cachedScaleForStroking = null, this._cachedGetSinglePixelWidth = null);
               }
-              transform(K, H, Q, T, N, p) {
-                this.ctx.transform(K, H, Q, T, N, p), this._cachedScaleForStroking = null, this._cachedGetSinglePixelWidth = null;
+              transform(p, H, Q, T, N, K) {
+                this.ctx.transform(p, H, Q, T, N, K), this._cachedScaleForStroking = null, this._cachedGetSinglePixelWidth = null;
               }
-              constructPath(K, H, Q) {
+              constructPath(p, H, Q) {
                 const T = this.ctx, N = this.current;
-                let p = N.x, z = N.y, L, E;
+                let K = N.x, J = N.y, L, E;
                 const AI = (0, A.getCurrentTransform)(T), ZI = AI[0] === 0 && AI[3] === 0 || AI[1] === 0 && AI[2] === 0, aI = ZI ? Q.slice(0) : null;
-                for (let GI = 0, mI = 0, hI = K.length; GI < hI; GI++)
-                  switch (K[GI] | 0) {
+                for (let GI = 0, nI = 0, hI = p.length; GI < hI; GI++)
+                  switch (p[GI] | 0) {
                     case l.OPS.rectangle:
-                      p = H[mI++], z = H[mI++];
-                      const YI = H[mI++], uI = H[mI++], RI = p + YI, pI = z + uI;
-                      T.moveTo(p, z), YI === 0 || uI === 0 ? T.lineTo(RI, pI) : (T.lineTo(RI, z), T.lineTo(RI, pI), T.lineTo(p, pI)), ZI || N.updateRectMinMax(AI, [p, z, RI, pI]), T.closePath();
+                      K = H[nI++], J = H[nI++];
+                      const YI = H[nI++], uI = H[nI++], RI = K + YI, pI = J + uI;
+                      T.moveTo(K, J), YI === 0 || uI === 0 ? T.lineTo(RI, pI) : (T.lineTo(RI, J), T.lineTo(RI, pI), T.lineTo(K, pI)), ZI || N.updateRectMinMax(AI, [K, J, RI, pI]), T.closePath();
                       break;
                     case l.OPS.moveTo:
-                      p = H[mI++], z = H[mI++], T.moveTo(p, z), ZI || N.updatePathMinMax(AI, p, z);
+                      K = H[nI++], J = H[nI++], T.moveTo(K, J), ZI || N.updatePathMinMax(AI, K, J);
                       break;
                     case l.OPS.lineTo:
-                      p = H[mI++], z = H[mI++], T.lineTo(p, z), ZI || N.updatePathMinMax(AI, p, z);
+                      K = H[nI++], J = H[nI++], T.lineTo(K, J), ZI || N.updatePathMinMax(AI, K, J);
                       break;
                     case l.OPS.curveTo:
-                      L = p, E = z, p = H[mI + 4], z = H[mI + 5], T.bezierCurveTo(H[mI], H[mI + 1], H[mI + 2], H[mI + 3], p, z), N.updateCurvePathMinMax(AI, L, E, H[mI], H[mI + 1], H[mI + 2], H[mI + 3], p, z, aI), mI += 6;
+                      L = K, E = J, K = H[nI + 4], J = H[nI + 5], T.bezierCurveTo(H[nI], H[nI + 1], H[nI + 2], H[nI + 3], K, J), N.updateCurvePathMinMax(AI, L, E, H[nI], H[nI + 1], H[nI + 2], H[nI + 3], K, J, aI), nI += 6;
                       break;
                     case l.OPS.curveTo2:
-                      L = p, E = z, T.bezierCurveTo(p, z, H[mI], H[mI + 1], H[mI + 2], H[mI + 3]), N.updateCurvePathMinMax(AI, L, E, p, z, H[mI], H[mI + 1], H[mI + 2], H[mI + 3], aI), p = H[mI + 2], z = H[mI + 3], mI += 4;
+                      L = K, E = J, T.bezierCurveTo(K, J, H[nI], H[nI + 1], H[nI + 2], H[nI + 3]), N.updateCurvePathMinMax(AI, L, E, K, J, H[nI], H[nI + 1], H[nI + 2], H[nI + 3], aI), K = H[nI + 2], J = H[nI + 3], nI += 4;
                       break;
                     case l.OPS.curveTo3:
-                      L = p, E = z, p = H[mI + 2], z = H[mI + 3], T.bezierCurveTo(H[mI], H[mI + 1], p, z, p, z), N.updateCurvePathMinMax(AI, L, E, H[mI], H[mI + 1], p, z, p, z, aI), mI += 4;
+                      L = K, E = J, K = H[nI + 2], J = H[nI + 3], T.bezierCurveTo(H[nI], H[nI + 1], K, J, K, J), N.updateCurvePathMinMax(AI, L, E, H[nI], H[nI + 1], K, J, K, J, aI), nI += 4;
                       break;
                     case l.OPS.closePath:
                       T.closePath();
                       break;
                   }
-                ZI && N.updateScalingPathMinMax(AI, aI), N.setCurrentPoint(p, z);
+                ZI && N.updateScalingPathMinMax(AI, aI), N.setCurrentPoint(K, J);
               }
               closePath() {
                 this.ctx.closePath();
               }
-              stroke(K) {
-                K = typeof K != "undefined" ? K : !0;
+              stroke(p) {
+                p = typeof p != "undefined" ? p : !0;
                 const H = this.ctx, Q = this.current.strokeColor;
-                H.globalAlpha = this.current.strokeAlpha, this.contentVisible && (typeof Q == "object" && Q !== null && Q !== void 0 && Q.getPattern ? (H.save(), H.strokeStyle = Q.getPattern(H, this, (0, A.getCurrentTransformInverse)(H), s.PathType.STROKE), this.rescaleAndStroke(!1), H.restore()) : this.rescaleAndStroke(!0)), K && this.consumePath(this.current.getClippedPathBoundingBox()), H.globalAlpha = this.current.fillAlpha;
+                H.globalAlpha = this.current.strokeAlpha, this.contentVisible && (typeof Q == "object" && Q !== null && Q !== void 0 && Q.getPattern ? (H.save(), H.strokeStyle = Q.getPattern(H, this, (0, A.getCurrentTransformInverse)(H), s.PathType.STROKE), this.rescaleAndStroke(!1), H.restore()) : this.rescaleAndStroke(!0)), p && this.consumePath(this.current.getClippedPathBoundingBox()), H.globalAlpha = this.current.fillAlpha;
               }
               closeStroke() {
                 this.closePath(), this.stroke();
               }
-              fill(K) {
-                K = typeof K != "undefined" ? K : !0;
+              fill(p) {
+                p = typeof p != "undefined" ? p : !0;
                 const H = this.ctx, Q = this.current.fillColor, T = this.current.patternFill;
                 let N = !1;
                 T && (H.save(), H.fillStyle = Q.getPattern(H, this, (0, A.getCurrentTransformInverse)(H), s.PathType.FILL), N = !0);
-                const p = this.current.getClippedPathBoundingBox();
-                this.contentVisible && p !== null && (this.pendingEOFill ? (H.fill("evenodd"), this.pendingEOFill = !1) : H.fill()), N && H.restore(), K && this.consumePath(p);
+                const K = this.current.getClippedPathBoundingBox();
+                this.contentVisible && K !== null && (this.pendingEOFill ? (H.fill("evenodd"), this.pendingEOFill = !1) : H.fill()), N && H.restore(), p && this.consumePath(K);
               }
               eoFill() {
                 this.pendingEOFill = !0, this.fill();
@@ -10727,7 +10727,7 @@ function requirePdf() {
                 this.consumePath();
               }
               clip() {
-                this.pendingClip = J;
+                this.pendingClip = z;
               }
               eoClip() {
                 this.pendingClip = lI;
@@ -10736,63 +10736,63 @@ function requirePdf() {
                 this.current.textMatrix = l.IDENTITY_MATRIX, this.current.textMatrixScale = 1, this.current.x = this.current.lineX = 0, this.current.y = this.current.lineY = 0;
               }
               endText() {
-                const K = this.pendingTextPaths, H = this.ctx;
-                if (K === void 0) {
+                const p = this.pendingTextPaths, H = this.ctx;
+                if (p === void 0) {
                   H.beginPath();
                   return;
                 }
                 H.save(), H.beginPath();
-                for (const Q of K)
+                for (const Q of p)
                   H.setTransform(...Q.transform), H.translate(Q.x, Q.y), Q.addToPath(H, Q.fontSize);
                 H.restore(), H.clip(), H.beginPath(), delete this.pendingTextPaths;
               }
-              setCharSpacing(K) {
-                this.current.charSpacing = K;
+              setCharSpacing(p) {
+                this.current.charSpacing = p;
               }
-              setWordSpacing(K) {
-                this.current.wordSpacing = K;
+              setWordSpacing(p) {
+                this.current.wordSpacing = p;
               }
-              setHScale(K) {
-                this.current.textHScale = K / 100;
+              setHScale(p) {
+                this.current.textHScale = p / 100;
               }
-              setLeading(K) {
-                this.current.leading = -K;
+              setLeading(p) {
+                this.current.leading = -p;
               }
-              setFont(K, H) {
-                const Q = this.commonObjs.get(K), T = this.current;
+              setFont(p, H) {
+                const Q = this.commonObjs.get(p), T = this.current;
                 if (!Q)
-                  throw new Error(`Can't find font for ${K}`);
-                if (T.fontMatrix = Q.fontMatrix || l.FONT_IDENTITY_MATRIX, (T.fontMatrix[0] === 0 || T.fontMatrix[3] === 0) && (0, l.warn)("Invalid font matrix for font " + K), H < 0 ? (H = -H, T.fontDirection = -1) : T.fontDirection = 1, this.current.font = Q, this.current.fontSize = H, Q.isType3Font)
+                  throw new Error(`Can't find font for ${p}`);
+                if (T.fontMatrix = Q.fontMatrix || l.FONT_IDENTITY_MATRIX, (T.fontMatrix[0] === 0 || T.fontMatrix[3] === 0) && (0, l.warn)("Invalid font matrix for font " + p), H < 0 ? (H = -H, T.fontDirection = -1) : T.fontDirection = 1, this.current.font = Q, this.current.fontSize = H, Q.isType3Font)
                   return;
                 const N = Q.loadedName || "sans-serif";
-                let p = "normal";
-                Q.black ? p = "900" : Q.bold && (p = "bold");
-                const z = Q.italic ? "italic" : "normal", L = `"${N}", ${Q.fallbackName}`;
+                let K = "normal";
+                Q.black ? K = "900" : Q.bold && (K = "bold");
+                const J = Q.italic ? "italic" : "normal", L = `"${N}", ${Q.fallbackName}`;
                 let E = H;
-                H < G ? E = G : H > b && (E = b), this.current.fontSizeScale = H / E, this.ctx.font = `${z} ${p} ${E}px ${L}`;
+                H < G ? E = G : H > b && (E = b), this.current.fontSizeScale = H / E, this.ctx.font = `${J} ${K} ${E}px ${L}`;
               }
-              setTextRenderingMode(K) {
-                this.current.textRenderingMode = K;
+              setTextRenderingMode(p) {
+                this.current.textRenderingMode = p;
               }
-              setTextRise(K) {
-                this.current.textRise = K;
+              setTextRise(p) {
+                this.current.textRise = p;
               }
-              moveText(K, H) {
-                this.current.x = this.current.lineX += K, this.current.y = this.current.lineY += H;
+              moveText(p, H) {
+                this.current.x = this.current.lineX += p, this.current.y = this.current.lineY += H;
               }
-              setLeadingMoveText(K, H) {
-                this.setLeading(-H), this.moveText(K, H);
+              setLeadingMoveText(p, H) {
+                this.setLeading(-H), this.moveText(p, H);
               }
-              setTextMatrix(K, H, Q, T, N, p) {
-                this.current.textMatrix = [K, H, Q, T, N, p], this.current.textMatrixScale = Math.hypot(K, H), this.current.x = this.current.lineX = 0, this.current.y = this.current.lineY = 0;
+              setTextMatrix(p, H, Q, T, N, K) {
+                this.current.textMatrix = [p, H, Q, T, N, K], this.current.textMatrixScale = Math.hypot(p, H), this.current.x = this.current.lineX = 0, this.current.y = this.current.lineY = 0;
               }
               nextLine() {
                 this.moveText(0, this.current.leading);
               }
-              paintChar(K, H, Q, T) {
-                const N = this.ctx, p = this.current, z = p.font, L = p.textRenderingMode, E = p.fontSize / p.fontSizeScale, AI = L & l.TextRenderingMode.FILL_STROKE_MASK, ZI = !!(L & l.TextRenderingMode.ADD_TO_PATH_FLAG), aI = p.patternFill && !z.missingFile;
+              paintChar(p, H, Q, T) {
+                const N = this.ctx, K = this.current, J = K.font, L = K.textRenderingMode, E = K.fontSize / K.fontSizeScale, AI = L & l.TextRenderingMode.FILL_STROKE_MASK, ZI = !!(L & l.TextRenderingMode.ADD_TO_PATH_FLAG), aI = K.patternFill && !J.missingFile;
                 let GI;
-                (z.disableFontFace || ZI || aI) && (GI = z.getPathGenerator(this.commonObjs, K)), z.disableFontFace || aI ? (N.save(), N.translate(H, Q), N.beginPath(), GI(N, E), T && N.setTransform(...T), (AI === l.TextRenderingMode.FILL || AI === l.TextRenderingMode.FILL_STROKE) && N.fill(), (AI === l.TextRenderingMode.STROKE || AI === l.TextRenderingMode.FILL_STROKE) && N.stroke(), N.restore()) : ((AI === l.TextRenderingMode.FILL || AI === l.TextRenderingMode.FILL_STROKE) && N.fillText(K, H, Q), (AI === l.TextRenderingMode.STROKE || AI === l.TextRenderingMode.FILL_STROKE) && N.strokeText(K, H, Q)), ZI && (this.pendingTextPaths || (this.pendingTextPaths = [])).push({
+                (J.disableFontFace || ZI || aI) && (GI = J.getPathGenerator(this.commonObjs, p)), J.disableFontFace || aI ? (N.save(), N.translate(H, Q), N.beginPath(), GI(N, E), T && N.setTransform(...T), (AI === l.TextRenderingMode.FILL || AI === l.TextRenderingMode.FILL_STROKE) && N.fill(), (AI === l.TextRenderingMode.STROKE || AI === l.TextRenderingMode.FILL_STROKE) && N.stroke(), N.restore()) : ((AI === l.TextRenderingMode.FILL || AI === l.TextRenderingMode.FILL_STROKE) && N.fillText(p, H, Q), (AI === l.TextRenderingMode.STROKE || AI === l.TextRenderingMode.FILL_STROKE) && N.strokeText(p, H, Q)), ZI && (this.pendingTextPaths || (this.pendingTextPaths = [])).push({
                   transform: (0, A.getCurrentTransform)(N),
                   x: H,
                   y: Q,
@@ -10802,10 +10802,10 @@ function requirePdf() {
               }
               get isFontSubpixelAAEnabled() {
                 const {
-                  context: K
+                  context: p
                 } = this.cachedCanvases.getCanvas("isFontSubpixelAAEnabled", 10, 10);
-                K.scale(1.5, 1), K.fillText("I", 0, 10);
-                const H = K.getImageData(0, 0, 10, 10).data;
+                p.scale(1.5, 1), p.fillText("I", 0, 10);
+                const H = p.getImageData(0, 0, 10, 10).data;
                 let Q = !1;
                 for (let T = 3; T < H.length; T += 4)
                   if (H[T] > 0 && H[T] < 255) {
@@ -10814,14 +10814,14 @@ function requirePdf() {
                   }
                 return (0, l.shadow)(this, "isFontSubpixelAAEnabled", Q);
               }
-              showText(K) {
+              showText(p) {
                 const H = this.current, Q = H.font;
                 if (Q.isType3Font)
-                  return this.showType3Text(K);
+                  return this.showType3Text(p);
                 const T = H.fontSize;
                 if (T === 0)
                   return;
-                const N = this.ctx, p = H.fontSizeScale, z = H.charSpacing, L = H.wordSpacing, E = H.fontDirection, AI = H.textHScale * E, ZI = K.length, aI = Q.vertical, GI = aI ? 1 : -1, mI = Q.defaultVMetrics, hI = T * H.fontMatrix[0], YI = H.textRenderingMode === l.TextRenderingMode.FILL && !Q.disableFontFace && !H.patternFill;
+                const N = this.ctx, K = H.fontSizeScale, J = H.charSpacing, L = H.wordSpacing, E = H.fontDirection, AI = H.textHScale * E, ZI = p.length, aI = Q.vertical, GI = aI ? 1 : -1, nI = Q.defaultVMetrics, hI = T * H.fontMatrix[0], YI = H.textRenderingMode === l.TextRenderingMode.FILL && !Q.disableFontFace && !H.patternFill;
                 N.save(), N.transform(...H.textMatrix), N.translate(H.x, H.y + H.textRise), E > 0 ? N.scale(AI, -1) : N.scale(AI, 1);
                 let uI;
                 if (H.patternFill) {
@@ -10836,35 +10836,35 @@ function requirePdf() {
                   (KI === l.TextRenderingMode.STROKE || KI === l.TextRenderingMode.FILL_STROKE) && (RI = this.getSinglePixelWidth());
                 } else
                   RI /= pI;
-                p !== 1 && (N.scale(p, p), RI /= p), N.lineWidth = RI;
+                K !== 1 && (N.scale(K, K), RI /= K), N.lineWidth = RI;
                 let MI = 0, LI;
                 for (LI = 0; LI < ZI; ++LI) {
-                  const KI = K[LI];
+                  const KI = p[LI];
                   if (typeof KI == "number") {
                     MI += GI * KI * T / 1e3;
                     continue;
                   }
                   let PI = !1;
-                  const OI = (KI.isSpace ? L : 0) + z, kI = KI.fontChar, DI = KI.accent;
+                  const OI = (KI.isSpace ? L : 0) + J, kI = KI.fontChar, DI = KI.accent;
                   let F, bI, yI = KI.width;
                   if (aI) {
-                    const II = KI.vmetric || mI, nI = -(KI.vmetric ? II[1] : yI * 0.5) * hI, x = II[2] * hI;
-                    yI = II ? -II[0] : yI, F = nI / p, bI = (MI + x) / p;
+                    const II = KI.vmetric || nI, WI = -(KI.vmetric ? II[1] : yI * 0.5) * hI, x = II[2] * hI;
+                    yI = II ? -II[0] : yI, F = WI / K, bI = (MI + x) / K;
                   } else
-                    F = MI / p, bI = 0;
+                    F = MI / K, bI = 0;
                   if (Q.remeasure && yI > 0) {
-                    const II = N.measureText(kI).width * 1e3 / T * p;
+                    const II = N.measureText(kI).width * 1e3 / T * K;
                     if (yI < II && this.isFontSubpixelAAEnabled) {
-                      const nI = yI / II;
-                      PI = !0, N.save(), N.scale(nI, 1), F /= nI;
-                    } else yI !== II && (F += (yI - II) / 2e3 * T / p);
+                      const WI = yI / II;
+                      PI = !0, N.save(), N.scale(WI, 1), F /= WI;
+                    } else yI !== II && (F += (yI - II) / 2e3 * T / K);
                   }
                   if (this.contentVisible && (KI.isInFont || Q.missingFile)) {
                     if (YI && !DI)
                       N.fillText(kI, F, bI);
                     else if (this.paintChar(kI, F, bI, uI), DI) {
-                      const II = F + T * DI.offset.x / p, nI = bI - T * DI.offset.y / p;
-                      this.paintChar(DI.fontChar, II, nI, uI);
+                      const II = F + T * DI.offset.x / K, WI = bI - T * DI.offset.y / K;
+                      this.paintChar(DI.fontChar, II, WI, uI);
                     }
                   }
                   let HI;
@@ -10872,13 +10872,13 @@ function requirePdf() {
                 }
                 aI ? H.y -= MI : H.x += MI * AI, N.restore(), this.compose();
               }
-              showType3Text(K) {
-                const H = this.ctx, Q = this.current, T = Q.font, N = Q.fontSize, p = Q.fontDirection, z = T.vertical ? 1 : -1, L = Q.charSpacing, E = Q.wordSpacing, AI = Q.textHScale * p, ZI = Q.fontMatrix || l.FONT_IDENTITY_MATRIX, aI = K.length, GI = Q.textRenderingMode === l.TextRenderingMode.INVISIBLE;
-                let mI, hI, YI, uI;
+              showType3Text(p) {
+                const H = this.ctx, Q = this.current, T = Q.font, N = Q.fontSize, K = Q.fontDirection, J = T.vertical ? 1 : -1, L = Q.charSpacing, E = Q.wordSpacing, AI = Q.textHScale * K, ZI = Q.fontMatrix || l.FONT_IDENTITY_MATRIX, aI = p.length, GI = Q.textRenderingMode === l.TextRenderingMode.INVISIBLE;
+                let nI, hI, YI, uI;
                 if (!(GI || N === 0)) {
-                  for (this._cachedScaleForStroking = null, this._cachedGetSinglePixelWidth = null, H.save(), H.transform(...Q.textMatrix), H.translate(Q.x, Q.y), H.scale(AI, p), mI = 0; mI < aI; ++mI) {
-                    if (hI = K[mI], typeof hI == "number") {
-                      uI = z * hI * N / 1e3, this.ctx.translate(uI, 0), Q.x += uI * AI;
+                  for (this._cachedScaleForStroking = null, this._cachedGetSinglePixelWidth = null, H.save(), H.transform(...Q.textMatrix), H.translate(Q.x, Q.y), H.scale(AI, K), nI = 0; nI < aI; ++nI) {
+                    if (hI = p[nI], typeof hI == "number") {
+                      uI = J * hI * N / 1e3, this.ctx.translate(uI, 0), Q.x += uI * AI;
                       continue;
                     }
                     const RI = (hI.isSpace ? E : 0) + L, pI = T.charProcOperatorList[hI.operatorListId];
@@ -10891,20 +10891,20 @@ function requirePdf() {
                   H.restore(), this.processingType3 = null;
                 }
               }
-              setCharWidth(K, H) {
+              setCharWidth(p, H) {
               }
-              setCharWidthAndBounds(K, H, Q, T, N, p) {
-                this.ctx.rect(Q, T, N - Q, p - T), this.ctx.clip(), this.endPath();
+              setCharWidthAndBounds(p, H, Q, T, N, K) {
+                this.ctx.rect(Q, T, N - Q, K - T), this.ctx.clip(), this.endPath();
               }
-              getColorN_Pattern(K) {
+              getColorN_Pattern(p) {
                 let H;
-                if (K[0] === "TilingPattern") {
-                  const Q = K[1], T = this.baseTransform || (0, A.getCurrentTransform)(this.ctx), N = {
-                    createCanvasGraphics: (p) => new wI(p, this.commonObjs, this.objs, this.canvasFactory)
+                if (p[0] === "TilingPattern") {
+                  const Q = p[1], T = this.baseTransform || (0, A.getCurrentTransform)(this.ctx), N = {
+                    createCanvasGraphics: (K) => new mI(K, this.commonObjs, this.objs, this.canvasFactory)
                   };
-                  H = new s.TilingPattern(K, Q, this.ctx, N, T);
+                  H = new s.TilingPattern(p, Q, this.ctx, N, T);
                 } else
-                  H = this._getPattern(K[1], K[2]);
+                  H = this._getPattern(p[1], p[2]);
                 return H;
               }
               setStrokeColorN() {
@@ -10913,31 +10913,31 @@ function requirePdf() {
               setFillColorN() {
                 this.current.fillColor = this.getColorN_Pattern(arguments), this.current.patternFill = !0;
               }
-              setStrokeRGBColor(K, H, Q) {
+              setStrokeRGBColor(p, H, Q) {
                 var T;
-                const N = ((T = this.selectColor) === null || T === void 0 ? void 0 : T.call(this, K, H, Q)) || l.Util.makeHexColor(K, H, Q);
+                const N = ((T = this.selectColor) === null || T === void 0 ? void 0 : T.call(this, p, H, Q)) || l.Util.makeHexColor(p, H, Q);
                 this.ctx.strokeStyle = N, this.current.strokeColor = N;
               }
-              setFillRGBColor(K, H, Q) {
+              setFillRGBColor(p, H, Q) {
                 var T;
-                const N = ((T = this.selectColor) === null || T === void 0 ? void 0 : T.call(this, K, H, Q)) || l.Util.makeHexColor(K, H, Q);
+                const N = ((T = this.selectColor) === null || T === void 0 ? void 0 : T.call(this, p, H, Q)) || l.Util.makeHexColor(p, H, Q);
                 this.ctx.fillStyle = N, this.current.fillColor = N, this.current.patternFill = !1;
               }
-              _getPattern(K) {
+              _getPattern(p) {
                 let H = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : null, Q;
-                return this.cachedPatterns.has(K) ? Q = this.cachedPatterns.get(K) : (Q = (0, s.getShadingPattern)(this.objs.get(K)), this.cachedPatterns.set(K, Q)), H && (Q.matrix = H), Q;
+                return this.cachedPatterns.has(p) ? Q = this.cachedPatterns.get(p) : (Q = (0, s.getShadingPattern)(this.objs.get(p)), this.cachedPatterns.set(p, Q)), H && (Q.matrix = H), Q;
               }
-              shadingFill(K) {
+              shadingFill(p) {
                 if (!this.contentVisible)
                   return;
                 const H = this.ctx;
                 this.save();
-                const Q = this._getPattern(K);
+                const Q = this._getPattern(p);
                 H.fillStyle = Q.getPattern(H, this, (0, A.getCurrentTransformInverse)(H), s.PathType.SHADING);
                 const T = (0, A.getCurrentTransformInverse)(H);
                 if (T) {
-                  const N = H.canvas, p = N.width, z = N.height, L = l.Util.applyTransform([0, 0], T), E = l.Util.applyTransform([0, z], T), AI = l.Util.applyTransform([p, 0], T), ZI = l.Util.applyTransform([p, z], T), aI = Math.min(L[0], E[0], AI[0], ZI[0]), GI = Math.min(L[1], E[1], AI[1], ZI[1]), mI = Math.max(L[0], E[0], AI[0], ZI[0]), hI = Math.max(L[1], E[1], AI[1], ZI[1]);
-                  this.ctx.fillRect(aI, GI, mI - aI, hI - GI);
+                  const N = H.canvas, K = N.width, J = N.height, L = l.Util.applyTransform([0, 0], T), E = l.Util.applyTransform([0, J], T), AI = l.Util.applyTransform([K, 0], T), ZI = l.Util.applyTransform([K, J], T), aI = Math.min(L[0], E[0], AI[0], ZI[0]), GI = Math.min(L[1], E[1], AI[1], ZI[1]), nI = Math.max(L[0], E[0], AI[0], ZI[0]), hI = Math.max(L[1], E[1], AI[1], ZI[1]);
+                  this.ctx.fillRect(aI, GI, nI - aI, hI - GI);
                 } else
                   this.ctx.fillRect(-1e10, -1e10, 2e10, 2e10);
                 this.compose(this.current.getClippedPathBoundingBox()), this.restore();
@@ -10948,8 +10948,8 @@ function requirePdf() {
               beginImageData() {
                 (0, l.unreachable)("Should not call beginImageData");
               }
-              paintFormXObjectBegin(K, H) {
-                if (this.contentVisible && (this.save(), this.baseTransformStack.push(this.baseTransform), Array.isArray(K) && K.length === 6 && this.transform(...K), this.baseTransform = (0, A.getCurrentTransform)(this.ctx), H)) {
+              paintFormXObjectBegin(p, H) {
+                if (this.contentVisible && (this.save(), this.baseTransformStack.push(this.baseTransform), Array.isArray(p) && p.length === 6 && this.transform(...p), this.baseTransform = (0, A.getCurrentTransform)(this.ctx), H)) {
                   const Q = H[2] - H[0], T = H[3] - H[1];
                   this.ctx.rect(H[0], H[1], Q, T), this.current.updateRectMinMax((0, A.getCurrentTransform)(this.ctx), H), this.clip(), this.endPath();
                 }
@@ -10957,43 +10957,43 @@ function requirePdf() {
               paintFormXObjectEnd() {
                 this.contentVisible && (this.restore(), this.baseTransform = this.baseTransformStack.pop());
               }
-              beginGroup(K) {
+              beginGroup(p) {
                 if (!this.contentVisible)
                   return;
                 this.save(), this.inSMaskMode && (this.endSMaskMode(), this.current.activeSMask = null);
                 const H = this.ctx;
-                K.isolated || (0, l.info)("TODO: Support non-isolated groups."), K.knockout && (0, l.warn)("Knockout groups not supported.");
+                p.isolated || (0, l.info)("TODO: Support non-isolated groups."), p.knockout && (0, l.warn)("Knockout groups not supported.");
                 const Q = (0, A.getCurrentTransform)(H);
-                if (K.matrix && H.transform(...K.matrix), !K.bbox)
+                if (p.matrix && H.transform(...p.matrix), !p.bbox)
                   throw new Error("Bounding box is required.");
-                let T = l.Util.getAxialAlignedBoundingBox(K.bbox, (0, A.getCurrentTransform)(H));
+                let T = l.Util.getAxialAlignedBoundingBox(p.bbox, (0, A.getCurrentTransform)(H));
                 const N = [0, 0, H.canvas.width, H.canvas.height];
                 T = l.Util.intersect(T, N) || [0, 0, 0, 0];
-                const p = Math.floor(T[0]), z = Math.floor(T[1]);
-                let L = Math.max(Math.ceil(T[2]) - p, 1), E = Math.max(Math.ceil(T[3]) - z, 1), AI = 1, ZI = 1;
+                const K = Math.floor(T[0]), J = Math.floor(T[1]);
+                let L = Math.max(Math.ceil(T[2]) - K, 1), E = Math.max(Math.ceil(T[3]) - J, 1), AI = 1, ZI = 1;
                 L > m && (AI = L / m, L = m), E > m && (ZI = E / m, E = m), this.current.startNewPathAndClipBox([0, 0, L, E]);
                 let aI = "groupAt" + this.groupLevel;
-                K.smask && (aI += "_smask_" + this.smaskCounter++ % 2);
-                const GI = this.cachedCanvases.getCanvas(aI, L, E), mI = GI.context;
-                mI.scale(1 / AI, 1 / ZI), mI.translate(-p, -z), mI.transform(...Q), K.smask ? this.smaskStack.push({
+                p.smask && (aI += "_smask_" + this.smaskCounter++ % 2);
+                const GI = this.cachedCanvases.getCanvas(aI, L, E), nI = GI.context;
+                nI.scale(1 / AI, 1 / ZI), nI.translate(-K, -J), nI.transform(...Q), p.smask ? this.smaskStack.push({
                   canvas: GI.canvas,
-                  context: mI,
-                  offsetX: p,
-                  offsetY: z,
+                  context: nI,
+                  offsetX: K,
+                  offsetY: J,
                   scaleX: AI,
                   scaleY: ZI,
-                  subtype: K.smask.subtype,
-                  backdrop: K.smask.backdrop,
-                  transferMap: K.smask.transferMap || null,
+                  subtype: p.smask.subtype,
+                  backdrop: p.smask.backdrop,
+                  transferMap: p.smask.transferMap || null,
                   startTransformInverse: null
-                }) : (H.setTransform(1, 0, 0, 1, 0, 0), H.translate(p, z), H.scale(AI, ZI), H.save()), M(H, mI), this.ctx = mI, this.setGState([["BM", "source-over"], ["ca", 1], ["CA", 1]]), this.groupStack.push(H), this.groupLevel++;
+                }) : (H.setTransform(1, 0, 0, 1, 0, 0), H.translate(K, J), H.scale(AI, ZI), H.save()), M(H, nI), this.ctx = nI, this.setGState([["BM", "source-over"], ["ca", 1], ["CA", 1]]), this.groupStack.push(H), this.groupLevel++;
               }
-              endGroup(K) {
+              endGroup(p) {
                 if (!this.contentVisible)
                   return;
                 this.groupLevel--;
                 const H = this.ctx, Q = this.groupStack.pop();
-                if (this.ctx = Q, this.ctx.imageSmoothingEnabled = !1, K.smask)
+                if (this.ctx = Q, this.ctx.imageSmoothingEnabled = !1, p.smask)
                   this.tempSMask = this.smaskStack.pop(), this.restore();
                 else {
                   this.ctx.restore();
@@ -11003,141 +11003,141 @@ function requirePdf() {
                   this.ctx.drawImage(H.canvas, 0, 0), this.ctx.restore(), this.compose(N);
                 }
               }
-              beginAnnotation(K, H, Q, T, N) {
-                if (a(this, dI, BI).call(this), k(this.ctx, this.foregroundColor), this.ctx.save(), this.save(), this.baseTransform && this.ctx.setTransform(...this.baseTransform), Array.isArray(H) && H.length === 4) {
-                  const p = H[2] - H[0], z = H[3] - H[1];
+              beginAnnotation(p, H, Q, T, N) {
+                if (a(this, oI, BI).call(this), k(this.ctx, this.foregroundColor), this.ctx.save(), this.save(), this.baseTransform && this.ctx.setTransform(...this.baseTransform), Array.isArray(H) && H.length === 4) {
+                  const K = H[2] - H[0], J = H[3] - H[1];
                   if (N && this.annotationCanvasMap) {
-                    Q = Q.slice(), Q[4] -= H[0], Q[5] -= H[1], H = H.slice(), H[0] = H[1] = 0, H[2] = p, H[3] = z;
+                    Q = Q.slice(), Q[4] -= H[0], Q[5] -= H[1], H = H.slice(), H[0] = H[1] = 0, H[2] = K, H[3] = J;
                     const [L, E] = l.Util.singularValueDecompose2dScale((0, A.getCurrentTransform)(this.ctx)), {
                       viewportScale: AI
-                    } = this, ZI = Math.ceil(p * this.outputScaleX * AI), aI = Math.ceil(z * this.outputScaleY * AI);
+                    } = this, ZI = Math.ceil(K * this.outputScaleX * AI), aI = Math.ceil(J * this.outputScaleY * AI);
                     this.annotationCanvas = this.canvasFactory.create(ZI, aI);
                     const {
                       canvas: GI,
-                      context: mI
+                      context: nI
                     } = this.annotationCanvas;
-                    this.annotationCanvasMap.set(K, GI), this.annotationCanvas.savedCtx = this.ctx, this.ctx = mI, this.ctx.setTransform(L, 0, 0, -E, 0, z * E), k(this.ctx, this.foregroundColor);
+                    this.annotationCanvasMap.set(p, GI), this.annotationCanvas.savedCtx = this.ctx, this.ctx = nI, this.ctx.setTransform(L, 0, 0, -E, 0, J * E), k(this.ctx, this.foregroundColor);
                   } else
-                    k(this.ctx, this.foregroundColor), this.ctx.rect(H[0], H[1], p, z), this.ctx.clip(), this.endPath();
+                    k(this.ctx, this.foregroundColor), this.ctx.rect(H[0], H[1], K, J), this.ctx.clip(), this.endPath();
                 }
                 this.current = new n(this.ctx.canvas.width, this.ctx.canvas.height), this.transform(...Q), this.transform(...T);
               }
               endAnnotation() {
                 this.annotationCanvas && (this.ctx = this.annotationCanvas.savedCtx, delete this.annotationCanvas.savedCtx, delete this.annotationCanvas);
               }
-              paintImageMaskXObject(K) {
+              paintImageMaskXObject(p) {
                 if (!this.contentVisible)
                   return;
-                const H = K.count;
-                K = this.getObject(K.data, K), K.count = H;
+                const H = p.count;
+                p = this.getObject(p.data, p), p.count = H;
                 const Q = this.ctx, T = this.processingType3;
-                if (T && (T.compiled === void 0 && (T.compiled = t(K)), T.compiled)) {
+                if (T && (T.compiled === void 0 && (T.compiled = t(p)), T.compiled)) {
                   T.compiled(Q);
                   return;
                 }
-                const N = this._createMaskCanvas(K), p = N.canvas;
-                Q.save(), Q.setTransform(1, 0, 0, 1, 0, 0), Q.drawImage(p, N.offsetX, N.offsetY), Q.restore(), this.compose();
+                const N = this._createMaskCanvas(p), K = N.canvas;
+                Q.save(), Q.setTransform(1, 0, 0, 1, 0, 0), Q.drawImage(K, N.offsetX, N.offsetY), Q.restore(), this.compose();
               }
-              paintImageMaskXObjectRepeat(K, H) {
-                let Q = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : 0, T = arguments.length > 3 && arguments[3] !== void 0 ? arguments[3] : 0, N = arguments.length > 4 ? arguments[4] : void 0, p = arguments.length > 5 ? arguments[5] : void 0;
+              paintImageMaskXObjectRepeat(p, H) {
+                let Q = arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : 0, T = arguments.length > 3 && arguments[3] !== void 0 ? arguments[3] : 0, N = arguments.length > 4 ? arguments[4] : void 0, K = arguments.length > 5 ? arguments[5] : void 0;
                 if (!this.contentVisible)
                   return;
-                K = this.getObject(K.data, K);
-                const z = this.ctx;
-                z.save();
-                const L = (0, A.getCurrentTransform)(z);
-                z.transform(H, Q, T, N, 0, 0);
-                const E = this._createMaskCanvas(K);
-                z.setTransform(1, 0, 0, 1, 0, 0);
-                for (let AI = 0, ZI = p.length; AI < ZI; AI += 2) {
-                  const aI = l.Util.transform(L, [H, Q, T, N, p[AI], p[AI + 1]]), [GI, mI] = l.Util.applyTransform([0, 0], aI);
-                  z.drawImage(E.canvas, GI, mI);
+                p = this.getObject(p.data, p);
+                const J = this.ctx;
+                J.save();
+                const L = (0, A.getCurrentTransform)(J);
+                J.transform(H, Q, T, N, 0, 0);
+                const E = this._createMaskCanvas(p);
+                J.setTransform(1, 0, 0, 1, 0, 0);
+                for (let AI = 0, ZI = K.length; AI < ZI; AI += 2) {
+                  const aI = l.Util.transform(L, [H, Q, T, N, K[AI], K[AI + 1]]), [GI, nI] = l.Util.applyTransform([0, 0], aI);
+                  J.drawImage(E.canvas, GI, nI);
                 }
-                z.restore(), this.compose();
+                J.restore(), this.compose();
               }
-              paintImageMaskXObjectGroup(K) {
+              paintImageMaskXObjectGroup(p) {
                 if (!this.contentVisible)
                   return;
                 const H = this.ctx, Q = this.current.fillColor, T = this.current.patternFill;
-                for (const N of K) {
+                for (const N of p) {
                   const {
-                    data: p,
-                    width: z,
+                    data: K,
+                    width: J,
                     height: L,
                     transform: E
-                  } = N, AI = this.cachedCanvases.getCanvas("maskCanvas", z, L), ZI = AI.context;
+                  } = N, AI = this.cachedCanvases.getCanvas("maskCanvas", J, L), ZI = AI.context;
                   ZI.save();
-                  const aI = this.getObject(p, N);
-                  R(ZI, aI), ZI.globalCompositeOperation = "source-in", ZI.fillStyle = T ? Q.getPattern(ZI, this, (0, A.getCurrentTransformInverse)(H), s.PathType.FILL) : Q, ZI.fillRect(0, 0, z, L), ZI.restore(), H.save(), H.transform(...E), H.scale(1, -1), u(H, AI.canvas, 0, 0, z, L, 0, -1, 1, 1), H.restore();
+                  const aI = this.getObject(K, N);
+                  R(ZI, aI), ZI.globalCompositeOperation = "source-in", ZI.fillStyle = T ? Q.getPattern(ZI, this, (0, A.getCurrentTransformInverse)(H), s.PathType.FILL) : Q, ZI.fillRect(0, 0, J, L), ZI.restore(), H.save(), H.transform(...E), H.scale(1, -1), u(H, AI.canvas, 0, 0, J, L, 0, -1, 1, 1), H.restore();
                 }
                 this.compose();
               }
-              paintImageXObject(K) {
+              paintImageXObject(p) {
                 if (!this.contentVisible)
                   return;
-                const H = this.getObject(K);
+                const H = this.getObject(p);
                 if (!H) {
                   (0, l.warn)("Dependent image isn't ready yet");
                   return;
                 }
                 this.paintInlineImageXObject(H);
               }
-              paintImageXObjectRepeat(K, H, Q, T) {
+              paintImageXObjectRepeat(p, H, Q, T) {
                 if (!this.contentVisible)
                   return;
-                const N = this.getObject(K);
+                const N = this.getObject(p);
                 if (!N) {
                   (0, l.warn)("Dependent image isn't ready yet");
                   return;
                 }
-                const p = N.width, z = N.height, L = [];
+                const K = N.width, J = N.height, L = [];
                 for (let E = 0, AI = T.length; E < AI; E += 2)
                   L.push({
                     transform: [H, 0, 0, Q, T[E], T[E + 1]],
                     x: 0,
                     y: 0,
-                    w: p,
-                    h: z
+                    w: K,
+                    h: J
                   });
                 this.paintInlineImageXObjectGroup(N, L);
               }
-              paintInlineImageXObject(K) {
+              paintInlineImageXObject(p) {
                 if (!this.contentVisible)
                   return;
-                const H = K.width, Q = K.height, T = this.ctx;
+                const H = p.width, Q = p.height, T = this.ctx;
                 this.save(), T.scale(1 / H, -1 / Q);
                 let N;
-                if (typeof HTMLElement == "function" && K instanceof HTMLElement || !K.data)
-                  N = K;
+                if (typeof HTMLElement == "function" && p instanceof HTMLElement || !p.data)
+                  N = p;
                 else {
                   const E = this.cachedCanvases.getCanvas("inlineImage", H, Q), AI = E.context;
-                  y(AI, K, this.current.transferMaps), N = E.canvas;
+                  y(AI, p, this.current.transferMaps), N = E.canvas;
                 }
-                const p = this._scaleImage(N, (0, A.getCurrentTransformInverse)(T));
-                T.imageSmoothingEnabled = O((0, A.getCurrentTransform)(T), K.interpolate);
-                const [z, L] = u(T, p.img, 0, 0, p.paintWidth, p.paintHeight, 0, -Q, H, Q);
+                const K = this._scaleImage(N, (0, A.getCurrentTransformInverse)(T));
+                T.imageSmoothingEnabled = O((0, A.getCurrentTransform)(T), p.interpolate);
+                const [J, L] = u(T, K.img, 0, 0, K.paintWidth, K.paintHeight, 0, -Q, H, Q);
                 if (this.imageLayer) {
                   const [E, AI] = l.Util.applyTransform([0, -Q], (0, A.getCurrentTransform)(this.ctx));
                   this.imageLayer.appendImage({
-                    imgData: K,
+                    imgData: p,
                     left: E,
                     top: AI,
-                    width: z,
+                    width: J,
                     height: L
                   });
                 }
                 this.compose(), this.restore();
               }
-              paintInlineImageXObjectGroup(K, H) {
+              paintInlineImageXObjectGroup(p, H) {
                 if (!this.contentVisible)
                   return;
-                const Q = this.ctx, T = K.width, N = K.height, p = this.cachedCanvases.getCanvas("inlineImage", T, N), z = p.context;
-                y(z, K, this.current.transferMaps);
+                const Q = this.ctx, T = p.width, N = p.height, K = this.cachedCanvases.getCanvas("inlineImage", T, N), J = K.context;
+                y(J, p, this.current.transferMaps);
                 for (const L of H) {
-                  if (Q.save(), Q.transform(...L.transform), Q.scale(1, -1), u(Q, p.canvas, L.x, L.y, L.w, L.h, 0, -1, 1, 1), this.imageLayer) {
+                  if (Q.save(), Q.transform(...L.transform), Q.scale(1, -1), u(Q, K.canvas, L.x, L.y, L.w, L.h, 0, -1, 1, 1), this.imageLayer) {
                     const [E, AI] = l.Util.applyTransform([L.x, L.y], (0, A.getCurrentTransform)(this.ctx));
                     this.imageLayer.appendImage({
-                      imgData: K,
+                      imgData: p,
                       left: E,
                       top: AI,
                       width: T,
@@ -11151,17 +11151,17 @@ function requirePdf() {
               paintSolidColorImageMask() {
                 this.contentVisible && (this.ctx.fillRect(0, 0, 1, 1), this.compose());
               }
-              markPoint(K) {
+              markPoint(p) {
               }
-              markPointProps(K, H) {
+              markPointProps(p, H) {
               }
-              beginMarkedContent(K) {
+              beginMarkedContent(p) {
                 this.markedContentStack.push({
                   visible: !0
                 });
               }
-              beginMarkedContentProps(K, H) {
-                K === "OC" ? this.markedContentStack.push({
+              beginMarkedContentProps(p, H) {
+                p === "OC" ? this.markedContentStack.push({
                   visible: this.optionalContentConfig.isVisible(H)
                 }) : this.markedContentStack.push({
                   visible: !0
@@ -11174,19 +11174,19 @@ function requirePdf() {
               }
               endCompat() {
               }
-              consumePath(K) {
+              consumePath(p) {
                 const H = this.current.isEmptyClip();
-                this.pendingClip && this.current.updateClipFromPath(), this.pendingClip || this.compose(K);
+                this.pendingClip && this.current.updateClipFromPath(), this.pendingClip || this.compose(p);
                 const Q = this.ctx;
                 this.pendingClip && (H || (this.pendingClip === lI ? Q.clip("evenodd") : Q.clip()), this.pendingClip = null), this.current.startNewPathAndClipBox(this.current.clipBox), Q.beginPath();
               }
               getSinglePixelWidth() {
                 if (!this._cachedGetSinglePixelWidth) {
-                  const K = (0, A.getCurrentTransform)(this.ctx);
-                  if (K[1] === 0 && K[2] === 0)
-                    this._cachedGetSinglePixelWidth = 1 / Math.min(Math.abs(K[0]), Math.abs(K[3]));
+                  const p = (0, A.getCurrentTransform)(this.ctx);
+                  if (p[1] === 0 && p[2] === 0)
+                    this._cachedGetSinglePixelWidth = 1 / Math.min(Math.abs(p[0]), Math.abs(p[3]));
                   else {
-                    const H = Math.abs(K[0] * K[3] - K[2] * K[1]), Q = Math.hypot(K[0], K[2]), T = Math.hypot(K[1], K[3]);
+                    const H = Math.abs(p[0] * p[3] - p[2] * p[1]), Q = Math.hypot(p[0], p[2]), T = Math.hypot(p[1], p[3]);
                     this._cachedGetSinglePixelWidth = Math.max(Q, T) / H;
                   }
                 }
@@ -11195,31 +11195,31 @@ function requirePdf() {
               getScaleForStroking() {
                 if (!this._cachedScaleForStroking) {
                   const {
-                    lineWidth: K
+                    lineWidth: p
                   } = this.current, H = (0, A.getCurrentTransform)(this.ctx);
                   let Q, T;
                   if (H[1] === 0 && H[2] === 0) {
-                    const N = Math.abs(H[0]), p = Math.abs(H[3]);
-                    if (K === 0)
-                      Q = 1 / N, T = 1 / p;
+                    const N = Math.abs(H[0]), K = Math.abs(H[3]);
+                    if (p === 0)
+                      Q = 1 / N, T = 1 / K;
                     else {
-                      const z = N * K, L = p * K;
-                      Q = z < 1 ? 1 / z : 1, T = L < 1 ? 1 / L : 1;
+                      const J = N * p, L = K * p;
+                      Q = J < 1 ? 1 / J : 1, T = L < 1 ? 1 / L : 1;
                     }
                   } else {
-                    const N = Math.abs(H[0] * H[3] - H[2] * H[1]), p = Math.hypot(H[0], H[1]), z = Math.hypot(H[2], H[3]);
-                    if (K === 0)
-                      Q = z / N, T = p / N;
+                    const N = Math.abs(H[0] * H[3] - H[2] * H[1]), K = Math.hypot(H[0], H[1]), J = Math.hypot(H[2], H[3]);
+                    if (p === 0)
+                      Q = J / N, T = K / N;
                     else {
-                      const L = K * N;
-                      Q = z > L ? z / L : 1, T = p > L ? p / L : 1;
+                      const L = p * N;
+                      Q = J > L ? J / L : 1, T = K > L ? K / L : 1;
                     }
                   }
                   this._cachedScaleForStroking = [Q, T];
                 }
                 return this._cachedScaleForStroking;
               }
-              rescaleAndStroke(K) {
+              rescaleAndStroke(p) {
                 const {
                   ctx: H
                 } = this, {
@@ -11229,26 +11229,26 @@ function requirePdf() {
                   H.stroke();
                   return;
                 }
-                let p, z, L;
-                K && (p = (0, A.getCurrentTransform)(H), z = H.getLineDash().slice(), L = H.lineDashOffset), H.scale(T, N);
+                let K, J, L;
+                p && (K = (0, A.getCurrentTransform)(H), J = H.getLineDash().slice(), L = H.lineDashOffset), H.scale(T, N);
                 const E = Math.max(T, N);
-                H.setLineDash(H.getLineDash().map((AI) => AI / E)), H.lineDashOffset /= E, H.stroke(), K && (H.setTransform(...p), H.setLineDash(z), H.lineDashOffset = L);
+                H.setLineDash(H.getLineDash().map((AI) => AI / E)), H.lineDashOffset /= E, H.stroke(), p && (H.setTransform(...K), H.setLineDash(J), H.lineDashOffset = L);
               }
               isContentVisible() {
-                for (let K = this.markedContentStack.length - 1; K >= 0; K--)
-                  if (!this.markedContentStack[K].visible)
+                for (let p = this.markedContentStack.length - 1; p >= 0; p--)
+                  if (!this.markedContentStack[p].visible)
                     return !1;
                 return !0;
               }
             }
-            g.CanvasGraphics = wI;
+            g.CanvasGraphics = mI;
             function BI() {
               for (; this.stateStack.length || this.inSMaskMode; )
                 this.restore();
               this.ctx.restore(), this.transparentCanvas && (this.ctx = this.compositeCtx, this.ctx.save(), this.ctx.setTransform(1, 0, 0, 1, 0, 0), this.ctx.drawImage(this.transparentCanvas, 0, 0), this.ctx.restore(), this.transparentCanvas = null);
             }
             for (const gI in l.OPS)
-              wI.prototype[gI] !== void 0 && (wI.prototype[l.OPS[gI]] = wI.prototype[gI]);
+              mI.prototype[gI] !== void 0 && (mI.prototype[l.OPS[gI]] = mI.prototype[gI]);
           }),
           /* 138 */
           /***/
@@ -11293,9 +11293,9 @@ function requirePdf() {
                 if (t === d.STROKE || t === d.FILL) {
                   const y = B.current.getClippedPathBoundingBox(t, (0, l.getCurrentTransform)(h)) || [0, 0, 0, 0], R = Math.ceil(y[2] - y[0]) || 1, M = Math.ceil(y[3] - y[1]) || 1, k = B.cachedCanvases.getCanvas("pattern", R, M, !0), S = k.context;
                   S.clearRect(0, 0, S.canvas.width, S.canvas.height), S.beginPath(), S.rect(0, 0, S.canvas.width, S.canvas.height), S.translate(-y[0], -y[1]), u = A.Util.transform(u, [1, 0, 0, 1, y[0], y[1]]), S.transform(...B.baseTransform), this.matrix && S.transform(...this.matrix), c(S, this._bbox), S.fillStyle = this._createGradient(S), S.fill(), n = h.createPattern(k.canvas, "no-repeat");
-                  const _ = new DOMMatrix(u);
+                  const q = new DOMMatrix(u);
                   try {
-                    n.setTransform(_);
+                    n.setTransform(q);
                   } catch (U) {
                     (0, A.warn)(`RadialAxialShadingPattern.getPattern: "${U == null ? void 0 : U.message}".`);
                   }
@@ -11305,28 +11305,28 @@ function requirePdf() {
               }
             }
             function a(r, h, B, u, t, n, y, R) {
-              const M = h.coords, k = h.colors, S = r.data, _ = r.width * 4;
+              const M = h.coords, k = h.colors, S = r.data, q = r.width * 4;
               let U;
               M[B + 1] > M[u + 1] && (U = B, B = u, u = U, U = n, n = y, y = U), M[u + 1] > M[t + 1] && (U = u, u = t, t = U, U = y, y = R, R = U), M[B + 1] > M[u + 1] && (U = B, B = u, u = U, U = n, n = y, y = U);
-              const $ = (M[B] + h.offsetX) * h.scaleX, iI = (M[B + 1] + h.offsetY) * h.scaleY, O = (M[u] + h.offsetX) * h.scaleX, v = (M[u + 1] + h.offsetY) * h.scaleY, j = (M[t] + h.offsetX) * h.scaleX, J = (M[t + 1] + h.offsetY) * h.scaleY;
-              if (iI >= J)
+              const $ = (M[B] + h.offsetX) * h.scaleX, iI = (M[B + 1] + h.offsetY) * h.scaleY, O = (M[u] + h.offsetX) * h.scaleX, v = (M[u + 1] + h.offsetY) * h.scaleY, j = (M[t] + h.offsetX) * h.scaleX, z = (M[t + 1] + h.offsetY) * h.scaleY;
+              if (iI >= z)
                 return;
-              const lI = k[n], dI = k[n + 1], wI = k[n + 2], BI = k[y], gI = k[y + 1], K = k[y + 2], H = k[R], Q = k[R + 1], T = k[R + 2], N = Math.round(iI), p = Math.round(J);
-              let z, L, E, AI, ZI, aI, GI, mI;
-              for (let hI = N; hI <= p; hI++) {
+              const lI = k[n], oI = k[n + 1], mI = k[n + 2], BI = k[y], gI = k[y + 1], p = k[y + 2], H = k[R], Q = k[R + 1], T = k[R + 2], N = Math.round(iI), K = Math.round(z);
+              let J, L, E, AI, ZI, aI, GI, nI;
+              for (let hI = N; hI <= K; hI++) {
                 if (hI < v) {
                   let MI;
-                  hI < iI ? MI = 0 : MI = (iI - hI) / (iI - v), z = $ - ($ - O) * MI, L = lI - (lI - BI) * MI, E = dI - (dI - gI) * MI, AI = wI - (wI - K) * MI;
+                  hI < iI ? MI = 0 : MI = (iI - hI) / (iI - v), J = $ - ($ - O) * MI, L = lI - (lI - BI) * MI, E = oI - (oI - gI) * MI, AI = mI - (mI - p) * MI;
                 } else {
                   let MI;
-                  hI > J ? MI = 1 : v === J ? MI = 0 : MI = (v - hI) / (v - J), z = O - (O - j) * MI, L = BI - (BI - H) * MI, E = gI - (gI - Q) * MI, AI = K - (K - T) * MI;
+                  hI > z ? MI = 1 : v === z ? MI = 0 : MI = (v - hI) / (v - z), J = O - (O - j) * MI, L = BI - (BI - H) * MI, E = gI - (gI - Q) * MI, AI = p - (p - T) * MI;
                 }
                 let YI;
-                hI < iI ? YI = 0 : hI > J ? YI = 1 : YI = (iI - hI) / (iI - J), ZI = $ - ($ - j) * YI, aI = lI - (lI - H) * YI, GI = dI - (dI - Q) * YI, mI = wI - (wI - T) * YI;
-                const uI = Math.round(Math.min(z, ZI)), RI = Math.round(Math.max(z, ZI));
-                let pI = _ * hI + uI * 4;
+                hI < iI ? YI = 0 : hI > z ? YI = 1 : YI = (iI - hI) / (iI - z), ZI = $ - ($ - j) * YI, aI = lI - (lI - H) * YI, GI = oI - (oI - Q) * YI, nI = mI - (mI - T) * YI;
+                const uI = Math.round(Math.min(J, ZI)), RI = Math.round(Math.max(J, ZI));
+                let pI = q * hI + uI * 4;
                 for (let MI = uI; MI <= RI; MI++)
-                  YI = (z - MI) / (z - ZI), YI < 0 ? YI = 0 : YI > 1 && (YI = 1), S[pI++] = L - (L - aI) * YI | 0, S[pI++] = E - (E - GI) * YI | 0, S[pI++] = AI - (AI - mI) * YI | 0, S[pI++] = 255;
+                  YI = (J - MI) / (J - ZI), YI < 0 ? YI = 0 : YI > 1 && (YI = 1), S[pI++] = L - (L - aI) * YI | 0, S[pI++] = E - (E - GI) * YI | 0, S[pI++] = AI - (AI - nI) * YI | 0, S[pI++] = 255;
               }
             }
             function G(r, h, B) {
@@ -11337,7 +11337,7 @@ function requirePdf() {
                   const R = h.verticesPerRow, M = Math.floor(u.length / R) - 1, k = R - 1;
                   for (n = 0; n < M; n++) {
                     let S = n * R;
-                    for (let _ = 0; _ < k; _++, S++)
+                    for (let q = 0; q < k; q++, S++)
                       a(r, B, u[S], u[S + 1], u[S + R], t[S], t[S + 1], t[S + R]), a(r, B, u[S + R + 1], u[S + 1], u[S + R], t[S + R + 1], t[S + 1], t[S + R]);
                   }
                   break;
@@ -11354,23 +11354,23 @@ function requirePdf() {
                 super(), this._coords = h[2], this._colors = h[3], this._figures = h[4], this._bounds = h[5], this._bbox = h[7], this._background = h[8], this.matrix = null;
               }
               _createMeshCanvas(h, B, u) {
-                const R = Math.floor(this._bounds[0]), M = Math.floor(this._bounds[1]), k = Math.ceil(this._bounds[2]) - R, S = Math.ceil(this._bounds[3]) - M, _ = Math.min(Math.ceil(Math.abs(k * h[0] * 1.1)), 3e3), U = Math.min(Math.ceil(Math.abs(S * h[1] * 1.1)), 3e3), $ = k / _, iI = S / U, O = {
+                const R = Math.floor(this._bounds[0]), M = Math.floor(this._bounds[1]), k = Math.ceil(this._bounds[2]) - R, S = Math.ceil(this._bounds[3]) - M, q = Math.min(Math.ceil(Math.abs(k * h[0] * 1.1)), 3e3), U = Math.min(Math.ceil(Math.abs(S * h[1] * 1.1)), 3e3), $ = k / q, iI = S / U, O = {
                   coords: this._coords,
                   colors: this._colors,
                   offsetX: -R,
                   offsetY: -M,
                   scaleX: 1 / $,
                   scaleY: 1 / iI
-                }, v = _ + 4, j = U + 4, J = u.getCanvas("mesh", v, j, !1), lI = J.context, dI = lI.createImageData(_, U);
+                }, v = q + 4, j = U + 4, z = u.getCanvas("mesh", v, j, !1), lI = z.context, oI = lI.createImageData(q, U);
                 if (B) {
-                  const BI = dI.data;
-                  for (let gI = 0, K = BI.length; gI < K; gI += 4)
+                  const BI = oI.data;
+                  for (let gI = 0, p = BI.length; gI < p; gI += 4)
                     BI[gI] = B[0], BI[gI + 1] = B[1], BI[gI + 2] = B[2], BI[gI + 3] = 255;
                 }
                 for (const BI of this._figures)
-                  G(dI, BI, O);
-                return lI.putImageData(dI, 2, 2), {
-                  canvas: J.canvas,
+                  G(oI, BI, O);
+                return lI.putImageData(oI, 2, 2), {
+                  canvas: z.canvas,
                   offsetX: R - 2 * $,
                   offsetY: M - 2 * iI,
                   scaleX: $,
@@ -11420,13 +11420,13 @@ function requirePdf() {
               createPatternCanvas(h) {
                 const B = this.operatorList, u = this.bbox, t = this.xstep, n = this.ystep, y = this.paintType, R = this.tilingType, M = this.color, k = this.canvasGraphicsFactory;
                 (0, A.info)("TilingType: " + R);
-                const S = u[0], _ = u[1], U = u[2], $ = u[3], iI = A.Util.singularValueDecompose2dScale(this.matrix), O = A.Util.singularValueDecompose2dScale(this.baseTransform), v = [iI[0] * O[0], iI[1] * O[1]], j = this.getSizeAndScale(t, this.ctx.canvas.width, v[0]), J = this.getSizeAndScale(n, this.ctx.canvas.height, v[1]), lI = h.cachedCanvases.getCanvas("pattern", j.size, J.size, !0), dI = lI.context, wI = k.createCanvasGraphics(dI);
-                wI.groupLevel = h.groupLevel, this.setFillAndStrokeStyleToContext(wI, y, M);
-                let BI = S, gI = _, K = U, H = $;
-                return S < 0 && (BI = 0, K += Math.abs(S)), _ < 0 && (gI = 0, H += Math.abs(_)), dI.translate(-(j.scale * BI), -(J.scale * gI)), wI.transform(j.scale, 0, 0, J.scale, 0, 0), dI.save(), this.clipBbox(wI, BI, gI, K, H), wI.baseTransform = (0, l.getCurrentTransform)(wI.ctx), wI.executeOperatorList(B), wI.endDrawing(), {
+                const S = u[0], q = u[1], U = u[2], $ = u[3], iI = A.Util.singularValueDecompose2dScale(this.matrix), O = A.Util.singularValueDecompose2dScale(this.baseTransform), v = [iI[0] * O[0], iI[1] * O[1]], j = this.getSizeAndScale(t, this.ctx.canvas.width, v[0]), z = this.getSizeAndScale(n, this.ctx.canvas.height, v[1]), lI = h.cachedCanvases.getCanvas("pattern", j.size, z.size, !0), oI = lI.context, mI = k.createCanvasGraphics(oI);
+                mI.groupLevel = h.groupLevel, this.setFillAndStrokeStyleToContext(mI, y, M);
+                let BI = S, gI = q, p = U, H = $;
+                return S < 0 && (BI = 0, p += Math.abs(S)), q < 0 && (gI = 0, H += Math.abs(q)), oI.translate(-(j.scale * BI), -(z.scale * gI)), mI.transform(j.scale, 0, 0, z.scale, 0, 0), oI.save(), this.clipBbox(mI, BI, gI, p, H), mI.baseTransform = (0, l.getCurrentTransform)(mI.ctx), mI.executeOperatorList(B), mI.endDrawing(), {
                   canvas: lI.canvas,
                   scaleX: j.scale,
-                  scaleY: J.scale,
+                  scaleY: z.scale,
                   offsetX: BI,
                   offsetY: gI
                 };
@@ -12083,24 +12083,24 @@ function requirePdf() {
               const M = y[0];
               for (let k = 1; k < R; k++) {
                 const S = y[k];
-                let _;
+                let q;
                 if (Array.isArray(S))
-                  _ = s(this, u, n).call(this, S);
+                  q = s(this, u, n).call(this, S);
                 else if (a(this, r).has(S))
-                  _ = a(this, r).get(S).visible;
+                  q = a(this, r).get(S).visible;
                 else
                   return (0, A.warn)(`Optional content group not found: ${S}`), !0;
                 switch (M) {
                   case "And":
-                    if (!_)
+                    if (!q)
                       return !1;
                     break;
                   case "Or":
-                    if (_)
+                    if (q)
                       return !0;
                     break;
                   case "Not":
-                    return !_;
+                    return !q;
                   default:
                     return !0;
                 }
@@ -12389,53 +12389,53 @@ function requirePdf() {
               value: !0
             }), g.AnnotationEditorLayer = void 0;
             var A = I(132), l = I(1), s = I(148), d = I(149);
-            function c(j, J) {
-              a(j, J), J.add(j);
+            function c(j, z) {
+              a(j, z), z.add(j);
             }
-            function Z(j, J, lI) {
-              return J in j ? Object.defineProperty(j, J, { value: lI, enumerable: !0, configurable: !0, writable: !0 }) : j[J] = lI, j;
+            function Z(j, z, lI) {
+              return z in j ? Object.defineProperty(j, z, { value: lI, enumerable: !0, configurable: !0, writable: !0 }) : j[z] = lI, j;
             }
-            function o(j, J, lI) {
-              a(j, J), J.set(j, lI);
+            function o(j, z, lI) {
+              a(j, z), z.set(j, lI);
             }
-            function a(j, J) {
-              if (J.has(j))
+            function a(j, z) {
+              if (z.has(j))
                 throw new TypeError("Cannot initialize the same private elements twice on an object");
             }
-            function G(j, J, lI) {
-              if (!J.has(j))
+            function G(j, z, lI) {
+              if (!z.has(j))
                 throw new TypeError("attempted to get private field on non-instance");
               return lI;
             }
-            function b(j, J) {
-              var lI = Y(j, J, "get");
+            function b(j, z) {
+              var lI = Y(j, z, "get");
               return m(j, lI);
             }
-            function m(j, J) {
-              return J.get ? J.get.call(j) : J.value;
+            function m(j, z) {
+              return z.get ? z.get.call(j) : z.value;
             }
-            function V(j, J, lI) {
-              var dI = Y(j, J, "set");
-              return X(j, dI, lI), lI;
+            function V(j, z, lI) {
+              var oI = Y(j, z, "set");
+              return X(j, oI, lI), lI;
             }
-            function Y(j, J, lI) {
-              if (!J.has(j))
+            function Y(j, z, lI) {
+              if (!z.has(j))
                 throw new TypeError("attempted to " + lI + " private field on non-instance");
-              return J.get(j);
+              return z.get(j);
             }
-            function X(j, J, lI) {
-              if (J.set)
-                J.set.call(j, lI);
+            function X(j, z, lI) {
+              if (z.set)
+                z.set.call(j, lI);
               else {
-                if (!J.writable)
+                if (!z.writable)
                   throw new TypeError("attempted to set read only private field");
-                J.value = lI;
+                z.value = lI;
               }
             }
-            var r = /* @__PURE__ */ new WeakMap(), h = /* @__PURE__ */ new WeakMap(), B = /* @__PURE__ */ new WeakMap(), u = /* @__PURE__ */ new WeakMap(), t = /* @__PURE__ */ new WeakMap(), n = /* @__PURE__ */ new WeakMap(), y = /* @__PURE__ */ new WeakMap(), R = /* @__PURE__ */ new WeakMap(), M = /* @__PURE__ */ new WeakSet(), k = /* @__PURE__ */ new WeakSet(), S = /* @__PURE__ */ new WeakSet(), _ = /* @__PURE__ */ new WeakSet();
+            var r = /* @__PURE__ */ new WeakMap(), h = /* @__PURE__ */ new WeakMap(), B = /* @__PURE__ */ new WeakMap(), u = /* @__PURE__ */ new WeakMap(), t = /* @__PURE__ */ new WeakMap(), n = /* @__PURE__ */ new WeakMap(), y = /* @__PURE__ */ new WeakMap(), R = /* @__PURE__ */ new WeakMap(), M = /* @__PURE__ */ new WeakSet(), k = /* @__PURE__ */ new WeakSet(), S = /* @__PURE__ */ new WeakSet(), q = /* @__PURE__ */ new WeakSet();
             class U {
-              constructor(J) {
-                c(this, _), c(this, S), c(this, k), c(this, M), o(this, r, {
+              constructor(z) {
+                c(this, q), c(this, S), c(this, k), c(this, M), o(this, r, {
                   writable: !0,
                   value: void 0
                 }), o(this, h, {
@@ -12459,22 +12459,22 @@ function requirePdf() {
                 }), o(this, R, {
                   writable: !0,
                   value: void 0
-                }), U._initialized || (U._initialized = !0, s.FreeTextEditor.initialize(J.l10n), d.InkEditor.initialize(J.l10n), J.uiManager.registerEditorTypes([s.FreeTextEditor, d.InkEditor])), V(this, R, J.uiManager), this.annotationStorage = J.annotationStorage, this.pageIndex = J.pageIndex, this.div = J.div, V(this, r, J.accessibilityManager), b(this, R).addLayer(this);
+                }), U._initialized || (U._initialized = !0, s.FreeTextEditor.initialize(z.l10n), d.InkEditor.initialize(z.l10n), z.uiManager.registerEditorTypes([s.FreeTextEditor, d.InkEditor])), V(this, R, z.uiManager), this.annotationStorage = z.annotationStorage, this.pageIndex = z.pageIndex, this.div = z.div, V(this, r, z.accessibilityManager), b(this, R).addLayer(this);
               }
-              updateToolbar(J) {
-                b(this, R).updateToolbar(J);
+              updateToolbar(z) {
+                b(this, R).updateToolbar(z);
               }
               updateMode() {
-                let J = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : b(this, R).getMode();
-                G(this, _, v).call(this), J === l.AnnotationEditorType.INK ? (this.addInkEditorIfNeeded(!1), this.disableClick()) : this.enableClick(), b(this, R).unselectAll();
+                let z = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : b(this, R).getMode();
+                G(this, q, v).call(this), z === l.AnnotationEditorType.INK ? (this.addInkEditorIfNeeded(!1), this.disableClick()) : this.enableClick(), b(this, R).unselectAll();
               }
-              addInkEditorIfNeeded(J) {
-                if (!J && b(this, R).getMode() !== l.AnnotationEditorType.INK)
+              addInkEditorIfNeeded(z) {
+                if (!z && b(this, R).getMode() !== l.AnnotationEditorType.INK)
                   return;
-                if (!J) {
-                  for (const dI of b(this, t).values())
-                    if (dI.isEmpty()) {
-                      dI.setInBackground();
+                if (!z) {
+                  for (const oI of b(this, t).values())
+                    if (oI.isEmpty()) {
+                      oI.setInBackground();
                       return;
                     }
                 }
@@ -12483,24 +12483,24 @@ function requirePdf() {
                   offsetY: 0
                 }).setInBackground();
               }
-              setEditingState(J) {
-                b(this, R).setEditingState(J);
+              setEditingState(z) {
+                b(this, R).setEditingState(z);
               }
-              addCommands(J) {
-                b(this, R).addCommands(J);
+              addCommands(z) {
+                b(this, R).addCommands(z);
               }
               enable() {
                 this.div.style.pointerEvents = "auto";
-                for (const J of b(this, t).values())
-                  J.enableEditing();
+                for (const z of b(this, t).values())
+                  z.enableEditing();
               }
               disable() {
                 this.div.style.pointerEvents = "none";
-                for (const J of b(this, t).values())
-                  J.disableEditing();
+                for (const z of b(this, t).values())
+                  z.disableEditing();
               }
-              setActiveEditor(J) {
-                b(this, R).getActive() !== J && b(this, R).setActiveEditor(J);
+              setActiveEditor(z) {
+                b(this, R).getActive() !== z && b(this, R).setActiveEditor(z);
               }
               enableClick() {
                 this.div.addEventListener("pointerdown", b(this, u)), this.div.addEventListener("pointerup", b(this, B));
@@ -12508,158 +12508,158 @@ function requirePdf() {
               disableClick() {
                 this.div.removeEventListener("pointerdown", b(this, u)), this.div.removeEventListener("pointerup", b(this, B));
               }
-              attach(J) {
-                b(this, t).set(J.id, J);
+              attach(z) {
+                b(this, t).set(z.id, z);
               }
-              detach(J) {
+              detach(z) {
                 var lI;
-                b(this, t).delete(J.id), (lI = b(this, r)) === null || lI === void 0 || lI.removePointerInTextLayer(J.contentDiv);
+                b(this, t).delete(z.id), (lI = b(this, r)) === null || lI === void 0 || lI.removePointerInTextLayer(z.contentDiv);
               }
-              remove(J) {
-                b(this, R).removeEditor(J), this.detach(J), this.annotationStorage.remove(J.id), J.div.style.display = "none", setTimeout(() => {
-                  J.div.style.display = "", J.div.remove(), J.isAttachedToDOM = !1, document.activeElement === document.body && b(this, R).focusMainContainer();
+              remove(z) {
+                b(this, R).removeEditor(z), this.detach(z), this.annotationStorage.remove(z.id), z.div.style.display = "none", setTimeout(() => {
+                  z.div.style.display = "", z.div.remove(), z.isAttachedToDOM = !1, document.activeElement === document.body && b(this, R).focusMainContainer();
                 }, 0), b(this, y) || this.addInkEditorIfNeeded(!1);
               }
-              add(J) {
-                if (G(this, M, $).call(this, J), b(this, R).addEditor(J), this.attach(J), !J.isAttachedToDOM) {
-                  const lI = J.render();
-                  this.div.append(lI), J.isAttachedToDOM = !0;
+              add(z) {
+                if (G(this, M, $).call(this, z), b(this, R).addEditor(z), this.attach(z), !z.isAttachedToDOM) {
+                  const lI = z.render();
+                  this.div.append(lI), z.isAttachedToDOM = !0;
                 }
-                this.moveEditorInDOM(J), J.onceAdded(), this.addToAnnotationStorage(J);
+                this.moveEditorInDOM(z), z.onceAdded(), this.addToAnnotationStorage(z);
               }
-              moveEditorInDOM(J) {
+              moveEditorInDOM(z) {
                 var lI;
-                (lI = b(this, r)) === null || lI === void 0 || lI.moveElementInDOM(this.div, J.div, J.contentDiv, !0);
+                (lI = b(this, r)) === null || lI === void 0 || lI.moveElementInDOM(this.div, z.div, z.contentDiv, !0);
               }
-              addToAnnotationStorage(J) {
-                !J.isEmpty() && !this.annotationStorage.has(J.id) && this.annotationStorage.setValue(J.id, J);
+              addToAnnotationStorage(z) {
+                !z.isEmpty() && !this.annotationStorage.has(z.id) && this.annotationStorage.setValue(z.id, z);
               }
-              addOrRebuild(J) {
-                J.needsToBeRebuilt() ? J.rebuild() : this.add(J);
+              addOrRebuild(z) {
+                z.needsToBeRebuilt() ? z.rebuild() : this.add(z);
               }
-              addANewEditor(J) {
+              addANewEditor(z) {
                 const lI = () => {
-                  this.addOrRebuild(J);
-                }, dI = () => {
-                  J.remove();
+                  this.addOrRebuild(z);
+                }, oI = () => {
+                  z.remove();
                 };
                 this.addCommands({
                   cmd: lI,
-                  undo: dI,
+                  undo: oI,
                   mustExec: !0
                 });
               }
-              addUndoableEditor(J) {
+              addUndoableEditor(z) {
                 const lI = () => {
-                  this.addOrRebuild(J);
-                }, dI = () => {
-                  J.remove();
+                  this.addOrRebuild(z);
+                }, oI = () => {
+                  z.remove();
                 };
                 this.addCommands({
                   cmd: lI,
-                  undo: dI,
+                  undo: oI,
                   mustExec: !1
                 });
               }
               getNextId() {
                 return b(this, R).getId();
               }
-              deserialize(J) {
-                switch (J.annotationType) {
+              deserialize(z) {
+                switch (z.annotationType) {
                   case l.AnnotationEditorType.FREETEXT:
-                    return s.FreeTextEditor.deserialize(J, this);
+                    return s.FreeTextEditor.deserialize(z, this);
                   case l.AnnotationEditorType.INK:
-                    return d.InkEditor.deserialize(J, this);
+                    return d.InkEditor.deserialize(z, this);
                 }
                 return null;
               }
-              setSelected(J) {
-                b(this, R).setSelected(J);
+              setSelected(z) {
+                b(this, R).setSelected(z);
               }
-              toggleSelected(J) {
-                b(this, R).toggleSelected(J);
+              toggleSelected(z) {
+                b(this, R).toggleSelected(z);
               }
-              isSelected(J) {
-                return b(this, R).isSelected(J);
+              isSelected(z) {
+                return b(this, R).isSelected(z);
               }
-              unselect(J) {
-                b(this, R).unselect(J);
+              unselect(z) {
+                b(this, R).unselect(z);
               }
-              pointerup(J) {
+              pointerup(z) {
                 const lI = A.KeyboardManager.platform.isMac;
-                if (!(J.button !== 0 || J.ctrlKey && lI) && J.target === this.div && b(this, n)) {
+                if (!(z.button !== 0 || z.ctrlKey && lI) && z.target === this.div && b(this, n)) {
                   if (V(this, n, !1), !b(this, h)) {
                     V(this, h, !0);
                     return;
                   }
-                  G(this, S, O).call(this, J);
+                  G(this, S, O).call(this, z);
                 }
               }
-              pointerdown(J) {
+              pointerdown(z) {
                 const lI = A.KeyboardManager.platform.isMac;
-                if (J.button !== 0 || J.ctrlKey && lI || J.target !== this.div)
+                if (z.button !== 0 || z.ctrlKey && lI || z.target !== this.div)
                   return;
                 V(this, n, !0);
-                const dI = b(this, R).getActive();
-                V(this, h, !dI || dI.isEmpty());
+                const oI = b(this, R).getActive();
+                V(this, h, !oI || oI.isEmpty());
               }
-              drop(J) {
-                const lI = J.dataTransfer.getData("text/plain"), dI = b(this, R).getEditor(lI);
-                if (!dI)
+              drop(z) {
+                const lI = z.dataTransfer.getData("text/plain"), oI = b(this, R).getEditor(lI);
+                if (!oI)
                   return;
-                J.preventDefault(), J.dataTransfer.dropEffect = "move", G(this, M, $).call(this, dI);
-                const wI = this.div.getBoundingClientRect(), BI = J.clientX - wI.x, gI = J.clientY - wI.y;
-                dI.translate(BI - dI.startX, gI - dI.startY), this.moveEditorInDOM(dI), dI.div.focus();
+                z.preventDefault(), z.dataTransfer.dropEffect = "move", G(this, M, $).call(this, oI);
+                const mI = this.div.getBoundingClientRect(), BI = z.clientX - mI.x, gI = z.clientY - mI.y;
+                oI.translate(BI - oI.startX, gI - oI.startY), this.moveEditorInDOM(oI), oI.div.focus();
               }
-              dragover(J) {
-                J.preventDefault();
+              dragover(z) {
+                z.preventDefault();
               }
               destroy() {
-                var J;
-                ((J = b(this, R).getActive()) === null || J === void 0 ? void 0 : J.parent) === this && b(this, R).setActiveEditor(null);
-                for (const dI of b(this, t).values()) {
+                var z;
+                ((z = b(this, R).getActive()) === null || z === void 0 ? void 0 : z.parent) === this && b(this, R).setActiveEditor(null);
+                for (const oI of b(this, t).values()) {
                   var lI;
-                  (lI = b(this, r)) === null || lI === void 0 || lI.removePointerInTextLayer(dI.contentDiv), dI.isAttachedToDOM = !1, dI.div.remove(), dI.parent = null;
+                  (lI = b(this, r)) === null || lI === void 0 || lI.removePointerInTextLayer(oI.contentDiv), oI.isAttachedToDOM = !1, oI.div.remove(), oI.parent = null;
                 }
                 this.div = null, b(this, t).clear(), b(this, R).removeLayer(this);
               }
-              render(J) {
-                this.viewport = J.viewport, (0, A.bindEvents)(this, this.div, ["dragover", "drop"]), this.setDimensions();
+              render(z) {
+                this.viewport = z.viewport, (0, A.bindEvents)(this, this.div, ["dragover", "drop"]), this.setDimensions();
                 for (const lI of b(this, R).getEditors(this.pageIndex))
                   this.add(lI);
                 this.updateMode();
               }
-              update(J) {
-                this.viewport = J.viewport, this.setDimensions(), this.updateMode();
+              update(z) {
+                this.viewport = z.viewport, this.setDimensions(), this.updateMode();
               }
               get scaleFactor() {
                 return this.viewport.scale;
               }
               get pageDimensions() {
-                const [J, lI, dI, wI] = this.viewport.viewBox, BI = dI - J, gI = wI - lI;
+                const [z, lI, oI, mI] = this.viewport.viewBox, BI = oI - z, gI = mI - lI;
                 return [BI, gI];
               }
               get viewportBaseDimensions() {
                 const {
-                  width: J,
+                  width: z,
                   height: lI,
-                  rotation: dI
+                  rotation: oI
                 } = this.viewport;
-                return dI % 180 === 0 ? [J, lI] : [lI, J];
+                return oI % 180 === 0 ? [z, lI] : [lI, z];
               }
               setDimensions() {
                 const {
-                  width: J,
+                  width: z,
                   height: lI,
-                  rotation: dI
-                } = this.viewport, wI = dI % 180 !== 0, BI = Math.floor(J) + "px", gI = Math.floor(lI) + "px";
-                this.div.style.width = wI ? gI : BI, this.div.style.height = wI ? BI : gI, this.div.setAttribute("data-main-rotation", dI);
+                  rotation: oI
+                } = this.viewport, mI = oI % 180 !== 0, BI = Math.floor(z) + "px", gI = Math.floor(lI) + "px";
+                this.div.style.width = mI ? gI : BI, this.div.style.height = mI ? BI : gI, this.div.setAttribute("data-main-rotation", oI);
               }
             }
             g.AnnotationEditorLayer = U;
             function $(j) {
-              var J;
-              j.parent !== this && (this.attach(j), j.pageIndex = this.pageIndex, (J = j.parent) === null || J === void 0 || J.detach(j), j.parent = this, j.div && j.isAttachedToDOM && (j.div.remove(), this.div.append(j.div)));
+              var z;
+              j.parent !== this && (this.attach(j), j.pageIndex = this.pageIndex, (z = j.parent) === null || z === void 0 || z.detach(j), j.parent = this, j.div && j.isAttachedToDOM && (j.div.remove(), this.div.append(j.div)));
             }
             function iI(j) {
               switch (b(this, R).getMode()) {
@@ -12671,9 +12671,9 @@ function requirePdf() {
               return null;
             }
             function O(j) {
-              const J = this.getNextId(), lI = G(this, k, iI).call(this, {
+              const z = this.getNextId(), lI = G(this, k, iI).call(this, {
                 parent: this,
-                id: J,
+                id: z,
                 x: j.offsetX,
                 y: j.offsetY
               });
@@ -12720,8 +12720,8 @@ function requirePdf() {
               return j;
             }
             function m(O, v, j) {
-              var J = V(O, v, "set");
-              return Y(O, J, j), j;
+              var z = V(O, v, "set");
+              return Y(O, z, j), j;
             }
             function V(O, v, j) {
               if (!v.has(O))
@@ -12766,7 +12766,7 @@ function requirePdf() {
                 }), m(this, B, v.color || S._defaultColor || s.AnnotationEditor._defaultLineColor), m(this, n, v.fontSize || S._defaultFontSize);
               }
               static initialize(v) {
-                this._l10nPromise = new Map(["free_text_default_content", "editor_free_text_aria_label"].map((J) => [J, v.get(J)]));
+                this._l10nPromise = new Map(["free_text_default_content", "editor_free_text_aria_label"].map((z) => [z, v.get(z)]));
                 const j = getComputedStyle(document.documentElement);
                 this._internalPadding = parseFloat(j.getPropertyValue("--freetext-padding"));
               }
@@ -12783,7 +12783,7 @@ function requirePdf() {
               updateParams(v, j) {
                 switch (v) {
                   case A.AnnotationEditorParamsType.FREETEXT_SIZE:
-                    b(this, y, _).call(this, j);
+                    b(this, y, q).call(this, j);
                     break;
                   case A.AnnotationEditorParamsType.FREETEXT_COLOR:
                     b(this, R, U).call(this, j);
@@ -12852,22 +12852,22 @@ function requirePdf() {
                   return this.div;
                 let v, j;
                 this.width && (v = this.x, j = this.y), super.render(), this.editorDiv = document.createElement("div"), this.editorDiv.className = "internal", this.editorDiv.setAttribute("id", `${this.id}-editor`), this.enableEditing(), S._l10nPromise.get("editor_free_text_aria_label").then((lI) => {
-                  var dI;
-                  return (dI = this.editorDiv) === null || dI === void 0 ? void 0 : dI.setAttribute("aria-label", lI);
+                  var oI;
+                  return (oI = this.editorDiv) === null || oI === void 0 ? void 0 : oI.setAttribute("aria-label", lI);
                 }), S._l10nPromise.get("free_text_default_content").then((lI) => {
-                  var dI;
-                  return (dI = this.editorDiv) === null || dI === void 0 ? void 0 : dI.setAttribute("default-content", lI);
+                  var oI;
+                  return (oI = this.editorDiv) === null || oI === void 0 ? void 0 : oI.setAttribute("default-content", lI);
                 }), this.editorDiv.contentEditable = !0;
                 const {
-                  style: J
+                  style: z
                 } = this.editorDiv;
-                if (J.fontSize = `calc(${a(this, n)}px * var(--scale-factor))`, J.color = a(this, B), this.div.append(this.editorDiv), this.overlayDiv = document.createElement("div"), this.overlayDiv.classList.add("overlay", "enabled"), this.div.append(this.overlayDiv), (0, l.bindEvents)(this, this.div, ["dblclick", "keydown"]), this.width) {
-                  const [lI, dI] = this.parent.viewportBaseDimensions;
-                  this.setAt(v * lI, j * dI, this.width * lI, this.height * dI);
-                  for (const wI of a(this, u).split(`
+                if (z.fontSize = `calc(${a(this, n)}px * var(--scale-factor))`, z.color = a(this, B), this.div.append(this.editorDiv), this.overlayDiv = document.createElement("div"), this.overlayDiv.classList.add("overlay", "enabled"), this.div.append(this.overlayDiv), (0, l.bindEvents)(this, this.div, ["dblclick", "keydown"]), this.width) {
+                  const [lI, oI] = this.parent.viewportBaseDimensions;
+                  this.setAt(v * lI, j * oI, this.width * lI, this.height * oI);
+                  for (const mI of a(this, u).split(`
 `)) {
                     const BI = document.createElement("div");
-                    BI.append(wI ? document.createTextNode(wI) : document.createElement("br")), this.editorDiv.append(BI);
+                    BI.append(mI ? document.createTextNode(mI) : document.createElement("br")), this.editorDiv.append(BI);
                   }
                   this.div.draggable = !0, this.editorDiv.contentEditable = !1;
                 } else
@@ -12878,16 +12878,16 @@ function requirePdf() {
                 return this.editorDiv;
               }
               static deserialize(v, j) {
-                const J = super.deserialize(v, j);
-                return m(J, n, v.fontSize), m(J, B, A.Util.makeHexColor(...v.color)), m(J, u, v.value), J;
+                const z = super.deserialize(v, j);
+                return m(z, n, v.fontSize), m(z, B, A.Util.makeHexColor(...v.color)), m(z, u, v.value), z;
               }
               serialize() {
                 if (this.isEmpty())
                   return null;
-                const v = S._internalPadding * this.parent.scaleFactor, j = this.getRect(v, v), J = s.AnnotationEditor._colorManager.convert(getComputedStyle(this.editorDiv).color);
+                const v = S._internalPadding * this.parent.scaleFactor, j = this.getRect(v, v), z = s.AnnotationEditor._colorManager.convert(getComputedStyle(this.editorDiv).color);
                 return {
                   annotationType: A.AnnotationEditorType.FREETEXT,
-                  color: J,
+                  color: z,
                   fontSize: a(this, n),
                   value: a(this, u),
                   pageIndex: this.parent.pageIndex,
@@ -12897,9 +12897,9 @@ function requirePdf() {
               }
             }
             g.FreeTextEditor = S;
-            function _(O) {
-              const v = (J) => {
-                this.editorDiv.style.fontSize = `calc(${J}px * var(--scale-factor))`, this.translate(0, -(J - a(this, n)) * this.parent.scaleFactor), m(this, n, J), b(this, k, iI).call(this);
+            function q(O) {
+              const v = (z) => {
+                this.editorDiv.style.fontSize = `calc(${z}px * var(--scale-factor))`, this.translate(0, -(z - a(this, n)) * this.parent.scaleFactor), m(this, n, z), b(this, k, iI).call(this);
               }, j = a(this, n);
               this.parent.addCommands({
                 cmd: () => {
@@ -12934,9 +12934,9 @@ function requirePdf() {
               if (O.length === 0)
                 return this.editorDiv.innerText;
               const v = [];
-              for (let j = 0, J = O.length; j < J; j++) {
-                const dI = O[j].firstChild;
-                (dI == null ? void 0 : dI.nodeName) === "#text" ? v.push(dI.data) : v.push("");
+              for (let j = 0, z = O.length; j < z; j++) {
+                const oI = O[j].firstChild;
+                (oI == null ? void 0 : oI.nodeName) === "#text" ? v.push(oI.data) : v.push("");
               }
               return v.join(`
 `);
@@ -12959,63 +12959,63 @@ function requirePdf() {
               }
             });
             var A = I(1), l = I(131), s = I(150), d = I(132);
-            function c(P, q) {
-              a(P, q), q.add(P);
+            function c(P, _) {
+              a(P, _), _.add(P);
             }
-            function Z(P, q, VI) {
-              return q in P ? Object.defineProperty(P, q, { value: VI, enumerable: !0, configurable: !0, writable: !0 }) : P[q] = VI, P;
+            function Z(P, _, VI) {
+              return _ in P ? Object.defineProperty(P, _, { value: VI, enumerable: !0, configurable: !0, writable: !0 }) : P[_] = VI, P;
             }
-            function o(P, q, VI) {
-              a(P, q), q.set(P, VI);
+            function o(P, _, VI) {
+              a(P, _), _.set(P, VI);
             }
-            function a(P, q) {
-              if (q.has(P))
+            function a(P, _) {
+              if (_.has(P))
                 throw new TypeError("Cannot initialize the same private elements twice on an object");
             }
-            function G(P, q, VI) {
-              return b(P, q), VI;
+            function G(P, _, VI) {
+              return b(P, _), VI;
             }
-            function b(P, q) {
-              if (P !== q)
+            function b(P, _) {
+              if (P !== _)
                 throw new TypeError("Private static access of wrong provenance");
             }
-            function m(P, q, VI) {
-              var XI = X(P, q, "set");
+            function m(P, _, VI) {
+              var XI = X(P, _, "set");
               return V(P, XI, VI), VI;
             }
-            function V(P, q, VI) {
-              if (q.set)
-                q.set.call(P, VI);
+            function V(P, _, VI) {
+              if (_.set)
+                _.set.call(P, VI);
               else {
-                if (!q.writable)
+                if (!_.writable)
                   throw new TypeError("attempted to set read only private field");
-                q.value = VI;
+                _.value = VI;
               }
             }
-            function Y(P, q) {
-              var VI = X(P, q, "get");
+            function Y(P, _) {
+              var VI = X(P, _, "get");
               return r(P, VI);
             }
-            function X(P, q, VI) {
-              if (!q.has(P))
+            function X(P, _, VI) {
+              if (!_.has(P))
                 throw new TypeError("attempted to " + VI + " private field on non-instance");
-              return q.get(P);
+              return _.get(P);
             }
-            function r(P, q) {
-              return q.get ? q.get.call(P) : q.value;
+            function r(P, _) {
+              return _.get ? _.get.call(P) : _.value;
             }
-            function h(P, q, VI) {
-              if (!q.has(P))
+            function h(P, _, VI) {
+              if (!_.has(P))
                 throw new TypeError("attempted to get private field on non-instance");
               return VI;
             }
             const B = 16;
-            var u = /* @__PURE__ */ new WeakMap(), t = /* @__PURE__ */ new WeakMap(), n = /* @__PURE__ */ new WeakMap(), y = /* @__PURE__ */ new WeakMap(), R = /* @__PURE__ */ new WeakMap(), M = /* @__PURE__ */ new WeakMap(), k = /* @__PURE__ */ new WeakMap(), S = /* @__PURE__ */ new WeakMap(), _ = /* @__PURE__ */ new WeakMap(), U = /* @__PURE__ */ new WeakMap(), $ = /* @__PURE__ */ new WeakMap(), iI = /* @__PURE__ */ new WeakMap(), O = /* @__PURE__ */ new WeakMap(), v = /* @__PURE__ */ new WeakMap(), j = /* @__PURE__ */ new WeakSet(), J = /* @__PURE__ */ new WeakSet(), lI = /* @__PURE__ */ new WeakSet(), dI = /* @__PURE__ */ new WeakSet(), wI = /* @__PURE__ */ new WeakSet(), BI = /* @__PURE__ */ new WeakSet(), gI = /* @__PURE__ */ new WeakSet(), K = /* @__PURE__ */ new WeakSet(), H = /* @__PURE__ */ new WeakSet(), Q = /* @__PURE__ */ new WeakSet(), T = /* @__PURE__ */ new WeakSet(), N = /* @__PURE__ */ new WeakSet(), p = /* @__PURE__ */ new WeakSet(), z = /* @__PURE__ */ new WeakSet(), L = /* @__PURE__ */ new WeakSet(), E = /* @__PURE__ */ new WeakSet(), AI = /* @__PURE__ */ new WeakSet(), ZI = /* @__PURE__ */ new WeakSet(), aI = /* @__PURE__ */ new WeakSet(), GI = /* @__PURE__ */ new WeakSet(), mI = /* @__PURE__ */ new WeakSet(), hI = /* @__PURE__ */ new WeakSet();
+            var u = /* @__PURE__ */ new WeakMap(), t = /* @__PURE__ */ new WeakMap(), n = /* @__PURE__ */ new WeakMap(), y = /* @__PURE__ */ new WeakMap(), R = /* @__PURE__ */ new WeakMap(), M = /* @__PURE__ */ new WeakMap(), k = /* @__PURE__ */ new WeakMap(), S = /* @__PURE__ */ new WeakMap(), q = /* @__PURE__ */ new WeakMap(), U = /* @__PURE__ */ new WeakMap(), $ = /* @__PURE__ */ new WeakMap(), iI = /* @__PURE__ */ new WeakMap(), O = /* @__PURE__ */ new WeakMap(), v = /* @__PURE__ */ new WeakMap(), j = /* @__PURE__ */ new WeakSet(), z = /* @__PURE__ */ new WeakSet(), lI = /* @__PURE__ */ new WeakSet(), oI = /* @__PURE__ */ new WeakSet(), mI = /* @__PURE__ */ new WeakSet(), BI = /* @__PURE__ */ new WeakSet(), gI = /* @__PURE__ */ new WeakSet(), p = /* @__PURE__ */ new WeakSet(), H = /* @__PURE__ */ new WeakSet(), Q = /* @__PURE__ */ new WeakSet(), T = /* @__PURE__ */ new WeakSet(), N = /* @__PURE__ */ new WeakSet(), K = /* @__PURE__ */ new WeakSet(), J = /* @__PURE__ */ new WeakSet(), L = /* @__PURE__ */ new WeakSet(), E = /* @__PURE__ */ new WeakSet(), AI = /* @__PURE__ */ new WeakSet(), ZI = /* @__PURE__ */ new WeakSet(), aI = /* @__PURE__ */ new WeakSet(), GI = /* @__PURE__ */ new WeakSet(), nI = /* @__PURE__ */ new WeakSet(), hI = /* @__PURE__ */ new WeakSet();
             class YI extends l.AnnotationEditor {
-              constructor(q) {
-                super(oC(fg({}, q), {
+              constructor(_) {
+                super(oC(fg({}, _), {
                   name: "inkEditor"
-                })), c(this, hI), c(this, mI), c(this, GI), c(this, aI), c(this, ZI), c(this, AI), c(this, E), c(this, L), c(this, z), c(this, p), c(this, N), c(this, T), c(this, Q), c(this, H), c(this, K), c(this, gI), c(this, BI), c(this, wI), c(this, dI), c(this, lI), c(this, J), c(this, j), o(this, u, {
+                })), c(this, hI), c(this, nI), c(this, GI), c(this, aI), c(this, ZI), c(this, AI), c(this, E), c(this, L), c(this, J), c(this, K), c(this, N), c(this, T), c(this, Q), c(this, H), c(this, p), c(this, gI), c(this, BI), c(this, mI), c(this, oI), c(this, lI), c(this, z), c(this, j), o(this, u, {
                   writable: !0,
                   value: 0
                 }), o(this, t, {
@@ -13039,7 +13039,7 @@ function requirePdf() {
                 }), o(this, S, {
                   writable: !0,
                   value: !1
-                }), o(this, _, {
+                }), o(this, q, {
                   writable: !0,
                   value: !1
                 }), o(this, U, {
@@ -13057,13 +13057,13 @@ function requirePdf() {
                 }), o(this, v, {
                   writable: !0,
                   value: null
-                }), this.color = q.color || null, this.thickness = q.thickness || null, this.opacity = q.opacity || null, this.paths = [], this.bezierPath2D = [], this.currentPath = [], this.scaleFactor = 1, this.translationX = this.translationY = 0, this.x = 0, this.y = 0;
+                }), this.color = _.color || null, this.thickness = _.thickness || null, this.opacity = _.opacity || null, this.paths = [], this.bezierPath2D = [], this.currentPath = [], this.scaleFactor = 1, this.translationX = this.translationY = 0, this.x = 0, this.y = 0;
               }
-              static initialize(q) {
-                this._l10nPromise = new Map(["editor_ink_canvas_aria_label", "editor_ink_aria_label"].map((VI) => [VI, q.get(VI)]));
+              static initialize(_) {
+                this._l10nPromise = new Map(["editor_ink_canvas_aria_label", "editor_ink_aria_label"].map((VI) => [VI, _.get(VI)]));
               }
-              static updateDefaultParams(q, VI) {
-                switch (q) {
+              static updateDefaultParams(_, VI) {
+                switch (_) {
                   case A.AnnotationEditorParamsType.INK_THICKNESS:
                     YI._defaultThickness = VI;
                     break;
@@ -13075,13 +13075,13 @@ function requirePdf() {
                     break;
                 }
               }
-              updateParams(q, VI) {
-                switch (q) {
+              updateParams(_, VI) {
+                switch (_) {
                   case A.AnnotationEditorParamsType.INK_THICKNESS:
                     h(this, j, uI).call(this, VI);
                     break;
                   case A.AnnotationEditorParamsType.INK_COLOR:
-                    h(this, J, RI).call(this, VI);
+                    h(this, z, RI).call(this, VI);
                     break;
                   case A.AnnotationEditorParamsType.INK_OPACITY:
                     h(this, lI, pI).call(this, VI);
@@ -13092,11 +13092,11 @@ function requirePdf() {
                 return [[A.AnnotationEditorParamsType.INK_THICKNESS, YI._defaultThickness], [A.AnnotationEditorParamsType.INK_COLOR, YI._defaultColor || l.AnnotationEditor._defaultLineColor], [A.AnnotationEditorParamsType.INK_OPACITY, Math.round(YI._defaultOpacity * 100)]];
               }
               get propertiesToUpdate() {
-                var q;
-                return [[A.AnnotationEditorParamsType.INK_THICKNESS, this.thickness || YI._defaultThickness], [A.AnnotationEditorParamsType.INK_COLOR, this.color || YI._defaultColor || l.AnnotationEditor._defaultLineColor], [A.AnnotationEditorParamsType.INK_OPACITY, Math.round(100 * ((q = this.opacity) !== null && q !== void 0 ? q : YI._defaultOpacity))]];
+                var _;
+                return [[A.AnnotationEditorParamsType.INK_THICKNESS, this.thickness || YI._defaultThickness], [A.AnnotationEditorParamsType.INK_COLOR, this.color || YI._defaultColor || l.AnnotationEditor._defaultLineColor], [A.AnnotationEditorParamsType.INK_OPACITY, Math.round(100 * ((_ = this.opacity) !== null && _ !== void 0 ? _ : YI._defaultOpacity))]];
               }
               rebuild() {
-                super.rebuild(), this.div !== null && (this.canvas || (h(this, T, F).call(this), h(this, N, bI).call(this)), this.isAttachedToDOM || (this.parent.add(this), h(this, p, yI).call(this)), h(this, mI, WI).call(this));
+                super.rebuild(), this.div !== null && (this.canvas || (h(this, T, F).call(this), h(this, N, bI).call(this)), this.isAttachedToDOM || (this.parent.add(this), h(this, K, yI).call(this)), h(this, nI, wI).call(this));
               }
               remove() {
                 this.canvas !== null && (this.isEmpty() || this.commit(), this.canvas.width = this.canvas.height = 0, this.canvas.remove(), this.canvas = null, Y(this, $).disconnect(), m(this, $, null), super.remove());
@@ -13114,55 +13114,55 @@ function requirePdf() {
                 return this.paths.length === 0 || this.paths.length === 1 && this.paths[0].length === 0;
               }
               commit() {
-                Y(this, S) || (super.commit(), this.isEditing = !1, this.disableEditMode(), this.setInForeground(), m(this, S, !0), this.div.classList.add("disabled"), h(this, mI, WI).call(this, !0), this.parent.addInkEditorIfNeeded(!0), this.parent.moveEditorInDOM(this), this.div.focus());
+                Y(this, S) || (super.commit(), this.isEditing = !1, this.disableEditMode(), this.setInForeground(), m(this, S, !0), this.div.classList.add("disabled"), h(this, nI, wI).call(this, !0), this.parent.addInkEditorIfNeeded(!0), this.parent.moveEditorInDOM(this), this.div.focus());
               }
-              focusin(q) {
-                super.focusin(q), this.enableEditMode();
+              focusin(_) {
+                super.focusin(_), this.enableEditMode();
               }
-              canvasPointerdown(q) {
-                q.button !== 0 || !this.isInEditMode() || Y(this, S) || (this.setInForeground(), q.type !== "mouse" && this.div.focus(), q.stopPropagation(), this.canvas.addEventListener("pointerleave", Y(this, R)), this.canvas.addEventListener("pointermove", Y(this, y)), h(this, BI, KI).call(this, q.offsetX, q.offsetY));
+              canvasPointerdown(_) {
+                _.button !== 0 || !this.isInEditMode() || Y(this, S) || (this.setInForeground(), _.type !== "mouse" && this.div.focus(), _.stopPropagation(), this.canvas.addEventListener("pointerleave", Y(this, R)), this.canvas.addEventListener("pointermove", Y(this, y)), h(this, BI, KI).call(this, _.offsetX, _.offsetY));
               }
-              canvasPointermove(q) {
-                q.stopPropagation(), h(this, gI, PI).call(this, q.offsetX, q.offsetY);
+              canvasPointermove(_) {
+                _.stopPropagation(), h(this, gI, PI).call(this, _.offsetX, _.offsetY);
               }
-              canvasPointerup(q) {
-                q.button === 0 && this.isInEditMode() && this.currentPath.length !== 0 && (q.stopPropagation(), h(this, Q, DI).call(this, q), this.setInBackground());
+              canvasPointerup(_) {
+                _.button === 0 && this.isInEditMode() && this.currentPath.length !== 0 && (_.stopPropagation(), h(this, Q, DI).call(this, _), this.setInBackground());
               }
-              canvasPointerleave(q) {
-                h(this, Q, DI).call(this, q), this.setInBackground();
+              canvasPointerleave(_) {
+                h(this, Q, DI).call(this, _), this.setInBackground();
               }
               render() {
                 if (this.div)
                   return this.div;
-                let q, VI;
-                this.width && (q = this.x, VI = this.y), super.render(), YI._l10nPromise.get("editor_ink_aria_label").then((xI) => {
+                let _, VI;
+                this.width && (_ = this.x, VI = this.y), super.render(), YI._l10nPromise.get("editor_ink_aria_label").then((xI) => {
                   var SI;
                   return (SI = this.div) === null || SI === void 0 ? void 0 : SI.setAttribute("aria-label", xI);
                 });
-                const [XI, rI, zI, TI] = h(this, dI, MI).call(this);
+                const [XI, rI, zI, TI] = h(this, oI, MI).call(this);
                 if (this.setAt(XI, rI, 0, 0), this.setDims(zI, TI), h(this, T, F).call(this), this.width) {
                   const [xI, SI] = this.parent.viewportBaseDimensions;
-                  this.setAt(q * xI, VI * SI, this.width * xI, this.height * SI), m(this, _, !0), h(this, p, yI).call(this), this.setDims(this.width * xI, this.height * SI), h(this, H, kI).call(this), h(this, hI, f).call(this), this.div.classList.add("disabled");
+                  this.setAt(_ * xI, VI * SI, this.width * xI, this.height * SI), m(this, q, !0), h(this, K, yI).call(this), this.setDims(this.width * xI, this.height * SI), h(this, H, kI).call(this), h(this, hI, f).call(this), this.div.classList.add("disabled");
                 } else
                   this.div.classList.add("editing"), this.enableEditMode();
                 return h(this, N, bI).call(this), this.div;
               }
-              setDimensions(q, VI) {
-                const XI = Math.round(q), rI = Math.round(VI);
+              setDimensions(_, VI) {
+                const XI = Math.round(_), rI = Math.round(VI);
                 if (Y(this, iI) === XI && Y(this, O) === rI)
                   return;
-                m(this, iI, XI), m(this, O, rI), this.canvas.style.visibility = "hidden", Y(this, u) && Math.abs(Y(this, u) - q / VI) > 0.01 && (VI = Math.ceil(q / Y(this, u)), this.setDims(q, VI));
+                m(this, iI, XI), m(this, O, rI), this.canvas.style.visibility = "hidden", Y(this, u) && Math.abs(Y(this, u) - _ / VI) > 0.01 && (VI = Math.ceil(_ / Y(this, u)), this.setDims(_, VI));
                 const [zI, TI] = this.parent.viewportBaseDimensions;
-                this.width = q / zI, this.height = VI / TI, Y(this, S) && h(this, z, HI).call(this, q, VI), h(this, p, yI).call(this), h(this, H, kI).call(this), this.canvas.style.visibility = "visible";
+                this.width = _ / zI, this.height = VI / TI, Y(this, S) && h(this, J, HI).call(this, _, VI), h(this, K, yI).call(this), h(this, H, kI).call(this), this.canvas.style.visibility = "visible";
               }
-              static deserialize(q, VI) {
-                const XI = super.deserialize(q, VI);
-                XI.thickness = q.thickness, XI.color = A.Util.makeHexColor(...q.color), XI.opacity = q.opacity;
-                const [rI, zI] = VI.pageDimensions, TI = XI.width * rI, xI = XI.height * zI, SI = VI.scaleFactor, fI = q.thickness / 2;
+              static deserialize(_, VI) {
+                const XI = super.deserialize(_, VI);
+                XI.thickness = _.thickness, XI.color = A.Util.makeHexColor(..._.color), XI.opacity = _.opacity;
+                const [rI, zI] = VI.pageDimensions, TI = XI.width * rI, xI = XI.height * zI, SI = VI.scaleFactor, fI = _.thickness / 2;
                 m(XI, u, TI / xI), m(XI, S, !0), m(XI, iI, Math.round(TI)), m(XI, O, Math.round(xI));
                 for (const {
                   bezier: jI
-                } of q.paths) {
+                } of _.paths) {
                   const gg = [];
                   XI.paths.push(gg);
                   let lg = SI * (jI[0] - fI), UI = SI * (xI - jI[1] - fI);
@@ -13170,16 +13170,16 @@ function requirePdf() {
                     const Zg = SI * (jI[qI] - fI), ag = SI * (xI - jI[qI + 1] - fI), Sg = SI * (jI[qI + 2] - fI), jg = SI * (xI - jI[qI + 3] - fI), Fg = SI * (jI[qI + 4] - fI), Gg = SI * (xI - jI[qI + 5] - fI);
                     gg.push([[lg, UI], [Zg, ag], [Sg, jg], [Fg, Gg]]), lg = Fg, UI = Gg;
                   }
-                  const Cg = G(this, YI, nI).call(this, gg);
+                  const Cg = G(this, YI, WI).call(this, gg);
                   XI.bezierPath2D.push(Cg);
                 }
                 const $I = h(XI, aI, w).call(XI);
-                return m(XI, n, Math.max(B, $I[2] - $I[0])), m(XI, t, Math.max(B, $I[3] - $I[1])), h(XI, z, HI).call(XI, TI, xI), XI;
+                return m(XI, n, Math.max(B, $I[2] - $I[0])), m(XI, t, Math.max(B, $I[3] - $I[1])), h(XI, J, HI).call(XI, TI, xI), XI;
               }
               serialize() {
                 if (this.isEmpty())
                   return null;
-                const q = this.getRect(0, 0), VI = this.rotation % 180 === 0 ? q[3] - q[1] : q[2] - q[0], XI = l.AnnotationEditor._colorManager.convert(this.ctx.strokeStyle);
+                const _ = this.getRect(0, 0), VI = this.rotation % 180 === 0 ? _[3] - _[1] : _[2] - _[0], XI = l.AnnotationEditor._colorManager.convert(this.ctx.strokeStyle);
                 return {
                   annotationType: A.AnnotationEditorType.INK,
                   color: XI,
@@ -13187,20 +13187,20 @@ function requirePdf() {
                   opacity: this.opacity,
                   paths: h(this, E, x).call(this, this.scaleFactor / this.parent.scaleFactor, this.translationX, this.translationY, VI),
                   pageIndex: this.parent.pageIndex,
-                  rect: q,
+                  rect: _,
                   rotation: this.rotation
                 };
               }
             }
             g.InkEditor = YI;
             function uI(P) {
-              const q = this.thickness;
+              const _ = this.thickness;
               this.parent.addCommands({
                 cmd: () => {
-                  this.thickness = P, h(this, mI, WI).call(this);
+                  this.thickness = P, h(this, nI, wI).call(this);
                 },
                 undo: () => {
-                  this.thickness = q, h(this, mI, WI).call(this);
+                  this.thickness = _, h(this, nI, wI).call(this);
                 },
                 mustExec: !0,
                 type: A.AnnotationEditorParamsType.INK_THICKNESS,
@@ -13209,13 +13209,13 @@ function requirePdf() {
               });
             }
             function RI(P) {
-              const q = this.color;
+              const _ = this.color;
               this.parent.addCommands({
                 cmd: () => {
                   this.color = P, h(this, H, kI).call(this);
                 },
                 undo: () => {
-                  this.color = q, h(this, H, kI).call(this);
+                  this.color = _, h(this, H, kI).call(this);
                 },
                 mustExec: !0,
                 type: A.AnnotationEditorParamsType.INK_COLOR,
@@ -13225,13 +13225,13 @@ function requirePdf() {
             }
             function pI(P) {
               P /= 100;
-              const q = this.opacity;
+              const _ = this.opacity;
               this.parent.addCommands({
                 cmd: () => {
                   this.opacity = P, h(this, H, kI).call(this);
                 },
                 undo: () => {
-                  this.opacity = q, h(this, H, kI).call(this);
+                  this.opacity = _, h(this, H, kI).call(this);
                 },
                 mustExec: !0,
                 type: A.AnnotationEditorParamsType.INK_OPACITY,
@@ -13242,53 +13242,53 @@ function requirePdf() {
             function MI() {
               const {
                 width: P,
-                height: q,
+                height: _,
                 rotation: VI
               } = this.parent.viewport;
               switch (VI) {
                 case 90:
-                  return [0, P, P, q];
+                  return [0, P, P, _];
                 case 180:
-                  return [P, q, P, q];
+                  return [P, _, P, _];
                 case 270:
-                  return [q, 0, P, q];
+                  return [_, 0, P, _];
                 default:
-                  return [0, 0, P, q];
+                  return [0, 0, P, _];
               }
             }
             function LI() {
               this.ctx.lineWidth = this.thickness * this.parent.scaleFactor / this.scaleFactor, this.ctx.lineCap = "round", this.ctx.lineJoin = "round", this.ctx.miterLimit = 10, this.ctx.strokeStyle = `${this.color}${(0, d.opacityToHex)(this.opacity)}`;
             }
-            function KI(P, q) {
-              if (this.isEditing = !0, !Y(this, _)) {
+            function KI(P, _) {
+              if (this.isEditing = !0, !Y(this, q)) {
                 var VI;
-                m(this, _, !0), h(this, p, yI).call(this), this.thickness || (this.thickness = YI._defaultThickness), this.color || (this.color = YI._defaultColor || l.AnnotationEditor._defaultLineColor), (VI = this.opacity) !== null && VI !== void 0 || (this.opacity = YI._defaultOpacity);
+                m(this, q, !0), h(this, K, yI).call(this), this.thickness || (this.thickness = YI._defaultThickness), this.color || (this.color = YI._defaultColor || l.AnnotationEditor._defaultLineColor), (VI = this.opacity) !== null && VI !== void 0 || (this.opacity = YI._defaultOpacity);
               }
-              this.currentPath.push([P, q]), m(this, U, null), h(this, wI, LI).call(this), this.ctx.beginPath(), this.ctx.moveTo(P, q), m(this, v, () => {
+              this.currentPath.push([P, _]), m(this, U, null), h(this, mI, LI).call(this), this.ctx.beginPath(), this.ctx.moveTo(P, _), m(this, v, () => {
                 Y(this, v) && (Y(this, U) && (this.isEmpty() ? (this.ctx.setTransform(1, 0, 0, 1, 0, 0), this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)) : h(this, H, kI).call(this), this.ctx.lineTo(...Y(this, U)), m(this, U, null), this.ctx.stroke()), window.requestAnimationFrame(Y(this, v)));
               }), window.requestAnimationFrame(Y(this, v));
             }
-            function PI(P, q) {
+            function PI(P, _) {
               const [VI, XI] = this.currentPath.at(-1);
-              P === VI && q === XI || (this.currentPath.push([P, q]), m(this, U, [P, q]));
+              P === VI && _ === XI || (this.currentPath.push([P, _]), m(this, U, [P, _]));
             }
-            function OI(P, q) {
-              this.ctx.closePath(), m(this, v, null), P = Math.min(Math.max(P, 0), this.canvas.width), q = Math.min(Math.max(q, 0), this.canvas.height);
+            function OI(P, _) {
+              this.ctx.closePath(), m(this, v, null), P = Math.min(Math.max(P, 0), this.canvas.width), _ = Math.min(Math.max(_, 0), this.canvas.height);
               const [VI, XI] = this.currentPath.at(-1);
-              (P !== VI || q !== XI) && this.currentPath.push([P, q]);
+              (P !== VI || _ !== XI) && this.currentPath.push([P, _]);
               let rI;
               if (this.currentPath.length !== 1)
                 rI = (0, s.fitCurve)(this.currentPath, 30, null);
               else {
-                const SI = [P, q];
+                const SI = [P, _];
                 rI = [[SI, SI.slice(), SI.slice(), SI]];
               }
-              const zI = G(YI, YI, nI).call(YI, rI);
+              const zI = G(YI, YI, WI).call(YI, rI);
               this.currentPath.length = 0;
               const TI = () => {
                 this.paths.push(rI), this.bezierPath2D.push(zI), this.rebuild();
               }, xI = () => {
-                this.paths.pop(), this.bezierPath2D.pop(), this.paths.length === 0 ? this.remove() : (this.canvas || (h(this, T, F).call(this), h(this, N, bI).call(this)), h(this, mI, WI).call(this));
+                this.paths.pop(), this.bezierPath2D.pop(), this.paths.length === 0 ? this.remove() : (this.canvas || (h(this, T, F).call(this), h(this, N, bI).call(this)), h(this, nI, wI).call(this));
               };
               this.parent.addCommands({
                 cmd: TI,
@@ -13301,60 +13301,60 @@ function requirePdf() {
                 h(this, L, II).call(this);
                 return;
               }
-              h(this, wI, LI).call(this);
+              h(this, mI, LI).call(this);
               const {
                 canvas: P,
-                ctx: q
+                ctx: _
               } = this;
-              q.setTransform(1, 0, 0, 1, 0, 0), q.clearRect(0, 0, P.width, P.height), h(this, L, II).call(this);
+              _.setTransform(1, 0, 0, 1, 0, 0), _.clearRect(0, 0, P.width, P.height), h(this, L, II).call(this);
               for (const VI of this.bezierPath2D)
-                q.stroke(VI);
+                _.stroke(VI);
             }
             function DI(P) {
-              h(this, K, OI).call(this, P.offsetX, P.offsetY), this.canvas.removeEventListener("pointerleave", Y(this, R)), this.canvas.removeEventListener("pointermove", Y(this, y)), this.parent.addToAnnotationStorage(this);
+              h(this, p, OI).call(this, P.offsetX, P.offsetY), this.canvas.removeEventListener("pointerleave", Y(this, R)), this.canvas.removeEventListener("pointermove", Y(this, y)), this.parent.addToAnnotationStorage(this);
             }
             function F() {
               this.canvas = document.createElement("canvas"), this.canvas.width = this.canvas.height = 0, this.canvas.className = "inkEditorCanvas", YI._l10nPromise.get("editor_ink_canvas_aria_label").then((P) => {
-                var q;
-                return (q = this.canvas) === null || q === void 0 ? void 0 : q.setAttribute("aria-label", P);
+                var _;
+                return (_ = this.canvas) === null || _ === void 0 ? void 0 : _.setAttribute("aria-label", P);
               }), this.div.append(this.canvas), this.ctx = this.canvas.getContext("2d");
             }
             function bI() {
               m(this, $, new ResizeObserver((P) => {
-                const q = P[0].contentRect;
-                q.width && q.height && this.setDimensions(q.width, q.height);
+                const _ = P[0].contentRect;
+                _.width && _.height && this.setDimensions(_.width, _.height);
               })), Y(this, $).observe(this.div);
             }
             function yI() {
-              if (!Y(this, _))
+              if (!Y(this, q))
                 return;
-              const [P, q] = this.parent.viewportBaseDimensions;
-              this.canvas.width = Math.ceil(this.width * P), this.canvas.height = Math.ceil(this.height * q), h(this, L, II).call(this);
+              const [P, _] = this.parent.viewportBaseDimensions;
+              this.canvas.width = Math.ceil(this.width * P), this.canvas.height = Math.ceil(this.height * _), h(this, L, II).call(this);
             }
-            function HI(P, q) {
-              const VI = h(this, GI, sI).call(this), XI = (P - VI) / Y(this, n), rI = (q - VI) / Y(this, t);
+            function HI(P, _) {
+              const VI = h(this, GI, sI).call(this), XI = (P - VI) / Y(this, n), rI = (_ - VI) / Y(this, t);
               this.scaleFactor = Math.min(XI, rI);
             }
             function II() {
               const P = h(this, GI, sI).call(this) / 2;
               this.ctx.setTransform(this.scaleFactor, 0, 0, this.scaleFactor, this.translationX * this.scaleFactor + P, this.translationY * this.scaleFactor + P);
             }
-            function nI(P) {
-              const q = new Path2D();
+            function WI(P) {
+              const _ = new Path2D();
               for (let VI = 0, XI = P.length; VI < XI; VI++) {
                 const [rI, zI, TI, xI] = P[VI];
-                VI === 0 && q.moveTo(...rI), q.bezierCurveTo(zI[0], zI[1], TI[0], TI[1], xI[0], xI[1]);
+                VI === 0 && _.moveTo(...rI), _.bezierCurveTo(zI[0], zI[1], TI[0], TI[1], xI[0], xI[1]);
               }
-              return q;
+              return _;
             }
-            function x(P, q, VI, XI) {
+            function x(P, _, VI, XI) {
               const zI = [], TI = this.thickness / 2;
               let xI, SI;
               for (const fI of this.paths) {
                 xI = [], SI = [];
                 for (let $I = 0, jI = fI.length; $I < jI; $I++) {
-                  const [gg, lg, UI, Cg] = fI[$I], qI = P * (gg[0] + q) + TI, cg = XI - P * (gg[1] + VI) - TI, Zg = P * (lg[0] + q) + TI, ag = XI - P * (lg[1] + VI) - TI, Sg = P * (UI[0] + q) + TI, jg = XI - P * (UI[1] + VI) - TI, Fg = P * (Cg[0] + q) + TI, Gg = XI - P * (Cg[1] + VI) - TI;
-                  $I === 0 && (xI.push(qI, cg), SI.push(qI, cg)), xI.push(Zg, ag, Sg, jg, Fg, Gg), h(this, AI, oI).call(this, qI, cg, Zg, ag, Sg, jg, Fg, Gg, 4, SI);
+                  const [gg, lg, UI, Cg] = fI[$I], qI = P * (gg[0] + _) + TI, cg = XI - P * (gg[1] + VI) - TI, Zg = P * (lg[0] + _) + TI, ag = XI - P * (lg[1] + VI) - TI, Sg = P * (UI[0] + _) + TI, jg = XI - P * (UI[1] + VI) - TI, Fg = P * (Cg[0] + _) + TI, Gg = XI - P * (Cg[1] + VI) - TI;
+                  $I === 0 && (xI.push(qI, cg), SI.push(qI, cg)), xI.push(Zg, ag, Sg, jg, Fg, Gg), h(this, AI, cI).call(this, qI, cg, Zg, ag, Sg, jg, Fg, Gg, 4, SI);
                 }
                 zI.push({
                   bezier: xI,
@@ -13363,36 +13363,36 @@ function requirePdf() {
               }
               return zI;
             }
-            function oI(P, q, VI, XI, rI, zI, TI, xI, SI, fI) {
-              if (h(this, ZI, cI).call(this, P, q, VI, XI, rI, zI, TI, xI)) {
+            function cI(P, _, VI, XI, rI, zI, TI, xI, SI, fI) {
+              if (h(this, ZI, dI).call(this, P, _, VI, XI, rI, zI, TI, xI)) {
                 fI.push(TI, xI);
                 return;
               }
               for (let $I = 1; $I < SI - 1; $I++) {
                 const jI = $I / SI, gg = 1 - jI;
-                let lg = jI * P + gg * VI, UI = jI * q + gg * XI, Cg = jI * VI + gg * rI, qI = jI * XI + gg * zI;
+                let lg = jI * P + gg * VI, UI = jI * _ + gg * XI, Cg = jI * VI + gg * rI, qI = jI * XI + gg * zI;
                 const cg = jI * rI + gg * TI, Zg = jI * zI + gg * xI;
                 lg = jI * lg + gg * Cg, UI = jI * UI + gg * qI, Cg = jI * Cg + gg * cg, qI = jI * qI + gg * Zg, lg = jI * lg + gg * Cg, UI = jI * UI + gg * qI, fI.push(lg, UI);
               }
               fI.push(TI, xI);
             }
-            function cI(P, q, VI, XI, rI, zI, TI, xI) {
-              const fI = (3 * VI - 2 * P - TI) ** 2, $I = (3 * XI - 2 * q - xI) ** 2, jI = (3 * rI - P - 2 * TI) ** 2, gg = (3 * zI - q - 2 * xI) ** 2;
+            function dI(P, _, VI, XI, rI, zI, TI, xI) {
+              const fI = (3 * VI - 2 * P - TI) ** 2, $I = (3 * XI - 2 * _ - xI) ** 2, jI = (3 * rI - P - 2 * TI) ** 2, gg = (3 * zI - _ - 2 * xI) ** 2;
               return Math.max(fI, jI) + Math.max($I, gg) <= 10;
             }
             function w() {
-              let P = 1 / 0, q = -1 / 0, VI = 1 / 0, XI = -1 / 0;
+              let P = 1 / 0, _ = -1 / 0, VI = 1 / 0, XI = -1 / 0;
               for (const rI of this.paths)
                 for (const [zI, TI, xI, SI] of rI) {
                   const fI = A.Util.bezierBoundingBox(...zI, ...TI, ...xI, ...SI);
-                  P = Math.min(P, fI[0]), VI = Math.min(VI, fI[1]), q = Math.max(q, fI[2]), XI = Math.max(XI, fI[3]);
+                  P = Math.min(P, fI[0]), VI = Math.min(VI, fI[1]), _ = Math.max(_, fI[2]), XI = Math.max(XI, fI[3]);
                 }
-              return [P, VI, q, XI];
+              return [P, VI, _, XI];
             }
             function sI() {
               return Y(this, S) ? Math.ceil(this.thickness * this.parent.scaleFactor) : 0;
             }
-            function WI() {
+            function wI() {
               let P = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : !1;
               if (this.isEmpty())
                 return;
@@ -13400,12 +13400,12 @@ function requirePdf() {
                 h(this, H, kI).call(this);
                 return;
               }
-              const q = h(this, aI, w).call(this), VI = h(this, GI, sI).call(this);
-              m(this, n, Math.max(B, q[2] - q[0])), m(this, t, Math.max(B, q[3] - q[1]));
+              const _ = h(this, aI, w).call(this), VI = h(this, GI, sI).call(this);
+              m(this, n, Math.max(B, _[2] - _[0])), m(this, t, Math.max(B, _[3] - _[1]));
               const XI = Math.ceil(VI + Y(this, n) * this.scaleFactor), rI = Math.ceil(VI + Y(this, t) * this.scaleFactor), [zI, TI] = this.parent.viewportBaseDimensions;
               this.width = XI / zI, this.height = rI / TI, m(this, u, XI / rI), h(this, hI, f).call(this);
               const xI = this.translationX, SI = this.translationY;
-              this.translationX = -q[0], this.translationY = -q[1], h(this, p, yI).call(this), h(this, H, kI).call(this), m(this, iI, XI), m(this, O, rI), this.setDims(XI, rI);
+              this.translationX = -_[0], this.translationY = -_[1], h(this, K, yI).call(this), h(this, H, kI).call(this), m(this, iI, XI), m(this, O, rI), this.setDims(XI, rI);
               const fI = P ? VI / this.scaleFactor / 2 : 0;
               this.translate(xI - this.translationX - fI, SI - this.translationY - fI);
             }
@@ -13441,7 +13441,7 @@ function requirePdf() {
               return I(V, h, B, Y, X);
             }
             function I(V, Y, X, r, h) {
-              var u, t, n, y, R, M, k, S, _, U, $, iI, O;
+              var u, t, n, y, R, M, k, S, q, U, $, iI, O;
               if (V.length === 2)
                 return iI = b.vectorLen(b.subtract(V[0], V[1])) / 3, u = [V[0], b.addArrays(V[0], b.mulItems(Y, iI)), b.addArrays(V[1], b.mulItems(X, iI)), V[1]], [u];
               if (t = c(V), [u, y, M] = A(V, t, t, Y, X, h), y === 0 || y < r)
@@ -13457,7 +13457,7 @@ function requirePdf() {
                   }
                   R = y, k = M;
                 }
-              return $ = [], S = b.subtract(V[M - 1], V[M + 1]), S.every((v) => v === 0) && (S = b.subtract(V[M - 1], V[M]), [S[0], S[1]] = [-S[1], S[0]]), _ = b.normalize(S), U = b.mulItems(_, -1), $ = $.concat(I(V.slice(0, M + 1), Y, _, r, h)), $ = $.concat(I(V.slice(M), U, X, r, h)), $;
+              return $ = [], S = b.subtract(V[M - 1], V[M + 1]), S.every((v) => v === 0) && (S = b.subtract(V[M - 1], V[M]), [S[0], S[1]] = [-S[1], S[0]]), q = b.normalize(S), U = b.mulItems(q, -1), $ = $.concat(I(V.slice(0, M + 1), Y, q, r, h)), $ = $.concat(I(V.slice(M), U, X, r, h)), $;
             }
             function A(V, Y, X, r, h, B) {
               var u, t, n;
@@ -13470,12 +13470,12 @@ function requirePdf() {
               }), [u, t, n];
             }
             function l(V, Y, X, r) {
-              var h, B, u, t, n, y, R, M, k, S, _, U, $, iI, O, v, j, J = V[0], lI = V[V.length - 1];
-              for (h = [J, null, null, lI], B = b.zeros_Xx2x2(Y.length), $ = 0, iI = Y.length; $ < iI; $++)
+              var h, B, u, t, n, y, R, M, k, S, q, U, $, iI, O, v, j, z = V[0], lI = V[V.length - 1];
+              for (h = [z, null, null, lI], B = b.zeros_Xx2x2(Y.length), $ = 0, iI = Y.length; $ < iI; $++)
                 v = Y[$], j = 1 - v, u = B[$], u[0] = b.mulItems(X, 3 * v * (j * j)), u[1] = b.mulItems(r, 3 * j * (v * v));
               for (t = [[0, 0], [0, 0]], n = [0, 0], $ = 0, iI = V.length; $ < iI; $++)
-                v = Y[$], u = B[$], t[0][0] += b.dot(u[0], u[0]), t[0][1] += b.dot(u[0], u[1]), t[1][0] += b.dot(u[0], u[1]), t[1][1] += b.dot(u[1], u[1]), O = b.subtract(V[$], m.q([J, J, lI, lI], v)), n[0] += b.dot(u[0], O), n[1] += b.dot(u[1], O);
-              return y = t[0][0] * t[1][1] - t[1][0] * t[0][1], R = t[0][0] * n[1] - t[1][0] * n[0], M = n[0] * t[1][1] - n[1] * t[0][1], k = y === 0 ? 0 : M / y, S = y === 0 ? 0 : R / y, U = b.vectorLen(b.subtract(J, lI)), _ = 1e-6 * U, k < _ || S < _ ? (h[1] = b.addArrays(J, b.mulItems(X, U / 3)), h[2] = b.addArrays(lI, b.mulItems(r, U / 3))) : (h[1] = b.addArrays(J, b.mulItems(X, k)), h[2] = b.addArrays(lI, b.mulItems(r, S))), h;
+                v = Y[$], u = B[$], t[0][0] += b.dot(u[0], u[0]), t[0][1] += b.dot(u[0], u[1]), t[1][0] += b.dot(u[0], u[1]), t[1][1] += b.dot(u[1], u[1]), O = b.subtract(V[$], m.q([z, z, lI, lI], v)), n[0] += b.dot(u[0], O), n[1] += b.dot(u[1], O);
+              return y = t[0][0] * t[1][1] - t[1][0] * t[0][1], R = t[0][0] * n[1] - t[1][0] * n[0], M = n[0] * t[1][1] - n[1] * t[0][1], k = y === 0 ? 0 : M / y, S = y === 0 ? 0 : R / y, U = b.vectorLen(b.subtract(z, lI)), q = 1e-6 * U, k < q || S < q ? (h[1] = b.addArrays(z, b.mulItems(X, U / 3)), h[2] = b.addArrays(lI, b.mulItems(r, U / 3))) : (h[1] = b.addArrays(z, b.mulItems(X, k)), h[2] = b.addArrays(lI, b.mulItems(r, S))), h;
             }
             function s(V, Y, X) {
               return X.map((r, h) => d(V, Y[h], r));
@@ -13580,8 +13580,8 @@ function requirePdf() {
               value: !0
             }), g.AnnotationLayer = void 0;
             var A = I(1), l = I(133), s = I(130), d = I(153), c = I(154);
-            function Z(T, N, p) {
-              return o(T, N), p;
+            function Z(T, N, K) {
+              return o(T, N), K;
             }
             function o(T, N) {
               if (T !== N)
@@ -13618,7 +13618,7 @@ function requirePdf() {
                   case A.AnnotationType.LINE:
                     return new S(N);
                   case A.AnnotationType.SQUARE:
-                    return new _(N);
+                    return new q(N);
                   case A.AnnotationType.CIRCLE:
                     return new U(N);
                   case A.AnnotationType.POLYLINE:
@@ -13632,13 +13632,13 @@ function requirePdf() {
                   case A.AnnotationType.HIGHLIGHT:
                     return new j(N);
                   case A.AnnotationType.UNDERLINE:
-                    return new J(N);
+                    return new z(N);
                   case A.AnnotationType.SQUIGGLY:
                     return new lI(N);
                   case A.AnnotationType.STRIKEOUT:
-                    return new dI(N);
+                    return new oI(N);
                   case A.AnnotationType.STAMP:
-                    return new wI(N);
+                    return new mI(N);
                   case A.AnnotationType.FILEATTACHMENT:
                     return new BI(N);
                   default:
@@ -13649,23 +13649,23 @@ function requirePdf() {
             class Y {
               constructor(N) {
                 let {
-                  isRenderable: p = !1,
-                  ignoreBorder: z = !1,
+                  isRenderable: K = !1,
+                  ignoreBorder: J = !1,
                   createQuadrilaterals: L = !1
                 } = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
-                this.isRenderable = p, this.data = N.data, this.layer = N.layer, this.page = N.page, this.viewport = N.viewport, this.linkService = N.linkService, this.downloadManager = N.downloadManager, this.imageResourcesPath = N.imageResourcesPath, this.renderForms = N.renderForms, this.svgFactory = N.svgFactory, this.annotationStorage = N.annotationStorage, this.enableScripting = N.enableScripting, this.hasJSActions = N.hasJSActions, this._fieldObjects = N.fieldObjects, this._mouseState = N.mouseState, p && (this.container = this._createContainer(z)), L && (this.quadrilaterals = this._createQuadrilaterals(z));
+                this.isRenderable = K, this.data = N.data, this.layer = N.layer, this.page = N.page, this.viewport = N.viewport, this.linkService = N.linkService, this.downloadManager = N.downloadManager, this.imageResourcesPath = N.imageResourcesPath, this.renderForms = N.renderForms, this.svgFactory = N.svgFactory, this.annotationStorage = N.annotationStorage, this.enableScripting = N.enableScripting, this.hasJSActions = N.hasJSActions, this._fieldObjects = N.fieldObjects, this._mouseState = N.mouseState, K && (this.container = this._createContainer(J)), L && (this.quadrilaterals = this._createQuadrilaterals(J));
               }
               _createContainer() {
                 let N = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : !1;
-                const p = this.data, z = this.page, L = this.viewport, E = document.createElement("section"), {
+                const K = this.data, J = this.page, L = this.viewport, E = document.createElement("section"), {
                   width: AI,
                   height: ZI
-                } = m(p.rect), [aI, GI, mI, hI] = L.viewBox, YI = mI - aI, uI = hI - GI;
-                E.setAttribute("data-annotation-id", p.id);
-                const RI = A.Util.normalizeRect([p.rect[0], z.view[3] - p.rect[1] + z.view[1], p.rect[2], z.view[3] - p.rect[3] + z.view[1]]);
-                if (!N && p.borderStyle.width > 0) {
-                  E.style.borderWidth = `${p.borderStyle.width}px`;
-                  const MI = p.borderStyle.horizontalCornerRadius, LI = p.borderStyle.verticalCornerRadius;
+                } = m(K.rect), [aI, GI, nI, hI] = L.viewBox, YI = nI - aI, uI = hI - GI;
+                E.setAttribute("data-annotation-id", K.id);
+                const RI = A.Util.normalizeRect([K.rect[0], J.view[3] - K.rect[1] + J.view[1], K.rect[2], J.view[3] - K.rect[3] + J.view[1]]);
+                if (!N && K.borderStyle.width > 0) {
+                  E.style.borderWidth = `${K.borderStyle.width}px`;
+                  const MI = K.borderStyle.horizontalCornerRadius, LI = K.borderStyle.verticalCornerRadius;
                   if (MI > 0 || LI > 0) {
                     const PI = `calc(${MI}px * var(--scale-factor)) / calc(${LI}px * var(--scale-factor))`;
                     E.style.borderRadius = PI;
@@ -13673,7 +13673,7 @@ function requirePdf() {
                     const PI = `calc(${AI}px * var(--scale-factor)) / calc(${ZI}px * var(--scale-factor))`;
                     E.style.borderRadius = PI;
                   }
-                  switch (p.borderStyle.style) {
+                  switch (K.borderStyle.style) {
                     case A.AnnotationBorderStyleType.SOLID:
                       E.style.borderStyle = "solid";
                       break;
@@ -13690,103 +13690,103 @@ function requirePdf() {
                       E.style.borderBottomStyle = "solid";
                       break;
                   }
-                  const KI = p.borderColor || null;
+                  const KI = K.borderColor || null;
                   KI ? E.style.borderColor = A.Util.makeHexColor(KI[0] | 0, KI[1] | 0, KI[2] | 0) : E.style.borderWidth = 0;
                 }
                 E.style.left = `${100 * (RI[0] - aI) / YI}%`, E.style.top = `${100 * (RI[1] - GI) / uI}%`;
                 const {
                   rotation: pI
-                } = p;
-                return p.hasOwnCanvas || pI === 0 ? (E.style.width = `${100 * AI / YI}%`, E.style.height = `${100 * ZI / uI}%`) : this.setRotation(pI, E), E;
+                } = K;
+                return K.hasOwnCanvas || pI === 0 ? (E.style.width = `${100 * AI / YI}%`, E.style.height = `${100 * ZI / uI}%`) : this.setRotation(pI, E), E;
               }
               setRotation(N) {
-                let p = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : this.container;
-                const [z, L, E, AI] = this.viewport.viewBox, ZI = E - z, aI = AI - L, {
+                let K = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : this.container;
+                const [J, L, E, AI] = this.viewport.viewBox, ZI = E - J, aI = AI - L, {
                   width: GI,
-                  height: mI
+                  height: nI
                 } = m(this.data.rect);
                 let hI, YI;
-                N % 180 === 0 ? (hI = 100 * GI / ZI, YI = 100 * mI / aI) : (hI = 100 * mI / ZI, YI = 100 * GI / aI), p.style.width = `${hI}%`, p.style.height = `${YI}%`, p.setAttribute("data-main-rotation", (360 - N) % 360);
+                N % 180 === 0 ? (hI = 100 * GI / ZI, YI = 100 * nI / aI) : (hI = 100 * nI / ZI, YI = 100 * GI / aI), K.style.width = `${hI}%`, K.style.height = `${YI}%`, K.setAttribute("data-main-rotation", (360 - N) % 360);
               }
               get _commonActions() {
-                const N = (p, z, L) => {
-                  const E = L.detail[p];
-                  L.target.style[z] = d.ColorConverters[`${E[0]}_HTML`](E.slice(1));
+                const N = (K, J, L) => {
+                  const E = L.detail[K];
+                  L.target.style[J] = d.ColorConverters[`${E[0]}_HTML`](E.slice(1));
                 };
                 return (0, A.shadow)(this, "_commonActions", {
-                  display: (p) => {
-                    const z = p.detail.display % 2 === 1;
-                    this.container.style.visibility = z ? "hidden" : "visible", this.annotationStorage.setValue(this.data.id, {
-                      hidden: z,
-                      print: p.detail.display === 0 || p.detail.display === 3
+                  display: (K) => {
+                    const J = K.detail.display % 2 === 1;
+                    this.container.style.visibility = J ? "hidden" : "visible", this.annotationStorage.setValue(this.data.id, {
+                      hidden: J,
+                      print: K.detail.display === 0 || K.detail.display === 3
                     });
                   },
-                  print: (p) => {
+                  print: (K) => {
                     this.annotationStorage.setValue(this.data.id, {
-                      print: p.detail.print
+                      print: K.detail.print
                     });
                   },
-                  hidden: (p) => {
-                    this.container.style.visibility = p.detail.hidden ? "hidden" : "visible", this.annotationStorage.setValue(this.data.id, {
-                      hidden: p.detail.hidden
+                  hidden: (K) => {
+                    this.container.style.visibility = K.detail.hidden ? "hidden" : "visible", this.annotationStorage.setValue(this.data.id, {
+                      hidden: K.detail.hidden
                     });
                   },
-                  focus: (p) => {
-                    setTimeout(() => p.target.focus({
+                  focus: (K) => {
+                    setTimeout(() => K.target.focus({
                       preventScroll: !1
                     }), 0);
                   },
-                  userName: (p) => {
-                    p.target.title = p.detail.userName;
+                  userName: (K) => {
+                    K.target.title = K.detail.userName;
                   },
-                  readonly: (p) => {
-                    p.detail.readonly ? p.target.setAttribute("readonly", "") : p.target.removeAttribute("readonly");
+                  readonly: (K) => {
+                    K.detail.readonly ? K.target.setAttribute("readonly", "") : K.target.removeAttribute("readonly");
                   },
-                  required: (p) => {
-                    this._setRequired(p.target, p.detail.required);
+                  required: (K) => {
+                    this._setRequired(K.target, K.detail.required);
                   },
-                  bgColor: (p) => {
-                    N("bgColor", "backgroundColor", p);
+                  bgColor: (K) => {
+                    N("bgColor", "backgroundColor", K);
                   },
-                  fillColor: (p) => {
-                    N("fillColor", "backgroundColor", p);
+                  fillColor: (K) => {
+                    N("fillColor", "backgroundColor", K);
                   },
-                  fgColor: (p) => {
-                    N("fgColor", "color", p);
+                  fgColor: (K) => {
+                    N("fgColor", "color", K);
                   },
-                  textColor: (p) => {
-                    N("textColor", "color", p);
+                  textColor: (K) => {
+                    N("textColor", "color", K);
                   },
-                  borderColor: (p) => {
-                    N("borderColor", "borderColor", p);
+                  borderColor: (K) => {
+                    N("borderColor", "borderColor", K);
                   },
-                  strokeColor: (p) => {
-                    N("strokeColor", "borderColor", p);
+                  strokeColor: (K) => {
+                    N("strokeColor", "borderColor", K);
                   },
-                  rotation: (p) => {
-                    const z = p.detail.rotation;
-                    this.setRotation(z), this.annotationStorage.setValue(this.data.id, {
-                      rotation: z
+                  rotation: (K) => {
+                    const J = K.detail.rotation;
+                    this.setRotation(J), this.annotationStorage.setValue(this.data.id, {
+                      rotation: J
                     });
                   }
                 });
               }
-              _dispatchEventFromSandbox(N, p) {
-                const z = this._commonActions;
-                for (const L of Object.keys(p.detail)) {
-                  const E = N[L] || z[L];
-                  E && E(p);
+              _dispatchEventFromSandbox(N, K) {
+                const J = this._commonActions;
+                for (const L of Object.keys(K.detail)) {
+                  const E = N[L] || J[L];
+                  E && E(K);
                 }
               }
               _setDefaultPropertiesFromJS(N) {
                 if (!this.enableScripting)
                   return;
-                const p = this.annotationStorage.getRawValue(this.data.id);
-                if (!p)
+                const K = this.annotationStorage.getRawValue(this.data.id);
+                if (!K)
                   return;
-                const z = this._commonActions;
-                for (const [L, E] of Object.entries(p)) {
-                  const AI = z[L];
+                const J = this._commonActions;
+                for (const [L, E] of Object.entries(K)) {
+                  const AI = J[L];
                   if (AI) {
                     const ZI = {
                       detail: {
@@ -13794,7 +13794,7 @@ function requirePdf() {
                       },
                       target: N
                     };
-                    AI(ZI), delete p[L];
+                    AI(ZI), delete K[L];
                   }
                 }
               }
@@ -13802,37 +13802,37 @@ function requirePdf() {
                 let N = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : !1;
                 if (!this.data.quadPoints)
                   return null;
-                const p = [], z = this.data.rect;
+                const K = [], J = this.data.rect;
                 for (const L of this.data.quadPoints)
-                  this.data.rect = [L[2].x, L[2].y, L[1].x, L[1].y], p.push(this._createContainer(N));
-                return this.data.rect = z, p;
+                  this.data.rect = [L[2].x, L[2].y, L[1].x, L[1].y], K.push(this._createContainer(N));
+                return this.data.rect = J, K;
               }
-              _createPopup(N, p) {
-                let z = this.container;
-                this.quadrilaterals && (N = N || this.quadrilaterals, z = this.quadrilaterals[0]), N || (N = document.createElement("div"), N.className = "popupTriggerArea", z.append(N));
+              _createPopup(N, K) {
+                let J = this.container;
+                this.quadrilaterals && (N = N || this.quadrilaterals, J = this.quadrilaterals[0]), N || (N = document.createElement("div"), N.className = "popupTriggerArea", J.append(N));
                 const E = new M({
-                  container: z,
+                  container: J,
                   trigger: N,
-                  color: p.color,
-                  titleObj: p.titleObj,
-                  modificationDate: p.modificationDate,
-                  contentsObj: p.contentsObj,
-                  richText: p.richText,
+                  color: K.color,
+                  titleObj: K.titleObj,
+                  modificationDate: K.modificationDate,
+                  contentsObj: K.contentsObj,
+                  richText: K.richText,
                   hideWrapper: !0
                 }).render();
-                E.style.left = "100%", z.append(E);
+                E.style.left = "100%", J.append(E);
               }
               _renderQuadrilaterals(N) {
-                for (const p of this.quadrilaterals)
-                  p.className = N;
+                for (const K of this.quadrilaterals)
+                  K.className = N;
                 return this.quadrilaterals;
               }
               render() {
                 (0, A.unreachable)("Abstract method `AnnotationElement.render` called");
               }
               _getElementsByName(N) {
-                let p = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : null;
-                const z = [];
+                let K = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : null;
+                const J = [];
                 if (this._fieldObjects) {
                   const L = this._fieldObjects[N];
                   if (L)
@@ -13841,33 +13841,33 @@ function requirePdf() {
                       id: AI,
                       exportValues: ZI
                     } of L) {
-                      if (E === -1 || AI === p)
+                      if (E === -1 || AI === K)
                         continue;
                       const aI = typeof ZI == "string" ? ZI : null, GI = document.querySelector(`[data-element-id="${AI}"]`);
                       if (GI && !b.has(GI)) {
                         (0, A.warn)(`_getElementsByName - element not allowed: ${AI}`);
                         continue;
                       }
-                      z.push({
+                      J.push({
                         id: AI,
                         exportValue: aI,
                         domElement: GI
                       });
                     }
-                  return z;
+                  return J;
                 }
                 for (const L of document.getElementsByName(N)) {
                   const {
                     id: E,
                     exportValue: AI
                   } = L;
-                  E !== p && b.has(L) && z.push({
+                  E !== K && b.has(L) && J.push({
                     id: E,
                     exportValue: AI,
                     domElement: L
                   });
                 }
-                return z;
+                return J;
               }
               static get platform() {
                 const N = typeof navigator != "undefined" ? navigator.platform : "";
@@ -13879,42 +13879,42 @@ function requirePdf() {
             }
             class X extends Y {
               constructor(N) {
-                let p = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : null;
+                let K = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : null;
                 super(N, {
                   isRenderable: !0,
-                  ignoreBorder: !!(p != null && p.ignoreBorder),
+                  ignoreBorder: !!(K != null && K.ignoreBorder),
                   createQuadrilaterals: !0
                 }), this.isTooltipOnly = N.data.isTooltipOnly;
               }
               render() {
                 const {
                   data: N,
-                  linkService: p
-                } = this, z = document.createElement("a");
-                z.setAttribute("data-element-id", N.id);
+                  linkService: K
+                } = this, J = document.createElement("a");
+                J.setAttribute("data-element-id", N.id);
                 let L = !1;
-                return N.url ? (p.addLinkAttributes(z, N.url, N.newWindow), L = !0) : N.action ? (this._bindNamedAction(z, N.action), L = !0) : N.dest ? (this._bindLink(z, N.dest), L = !0) : (N.actions && (N.actions.Action || N.actions["Mouse Up"] || N.actions["Mouse Down"]) && this.enableScripting && this.hasJSActions && (this._bindJSAction(z, N), L = !0), N.resetForm ? (this._bindResetFormAction(z, N.resetForm), L = !0) : this.isTooltipOnly && !L && (this._bindLink(z, ""), L = !0)), this.quadrilaterals ? this._renderQuadrilaterals("linkAnnotation").map((E, AI) => {
-                  const ZI = AI === 0 ? z : z.cloneNode();
+                return N.url ? (K.addLinkAttributes(J, N.url, N.newWindow), L = !0) : N.action ? (this._bindNamedAction(J, N.action), L = !0) : N.dest ? (this._bindLink(J, N.dest), L = !0) : (N.actions && (N.actions.Action || N.actions["Mouse Up"] || N.actions["Mouse Down"]) && this.enableScripting && this.hasJSActions && (this._bindJSAction(J, N), L = !0), N.resetForm ? (this._bindResetFormAction(J, N.resetForm), L = !0) : this.isTooltipOnly && !L && (this._bindLink(J, ""), L = !0)), this.quadrilaterals ? this._renderQuadrilaterals("linkAnnotation").map((E, AI) => {
+                  const ZI = AI === 0 ? J : J.cloneNode();
                   return E.append(ZI), E;
-                }) : (this.container.className = "linkAnnotation", L && this.container.append(z), this.container);
+                }) : (this.container.className = "linkAnnotation", L && this.container.append(J), this.container);
               }
-              _bindLink(N, p) {
-                N.href = this.linkService.getDestinationHash(p), N.onclick = () => (p && this.linkService.goToDestination(p), !1), (p || p === "") && (N.className = "internalLink");
+              _bindLink(N, K) {
+                N.href = this.linkService.getDestinationHash(K), N.onclick = () => (K && this.linkService.goToDestination(K), !1), (K || K === "") && (N.className = "internalLink");
               }
-              _bindNamedAction(N, p) {
-                N.href = this.linkService.getAnchorUrl(""), N.onclick = () => (this.linkService.executeNamedAction(p), !1), N.className = "internalLink";
+              _bindNamedAction(N, K) {
+                N.href = this.linkService.getAnchorUrl(""), N.onclick = () => (this.linkService.executeNamedAction(K), !1), N.className = "internalLink";
               }
-              _bindJSAction(N, p) {
+              _bindJSAction(N, K) {
                 N.href = this.linkService.getAnchorUrl("");
-                const z = /* @__PURE__ */ new Map([["Action", "onclick"], ["Mouse Up", "onmouseup"], ["Mouse Down", "onmousedown"]]);
-                for (const L of Object.keys(p.actions)) {
-                  const E = z.get(L);
+                const J = /* @__PURE__ */ new Map([["Action", "onclick"], ["Mouse Up", "onmouseup"], ["Mouse Down", "onmousedown"]]);
+                for (const L of Object.keys(K.actions)) {
+                  const E = J.get(L);
                   E && (N[E] = () => {
                     var AI;
                     return (AI = this.linkService.eventBus) === null || AI === void 0 || AI.dispatch("dispatcheventinsandbox", {
                       source: this,
                       detail: {
-                        id: p.id,
+                        id: K.id,
                         name: L
                       }
                     }), !1;
@@ -13922,19 +13922,19 @@ function requirePdf() {
                 }
                 N.onclick || (N.onclick = () => !1), N.className = "internalLink";
               }
-              _bindResetFormAction(N, p) {
-                const z = N.onclick;
-                if (z || (N.href = this.linkService.getAnchorUrl("")), N.className = "internalLink", !this._fieldObjects) {
-                  (0, A.warn)('_bindResetFormAction - "resetForm" action not supported, ensure that the `fieldObjects` parameter is provided.'), z || (N.onclick = () => !1);
+              _bindResetFormAction(N, K) {
+                const J = N.onclick;
+                if (J || (N.href = this.linkService.getAnchorUrl("")), N.className = "internalLink", !this._fieldObjects) {
+                  (0, A.warn)('_bindResetFormAction - "resetForm" action not supported, ensure that the `fieldObjects` parameter is provided.'), J || (N.onclick = () => !1);
                   return;
                 }
                 N.onclick = () => {
-                  z && z();
+                  J && J();
                   const {
                     fields: L,
                     refs: E,
                     include: AI
-                  } = p, ZI = [];
+                  } = K, ZI = [];
                   if (L.length !== 0 || E.length !== 0) {
                     const hI = new Set(E);
                     for (const YI of L) {
@@ -13992,8 +13992,8 @@ function requirePdf() {
                     uI.dispatchEvent(new Event("resetform"));
                   }
                   if (this.enableScripting) {
-                    var mI;
-                    (mI = this.linkService.eventBus) === null || mI === void 0 || mI.dispatch("dispatcheventinsandbox", {
+                    var nI;
+                    (nI = this.linkService.eventBus) === null || nI === void 0 || nI.dispatch("dispatcheventinsandbox", {
                       source: this,
                       detail: {
                         id: "app",
@@ -14008,8 +14008,8 @@ function requirePdf() {
             }
             class r extends Y {
               constructor(N) {
-                var p, z, L;
-                const E = !!(N.data.hasPopup || (p = N.data.titleObj) !== null && p !== void 0 && p.str || (z = N.data.contentsObj) !== null && z !== void 0 && z.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
+                var K, J, L;
+                const E = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
                 super(N, {
                   isRenderable: E
                 });
@@ -14028,49 +14028,49 @@ function requirePdf() {
               }
               _getKeyModifier(N) {
                 const {
-                  isWin: p,
-                  isMac: z
+                  isWin: K,
+                  isMac: J
                 } = Y.platform;
-                return p && N.ctrlKey || z && N.metaKey;
+                return K && N.ctrlKey || J && N.metaKey;
               }
-              _setEventListener(N, p, z, L) {
-                p.includes("mouse") ? N.addEventListener(p, (E) => {
+              _setEventListener(N, K, J, L) {
+                K.includes("mouse") ? N.addEventListener(K, (E) => {
                   var AI;
                   (AI = this.linkService.eventBus) === null || AI === void 0 || AI.dispatch("dispatcheventinsandbox", {
                     source: this,
                     detail: {
                       id: this.data.id,
-                      name: z,
+                      name: J,
                       value: L(E),
                       shift: E.shiftKey,
                       modifier: this._getKeyModifier(E)
                     }
                   });
-                }) : N.addEventListener(p, (E) => {
+                }) : N.addEventListener(K, (E) => {
                   var AI;
                   (AI = this.linkService.eventBus) === null || AI === void 0 || AI.dispatch("dispatcheventinsandbox", {
                     source: this,
                     detail: {
                       id: this.data.id,
-                      name: z,
+                      name: J,
                       value: L(E)
                     }
                   });
                 });
               }
-              _setEventListeners(N, p, z) {
-                for (const [E, AI] of p) {
+              _setEventListeners(N, K, J) {
+                for (const [E, AI] of K) {
                   var L;
-                  (AI === "Action" || (L = this.data.actions) !== null && L !== void 0 && L[AI]) && this._setEventListener(N, E, AI, z);
+                  (AI === "Action" || (L = this.data.actions) !== null && L !== void 0 && L[AI]) && this._setEventListener(N, E, AI, J);
                 }
               }
               _setBackgroundColor(N) {
-                const p = this.data.backgroundColor || null;
-                N.style.backgroundColor = p === null ? "transparent" : A.Util.makeHexColor(p[0], p[1], p[2]);
+                const K = this.data.backgroundColor || null;
+                N.style.backgroundColor = K === null ? "transparent" : A.Util.makeHexColor(K[0], K[1], K[2]);
               }
               _setTextStyle(N) {
-                const p = ["left", "center", "right"], {
-                  fontColor: z
+                const K = ["left", "center", "right"], {
+                  fontColor: J
                 } = this.data.defaultAppearanceData, L = this.data.defaultAppearanceData.fontSize || G, E = N.style;
                 let AI;
                 if (this.data.multiLine) {
@@ -14080,36 +14080,36 @@ function requirePdf() {
                   const ZI = Math.abs(this.data.rect[3] - this.data.rect[1]);
                   AI = Math.min(L, Math.round(ZI / A.LINE_FACTOR));
                 }
-                E.fontSize = `calc(${AI}px * var(--scale-factor))`, E.color = A.Util.makeHexColor(z[0], z[1], z[2]), this.data.textAlignment !== null && (E.textAlign = p[this.data.textAlignment]);
+                E.fontSize = `calc(${AI}px * var(--scale-factor))`, E.color = A.Util.makeHexColor(J[0], J[1], J[2]), this.data.textAlignment !== null && (E.textAlign = K[this.data.textAlignment]);
               }
-              _setRequired(N, p) {
-                p ? N.setAttribute("required", !0) : N.removeAttribute("required"), N.setAttribute("aria-required", p);
+              _setRequired(N, K) {
+                K ? N.setAttribute("required", !0) : N.removeAttribute("required"), N.setAttribute("aria-required", K);
               }
             }
             class B extends h {
               constructor(N) {
-                const p = N.renderForms || !N.data.hasAppearance && !!N.data.fieldValue;
+                const K = N.renderForms || !N.data.hasAppearance && !!N.data.fieldValue;
                 super(N, {
-                  isRenderable: p
+                  isRenderable: K
                 });
               }
-              setPropertyOnSiblings(N, p, z, L) {
+              setPropertyOnSiblings(N, K, J, L) {
                 const E = this.annotationStorage;
                 for (const AI of this._getElementsByName(N.name, N.id))
-                  AI.domElement && (AI.domElement[p] = z), E.setValue(AI.id, {
-                    [L]: z
+                  AI.domElement && (AI.domElement[K] = J), E.setValue(AI.id, {
+                    [L]: J
                   });
               }
               render() {
-                const N = this.annotationStorage, p = this.data.id;
+                const N = this.annotationStorage, K = this.data.id;
                 this.container.className = "textWidgetAnnotation";
-                let z = null;
+                let J = null;
                 if (this.renderForms) {
-                  const E = N.getValue(p, {
+                  const E = N.getValue(K, {
                     value: this.data.fieldValue
                   });
                   let AI = E.formattedValue || E.value || "";
-                  const ZI = N.getValue(p, {
+                  const ZI = N.getValue(K, {
                     charLimit: this.data.maxLen
                   }).charLimit;
                   ZI && AI.length > ZI && (AI = AI.slice(0, ZI));
@@ -14118,30 +14118,30 @@ function requirePdf() {
                     formattedValue: null,
                     valueOnFocus: ""
                   };
-                  this.data.multiLine ? (z = document.createElement("textarea"), z.textContent = AI, this.data.doNotScroll && (z.style.overflowY = "hidden")) : (z = document.createElement("input"), z.type = "text", z.setAttribute("value", AI), this.data.doNotScroll && (z.style.overflowX = "hidden")), b.add(z), z.setAttribute("data-element-id", p), z.disabled = this.data.readOnly, z.name = this.data.fieldName, z.tabIndex = a, this._setRequired(z, this.data.required), ZI && (z.maxLength = ZI), z.addEventListener("input", (mI) => {
-                    N.setValue(p, {
-                      value: mI.target.value
-                    }), this.setPropertyOnSiblings(z, "value", mI.target.value, "value");
-                  }), z.addEventListener("resetform", (mI) => {
+                  this.data.multiLine ? (J = document.createElement("textarea"), J.textContent = AI, this.data.doNotScroll && (J.style.overflowY = "hidden")) : (J = document.createElement("input"), J.type = "text", J.setAttribute("value", AI), this.data.doNotScroll && (J.style.overflowX = "hidden")), b.add(J), J.setAttribute("data-element-id", K), J.disabled = this.data.readOnly, J.name = this.data.fieldName, J.tabIndex = a, this._setRequired(J, this.data.required), ZI && (J.maxLength = ZI), J.addEventListener("input", (nI) => {
+                    N.setValue(K, {
+                      value: nI.target.value
+                    }), this.setPropertyOnSiblings(J, "value", nI.target.value, "value");
+                  }), J.addEventListener("resetform", (nI) => {
                     var hI;
                     const YI = (hI = this.data.defaultFieldValue) !== null && hI !== void 0 ? hI : "";
-                    z.value = aI.userValue = YI, aI.formattedValue = null;
+                    J.value = aI.userValue = YI, aI.formattedValue = null;
                   });
-                  let GI = (mI) => {
+                  let GI = (nI) => {
                     const {
                       formattedValue: hI
                     } = aI;
-                    hI != null && (mI.target.value = hI), mI.target.scrollLeft = 0;
+                    hI != null && (nI.target.value = hI), nI.target.scrollLeft = 0;
                   };
                   if (this.enableScripting && this.hasJSActions) {
                     var L;
-                    z.addEventListener("focus", (hI) => {
+                    J.addEventListener("focus", (hI) => {
                       aI.userValue && (hI.target.value = aI.userValue), aI.valueOnFocus = hI.target.value;
-                    }), z.addEventListener("updatefromsandbox", (hI) => {
+                    }), J.addEventListener("updatefromsandbox", (hI) => {
                       const YI = {
                         value(uI) {
                           var RI;
-                          aI.userValue = (RI = uI.detail.value) !== null && RI !== void 0 ? RI : "", N.setValue(p, {
+                          aI.userValue = (RI = uI.detail.value) !== null && RI !== void 0 ? RI : "", N.setValue(K, {
                             value: aI.userValue.toString()
                           }), uI.target.value = aI.userValue;
                         },
@@ -14149,7 +14149,7 @@ function requirePdf() {
                           const {
                             formattedValue: RI
                           } = uI.detail;
-                          aI.formattedValue = RI, RI != null && uI.target !== document.activeElement && (uI.target.value = RI), N.setValue(p, {
+                          aI.formattedValue = RI, RI != null && uI.target !== document.activeElement && (uI.target.value = RI), N.setValue(K, {
                             formattedValue: RI
                           });
                         },
@@ -14169,12 +14169,12 @@ function requirePdf() {
                           }
                           MI.setAttribute("maxLength", pI);
                           let LI = aI.userValue;
-                          !LI || LI.length <= pI || (LI = LI.slice(0, pI), MI.value = aI.userValue = LI, N.setValue(p, {
+                          !LI || LI.length <= pI || (LI = LI.slice(0, pI), MI.value = aI.userValue = LI, N.setValue(K, {
                             value: LI
                           }), (RI = this.linkService.eventBus) === null || RI === void 0 || RI.dispatch("dispatcheventinsandbox", {
                             source: this,
                             detail: {
-                              id: p,
+                              id: K,
                               name: "Keystroke",
                               value: LI,
                               willCommit: !0,
@@ -14186,7 +14186,7 @@ function requirePdf() {
                         }
                       };
                       this._dispatchEventFromSandbox(YI, hI);
-                    }), z.addEventListener("keydown", (hI) => {
+                    }), J.addEventListener("keydown", (hI) => {
                       var YI;
                       let uI = -1;
                       if (hI.key === "Escape" ? uI = 0 : hI.key === "Enter" ? uI = 2 : hI.key === "Tab" && (uI = 3), uI === -1)
@@ -14197,7 +14197,7 @@ function requirePdf() {
                       aI.valueOnFocus !== RI && (aI.userValue = RI, (YI = this.linkService.eventBus) === null || YI === void 0 || YI.dispatch("dispatcheventinsandbox", {
                         source: this,
                         detail: {
-                          id: p,
+                          id: K,
                           name: "Keystroke",
                           value: RI,
                           willCommit: !0,
@@ -14207,8 +14207,8 @@ function requirePdf() {
                         }
                       }));
                     });
-                    const mI = GI;
-                    GI = null, z.addEventListener("blur", (hI) => {
+                    const nI = GI;
+                    GI = null, J.addEventListener("blur", (hI) => {
                       const {
                         value: YI
                       } = hI.target;
@@ -14217,7 +14217,7 @@ function requirePdf() {
                         (uI = this.linkService.eventBus) === null || uI === void 0 || uI.dispatch("dispatcheventinsandbox", {
                           source: this,
                           detail: {
-                            id: p,
+                            id: K,
                             name: "Keystroke",
                             value: YI,
                             willCommit: !0,
@@ -14227,8 +14227,8 @@ function requirePdf() {
                           }
                         });
                       }
-                      mI(hI);
-                    }), (L = this.data.actions) !== null && L !== void 0 && L.Keystroke && z.addEventListener("beforeinput", (hI) => {
+                      nI(hI);
+                    }), (L = this.data.actions) !== null && L !== void 0 && L.Keystroke && J.addEventListener("beforeinput", (hI) => {
                       var YI;
                       const {
                         data: uI,
@@ -14260,7 +14260,7 @@ function requirePdf() {
                       hI.preventDefault(), (YI = this.linkService.eventBus) === null || YI === void 0 || YI.dispatch("dispatcheventinsandbox", {
                         source: this,
                         detail: {
-                          id: p,
+                          id: K,
                           name: "Keystroke",
                           value: pI,
                           change: uI || "",
@@ -14269,15 +14269,15 @@ function requirePdf() {
                           selEnd: PI
                         }
                       });
-                    }), this._setEventListeners(z, [["focus", "Focus"], ["blur", "Blur"], ["mousedown", "Mouse Down"], ["mouseenter", "Mouse Enter"], ["mouseleave", "Mouse Exit"], ["mouseup", "Mouse Up"]], (hI) => hI.target.value);
+                    }), this._setEventListeners(J, [["focus", "Focus"], ["blur", "Blur"], ["mousedown", "Mouse Down"], ["mouseenter", "Mouse Enter"], ["mouseleave", "Mouse Exit"], ["mouseup", "Mouse Up"]], (hI) => hI.target.value);
                   }
-                  if (GI && z.addEventListener("blur", GI), this.data.comb) {
+                  if (GI && J.addEventListener("blur", GI), this.data.comb) {
                     const hI = (this.data.rect[2] - this.data.rect[0]) / ZI;
-                    z.classList.add("comb"), z.style.letterSpacing = `calc(${hI}px * var(--scale-factor) - 1ch)`;
+                    J.classList.add("comb"), J.style.letterSpacing = `calc(${hI}px * var(--scale-factor) - 1ch)`;
                   }
                 } else
-                  z = document.createElement("div"), z.textContent = this.data.fieldValue, z.style.verticalAlign = "middle", z.style.display = "table-cell";
-                return this._setTextStyle(z), this._setBackgroundColor(z), this._setDefaultPropertiesFromJS(z), this.container.append(z), this.container;
+                  J = document.createElement("div"), J.textContent = this.data.fieldValue, J.style.verticalAlign = "middle", J.style.display = "table-cell";
+                return this._setTextStyle(J), this._setBackgroundColor(J), this._setDefaultPropertiesFromJS(J), this.container.append(J), this.container;
               }
             }
             class u extends h {
@@ -14287,35 +14287,35 @@ function requirePdf() {
                 });
               }
               render() {
-                const N = this.annotationStorage, p = this.data, z = p.id;
-                let L = N.getValue(z, {
-                  value: p.exportValue === p.fieldValue
+                const N = this.annotationStorage, K = this.data, J = K.id;
+                let L = N.getValue(J, {
+                  value: K.exportValue === K.fieldValue
                 }).value;
-                typeof L == "string" && (L = L !== "Off", N.setValue(z, {
+                typeof L == "string" && (L = L !== "Off", N.setValue(J, {
                   value: L
                 })), this.container.className = "buttonWidgetAnnotation checkBox";
                 const E = document.createElement("input");
-                return b.add(E), E.setAttribute("data-element-id", z), E.disabled = p.readOnly, this._setRequired(E, this.data.required), E.type = "checkbox", E.name = p.fieldName, L && E.setAttribute("checked", !0), E.setAttribute("exportValue", p.exportValue), E.tabIndex = a, E.addEventListener("change", (AI) => {
+                return b.add(E), E.setAttribute("data-element-id", J), E.disabled = K.readOnly, this._setRequired(E, this.data.required), E.type = "checkbox", E.name = K.fieldName, L && E.setAttribute("checked", !0), E.setAttribute("exportValue", K.exportValue), E.tabIndex = a, E.addEventListener("change", (AI) => {
                   const {
                     name: ZI,
                     checked: aI
                   } = AI.target;
-                  for (const GI of this._getElementsByName(ZI, z)) {
-                    const mI = aI && GI.exportValue === p.exportValue;
-                    GI.domElement && (GI.domElement.checked = mI), N.setValue(GI.id, {
-                      value: mI
+                  for (const GI of this._getElementsByName(ZI, J)) {
+                    const nI = aI && GI.exportValue === K.exportValue;
+                    GI.domElement && (GI.domElement.checked = nI), N.setValue(GI.id, {
+                      value: nI
                     });
                   }
-                  N.setValue(z, {
+                  N.setValue(J, {
                     value: aI
                   });
                 }), E.addEventListener("resetform", (AI) => {
-                  const ZI = p.defaultFieldValue || "Off";
-                  AI.target.checked = ZI === p.exportValue;
+                  const ZI = K.defaultFieldValue || "Off";
+                  AI.target.checked = ZI === K.exportValue;
                 }), this.enableScripting && this.hasJSActions && (E.addEventListener("updatefromsandbox", (AI) => {
                   const ZI = {
                     value(aI) {
-                      aI.target.checked = aI.detail.value !== "Off", N.setValue(z, {
+                      aI.target.checked = aI.detail.value !== "Off", N.setValue(J, {
                         value: aI.target.checked
                       });
                     }
@@ -14332,37 +14332,37 @@ function requirePdf() {
               }
               render() {
                 this.container.className = "buttonWidgetAnnotation radioButton";
-                const N = this.annotationStorage, p = this.data, z = p.id;
-                let L = N.getValue(z, {
-                  value: p.fieldValue === p.buttonValue
+                const N = this.annotationStorage, K = this.data, J = K.id;
+                let L = N.getValue(J, {
+                  value: K.fieldValue === K.buttonValue
                 }).value;
-                typeof L == "string" && (L = L !== p.buttonValue, N.setValue(z, {
+                typeof L == "string" && (L = L !== K.buttonValue, N.setValue(J, {
                   value: L
                 }));
                 const E = document.createElement("input");
-                if (b.add(E), E.setAttribute("data-element-id", z), E.disabled = p.readOnly, this._setRequired(E, this.data.required), E.type = "radio", E.name = p.fieldName, L && E.setAttribute("checked", !0), E.tabIndex = a, E.addEventListener("change", (AI) => {
+                if (b.add(E), E.setAttribute("data-element-id", J), E.disabled = K.readOnly, this._setRequired(E, this.data.required), E.type = "radio", E.name = K.fieldName, L && E.setAttribute("checked", !0), E.tabIndex = a, E.addEventListener("change", (AI) => {
                   const {
                     name: ZI,
                     checked: aI
                   } = AI.target;
-                  for (const GI of this._getElementsByName(ZI, z))
+                  for (const GI of this._getElementsByName(ZI, J))
                     N.setValue(GI.id, {
                       value: !1
                     });
-                  N.setValue(z, {
+                  N.setValue(J, {
                     value: aI
                   });
                 }), E.addEventListener("resetform", (AI) => {
-                  const ZI = p.defaultFieldValue;
-                  AI.target.checked = ZI != null && ZI === p.buttonValue;
+                  const ZI = K.defaultFieldValue;
+                  AI.target.checked = ZI != null && ZI === K.buttonValue;
                 }), this.enableScripting && this.hasJSActions) {
-                  const AI = p.buttonValue;
+                  const AI = K.buttonValue;
                   E.addEventListener("updatefromsandbox", (ZI) => {
                     const aI = {
                       value: (GI) => {
-                        const mI = AI === GI.detail.value;
+                        const nI = AI === GI.detail.value;
                         for (const hI of this._getElementsByName(GI.target.name)) {
-                          const YI = mI && hI.id === z;
+                          const YI = nI && hI.id === J;
                           hI.domElement && (hI.domElement.checked = YI), N.setValue(hI.id, {
                             value: YI
                           });
@@ -14384,9 +14384,9 @@ function requirePdf() {
               render() {
                 const N = super.render();
                 N.className = "buttonWidgetAnnotation pushButton", this.data.alternativeText && (N.title = this.data.alternativeText);
-                const p = N.lastChild;
-                return this.enableScripting && this.hasJSActions && p && (this._setDefaultPropertiesFromJS(p), p.addEventListener("updatefromsandbox", (z) => {
-                  this._dispatchEventFromSandbox({}, z);
+                const K = N.lastChild;
+                return this.enableScripting && this.hasJSActions && K && (this._setDefaultPropertiesFromJS(K), K.addEventListener("updatefromsandbox", (J) => {
+                  this._dispatchEventFromSandbox({}, J);
                 })), N;
               }
             }
@@ -14398,19 +14398,19 @@ function requirePdf() {
               }
               render() {
                 this.container.className = "choiceWidgetAnnotation";
-                const N = this.annotationStorage, p = this.data.id, z = N.getValue(p, {
+                const N = this.annotationStorage, K = this.data.id, J = N.getValue(K, {
                   value: this.data.fieldValue
                 }), L = document.createElement("select");
-                b.add(L), L.setAttribute("data-element-id", p), L.disabled = this.data.readOnly, this._setRequired(L, this.data.required), L.name = this.data.fieldName, L.tabIndex = a;
+                b.add(L), L.setAttribute("data-element-id", K), L.disabled = this.data.readOnly, this._setRequired(L, this.data.required), L.name = this.data.fieldName, L.tabIndex = a;
                 let E = this.data.combo && this.data.options.length > 0;
                 this.data.combo || (L.size = this.data.options.length, this.data.multiSelect && (L.multiple = !0)), L.addEventListener("resetform", (GI) => {
-                  const mI = this.data.defaultFieldValue;
+                  const nI = this.data.defaultFieldValue;
                   for (const hI of L.options)
-                    hI.selected = hI.value === mI;
+                    hI.selected = hI.value === nI;
                 });
                 for (const GI of this.data.options) {
-                  const mI = document.createElement("option");
-                  mI.textContent = GI.displayValue, mI.value = GI.exportValue, z.value.includes(GI.exportValue) && (mI.setAttribute("selected", !0), E = !1), L.append(mI);
+                  const nI = document.createElement("option");
+                  nI.textContent = GI.displayValue, nI.value = GI.exportValue, J.value.includes(GI.exportValue) && (nI.setAttribute("selected", !0), E = !1), L.append(nI);
                 }
                 let AI = null;
                 if (E) {
@@ -14419,25 +14419,25 @@ function requirePdf() {
                     GI.remove(), L.removeEventListener("input", AI), AI = null;
                   }, L.addEventListener("input", AI);
                 }
-                const ZI = (GI, mI) => {
-                  const hI = mI ? "value" : "textContent", YI = GI.target.options;
+                const ZI = (GI, nI) => {
+                  const hI = nI ? "value" : "textContent", YI = GI.target.options;
                   return GI.target.multiple ? Array.prototype.filter.call(YI, (uI) => uI.selected).map((uI) => uI[hI]) : YI.selectedIndex === -1 ? null : YI[YI.selectedIndex][hI];
                 }, aI = (GI) => {
-                  const mI = GI.target.options;
-                  return Array.prototype.map.call(mI, (hI) => ({
+                  const nI = GI.target.options;
+                  return Array.prototype.map.call(nI, (hI) => ({
                     displayValue: hI.textContent,
                     exportValue: hI.value
                   }));
                 };
                 return this.enableScripting && this.hasJSActions ? (L.addEventListener("updatefromsandbox", (GI) => {
-                  const mI = {
+                  const nI = {
                     value(hI) {
                       var YI;
                       (YI = AI) === null || YI === void 0 || YI();
                       const uI = hI.detail.value, RI = new Set(Array.isArray(uI) ? uI : [uI]);
                       for (const pI of L.options)
                         pI.selected = RI.has(pI.value);
-                      N.setValue(p, {
+                      N.setValue(K, {
                         value: ZI(hI, !0)
                       });
                     },
@@ -14446,7 +14446,7 @@ function requirePdf() {
                     },
                     remove(hI) {
                       const YI = L.options, uI = hI.detail.remove;
-                      YI[uI].selected = !1, L.remove(uI), YI.length > 0 && Array.prototype.findIndex.call(YI, (pI) => pI.selected) === -1 && (YI[0].selected = !0), N.setValue(p, {
+                      YI[uI].selected = !1, L.remove(uI), YI.length > 0 && Array.prototype.findIndex.call(YI, (pI) => pI.selected) === -1 && (YI[0].selected = !0), N.setValue(K, {
                         value: ZI(hI, !0),
                         items: aI(hI)
                       });
@@ -14454,7 +14454,7 @@ function requirePdf() {
                     clear(hI) {
                       for (; L.length !== 0; )
                         L.remove(0);
-                      N.setValue(p, {
+                      N.setValue(K, {
                         value: null,
                         items: []
                       });
@@ -14465,7 +14465,7 @@ function requirePdf() {
                         displayValue: uI,
                         exportValue: RI
                       } = hI.detail.insert, pI = L.children[YI], MI = document.createElement("option");
-                      MI.textContent = uI, MI.value = RI, pI ? pI.before(MI) : L.append(MI), N.setValue(p, {
+                      MI.textContent = uI, MI.value = RI, pI ? pI.before(MI) : L.append(MI), N.setValue(K, {
                         value: ZI(hI, !0),
                         items: aI(hI)
                       });
@@ -14483,7 +14483,7 @@ function requirePdf() {
                         } = uI, MI = document.createElement("option");
                         MI.textContent = RI, MI.value = pI, L.append(MI);
                       }
-                      L.options.length > 0 && (L.options[0].selected = !0), N.setValue(p, {
+                      L.options.length > 0 && (L.options[0].selected = !0), N.setValue(K, {
                         value: ZI(hI, !0),
                         items: aI(hI)
                       });
@@ -14492,7 +14492,7 @@ function requirePdf() {
                       const YI = new Set(hI.detail.indices);
                       for (const uI of hI.target.options)
                         uI.selected = YI.has(uI.index);
-                      N.setValue(p, {
+                      N.setValue(K, {
                         value: ZI(hI, !0)
                       });
                     },
@@ -14500,16 +14500,16 @@ function requirePdf() {
                       hI.target.disabled = !hI.detail.editable;
                     }
                   };
-                  this._dispatchEventFromSandbox(mI, GI);
+                  this._dispatchEventFromSandbox(nI, GI);
                 }), L.addEventListener("input", (GI) => {
-                  var mI;
+                  var nI;
                   const hI = ZI(GI, !0), YI = ZI(GI, !1);
-                  N.setValue(p, {
+                  N.setValue(K, {
                     value: hI
-                  }), (mI = this.linkService.eventBus) === null || mI === void 0 || mI.dispatch("dispatcheventinsandbox", {
+                  }), (nI = this.linkService.eventBus) === null || nI === void 0 || nI.dispatch("dispatcheventinsandbox", {
                     source: this,
                     detail: {
-                      id: p,
+                      id: K,
                       name: "Keystroke",
                       value: YI,
                       changeEx: hI,
@@ -14519,7 +14519,7 @@ function requirePdf() {
                     }
                   });
                 }), this._setEventListeners(L, [["focus", "Focus"], ["blur", "Blur"], ["mousedown", "Mouse Down"], ["mouseenter", "Mouse Enter"], ["mouseleave", "Mouse Exit"], ["mouseup", "Mouse Up"], ["input", "Action"]], (GI) => GI.target.checked)) : L.addEventListener("input", function(GI) {
-                  N.setValue(p, {
+                  N.setValue(K, {
                     value: ZI(GI, !0)
                   });
                 }), this.data.combo && this._setTextStyle(L), this._setBackgroundColor(L), this._setDefaultPropertiesFromJS(L), this.container.append(L), this.container;
@@ -14527,8 +14527,8 @@ function requirePdf() {
             }
             class R extends Y {
               constructor(N) {
-                var p, z, L;
-                const E = !!((p = N.data.titleObj) !== null && p !== void 0 && p.str || (z = N.data.contentsObj) !== null && z !== void 0 && z.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
+                var K, J, L;
+                const E = !!((K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
                 super(N, {
                   isRenderable: E
                 });
@@ -14537,19 +14537,19 @@ function requirePdf() {
                 const N = ["Line", "Square", "Circle", "PolyLine", "Polygon", "Ink"];
                 if (this.container.className = "popupAnnotation", N.includes(this.data.parentType))
                   return this.container;
-                const p = `[data-annotation-id="${this.data.parentId}"]`, z = this.layer.querySelectorAll(p);
-                if (z.length === 0)
+                const K = `[data-annotation-id="${this.data.parentId}"]`, J = this.layer.querySelectorAll(K);
+                if (J.length === 0)
                   return this.container;
                 const L = new M({
                   container: this.container,
-                  trigger: Array.from(z),
+                  trigger: Array.from(J),
                   color: this.data.color,
                   titleObj: this.data.titleObj,
                   modificationDate: this.data.modificationDate,
                   contentsObj: this.data.contentsObj,
                   richText: this.data.richText
-                }), E = this.page, AI = A.Util.normalizeRect([this.data.parentRect[0], E.view[3] - this.data.parentRect[1] + E.view[1], this.data.parentRect[2], E.view[3] - this.data.parentRect[3] + E.view[1]]), ZI = AI[0] + this.data.parentRect[2] - this.data.parentRect[0], aI = AI[1], [GI, mI, hI, YI] = this.viewport.viewBox, uI = hI - GI, RI = YI - mI;
-                return this.container.style.left = `${100 * (ZI - GI) / uI}%`, this.container.style.top = `${100 * (aI - mI) / RI}%`, this.container.append(L.render()), this.container;
+                }), E = this.page, AI = A.Util.normalizeRect([this.data.parentRect[0], E.view[3] - this.data.parentRect[1] + E.view[1], this.data.parentRect[2], E.view[3] - this.data.parentRect[3] + E.view[1]]), ZI = AI[0] + this.data.parentRect[2] - this.data.parentRect[0], aI = AI[1], [GI, nI, hI, YI] = this.viewport.viewBox, uI = hI - GI, RI = YI - nI;
+                return this.container.style.left = `${100 * (ZI - GI) / uI}%`, this.container.style.top = `${100 * (aI - nI) / RI}%`, this.container.append(L.render()), this.container;
               }
             }
             class M {
@@ -14557,15 +14557,15 @@ function requirePdf() {
                 this.container = N.container, this.trigger = N.trigger, this.color = N.color, this.titleObj = N.titleObj, this.modificationDate = N.modificationDate, this.contentsObj = N.contentsObj, this.richText = N.richText, this.hideWrapper = N.hideWrapper || !1, this.pinned = !1;
               }
               render() {
-                var N, p;
+                var N, K;
                 const L = document.createElement("div");
                 L.className = "popupWrapper", this.hideElement = this.hideWrapper ? L : this.container, this.hideElement.hidden = !0;
                 const E = document.createElement("div");
                 E.className = "popup";
                 const AI = this.color;
                 if (AI) {
-                  const GI = 0.7 * (255 - AI[0]) + AI[0], mI = 0.7 * (255 - AI[1]) + AI[1], hI = 0.7 * (255 - AI[2]) + AI[2];
-                  E.style.backgroundColor = A.Util.makeHexColor(GI | 0, mI | 0, hI | 0);
+                  const GI = 0.7 * (255 - AI[0]) + AI[0], nI = 0.7 * (255 - AI[1]) + AI[1], hI = 0.7 * (255 - AI[2]) + AI[2];
+                  E.style.backgroundColor = A.Util.makeHexColor(GI | 0, nI | 0, hI | 0);
                 }
                 const ZI = document.createElement("h1");
                 ZI.dir = this.titleObj.dir, ZI.textContent = this.titleObj.str, E.append(ZI);
@@ -14577,7 +14577,7 @@ function requirePdf() {
                     time: aI.toLocaleTimeString()
                   }), E.append(GI);
                 }
-                if ((N = this.richText) !== null && N !== void 0 && N.str && (!((p = this.contentsObj) !== null && p !== void 0 && p.str) || this.contentsObj.str === this.richText.str))
+                if ((N = this.richText) !== null && N !== void 0 && N.str && (!((K = this.contentsObj) !== null && K !== void 0 && K.str) || this.contentsObj.str === this.richText.str))
                   c.XfaLayer.render({
                     xfaHtml: this.richText.html,
                     intent: "richText",
@@ -14594,12 +14594,12 @@ function requirePdf() {
               }
               _formatContents(N) {
                 let {
-                  str: p,
-                  dir: z
+                  str: K,
+                  dir: J
                 } = N;
                 const L = document.createElement("p");
-                L.className = "popupContent", L.dir = z;
-                const E = p.split(/(?:\r\n?|\n)/);
+                L.className = "popupContent", L.dir = J;
+                const E = K.split(/(?:\r\n?|\n)/);
                 for (let AI = 0, ZI = E.length; AI < ZI; ++AI) {
                   const aI = E[AI];
                   L.append(document.createTextNode(aI)), AI < ZI - 1 && L.append(document.createElement("br"));
@@ -14618,8 +14618,8 @@ function requirePdf() {
             }
             class k extends Y {
               constructor(N) {
-                var p, z, L;
-                const E = !!(N.data.hasPopup || (p = N.data.titleObj) !== null && p !== void 0 && p.str || (z = N.data.contentsObj) !== null && z !== void 0 && z.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
+                var K, J, L;
+                const E = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
                 super(N, {
                   isRenderable: E,
                   ignoreBorder: !0
@@ -14629,9 +14629,9 @@ function requirePdf() {
                 if (this.container.className = "freeTextAnnotation", this.textContent) {
                   const N = document.createElement("div");
                   N.className = "annotationTextContent", N.setAttribute("role", "comment");
-                  for (const p of this.textContent) {
-                    const z = document.createElement("span");
-                    z.textContent = p, N.append(z);
+                  for (const K of this.textContent) {
+                    const J = document.createElement("span");
+                    J.textContent = K, N.append(J);
                   }
                   this.container.append(N);
                 }
@@ -14640,8 +14640,8 @@ function requirePdf() {
             }
             class S extends Y {
               constructor(N) {
-                var p, z, L;
-                const E = !!(N.data.hasPopup || (p = N.data.titleObj) !== null && p !== void 0 && p.str || (z = N.data.contentsObj) !== null && z !== void 0 && z.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
+                var K, J, L;
+                const E = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
                 super(N, {
                   isRenderable: E,
                   ignoreBorder: !0
@@ -14650,16 +14650,16 @@ function requirePdf() {
               render() {
                 this.container.className = "lineAnnotation";
                 const N = this.data, {
-                  width: p,
-                  height: z
-                } = m(N.rect), L = this.svgFactory.create(p, z, !0), E = this.svgFactory.createElement("svg:line");
+                  width: K,
+                  height: J
+                } = m(N.rect), L = this.svgFactory.create(K, J, !0), E = this.svgFactory.createElement("svg:line");
                 return E.setAttribute("x1", N.rect[2] - N.lineCoordinates[0]), E.setAttribute("y1", N.rect[3] - N.lineCoordinates[1]), E.setAttribute("x2", N.rect[2] - N.lineCoordinates[2]), E.setAttribute("y2", N.rect[3] - N.lineCoordinates[3]), E.setAttribute("stroke-width", N.borderStyle.width || 1), E.setAttribute("stroke", "transparent"), E.setAttribute("fill", "transparent"), L.append(E), this.container.append(L), this._createPopup(E, N), this.container;
               }
             }
-            class _ extends Y {
+            class q extends Y {
               constructor(N) {
-                var p, z, L;
-                const E = !!(N.data.hasPopup || (p = N.data.titleObj) !== null && p !== void 0 && p.str || (z = N.data.contentsObj) !== null && z !== void 0 && z.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
+                var K, J, L;
+                const E = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
                 super(N, {
                   isRenderable: E,
                   ignoreBorder: !0
@@ -14668,16 +14668,16 @@ function requirePdf() {
               render() {
                 this.container.className = "squareAnnotation";
                 const N = this.data, {
-                  width: p,
-                  height: z
-                } = m(N.rect), L = this.svgFactory.create(p, z, !0), E = N.borderStyle.width, AI = this.svgFactory.createElement("svg:rect");
-                return AI.setAttribute("x", E / 2), AI.setAttribute("y", E / 2), AI.setAttribute("width", p - E), AI.setAttribute("height", z - E), AI.setAttribute("stroke-width", E || 1), AI.setAttribute("stroke", "transparent"), AI.setAttribute("fill", "transparent"), L.append(AI), this.container.append(L), this._createPopup(AI, N), this.container;
+                  width: K,
+                  height: J
+                } = m(N.rect), L = this.svgFactory.create(K, J, !0), E = N.borderStyle.width, AI = this.svgFactory.createElement("svg:rect");
+                return AI.setAttribute("x", E / 2), AI.setAttribute("y", E / 2), AI.setAttribute("width", K - E), AI.setAttribute("height", J - E), AI.setAttribute("stroke-width", E || 1), AI.setAttribute("stroke", "transparent"), AI.setAttribute("fill", "transparent"), L.append(AI), this.container.append(L), this._createPopup(AI, N), this.container;
               }
             }
             class U extends Y {
               constructor(N) {
-                var p, z, L;
-                const E = !!(N.data.hasPopup || (p = N.data.titleObj) !== null && p !== void 0 && p.str || (z = N.data.contentsObj) !== null && z !== void 0 && z.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
+                var K, J, L;
+                const E = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
                 super(N, {
                   isRenderable: E,
                   ignoreBorder: !0
@@ -14686,16 +14686,16 @@ function requirePdf() {
               render() {
                 this.container.className = "circleAnnotation";
                 const N = this.data, {
-                  width: p,
-                  height: z
-                } = m(N.rect), L = this.svgFactory.create(p, z, !0), E = N.borderStyle.width, AI = this.svgFactory.createElement("svg:ellipse");
-                return AI.setAttribute("cx", p / 2), AI.setAttribute("cy", z / 2), AI.setAttribute("rx", p / 2 - E / 2), AI.setAttribute("ry", z / 2 - E / 2), AI.setAttribute("stroke-width", E || 1), AI.setAttribute("stroke", "transparent"), AI.setAttribute("fill", "transparent"), L.append(AI), this.container.append(L), this._createPopup(AI, N), this.container;
+                  width: K,
+                  height: J
+                } = m(N.rect), L = this.svgFactory.create(K, J, !0), E = N.borderStyle.width, AI = this.svgFactory.createElement("svg:ellipse");
+                return AI.setAttribute("cx", K / 2), AI.setAttribute("cy", J / 2), AI.setAttribute("rx", K / 2 - E / 2), AI.setAttribute("ry", J / 2 - E / 2), AI.setAttribute("stroke-width", E || 1), AI.setAttribute("stroke", "transparent"), AI.setAttribute("fill", "transparent"), L.append(AI), this.container.append(L), this._createPopup(AI, N), this.container;
               }
             }
             class $ extends Y {
               constructor(N) {
-                var p, z, L;
-                const E = !!(N.data.hasPopup || (p = N.data.titleObj) !== null && p !== void 0 && p.str || (z = N.data.contentsObj) !== null && z !== void 0 && z.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
+                var K, J, L;
+                const E = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
                 super(N, {
                   isRenderable: E,
                   ignoreBorder: !0
@@ -14704,9 +14704,9 @@ function requirePdf() {
               render() {
                 this.container.className = this.containerClassName;
                 const N = this.data, {
-                  width: p,
-                  height: z
-                } = m(N.rect), L = this.svgFactory.create(p, z, !0);
+                  width: K,
+                  height: J
+                } = m(N.rect), L = this.svgFactory.create(K, J, !0);
                 let E = [];
                 for (const ZI of N.vertices) {
                   const aI = ZI.x - N.rect[0], GI = N.rect[3] - ZI.y;
@@ -14724,8 +14724,8 @@ function requirePdf() {
             }
             class O extends Y {
               constructor(N) {
-                var p, z, L;
-                const E = !!(N.data.hasPopup || (p = N.data.titleObj) !== null && p !== void 0 && p.str || (z = N.data.contentsObj) !== null && z !== void 0 && z.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
+                var K, J, L;
+                const E = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
                 super(N, {
                   isRenderable: E,
                   ignoreBorder: !0
@@ -14737,8 +14737,8 @@ function requirePdf() {
             }
             class v extends Y {
               constructor(N) {
-                var p, z, L;
-                const E = !!(N.data.hasPopup || (p = N.data.titleObj) !== null && p !== void 0 && p.str || (z = N.data.contentsObj) !== null && z !== void 0 && z.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
+                var K, J, L;
+                const E = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
                 super(N, {
                   isRenderable: E,
                   ignoreBorder: !0
@@ -14747,14 +14747,14 @@ function requirePdf() {
               render() {
                 this.container.className = this.containerClassName;
                 const N = this.data, {
-                  width: p,
-                  height: z
-                } = m(N.rect), L = this.svgFactory.create(p, z, !0);
+                  width: K,
+                  height: J
+                } = m(N.rect), L = this.svgFactory.create(K, J, !0);
                 for (const E of N.inkLists) {
                   let AI = [];
                   for (const aI of E) {
-                    const GI = aI.x - N.rect[0], mI = N.rect[3] - aI.y;
-                    AI.push(`${GI},${mI}`);
+                    const GI = aI.x - N.rect[0], nI = N.rect[3] - aI.y;
+                    AI.push(`${GI},${nI}`);
                   }
                   AI = AI.join(" ");
                   const ZI = this.svgFactory.createElement(this.svgElementName);
@@ -14765,8 +14765,8 @@ function requirePdf() {
             }
             class j extends Y {
               constructor(N) {
-                var p, z, L;
-                const E = !!(N.data.hasPopup || (p = N.data.titleObj) !== null && p !== void 0 && p.str || (z = N.data.contentsObj) !== null && z !== void 0 && z.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
+                var K, J, L;
+                const E = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
                 super(N, {
                   isRenderable: E,
                   ignoreBorder: !0,
@@ -14777,10 +14777,10 @@ function requirePdf() {
                 return this.data.hasPopup || this._createPopup(null, this.data), this.quadrilaterals ? this._renderQuadrilaterals("highlightAnnotation") : (this.container.className = "highlightAnnotation", this.container);
               }
             }
-            class J extends Y {
+            class z extends Y {
               constructor(N) {
-                var p, z, L;
-                const E = !!(N.data.hasPopup || (p = N.data.titleObj) !== null && p !== void 0 && p.str || (z = N.data.contentsObj) !== null && z !== void 0 && z.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
+                var K, J, L;
+                const E = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
                 super(N, {
                   isRenderable: E,
                   ignoreBorder: !0,
@@ -14793,8 +14793,8 @@ function requirePdf() {
             }
             class lI extends Y {
               constructor(N) {
-                var p, z, L;
-                const E = !!(N.data.hasPopup || (p = N.data.titleObj) !== null && p !== void 0 && p.str || (z = N.data.contentsObj) !== null && z !== void 0 && z.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
+                var K, J, L;
+                const E = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
                 super(N, {
                   isRenderable: E,
                   ignoreBorder: !0,
@@ -14805,10 +14805,10 @@ function requirePdf() {
                 return this.data.hasPopup || this._createPopup(null, this.data), this.quadrilaterals ? this._renderQuadrilaterals("squigglyAnnotation") : (this.container.className = "squigglyAnnotation", this.container);
               }
             }
-            class dI extends Y {
+            class oI extends Y {
               constructor(N) {
-                var p, z, L;
-                const E = !!(N.data.hasPopup || (p = N.data.titleObj) !== null && p !== void 0 && p.str || (z = N.data.contentsObj) !== null && z !== void 0 && z.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
+                var K, J, L;
+                const E = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
                 super(N, {
                   isRenderable: E,
                   ignoreBorder: !0,
@@ -14819,10 +14819,10 @@ function requirePdf() {
                 return this.data.hasPopup || this._createPopup(null, this.data), this.quadrilaterals ? this._renderQuadrilaterals("strikeoutAnnotation") : (this.container.className = "strikeoutAnnotation", this.container);
               }
             }
-            class wI extends Y {
+            class mI extends Y {
               constructor(N) {
-                var p, z, L;
-                const E = !!(N.data.hasPopup || (p = N.data.titleObj) !== null && p !== void 0 && p.str || (z = N.data.contentsObj) !== null && z !== void 0 && z.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
+                var K, J, L;
+                const E = !!(N.data.hasPopup || (K = N.data.titleObj) !== null && K !== void 0 && K.str || (J = N.data.contentsObj) !== null && J !== void 0 && J.str || (L = N.data.richText) !== null && L !== void 0 && L.str);
                 super(N, {
                   isRenderable: E,
                   ignoreBorder: !0
@@ -14834,25 +14834,25 @@ function requirePdf() {
             }
             class BI extends Y {
               constructor(N) {
-                var p;
+                var K;
                 super(N, {
                   isRenderable: !0
                 });
                 const {
-                  filename: z,
+                  filename: J,
                   content: L
                 } = this.data.file;
-                this.filename = (0, l.getFilenameFromUrl)(z), this.content = L, (p = this.linkService.eventBus) === null || p === void 0 || p.dispatch("fileattachmentannotation", {
+                this.filename = (0, l.getFilenameFromUrl)(J), this.content = L, (K = this.linkService.eventBus) === null || K === void 0 || K.dispatch("fileattachmentannotation", {
                   source: this,
-                  filename: z,
+                  filename: J,
                   content: L
                 });
               }
               render() {
-                var N, p;
+                var N, K;
                 this.container.className = "fileAttachmentAnnotation";
-                const z = document.createElement("div");
-                return z.className = "popupTriggerArea", z.addEventListener("dblclick", this._download.bind(this)), !this.data.hasPopup && ((N = this.data.titleObj) !== null && N !== void 0 && N.str || (p = this.data.contentsObj) !== null && p !== void 0 && p.str || this.data.richText) && this._createPopup(z, this.data), this.container.append(z), this.container;
+                const J = document.createElement("div");
+                return J.className = "popupTriggerArea", J.addEventListener("dblclick", this._download.bind(this)), !this.data.hasPopup && ((N = this.data.titleObj) !== null && N !== void 0 && N.str || (K = this.data.contentsObj) !== null && K !== void 0 && K.str || this.data.richText) && this._createPopup(J, this.data), this.container.append(J), this.container;
               }
               _download() {
                 var N;
@@ -14862,25 +14862,25 @@ function requirePdf() {
             class gI {
               static render(N) {
                 const {
-                  annotations: p,
-                  div: z,
+                  annotations: K,
+                  div: J,
                   viewport: L,
                   accessibilityManager: E
                 } = N;
-                Z(this, gI, H).call(this, z, L);
+                Z(this, gI, H).call(this, J, L);
                 let AI = 0;
-                for (const ZI of p) {
+                for (const ZI of K) {
                   if (ZI.annotationType !== A.AnnotationType.POPUP) {
                     const {
                       width: GI,
-                      height: mI
+                      height: nI
                     } = m(ZI.rect);
-                    if (GI <= 0 || mI <= 0)
+                    if (GI <= 0 || nI <= 0)
                       continue;
                   }
                   const aI = V.create({
                     data: ZI,
-                    layer: z,
+                    layer: J,
                     page: N.page,
                     viewport: L,
                     linkService: N.linkService,
@@ -14899,49 +14899,49 @@ function requirePdf() {
                   if (aI.isRenderable) {
                     const GI = aI.render();
                     if (ZI.hidden && (GI.style.visibility = "hidden"), Array.isArray(GI))
-                      for (const mI of GI)
-                        mI.style.zIndex = AI++, Z(gI, gI, K).call(gI, mI, ZI.id, z, E);
+                      for (const nI of GI)
+                        nI.style.zIndex = AI++, Z(gI, gI, p).call(gI, nI, ZI.id, J, E);
                     else
-                      GI.style.zIndex = AI++, aI instanceof R ? z.prepend(GI) : Z(gI, gI, K).call(gI, GI, ZI.id, z, E);
+                      GI.style.zIndex = AI++, aI instanceof R ? J.prepend(GI) : Z(gI, gI, p).call(gI, GI, ZI.id, J, E);
                   }
                 }
-                Z(this, gI, Q).call(this, z, N.annotationCanvasMap);
+                Z(this, gI, Q).call(this, J, N.annotationCanvasMap);
               }
               static update(N) {
                 const {
-                  annotationCanvasMap: p,
-                  div: z,
+                  annotationCanvasMap: K,
+                  div: J,
                   viewport: L
                 } = N;
-                Z(this, gI, H).call(this, z, L), Z(this, gI, Q).call(this, z, p), z.hidden = !1;
+                Z(this, gI, H).call(this, J, L), Z(this, gI, Q).call(this, J, K), J.hidden = !1;
               }
             }
             g.AnnotationLayer = gI;
-            function K(T, N, p, z) {
+            function p(T, N, K, J) {
               const L = T.firstChild || T;
-              L.id = `${l.AnnotationPrefix}${N}`, p.append(T), z == null || z.moveElementInDOM(p, T, L, !1);
+              L.id = `${l.AnnotationPrefix}${N}`, K.append(T), J == null || J.moveElementInDOM(K, T, L, !1);
             }
             function H(T, N) {
               let {
-                width: p,
-                height: z,
+                width: K,
+                height: J,
                 rotation: L
               } = N;
               const {
                 style: E
-              } = T, AI = L % 180 !== 0, ZI = Math.floor(p) + "px", aI = Math.floor(z) + "px";
+              } = T, AI = L % 180 !== 0, ZI = Math.floor(K) + "px", aI = Math.floor(J) + "px";
               E.width = AI ? aI : ZI, E.height = AI ? ZI : aI, T.setAttribute("data-main-rotation", L);
             }
             function Q(T, N) {
               if (N) {
-                for (const [p, z] of N) {
-                  const L = T.querySelector(`[data-annotation-id="${p}"]`);
+                for (const [K, J] of N) {
+                  const L = T.querySelector(`[data-annotation-id="${K}"]`);
                   if (!L)
                     continue;
                   const {
                     firstChild: E
                   } = L;
-                  E ? E.nodeName === "CANVAS" ? E.replaceWith(z) : E.before(z) : L.append(z);
+                  E ? E.nodeName === "CANVAS" ? E.replaceWith(J) : E.before(J) : L.append(J);
                 }
                 N.clear();
               }
@@ -15215,9 +15215,9 @@ function requirePdf() {
               let k = Math.atan2(M[1], M[0]);
               const S = t[u.fontName];
               S.vertical && (k += Math.PI / 2);
-              const _ = Math.hypot(M[2], M[3]), U = _ * a(S.fontFamily, n);
+              const q = Math.hypot(M[2], M[3]), U = q * a(S.fontFamily, n);
               let $, iI;
-              k === 0 ? ($ = M[4], iI = M[5] - U) : ($ = M[4] + U * Math.sin(k), iI = M[5] - U * Math.cos(k)), y.style.left = `${$}px`, y.style.top = `${iI}px`, y.style.fontSize = `${_}px`, y.style.fontFamily = S.fontFamily, R.fontSize = _, y.setAttribute("role", "presentation"), y.textContent = u.str, y.dir = u.dir, B._fontInspectorEnabled && (y.dataset.fontName = u.fontName), k !== 0 && (R.angle = k * (180 / Math.PI));
+              k === 0 ? ($ = M[4], iI = M[5] - U) : ($ = M[4] + U * Math.sin(k), iI = M[5] - U * Math.cos(k)), y.style.left = `${$}px`, y.style.top = `${iI}px`, y.style.fontSize = `${q}px`, y.style.fontFamily = S.fontFamily, R.fontSize = q, y.setAttribute("role", "presentation"), y.textContent = u.str, y.dir = u.dir, B._fontInspectorEnabled && (y.dataset.fontName = u.fontName), k !== 0 && (R.angle = k * (180 / Math.PI));
               let O = !1;
               if (u.str.length > 1 || B._enhanceTextSelection && o.test(u.str))
                 O = !0;
@@ -15228,16 +15228,16 @@ function requirePdf() {
               if (O && (S.vertical ? R.canvasWidth = u.height * B._viewport.scale : R.canvasWidth = u.width * B._viewport.scale), B._textDivProperties.set(y, R), B._textContentStream && B._layoutText(y), B._enhanceTextSelection && R.hasText) {
                 let v = 1, j = 0;
                 k !== 0 && (v = Math.cos(k), j = Math.sin(k));
-                const J = (S.vertical ? u.height : u.width) * B._viewport.scale, lI = _;
-                let dI, wI;
-                k !== 0 ? (dI = [v, j, -j, v, $, iI], wI = A.Util.getAxialAlignedBoundingBox([0, 0, J, lI], dI)) : wI = [$, iI, $ + J, iI + lI], B._bounds.push({
-                  left: wI[0],
-                  top: wI[1],
-                  right: wI[2],
-                  bottom: wI[3],
+                const z = (S.vertical ? u.height : u.width) * B._viewport.scale, lI = q;
+                let oI, mI;
+                k !== 0 ? (oI = [v, j, -j, v, $, iI], mI = A.Util.getAxialAlignedBoundingBox([0, 0, z, lI], oI)) : mI = [$, iI, $ + z, iI + lI], B._bounds.push({
+                  left: mI[0],
+                  top: mI[1],
+                  right: mI[2],
+                  bottom: mI[3],
                   div: y,
-                  size: [J, lI],
-                  m: dI
+                  size: [z, lI],
+                  m: oI
                 });
               }
             }
@@ -15270,9 +15270,9 @@ function requirePdf() {
                   M.paddingLeft = u[y].left - n[y].left, M.paddingTop = u[y].top - n[y].top, M.paddingRight = n[y].right - u[y].right, M.paddingBottom = n[y].bottom - u[y].bottom, B._textDivProperties.set(R, M);
                   continue;
                 }
-                const k = n[y], S = u[y], _ = S.m, U = _[0], $ = _[1], iI = [[0, 0], [0, S.size[1]], [S.size[0], 0], S.size], O = new Float64Array(64);
-                for (let j = 0, J = iI.length; j < J; j++) {
-                  const lI = A.Util.applyTransform(iI[j], _);
+                const k = n[y], S = u[y], q = S.m, U = q[0], $ = q[1], iI = [[0, 0], [0, S.size[1]], [S.size[0], 0], S.size], O = new Float64Array(64);
+                for (let j = 0, z = iI.length; j < z; j++) {
+                  const lI = A.Util.applyTransform(iI[j], q);
                   O[j + 0] = U && (k.left - lI[0]) / U, O[j + 4] = $ && (k.top - lI[1]) / $, O[j + 8] = U && (k.right - lI[0]) / U, O[j + 12] = $ && (k.bottom - lI[1]) / $, O[j + 16] = $ && (k.left - lI[0]) / -$, O[j + 20] = U && (k.top - lI[1]) / U, O[j + 24] = $ && (k.right - lI[0]) / -$, O[j + 28] = U && (k.bottom - lI[1]) / U, O[j + 32] = U && (k.left - lI[0]) / -U, O[j + 36] = $ && (k.top - lI[1]) / -$, O[j + 40] = U && (k.right - lI[0]) / -U, O[j + 44] = $ && (k.bottom - lI[1]) / -$, O[j + 48] = $ && (k.left - lI[0]) / $, O[j + 52] = U && (k.top - lI[1]) / -U, O[j + 56] = $ && (k.right - lI[0]) / $, O[j + 60] = U && (k.bottom - lI[1]) / -U;
                 }
                 const v = 1 + Math.min(Math.abs(U), Math.abs($));
@@ -15336,18 +15336,18 @@ function requirePdf() {
                 let M = n.length - 1;
                 for (; M >= 0 && n[M].start >= y.y2; )
                   M--;
-                let k, S, _, U, $ = -1 / 0;
-                for (_ = R; _ <= M; _++) {
-                  k = n[_], S = k.boundary;
+                let k, S, q, U, $ = -1 / 0;
+                for (q = R; q <= M; q++) {
+                  k = n[q], S = k.boundary;
                   let v;
                   S.x2 > y.x1 ? v = S.index > y.index ? S.x1New : y.x1 : S.x2New === void 0 ? v = (S.x2 + y.x1) / 2 : v = S.x2New, v > $ && ($ = v);
                 }
-                for (y.x1New = $, _ = R; _ <= M; _++)
-                  k = n[_], S = k.boundary, S.x2New === void 0 ? S.x2 > y.x1 ? S.index > y.index && (S.x2New = S.x2) : S.x2New = $ : S.x2New > $ && (S.x2New = Math.max($, S.x2));
+                for (y.x1New = $, q = R; q <= M; q++)
+                  k = n[q], S = k.boundary, S.x2New === void 0 ? S.x2 > y.x1 ? S.index > y.index && (S.x2New = S.x2) : S.x2New = $ : S.x2New > $ && (S.x2New = Math.max($, S.x2));
                 const iI = [];
                 let O = null;
-                for (_ = R; _ <= M; _++) {
-                  k = n[_], S = k.boundary;
+                for (q = R; q <= M; q++) {
+                  k = n[q], S = k.boundary;
                   const v = S.x2 > y.x2 ? S : y;
                   O === v ? iI.at(-1).end = k.end : (iI.push({
                     start: k.start,
@@ -15363,8 +15363,8 @@ function requirePdf() {
                   start: y.y2,
                   end: n[M].end,
                   boundary: n[M].boundary
-                })), _ = R; _ <= M; _++) {
-                  if (k = n[_], S = k.boundary, S.x2New !== void 0)
+                })), q = R; q <= M; q++) {
+                  if (k = n[q], S = k.boundary, S.x2New !== void 0)
                     continue;
                   let v = !1;
                   for (U = R - 1; !v && U >= 0 && n[U].start >= S.y1; U--)
@@ -15392,9 +15392,9 @@ function requirePdf() {
                   viewport: M,
                   textDivs: k,
                   textContentItemsStr: S,
-                  enhanceTextSelection: _
+                  enhanceTextSelection: q
                 } = u;
-                _ && (0, l.deprecated)("The `enhanceTextSelection` functionality will be removed in the future."), this._textContent = n, this._textContentStream = y, this._container = R, this._document = R.ownerDocument, this._viewport = M, this._textDivs = k || [], this._textContentItemsStr = S || [], this._enhanceTextSelection = !!_, this._fontInspectorEnabled = !!((t = globalThis.FontInspector) !== null && t !== void 0 && t.enabled), this._reader = null, this._layoutTextLastFontSize = null, this._layoutTextLastFontFamily = null, this._layoutTextCtx = null, this._textDivProperties = /* @__PURE__ */ new WeakMap(), this._renderingDone = !1, this._canceled = !1, this._capability = (0, A.createPromiseCapability)(), this._renderTimer = null, this._bounds = [], this._devicePixelRatio = globalThis.devicePixelRatio || 1, this._capability.promise.finally(() => {
+                q && (0, l.deprecated)("The `enhanceTextSelection` functionality will be removed in the future."), this._textContent = n, this._textContentStream = y, this._container = R, this._document = R.ownerDocument, this._viewport = M, this._textDivs = k || [], this._textContentItemsStr = S || [], this._enhanceTextSelection = !!q, this._fontInspectorEnabled = !!((t = globalThis.FontInspector) !== null && t !== void 0 && t.enabled), this._reader = null, this._layoutTextLastFontSize = null, this._layoutTextLastFontFamily = null, this._layoutTextCtx = null, this._textDivProperties = /* @__PURE__ */ new WeakMap(), this._renderingDone = !1, this._canceled = !1, this._capability = (0, A.createPromiseCapability)(), this._renderTimer = null, this._bounds = [], this._devicePixelRatio = globalThis.devicePixelRatio || 1, this._capability.promise.finally(() => {
                   this._enhanceTextSelection || (this._textDivProperties = null), this._layoutTextCtx && (this._layoutTextCtx.canvas.width = 0, this._layoutTextCtx.canvas.height = 0, this._layoutTextCtx = null);
                 }).catch(() => {
                 });
@@ -15565,7 +15565,7 @@ function requirePdf() {
                 const R = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
                 let M = `data:${n};base64,`;
                 for (let k = 0, S = t.length; k < S; k += 3) {
-                  const _ = t[k] & 255, U = t[k + 1] & 255, $ = t[k + 2] & 255, iI = _ >> 2, O = (_ & 3) << 4 | U >> 4, v = k + 1 < S ? (U & 15) << 2 | $ >> 6 : 64, j = k + 2 < S ? $ & 63 : 64;
+                  const q = t[k] & 255, U = t[k + 1] & 255, $ = t[k + 2] & 255, iI = q >> 2, O = (q & 3) << 4 | U >> 4, v = k + 1 < S ? (U & 15) << 2 | $ >> 6 : 64, j = k + 2 < S ? $ & 63 : 64;
                   M += R[iI] + R[O] + R[v] + R[j];
                 }
                 return M;
@@ -15580,27 +15580,27 @@ function requirePdf() {
                 function R($, iI, O) {
                   let v = -1;
                   for (let j = iI; j < O; j++) {
-                    const J = (v ^ $[j]) & 255, lI = y[J];
+                    const z = (v ^ $[j]) & 255, lI = y[z];
                     v = v >>> 8 ^ lI;
                   }
                   return v ^ -1;
                 }
                 function M($, iI, O, v) {
                   let j = v;
-                  const J = iI.length;
-                  O[j] = J >> 24 & 255, O[j + 1] = J >> 16 & 255, O[j + 2] = J >> 8 & 255, O[j + 3] = J & 255, j += 4, O[j] = $.charCodeAt(0) & 255, O[j + 1] = $.charCodeAt(1) & 255, O[j + 2] = $.charCodeAt(2) & 255, O[j + 3] = $.charCodeAt(3) & 255, j += 4, O.set(iI, j), j += iI.length;
+                  const z = iI.length;
+                  O[j] = z >> 24 & 255, O[j + 1] = z >> 16 & 255, O[j + 2] = z >> 8 & 255, O[j + 3] = z & 255, j += 4, O[j] = $.charCodeAt(0) & 255, O[j + 1] = $.charCodeAt(1) & 255, O[j + 2] = $.charCodeAt(2) & 255, O[j + 3] = $.charCodeAt(3) & 255, j += 4, O.set(iI, j), j += iI.length;
                   const lI = R(O, v + 4, j);
                   O[j] = lI >> 24 & 255, O[j + 1] = lI >> 16 & 255, O[j + 2] = lI >> 8 & 255, O[j + 3] = lI & 255;
                 }
                 function k($, iI, O) {
                   let v = 1, j = 0;
-                  for (let J = iI; J < O; ++J)
-                    v = (v + ($[J] & 255)) % 65521, j = (j + v) % 65521;
+                  for (let z = iI; z < O; ++z)
+                    v = (v + ($[z] & 255)) % 65521, j = (j + v) % 65521;
                   return j << 16 | v;
                 }
                 function S($) {
                   if (!s.isNodeJS)
-                    return _($);
+                    return q($);
                   try {
                     let iI;
                     parseInt(process.versions.node) >= 8 ? iI = $ : iI = Buffer.from($);
@@ -15611,52 +15611,52 @@ function requirePdf() {
                   } catch (iI) {
                     (0, l.warn)("Not compressing PNG because zlib.deflateSync is unavailable: " + iI);
                   }
-                  return _($);
+                  return q($);
                 }
-                function _($) {
+                function q($) {
                   let iI = $.length;
                   const O = 65535, v = Math.ceil(iI / O), j = new Uint8Array(2 + iI + v * 5 + 4);
-                  let J = 0;
-                  j[J++] = 120, j[J++] = 156;
+                  let z = 0;
+                  j[z++] = 120, j[z++] = 156;
                   let lI = 0;
                   for (; iI > O; )
-                    j[J++] = 0, j[J++] = 255, j[J++] = 255, j[J++] = 0, j[J++] = 0, j.set($.subarray(lI, lI + O), J), J += O, lI += O, iI -= O;
-                  j[J++] = 1, j[J++] = iI & 255, j[J++] = iI >> 8 & 255, j[J++] = ~iI & 65535 & 255, j[J++] = (~iI & 65535) >> 8 & 255, j.set($.subarray(lI), J), J += $.length - lI;
-                  const dI = k($, 0, $.length);
-                  return j[J++] = dI >> 24 & 255, j[J++] = dI >> 16 & 255, j[J++] = dI >> 8 & 255, j[J++] = dI & 255, j;
+                    j[z++] = 0, j[z++] = 255, j[z++] = 255, j[z++] = 0, j[z++] = 0, j.set($.subarray(lI, lI + O), z), z += O, lI += O, iI -= O;
+                  j[z++] = 1, j[z++] = iI & 255, j[z++] = iI >> 8 & 255, j[z++] = ~iI & 65535 & 255, j[z++] = (~iI & 65535) >> 8 & 255, j.set($.subarray(lI), z), z += $.length - lI;
+                  const oI = k($, 0, $.length);
+                  return j[z++] = oI >> 24 & 255, j[z++] = oI >> 16 & 255, j[z++] = oI >> 8 & 255, j[z++] = oI & 255, j;
                 }
                 function U($, iI, O, v) {
-                  const j = $.width, J = $.height;
-                  let lI, dI, wI;
+                  const j = $.width, z = $.height;
+                  let lI, oI, mI;
                   const BI = $.data;
                   switch (iI) {
                     case l.ImageKind.GRAYSCALE_1BPP:
-                      dI = 0, lI = 1, wI = j + 7 >> 3;
+                      oI = 0, lI = 1, mI = j + 7 >> 3;
                       break;
                     case l.ImageKind.RGB_24BPP:
-                      dI = 2, lI = 8, wI = j * 3;
+                      oI = 2, lI = 8, mI = j * 3;
                       break;
                     case l.ImageKind.RGBA_32BPP:
-                      dI = 6, lI = 8, wI = j * 4;
+                      oI = 6, lI = 8, mI = j * 4;
                       break;
                     default:
                       throw new Error("invalid format");
                   }
-                  const gI = new Uint8Array((1 + wI) * J);
-                  let K = 0, H = 0;
-                  for (let L = 0; L < J; ++L)
-                    gI[K++] = 0, gI.set(BI.subarray(H, H + wI), K), H += wI, K += wI;
+                  const gI = new Uint8Array((1 + mI) * z);
+                  let p = 0, H = 0;
+                  for (let L = 0; L < z; ++L)
+                    gI[p++] = 0, gI.set(BI.subarray(H, H + mI), p), H += mI, p += mI;
                   if (iI === l.ImageKind.GRAYSCALE_1BPP && v) {
-                    K = 0;
-                    for (let L = 0; L < J; L++) {
-                      K++;
-                      for (let E = 0; E < wI; E++)
-                        gI[K++] ^= 255;
+                    p = 0;
+                    for (let L = 0; L < z; L++) {
+                      p++;
+                      for (let E = 0; E < mI; E++)
+                        gI[p++] ^= 255;
                     }
                   }
-                  const Q = new Uint8Array([j >> 24 & 255, j >> 16 & 255, j >> 8 & 255, j & 255, J >> 24 & 255, J >> 16 & 255, J >> 8 & 255, J & 255, lI, dI, 0, 0, 0]), T = S(gI), N = t.length + n * 3 + Q.length + T.length, p = new Uint8Array(N);
-                  let z = 0;
-                  return p.set(t, z), z += t.length, M("IHDR", Q, p, z), z += n + Q.length, M("IDATA", T, p, z), z += n + T.length, M("IEND", new Uint8Array(0), p, z), b(p, "image/png", O);
+                  const Q = new Uint8Array([j >> 24 & 255, j >> 16 & 255, j >> 8 & 255, j & 255, z >> 24 & 255, z >> 16 & 255, z >> 8 & 255, z & 255, lI, oI, 0, 0, 0]), T = S(gI), N = t.length + n * 3 + Q.length + T.length, K = new Uint8Array(N);
+                  let J = 0;
+                  return K.set(t, J), J += t.length, M("IHDR", Q, K, J), J += n + Q.length, M("IDATA", T, K, J), J += n + T.length, M("IEND", new Uint8Array(0), K, J), b(K, "image/png", O);
                 }
                 return function(iI, O, v) {
                   const j = iI.kind === void 0 ? l.ImageKind.GRAYSCALE_1BPP : iI.kind;
@@ -15698,10 +15698,10 @@ function requirePdf() {
                   for (let R = 0, M = n.length; R < M; R++)
                     if (n[R] === l.OPS.dependency)
                       for (const k of y[R]) {
-                        const S = k.startsWith("g_") ? this.commonObjs : this.objs, _ = new Promise((U) => {
+                        const S = k.startsWith("g_") ? this.commonObjs : this.objs, q = new Promise((U) => {
                           S.get(k, U);
                         });
-                        this.current.dependencies.push(_);
+                        this.current.dependencies.push(q);
                       }
                   return Promise.all(this.current.dependencies);
                 }
@@ -15717,10 +15717,10 @@ function requirePdf() {
                 convertOpList(t) {
                   const n = this._operatorIdMapping, y = t.argsArray, R = t.fnArray, M = [];
                   for (let k = 0, S = R.length; k < S; k++) {
-                    const _ = R[k];
+                    const q = R[k];
                     M.push({
-                      fnId: _,
-                      fn: n[_],
+                      fnId: q,
+                      fn: n[q],
                       args: y[k]
                     });
                   }
@@ -15910,35 +15910,35 @@ function requirePdf() {
                   const n = this.current, y = n.font, R = n.fontSize;
                   if (R === 0)
                     return;
-                  const M = n.fontSizeScale, k = n.charSpacing, S = n.wordSpacing, _ = n.fontDirection, U = n.textHScale * _, $ = y.vertical, iI = $ ? 1 : -1, O = y.defaultVMetrics, v = R * n.fontMatrix[0];
+                  const M = n.fontSizeScale, k = n.charSpacing, S = n.wordSpacing, q = n.fontDirection, U = n.textHScale * q, $ = y.vertical, iI = $ ? 1 : -1, O = y.defaultVMetrics, v = R * n.fontMatrix[0];
                   let j = 0;
-                  for (const dI of t) {
-                    if (dI === null) {
-                      j += _ * S;
+                  for (const oI of t) {
+                    if (oI === null) {
+                      j += q * S;
                       continue;
-                    } else if (typeof dI == "number") {
-                      j += iI * dI * R / 1e3;
+                    } else if (typeof oI == "number") {
+                      j += iI * oI * R / 1e3;
                       continue;
                     }
-                    const wI = (dI.isSpace ? S : 0) + k, BI = dI.fontChar;
-                    let gI, K, H = dI.width;
+                    const mI = (oI.isSpace ? S : 0) + k, BI = oI.fontChar;
+                    let gI, p, H = oI.width;
                     if ($) {
                       let T;
-                      const N = dI.vmetric || O;
-                      T = dI.vmetric ? N[1] : H * 0.5, T = -T * v;
-                      const p = N[2] * v;
-                      H = N ? -N[0] : H, gI = T / M, K = (j + p) / M;
+                      const N = oI.vmetric || O;
+                      T = oI.vmetric ? N[1] : H * 0.5, T = -T * v;
+                      const K = N[2] * v;
+                      H = N ? -N[0] : H, gI = T / M, p = (j + K) / M;
                     } else
-                      gI = j / M, K = 0;
-                    (dI.isInFont || y.missingFile) && (n.xcoords.push(n.x + gI), $ && n.ycoords.push(-n.y + K), n.tspan.textContent += BI);
+                      gI = j / M, p = 0;
+                    (oI.isInFont || y.missingFile) && (n.xcoords.push(n.x + gI), $ && n.ycoords.push(-n.y + p), n.tspan.textContent += BI);
                     let Q;
-                    $ ? Q = H * v - wI * _ : Q = H * v + wI * _, j += Q;
+                    $ ? Q = H * v - mI * q : Q = H * v + mI * q, j += Q;
                   }
                   n.tspan.setAttributeNS(null, "x", n.xcoords.map(X).join(" ")), $ ? n.tspan.setAttributeNS(null, "y", n.ycoords.map(X).join(" ")) : n.tspan.setAttributeNS(null, "y", X(-n.y)), $ ? n.y -= j : n.x += j * U, n.tspan.setAttributeNS(null, "font-family", n.fontFamily), n.tspan.setAttributeNS(null, "font-size", `${X(n.fontSize)}px`), n.fontStyle !== c.fontStyle && n.tspan.setAttributeNS(null, "font-style", n.fontStyle), n.fontWeight !== c.fontWeight && n.tspan.setAttributeNS(null, "font-weight", n.fontWeight);
-                  const J = n.textRenderingMode & l.TextRenderingMode.FILL_STROKE_MASK;
-                  if (J === l.TextRenderingMode.FILL || J === l.TextRenderingMode.FILL_STROKE ? (n.fillColor !== c.fillColor && n.tspan.setAttributeNS(null, "fill", n.fillColor), n.fillAlpha < 1 && n.tspan.setAttributeNS(null, "fill-opacity", n.fillAlpha)) : n.textRenderingMode === l.TextRenderingMode.ADD_TO_PATH ? n.tspan.setAttributeNS(null, "fill", "transparent") : n.tspan.setAttributeNS(null, "fill", "none"), J === l.TextRenderingMode.STROKE || J === l.TextRenderingMode.FILL_STROKE) {
-                    const dI = 1 / (n.textMatrixScale || 1);
-                    this._setStrokeAttributes(n.tspan, dI);
+                  const z = n.textRenderingMode & l.TextRenderingMode.FILL_STROKE_MASK;
+                  if (z === l.TextRenderingMode.FILL || z === l.TextRenderingMode.FILL_STROKE ? (n.fillColor !== c.fillColor && n.tspan.setAttributeNS(null, "fill", n.fillColor), n.fillAlpha < 1 && n.tspan.setAttributeNS(null, "fill-opacity", n.fillAlpha)) : n.textRenderingMode === l.TextRenderingMode.ADD_TO_PATH ? n.tspan.setAttributeNS(null, "fill", "transparent") : n.tspan.setAttributeNS(null, "fill", "none"), z === l.TextRenderingMode.STROKE || z === l.TextRenderingMode.FILL_STROKE) {
+                    const oI = 1 / (n.textMatrixScale || 1);
+                    this._setStrokeAttributes(n.tspan, oI);
                   }
                   let lI = n.textMatrix;
                   n.textRise !== 0 && (lI = lI.slice(), lI[5] += n.textRise), n.txtElement.setAttributeNS(null, "transform", `${r(lI)} scale(${X(U)}, -1)`), n.txtElement.setAttributeNS(Z, "xml:space", "preserve"), n.txtElement.append(n.tspan), n.txtgrp.append(n.txtElement), this._ensureTransformGroup().append(n.txtElement);
@@ -15999,21 +15999,21 @@ function requirePdf() {
                   this.current.fillColor = this._makeColorN_Pattern(t);
                 }
                 shadingFill(t) {
-                  const n = this.viewport.width, y = this.viewport.height, R = l.Util.inverseTransform(this.transformMatrix), M = l.Util.applyTransform([0, 0], R), k = l.Util.applyTransform([0, y], R), S = l.Util.applyTransform([n, 0], R), _ = l.Util.applyTransform([n, y], R), U = Math.min(M[0], k[0], S[0], _[0]), $ = Math.min(M[1], k[1], S[1], _[1]), iI = Math.max(M[0], k[0], S[0], _[0]), O = Math.max(M[1], k[1], S[1], _[1]), v = this.svgFactory.createElement("svg:rect");
+                  const n = this.viewport.width, y = this.viewport.height, R = l.Util.inverseTransform(this.transformMatrix), M = l.Util.applyTransform([0, 0], R), k = l.Util.applyTransform([0, y], R), S = l.Util.applyTransform([n, 0], R), q = l.Util.applyTransform([n, y], R), U = Math.min(M[0], k[0], S[0], q[0]), $ = Math.min(M[1], k[1], S[1], q[1]), iI = Math.max(M[0], k[0], S[0], q[0]), O = Math.max(M[1], k[1], S[1], q[1]), v = this.svgFactory.createElement("svg:rect");
                   v.setAttributeNS(null, "x", U), v.setAttributeNS(null, "y", $), v.setAttributeNS(null, "width", iI - U), v.setAttributeNS(null, "height", O - $), v.setAttributeNS(null, "fill", this._makeShadingPattern(t)), this.current.fillAlpha < 1 && v.setAttributeNS(null, "fill-opacity", this.current.fillAlpha), this._ensureTransformGroup().append(v);
                 }
                 _makeColorN_Pattern(t) {
                   return t[0] === "TilingPattern" ? this._makeTilingPattern(t) : this._makeShadingPattern(t);
                 }
                 _makeTilingPattern(t) {
-                  const n = t[1], y = t[2], R = t[3] || l.IDENTITY_MATRIX, [M, k, S, _] = t[4], U = t[5], $ = t[6], iI = t[7], O = `shading${u++}`, [v, j, J, lI] = l.Util.normalizeRect([...l.Util.applyTransform([M, k], R), ...l.Util.applyTransform([S, _], R)]), [dI, wI] = l.Util.singularValueDecompose2dScale(R), BI = U * dI, gI = $ * wI, K = this.svgFactory.createElement("svg:pattern");
-                  K.setAttributeNS(null, "id", O), K.setAttributeNS(null, "patternUnits", "userSpaceOnUse"), K.setAttributeNS(null, "width", BI), K.setAttributeNS(null, "height", gI), K.setAttributeNS(null, "x", `${v}`), K.setAttributeNS(null, "y", `${j}`);
-                  const H = this.svg, Q = this.transformMatrix, T = this.current.fillColor, N = this.current.strokeColor, p = this.svgFactory.create(J - v, lI - j);
-                  if (this.svg = p, this.transformMatrix = R, iI === 2) {
-                    const z = l.Util.makeHexColor(...n);
-                    this.current.fillColor = z, this.current.strokeColor = z;
+                  const n = t[1], y = t[2], R = t[3] || l.IDENTITY_MATRIX, [M, k, S, q] = t[4], U = t[5], $ = t[6], iI = t[7], O = `shading${u++}`, [v, j, z, lI] = l.Util.normalizeRect([...l.Util.applyTransform([M, k], R), ...l.Util.applyTransform([S, q], R)]), [oI, mI] = l.Util.singularValueDecompose2dScale(R), BI = U * oI, gI = $ * mI, p = this.svgFactory.createElement("svg:pattern");
+                  p.setAttributeNS(null, "id", O), p.setAttributeNS(null, "patternUnits", "userSpaceOnUse"), p.setAttributeNS(null, "width", BI), p.setAttributeNS(null, "height", gI), p.setAttributeNS(null, "x", `${v}`), p.setAttributeNS(null, "y", `${j}`);
+                  const H = this.svg, Q = this.transformMatrix, T = this.current.fillColor, N = this.current.strokeColor, K = this.svgFactory.create(z - v, lI - j);
+                  if (this.svg = K, this.transformMatrix = R, iI === 2) {
+                    const J = l.Util.makeHexColor(...n);
+                    this.current.fillColor = J, this.current.strokeColor = J;
                   }
-                  return this.executeOpTree(this.convertOpList(y)), this.svg = H, this.transformMatrix = Q, this.current.fillColor = T, this.current.strokeColor = N, K.append(p.childNodes[0]), this.defs.append(K), `url(#${O})`;
+                  return this.executeOpTree(this.convertOpList(y)), this.svg = H, this.transformMatrix = Q, this.current.fillColor = T, this.current.strokeColor = N, p.append(K.childNodes[0]), this.defs.append(p), `url(#${O})`;
                 }
                 _makeShadingPattern(t) {
                   switch (typeof t == "string" && (t = this.objs.get(t)), t[0]) {
@@ -16026,8 +16026,8 @@ function requirePdf() {
                           R = this.svgFactory.createElement("svg:linearGradient"), R.setAttributeNS(null, "id", n), R.setAttributeNS(null, "gradientUnits", "userSpaceOnUse"), R.setAttributeNS(null, "x1", M[0]), R.setAttributeNS(null, "y1", M[1]), R.setAttributeNS(null, "x2", k[0]), R.setAttributeNS(null, "y2", k[1]);
                           break;
                         case "radial":
-                          const S = t[4], _ = t[5], U = t[6], $ = t[7];
-                          R = this.svgFactory.createElement("svg:radialGradient"), R.setAttributeNS(null, "id", n), R.setAttributeNS(null, "gradientUnits", "userSpaceOnUse"), R.setAttributeNS(null, "cx", _[0]), R.setAttributeNS(null, "cy", _[1]), R.setAttributeNS(null, "r", $), R.setAttributeNS(null, "fx", S[0]), R.setAttributeNS(null, "fy", S[1]), R.setAttributeNS(null, "fr", U);
+                          const S = t[4], q = t[5], U = t[6], $ = t[7];
+                          R = this.svgFactory.createElement("svg:radialGradient"), R.setAttributeNS(null, "id", n), R.setAttributeNS(null, "gradientUnits", "userSpaceOnUse"), R.setAttributeNS(null, "cx", q[0]), R.setAttributeNS(null, "cy", q[1]), R.setAttributeNS(null, "r", $), R.setAttributeNS(null, "fx", S[0]), R.setAttributeNS(null, "fy", S[1]), R.setAttributeNS(null, "fr", U);
                           break;
                         default:
                           throw new Error(`Unknown RadialAxial type: ${t[1]}`);
@@ -16051,8 +16051,8 @@ function requirePdf() {
                 constructPath(t, n) {
                   const y = this.current;
                   let R = y.x, M = y.y, k = [], S = 0;
-                  for (const _ of t)
-                    switch (_ | 0) {
+                  for (const q of t)
+                    switch (q | 0) {
                       case l.OPS.rectangle:
                         R = n[S++], M = n[S++];
                         const U = n[S++], $ = n[S++], iI = R + U, O = M + $;
@@ -17318,35 +17318,41 @@ function usePdfRenderer(C, g) {
       logger.warn(`Requested page ${y} is out of bounds.`);
       return;
     }
-    const M = await R.getPage(y), k = M.getViewport({ scale: 1 }), S = s.value || 1, _ = getIosMajorVersion(), U = _ !== null && _ <= 16 ? 1.5 : HIGH_RES_SCALE_FACTOR, $ = S * U * DPR, iI = S * DPR, O = k.width * k.height, v = Math.sqrt(MAX_CANVAS_AREA / O), j = Math.min($, Math.max(v, iI)), J = M.getViewport({ scale: j }), lI = M.getViewport({ scale: S });
+    const M = V, k = await R.getPage(y);
+    if (M !== V) return;
+    const S = k.getViewport({ scale: 1 }), q = s.value || 1, U = getIosMajorVersion(), $ = U !== null && U <= 16 ? 1.5 : HIGH_RES_SCALE_FACTOR, iI = q * $ * DPR, O = q * DPR, v = S.width * S.height, j = Math.sqrt(MAX_CANVAS_AREA / v), z = Math.min(iI, Math.max(j, O)), lI = k.getViewport({ scale: z }), oI = k.getViewport({ scale: q });
     m && (m.cancel(), m = null), Y();
-    for (const K of C.value.querySelectorAll("canvas"))
-      K.width = 0, K.height = 0;
+    for (const H of C.value.querySelectorAll("canvas"))
+      H.width = 0, H.height = 0;
     C.value.innerHTML = "";
-    const dI = document.createElement("canvas"), wI = dI.getContext("2d");
-    dI.style.display = "block", dI.style.margin = "0 auto 1rem auto", dI.width = Math.floor(J.width), dI.height = Math.floor(J.height), dI.style.width = `${Math.floor(lI.width)}px`, dI.style.height = `${Math.floor(lI.height)}px`, statsCanvasCreated(dI.width, dI.height), y === 1 && (l.value = dI), C.value.appendChild(dI);
-    const BI = {
-      canvasContext: wI,
-      viewport: J,
-      canvas: dI
-    }, gI = M.render(BI);
-    m = gI, statsRenderTaskStarted();
+    const mI = document.createElement("canvas"), BI = mI.getContext("2d");
+    mI.style.display = "block", mI.style.margin = "0 auto 1rem auto", mI.width = Math.floor(lI.width), mI.height = Math.floor(lI.height), mI.style.width = `${Math.floor(oI.width)}px`, mI.style.height = `${Math.floor(oI.height)}px`, statsCanvasCreated(mI.width, mI.height), y === 1 && (l.value = mI), C.value.appendChild(mI);
+    const gI = {
+      canvasContext: BI,
+      viewport: lI,
+      canvas: mI
+    }, p = k.render(gI);
+    m = p, statsRenderTaskStarted();
     try {
-      await gI.promise, statsRenderTaskCompleted();
-    } catch (K) {
-      throw isRenderingCancelled(K) && (statsRenderTaskCancelled(), dI.width = 0, dI.height = 0, l.value === dI && (l.value = null)), K;
+      await p.promise, statsRenderTaskCompleted();
+    } catch (H) {
+      throw isRenderingCancelled(H) && (statsRenderTaskCancelled(), mI.width = 0, mI.height = 0, l.value === mI && (l.value = null)), H;
     } finally {
-      m === gI && (m = null);
+      m === p && (m = null);
+    }
+    if (M !== V) {
+      mI.width = 0, mI.height = 0, l.value === mI && (l.value = null);
+      return;
     }
     A.value = {
-      width: k.width,
-      height: k.height
+      width: S.width,
+      height: S.height
     }, I.value = [
       {
         pageNum: y,
-        canvas: markRaw(dI),
-        originalWidth: k.width,
-        originalHeight: k.height
+        canvas: markRaw(mI),
+        originalWidth: S.width,
+        originalHeight: S.height
       }
     ];
   }
@@ -17356,14 +17362,14 @@ function usePdfRenderer(C, g) {
     if (C.value && (C.value.innerHTML = ""), d.value = !1, Z.value = 0, c.value = 1, r(), !(!y || !C.value || !g.value))
       try {
         const M = atob(y), k = new Uint8Array(M.length);
-        for (let J = 0; J < M.length; J++)
-          k[J] = M.charCodeAt(J);
+        for (let z = 0; z < M.length; z++)
+          k[z] = M.charCodeAt(z);
         const S = pdfExports.getDocument({ data: k, isEvalSupported: !1 });
         statsLoadingTaskStarted(), b = S;
-        const _ = await S.promise;
+        const q = await S.promise;
         if (R !== V) return;
-        statsDocCreated(), o.value = markRaw(_), Z.value = _.numPages;
-        const U = await _.getPage(1);
+        statsDocCreated(), o.value = markRaw(q), Z.value = q.numPages;
+        const U = await q.getPage(1);
         if (R !== V) return;
         const iI = g.value.getBoundingClientRect().width, O = U.getViewport({ scale: 1 }), v = iI * 0.9 / O.width, j = Math.min(v, 2);
         if (s.value = j, await u(1), R !== V) return;
@@ -17404,7 +17410,8 @@ function usePdfRenderer(C, g) {
     }
     const R = V;
     try {
-      await u(y), c.value = y;
+      if (await u(y), R !== V) return;
+      c.value = y;
     } catch (M) {
       if (R !== V || isRenderingCancelled(M))
         return;
@@ -17646,136 +17653,136 @@ function Panzoom(C, g) {
   function l() {
     A.style.overflow = "", A.style.userSelect = "", A.style.touchAction = "", A.style.cursor = "", C.style.cursor = "", C.style.userSelect = "", C.style.touchAction = "", setStyle(C, "transformOrigin", "");
   }
-  function s(J) {
-    J === void 0 && (J = {});
-    for (var lI in J)
-      J.hasOwnProperty(lI) && (g[lI] = J[lI]);
-    (J.hasOwnProperty("cursor") || J.hasOwnProperty("canvas")) && (A.style.cursor = C.style.cursor = "", (g.canvas ? A : C).style.cursor = g.cursor), J.hasOwnProperty("overflow") && (A.style.overflow = J.overflow), J.hasOwnProperty("touchAction") && (A.style.touchAction = J.touchAction, C.style.touchAction = J.touchAction);
+  function s(z) {
+    z === void 0 && (z = {});
+    for (var lI in z)
+      z.hasOwnProperty(lI) && (g[lI] = z[lI]);
+    (z.hasOwnProperty("cursor") || z.hasOwnProperty("canvas")) && (A.style.cursor = C.style.cursor = "", (g.canvas ? A : C).style.cursor = g.cursor), z.hasOwnProperty("overflow") && (A.style.overflow = z.overflow), z.hasOwnProperty("touchAction") && (A.style.touchAction = z.touchAction, C.style.touchAction = z.touchAction);
   }
   var d = 0, c = 0, Z = 1, o = !1;
   Y(g.startScale, { animate: !1, force: !0 }), setTimeout(function() {
     V(g.startX, g.startY, { animate: !1, force: !0 });
   });
-  function a(J, lI, dI) {
-    if (!dI.silent) {
-      var wI = new CustomEvent(J, { detail: lI });
-      C.dispatchEvent(wI);
+  function a(z, lI, oI) {
+    if (!oI.silent) {
+      var mI = new CustomEvent(z, { detail: lI });
+      C.dispatchEvent(mI);
     }
   }
-  function G(J, lI, dI) {
-    var wI = { x: d, y: c, scale: Z, isSVG: I, originalEvent: dI };
+  function G(z, lI, oI) {
+    var mI = { x: d, y: c, scale: Z, isSVG: I, originalEvent: oI };
     return requestAnimationFrame(function() {
-      typeof lI.animate == "boolean" && (lI.animate ? setTransition(C, lI) : setStyle(C, "transition", "none")), lI.setTransform(C, wI, lI), a(J, wI, lI), a("panzoomchange", wI, lI);
-    }), wI;
+      typeof lI.animate == "boolean" && (lI.animate ? setTransition(C, lI) : setStyle(C, "transition", "none")), lI.setTransform(C, mI, lI), a(z, mI, lI), a("panzoomchange", mI, lI);
+    }), mI;
   }
-  function b(J, lI, dI, wI) {
-    var BI = __assign$1(__assign$1({}, g), wI), gI = { x: d, y: c, opts: BI };
+  function b(z, lI, oI, mI) {
+    var BI = __assign$1(__assign$1({}, g), mI), gI = { x: d, y: c, opts: BI };
     if (!BI.force && (BI.disablePan || BI.panOnlyWhenZoomed && Z === BI.startScale))
       return gI;
-    if (J = parseFloat(J), lI = parseFloat(lI), BI.disableXAxis || (gI.x = (BI.relative ? d : 0) + J), BI.disableYAxis || (gI.y = (BI.relative ? c : 0) + lI), BI.contain) {
-      var K = getDimensions(C), H = K.elem.width / Z, Q = K.elem.height / Z, T = H * dI, N = Q * dI, p = (T - H) / 2, z = (N - Q) / 2;
+    if (z = parseFloat(z), lI = parseFloat(lI), BI.disableXAxis || (gI.x = (BI.relative ? d : 0) + z), BI.disableYAxis || (gI.y = (BI.relative ? c : 0) + lI), BI.contain) {
+      var p = getDimensions(C), H = p.elem.width / Z, Q = p.elem.height / Z, T = H * oI, N = Q * oI, K = (T - H) / 2, J = (N - Q) / 2;
       if (BI.contain === "inside") {
-        var L = (-K.elem.margin.left - K.parent.padding.left + p) / dI, E = (K.parent.width - T - K.parent.padding.left - K.elem.margin.left - K.parent.border.left - K.parent.border.right + p) / dI;
+        var L = (-p.elem.margin.left - p.parent.padding.left + K) / oI, E = (p.parent.width - T - p.parent.padding.left - p.elem.margin.left - p.parent.border.left - p.parent.border.right + K) / oI;
         gI.x = Math.max(Math.min(gI.x, E), L);
-        var AI = (-K.elem.margin.top - K.parent.padding.top + z) / dI, ZI = (K.parent.height - N - K.parent.padding.top - K.elem.margin.top - K.parent.border.top - K.parent.border.bottom + z) / dI;
+        var AI = (-p.elem.margin.top - p.parent.padding.top + J) / oI, ZI = (p.parent.height - N - p.parent.padding.top - p.elem.margin.top - p.parent.border.top - p.parent.border.bottom + J) / oI;
         gI.y = Math.max(Math.min(gI.y, ZI), AI);
       } else if (BI.contain === "outside") {
-        var L = (-(T - K.parent.width) - K.parent.padding.left - K.parent.border.left - K.parent.border.right + p) / dI, E = (p - K.parent.padding.left) / dI;
+        var L = (-(T - p.parent.width) - p.parent.padding.left - p.parent.border.left - p.parent.border.right + K) / oI, E = (K - p.parent.padding.left) / oI;
         gI.x = Math.max(Math.min(gI.x, E), L);
-        var AI = (-(N - K.parent.height) - K.parent.padding.top - K.parent.border.top - K.parent.border.bottom + z) / dI, ZI = (z - K.parent.padding.top) / dI;
+        var AI = (-(N - p.parent.height) - p.parent.padding.top - p.parent.border.top - p.parent.border.bottom + J) / oI, ZI = (J - p.parent.padding.top) / oI;
         gI.y = Math.max(Math.min(gI.y, ZI), AI);
       }
     }
     return BI.roundPixels && (gI.x = Math.round(gI.x), gI.y = Math.round(gI.y)), gI;
   }
-  function m(J, lI) {
-    var dI = __assign$1(__assign$1({}, g), lI), wI = { scale: Z, opts: dI };
-    if (!dI.force && dI.disableZoom)
-      return wI;
+  function m(z, lI) {
+    var oI = __assign$1(__assign$1({}, g), lI), mI = { scale: Z, opts: oI };
+    if (!oI.force && oI.disableZoom)
+      return mI;
     var BI = g.minScale, gI = g.maxScale;
-    if (dI.contain) {
-      var K = getDimensions(C), H = K.elem.width / Z, Q = K.elem.height / Z;
+    if (oI.contain) {
+      var p = getDimensions(C), H = p.elem.width / Z, Q = p.elem.height / Z;
       if (H > 1 && Q > 1) {
-        var T = K.parent.width - K.parent.border.left - K.parent.border.right, N = K.parent.height - K.parent.border.top - K.parent.border.bottom, p = T / H, z = N / Q;
-        g.contain === "inside" ? gI = Math.min(gI, p, z) : g.contain === "outside" && (BI = Math.max(BI, p, z));
+        var T = p.parent.width - p.parent.border.left - p.parent.border.right, N = p.parent.height - p.parent.border.top - p.parent.border.bottom, K = T / H, J = N / Q;
+        g.contain === "inside" ? gI = Math.min(gI, K, J) : g.contain === "outside" && (BI = Math.max(BI, K, J));
       }
     }
-    return wI.scale = Math.min(Math.max(J, BI), gI), wI;
+    return mI.scale = Math.min(Math.max(z, BI), gI), mI;
   }
-  function V(J, lI, dI, wI) {
-    var BI = b(J, lI, Z, dI);
-    return d !== BI.x || c !== BI.y ? (d = BI.x, c = BI.y, G("panzoompan", BI.opts, wI)) : { x: d, y: c, scale: Z, isSVG: I, originalEvent: wI };
+  function V(z, lI, oI, mI) {
+    var BI = b(z, lI, Z, oI);
+    return d !== BI.x || c !== BI.y ? (d = BI.x, c = BI.y, G("panzoompan", BI.opts, mI)) : { x: d, y: c, scale: Z, isSVG: I, originalEvent: mI };
   }
-  function Y(J, lI, dI) {
-    var wI = m(J, lI), BI = wI.opts;
+  function Y(z, lI, oI) {
+    var mI = m(z, lI), BI = mI.opts;
     if (!(!BI.force && BI.disableZoom)) {
-      J = wI.scale;
-      var gI = d, K = c;
+      z = mI.scale;
+      var gI = d, p = c;
       if (BI.focal) {
         var H = BI.focal;
-        gI = (H.x / J - H.x / Z + d * J) / J, K = (H.y / J - H.y / Z + c * J) / J;
+        gI = (H.x / z - H.x / Z + d * z) / z, p = (H.y / z - H.y / Z + c * z) / z;
       }
-      var Q = b(gI, K, J, { relative: !1, force: !0 });
-      return d = Q.x, c = Q.y, Z = J, G("panzoomzoom", BI, dI);
+      var Q = b(gI, p, z, { relative: !1, force: !0 });
+      return d = Q.x, c = Q.y, Z = z, G("panzoomzoom", BI, oI);
     }
   }
-  function X(J, lI) {
-    var dI = __assign$1(__assign$1(__assign$1({}, g), { animate: !0 }), lI);
-    return Y(Z * Math.exp((J ? 1 : -1) * dI.step), dI);
+  function X(z, lI) {
+    var oI = __assign$1(__assign$1(__assign$1({}, g), { animate: !0 }), lI);
+    return Y(Z * Math.exp((z ? 1 : -1) * oI.step), oI);
   }
-  function r(J) {
-    return X(!0, J);
+  function r(z) {
+    return X(!0, z);
   }
-  function h(J) {
-    return X(!1, J);
+  function h(z) {
+    return X(!1, z);
   }
-  function B(J, lI, dI, wI) {
+  function B(z, lI, oI, mI) {
     var BI = getDimensions(C), gI = {
       width: BI.parent.width - BI.parent.padding.left - BI.parent.padding.right - BI.parent.border.left - BI.parent.border.right,
       height: BI.parent.height - BI.parent.padding.top - BI.parent.padding.bottom - BI.parent.border.top - BI.parent.border.bottom
-    }, K = lI.clientX - BI.parent.left - BI.parent.padding.left - BI.parent.border.left - BI.elem.margin.left, H = lI.clientY - BI.parent.top - BI.parent.padding.top - BI.parent.border.top - BI.elem.margin.top;
-    I || (K -= BI.elem.width / Z / 2, H -= BI.elem.height / Z / 2);
+    }, p = lI.clientX - BI.parent.left - BI.parent.padding.left - BI.parent.border.left - BI.elem.margin.left, H = lI.clientY - BI.parent.top - BI.parent.padding.top - BI.parent.border.top - BI.elem.margin.top;
+    I || (p -= BI.elem.width / Z / 2, H -= BI.elem.height / Z / 2);
     var Q = {
-      x: K / gI.width * (gI.width * J),
-      y: H / gI.height * (gI.height * J)
+      x: p / gI.width * (gI.width * z),
+      y: H / gI.height * (gI.height * z)
     };
-    return Y(J, __assign$1(__assign$1({}, dI), { animate: !1, focal: Q }), wI);
+    return Y(z, __assign$1(__assign$1({}, oI), { animate: !1, focal: Q }), mI);
   }
-  function u(J, lI) {
-    J.preventDefault();
-    var dI = __assign$1(__assign$1(__assign$1({}, g), lI), { animate: !1 }), wI = J.deltaY === 0 && J.deltaX ? J.deltaX : J.deltaY, BI = wI < 0 ? 1 : -1, gI = m(Z * Math.exp(BI * dI.step / 3), dI).scale;
-    return B(gI, J, dI, J);
+  function u(z, lI) {
+    z.preventDefault();
+    var oI = __assign$1(__assign$1(__assign$1({}, g), lI), { animate: !1 }), mI = z.deltaY === 0 && z.deltaX ? z.deltaX : z.deltaY, BI = mI < 0 ? 1 : -1, gI = m(Z * Math.exp(BI * oI.step / 3), oI).scale;
+    return B(gI, z, oI, z);
   }
-  function t(J) {
-    var lI = __assign$1(__assign$1(__assign$1({}, g), { animate: !0, force: !0 }), J);
+  function t(z) {
+    var lI = __assign$1(__assign$1(__assign$1({}, g), { animate: !0, force: !0 }), z);
     Z = m(lI.startScale, lI).scale;
-    var dI = b(lI.startX, lI.startY, Z, lI);
-    return d = dI.x, c = dI.y, G("panzoomreset", lI);
+    var oI = b(lI.startX, lI.startY, Z, lI);
+    return d = oI.x, c = oI.y, G("panzoomreset", lI);
   }
-  var n, y, R, M, k, S, _ = [];
-  function U(J) {
-    if (!isExcluded(J.target, g)) {
-      addPointer(_, J), o = !0, g.handleStartEvent(J), n = d, y = c, a("panzoomstart", { x: d, y: c, scale: Z, isSVG: I, originalEvent: J }, g);
-      var lI = getMiddle(_);
-      R = lI.clientX, M = lI.clientY, k = Z, S = getDistance(_);
+  var n, y, R, M, k, S, q = [];
+  function U(z) {
+    if (!isExcluded(z.target, g)) {
+      addPointer(q, z), o = !0, g.handleStartEvent(z), n = d, y = c, a("panzoomstart", { x: d, y: c, scale: Z, isSVG: I, originalEvent: z }, g);
+      var lI = getMiddle(q);
+      R = lI.clientX, M = lI.clientY, k = Z, S = getDistance(q);
     }
   }
-  function $(J) {
+  function $(z) {
     if (!(!o || n === void 0 || y === void 0 || R === void 0 || M === void 0)) {
-      addPointer(_, J);
-      var lI = getMiddle(_), dI = _.length > 1, wI = Z;
-      if (dI) {
-        S === 0 && (S = getDistance(_));
-        var BI = getDistance(_) - S;
-        wI = m(BI * g.step / 80 + k).scale, B(wI, lI, { animate: !1 }, J);
+      addPointer(q, z);
+      var lI = getMiddle(q), oI = q.length > 1, mI = Z;
+      if (oI) {
+        S === 0 && (S = getDistance(q));
+        var BI = getDistance(q) - S;
+        mI = m(BI * g.step / 80 + k).scale, B(mI, lI, { animate: !1 }, z);
       }
-      (!dI || g.pinchAndPan) && V(n + (lI.clientX - R) / wI, y + (lI.clientY - M) / wI, {
+      (!oI || g.pinchAndPan) && V(n + (lI.clientX - R) / mI, y + (lI.clientY - M) / mI, {
         animate: !1
-      }, J);
+      }, z);
     }
   }
-  function iI(J) {
-    _.length === 1 && a("panzoomend", { x: d, y: c, scale: Z, isSVG: I, originalEvent: J }, g), removePointer(_, J), o && (o = !1, n = y = R = M = void 0);
+  function iI(z) {
+    q.length === 1 && a("panzoomend", { x: d, y: c, scale: Z, isSVG: I, originalEvent: z }, g), removePointer(q, z), o && (o = !1, n = y = R = M = void 0);
   }
   var O = !1;
   function v() {
@@ -17804,8 +17811,8 @@ function Panzoom(C, g) {
     reset: t,
     resetStyle: l,
     setOptions: s,
-    setStyle: function(J, lI) {
-      return setStyle(C, J, lI);
+    setStyle: function(z, lI) {
+      return setStyle(C, z, lI);
     },
     zoom: Y,
     zoomIn: r,
@@ -18573,11 +18580,11 @@ function requireTrees() {
   ), k = (
     /* extra bits for each bit length code */
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3, 7]
-  ), S = [16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15], _ = 512, U = new Array((m + 2) * 2);
+  ), S = [16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15], q = 512, U = new Array((m + 2) * 2);
   s(U);
   var $ = new Array(V * 2);
   s($);
-  var iI = new Array(_);
+  var iI = new Array(q);
   s(iI);
   var O = new Array(a - o + 1);
   s(O);
@@ -18585,21 +18592,21 @@ function requireTrees() {
   s(v);
   var j = new Array(V);
   s(j);
-  function J(F, bI, yI, HI, II) {
+  function z(F, bI, yI, HI, II) {
     this.static_tree = F, this.extra_bits = bI, this.extra_base = yI, this.elems = HI, this.max_length = II, this.has_stree = F && F.length;
   }
-  var lI, dI, wI;
+  var lI, oI, mI;
   function BI(F, bI) {
     this.dyn_tree = F, this.max_code = 0, this.stat_desc = bI;
   }
   function gI(F) {
     return F < 256 ? iI[F] : iI[256 + (F >>> 7)];
   }
-  function K(F, bI) {
+  function p(F, bI) {
     F.pending_buf[F.pending++] = bI & 255, F.pending_buf[F.pending++] = bI >>> 8 & 255;
   }
   function H(F, bI, yI) {
-    F.bi_valid > h - yI ? (F.bi_buf |= bI << F.bi_valid & 65535, K(F, F.bi_buf), F.bi_buf = bI >> h - F.bi_valid, F.bi_valid += yI - h) : (F.bi_buf |= bI << F.bi_valid & 65535, F.bi_valid += yI);
+    F.bi_valid > h - yI ? (F.bi_buf |= bI << F.bi_valid & 65535, p(F, F.bi_buf), F.bi_buf = bI >> h - F.bi_valid, F.bi_valid += yI - h) : (F.bi_buf |= bI << F.bi_valid & 65535, F.bi_valid += yI);
   }
   function Q(F, bI, yI) {
     H(
@@ -18617,36 +18624,36 @@ function requireTrees() {
     return yI >>> 1;
   }
   function N(F) {
-    F.bi_valid === 16 ? (K(F, F.bi_buf), F.bi_buf = 0, F.bi_valid = 0) : F.bi_valid >= 8 && (F.pending_buf[F.pending++] = F.bi_buf & 255, F.bi_buf >>= 8, F.bi_valid -= 8);
+    F.bi_valid === 16 ? (p(F, F.bi_buf), F.bi_buf = 0, F.bi_valid = 0) : F.bi_valid >= 8 && (F.pending_buf[F.pending++] = F.bi_buf & 255, F.bi_buf >>= 8, F.bi_valid -= 8);
   }
-  function p(F, bI) {
-    var yI = bI.dyn_tree, HI = bI.max_code, II = bI.stat_desc.static_tree, nI = bI.stat_desc.has_stree, x = bI.stat_desc.extra_bits, oI = bI.stat_desc.extra_base, cI = bI.stat_desc.max_length, w, sI, WI, f, P, q, VI = 0;
+  function K(F, bI) {
+    var yI = bI.dyn_tree, HI = bI.max_code, II = bI.stat_desc.static_tree, WI = bI.stat_desc.has_stree, x = bI.stat_desc.extra_bits, cI = bI.stat_desc.extra_base, dI = bI.stat_desc.max_length, w, sI, wI, f, P, _, VI = 0;
     for (f = 0; f <= r; f++)
       F.bl_count[f] = 0;
     for (yI[F.heap[F.heap_max] * 2 + 1] = 0, w = F.heap_max + 1; w < X; w++)
-      sI = F.heap[w], f = yI[yI[sI * 2 + 1] * 2 + 1] + 1, f > cI && (f = cI, VI++), yI[sI * 2 + 1] = f, !(sI > HI) && (F.bl_count[f]++, P = 0, sI >= oI && (P = x[sI - oI]), q = yI[sI * 2], F.opt_len += q * (f + P), nI && (F.static_len += q * (II[sI * 2 + 1] + P)));
+      sI = F.heap[w], f = yI[yI[sI * 2 + 1] * 2 + 1] + 1, f > dI && (f = dI, VI++), yI[sI * 2 + 1] = f, !(sI > HI) && (F.bl_count[f]++, P = 0, sI >= cI && (P = x[sI - cI]), _ = yI[sI * 2], F.opt_len += _ * (f + P), WI && (F.static_len += _ * (II[sI * 2 + 1] + P)));
     if (VI !== 0) {
       do {
-        for (f = cI - 1; F.bl_count[f] === 0; )
+        for (f = dI - 1; F.bl_count[f] === 0; )
           f--;
-        F.bl_count[f]--, F.bl_count[f + 1] += 2, F.bl_count[cI]--, VI -= 2;
+        F.bl_count[f]--, F.bl_count[f + 1] += 2, F.bl_count[dI]--, VI -= 2;
       } while (VI > 0);
-      for (f = cI; f !== 0; f--)
+      for (f = dI; f !== 0; f--)
         for (sI = F.bl_count[f]; sI !== 0; )
-          WI = F.heap[--w], !(WI > HI) && (yI[WI * 2 + 1] !== f && (F.opt_len += (f - yI[WI * 2 + 1]) * yI[WI * 2], yI[WI * 2 + 1] = f), sI--);
+          wI = F.heap[--w], !(wI > HI) && (yI[wI * 2 + 1] !== f && (F.opt_len += (f - yI[wI * 2 + 1]) * yI[wI * 2], yI[wI * 2 + 1] = f), sI--);
     }
   }
-  function z(F, bI, yI) {
-    var HI = new Array(r + 1), II = 0, nI, x;
-    for (nI = 1; nI <= r; nI++)
-      HI[nI] = II = II + yI[nI - 1] << 1;
+  function J(F, bI, yI) {
+    var HI = new Array(r + 1), II = 0, WI, x;
+    for (WI = 1; WI <= r; WI++)
+      HI[WI] = II = II + yI[WI - 1] << 1;
     for (x = 0; x <= bI; x++) {
-      var oI = F[x * 2 + 1];
-      oI !== 0 && (F[x * 2] = T(HI[oI]++, oI));
+      var cI = F[x * 2 + 1];
+      cI !== 0 && (F[x * 2] = T(HI[cI]++, cI));
     }
   }
   function L() {
-    var F, bI, yI, HI, II, nI = new Array(r + 1);
+    var F, bI, yI, HI, II, WI = new Array(r + 1);
     for (yI = 0, HI = 0; HI < G - 1; HI++)
       for (v[HI] = yI, F = 0; F < 1 << R[HI]; F++)
         O[yI++] = HI;
@@ -18657,18 +18664,18 @@ function requireTrees() {
       for (j[HI] = II << 7, F = 0; F < 1 << M[HI] - 7; F++)
         iI[256 + II++] = HI;
     for (bI = 0; bI <= r; bI++)
-      nI[bI] = 0;
+      WI[bI] = 0;
     for (F = 0; F <= 143; )
-      U[F * 2 + 1] = 8, F++, nI[8]++;
+      U[F * 2 + 1] = 8, F++, WI[8]++;
     for (; F <= 255; )
-      U[F * 2 + 1] = 9, F++, nI[9]++;
+      U[F * 2 + 1] = 9, F++, WI[9]++;
     for (; F <= 279; )
-      U[F * 2 + 1] = 7, F++, nI[7]++;
+      U[F * 2 + 1] = 7, F++, WI[7]++;
     for (; F <= 287; )
-      U[F * 2 + 1] = 8, F++, nI[8]++;
-    for (z(U, m + 1, nI), F = 0; F < V; F++)
+      U[F * 2 + 1] = 8, F++, WI[8]++;
+    for (J(U, m + 1, WI), F = 0; F < V; F++)
       $[F * 2 + 1] = 5, $[F * 2] = T(F, 5);
-    lI = new J(U, R, b + 1, m, r), dI = new J($, M, 0, V, r), wI = new J(new Array(0), k, 0, Y, B);
+    lI = new z(U, R, b + 1, m, r), oI = new z($, M, 0, V, r), mI = new z(new Array(0), k, 0, Y, B);
   }
   function E(F) {
     var bI;
@@ -18681,37 +18688,37 @@ function requireTrees() {
     F.dyn_ltree[u * 2] = 1, F.opt_len = F.static_len = 0, F.last_lit = F.matches = 0;
   }
   function AI(F) {
-    F.bi_valid > 8 ? K(F, F.bi_buf) : F.bi_valid > 0 && (F.pending_buf[F.pending++] = F.bi_buf), F.bi_buf = 0, F.bi_valid = 0;
+    F.bi_valid > 8 ? p(F, F.bi_buf) : F.bi_valid > 0 && (F.pending_buf[F.pending++] = F.bi_buf), F.bi_buf = 0, F.bi_valid = 0;
   }
   function ZI(F, bI, yI, HI) {
-    AI(F), K(F, yI), K(F, ~yI), C.arraySet(F.pending_buf, F.window, bI, yI, F.pending), F.pending += yI;
+    AI(F), p(F, yI), p(F, ~yI), C.arraySet(F.pending_buf, F.window, bI, yI, F.pending), F.pending += yI;
   }
   function aI(F, bI, yI, HI) {
-    var II = bI * 2, nI = yI * 2;
-    return F[II] < F[nI] || F[II] === F[nI] && HI[bI] <= HI[yI];
+    var II = bI * 2, WI = yI * 2;
+    return F[II] < F[WI] || F[II] === F[WI] && HI[bI] <= HI[yI];
   }
   function GI(F, bI, yI) {
     for (var HI = F.heap[yI], II = yI << 1; II <= F.heap_len && (II < F.heap_len && aI(bI, F.heap[II + 1], F.heap[II], F.depth) && II++, !aI(bI, HI, F.heap[II], F.depth)); )
       F.heap[yI] = F.heap[II], yI = II, II <<= 1;
     F.heap[yI] = HI;
   }
-  function mI(F, bI, yI) {
-    var HI, II, nI = 0, x, oI;
+  function nI(F, bI, yI) {
+    var HI, II, WI = 0, x, cI;
     if (F.last_lit !== 0)
       do
-        HI = F.pending_buf[F.d_buf + nI * 2] << 8 | F.pending_buf[F.d_buf + nI * 2 + 1], II = F.pending_buf[F.l_buf + nI], nI++, HI === 0 ? Q(F, II, bI) : (x = O[II], Q(F, x + b + 1, bI), oI = R[x], oI !== 0 && (II -= v[x], H(F, II, oI)), HI--, x = gI(HI), Q(F, x, yI), oI = M[x], oI !== 0 && (HI -= j[x], H(F, HI, oI)));
-      while (nI < F.last_lit);
+        HI = F.pending_buf[F.d_buf + WI * 2] << 8 | F.pending_buf[F.d_buf + WI * 2 + 1], II = F.pending_buf[F.l_buf + WI], WI++, HI === 0 ? Q(F, II, bI) : (x = O[II], Q(F, x + b + 1, bI), cI = R[x], cI !== 0 && (II -= v[x], H(F, II, cI)), HI--, x = gI(HI), Q(F, x, yI), cI = M[x], cI !== 0 && (HI -= j[x], H(F, HI, cI)));
+      while (WI < F.last_lit);
     Q(F, u, bI);
   }
   function hI(F, bI) {
-    var yI = bI.dyn_tree, HI = bI.stat_desc.static_tree, II = bI.stat_desc.has_stree, nI = bI.stat_desc.elems, x, oI, cI = -1, w;
-    for (F.heap_len = 0, F.heap_max = X, x = 0; x < nI; x++)
-      yI[x * 2] !== 0 ? (F.heap[++F.heap_len] = cI = x, F.depth[x] = 0) : yI[x * 2 + 1] = 0;
+    var yI = bI.dyn_tree, HI = bI.stat_desc.static_tree, II = bI.stat_desc.has_stree, WI = bI.stat_desc.elems, x, cI, dI = -1, w;
+    for (F.heap_len = 0, F.heap_max = X, x = 0; x < WI; x++)
+      yI[x * 2] !== 0 ? (F.heap[++F.heap_len] = dI = x, F.depth[x] = 0) : yI[x * 2 + 1] = 0;
     for (; F.heap_len < 2; )
-      w = F.heap[++F.heap_len] = cI < 2 ? ++cI : 0, yI[w * 2] = 1, F.depth[w] = 0, F.opt_len--, II && (F.static_len -= HI[w * 2 + 1]);
-    for (bI.max_code = cI, x = F.heap_len >> 1; x >= 1; x--)
+      w = F.heap[++F.heap_len] = dI < 2 ? ++dI : 0, yI[w * 2] = 1, F.depth[w] = 0, F.opt_len--, II && (F.static_len -= HI[w * 2 + 1]);
+    for (bI.max_code = dI, x = F.heap_len >> 1; x >= 1; x--)
       GI(F, yI, x);
-    w = nI;
+    w = WI;
     do
       x = F.heap[
         1
@@ -18724,10 +18731,10 @@ function requireTrees() {
         yI,
         1
         /*SMALLEST*/
-      ), oI = F.heap[
+      ), cI = F.heap[
         1
         /*SMALLEST*/
-      ], F.heap[--F.heap_max] = x, F.heap[--F.heap_max] = oI, yI[w * 2] = yI[x * 2] + yI[oI * 2], F.depth[w] = (F.depth[x] >= F.depth[oI] ? F.depth[x] : F.depth[oI]) + 1, yI[x * 2 + 1] = yI[oI * 2 + 1] = w, F.heap[
+      ], F.heap[--F.heap_max] = x, F.heap[--F.heap_max] = cI, yI[w * 2] = yI[x * 2] + yI[cI * 2], F.depth[w] = (F.depth[x] >= F.depth[cI] ? F.depth[x] : F.depth[cI]) + 1, yI[x * 2 + 1] = yI[cI * 2 + 1] = w, F.heap[
         1
         /*SMALLEST*/
       ] = w++, GI(
@@ -18740,23 +18747,23 @@ function requireTrees() {
     F.heap[--F.heap_max] = F.heap[
       1
       /*SMALLEST*/
-    ], p(F, bI), z(yI, cI, F.bl_count);
+    ], K(F, bI), J(yI, dI, F.bl_count);
   }
   function YI(F, bI, yI) {
-    var HI, II = -1, nI, x = bI[1], oI = 0, cI = 7, w = 4;
-    for (x === 0 && (cI = 138, w = 3), bI[(yI + 1) * 2 + 1] = 65535, HI = 0; HI <= yI; HI++)
-      nI = x, x = bI[(HI + 1) * 2 + 1], !(++oI < cI && nI === x) && (oI < w ? F.bl_tree[nI * 2] += oI : nI !== 0 ? (nI !== II && F.bl_tree[nI * 2]++, F.bl_tree[t * 2]++) : oI <= 10 ? F.bl_tree[n * 2]++ : F.bl_tree[y * 2]++, oI = 0, II = nI, x === 0 ? (cI = 138, w = 3) : nI === x ? (cI = 6, w = 3) : (cI = 7, w = 4));
+    var HI, II = -1, WI, x = bI[1], cI = 0, dI = 7, w = 4;
+    for (x === 0 && (dI = 138, w = 3), bI[(yI + 1) * 2 + 1] = 65535, HI = 0; HI <= yI; HI++)
+      WI = x, x = bI[(HI + 1) * 2 + 1], !(++cI < dI && WI === x) && (cI < w ? F.bl_tree[WI * 2] += cI : WI !== 0 ? (WI !== II && F.bl_tree[WI * 2]++, F.bl_tree[t * 2]++) : cI <= 10 ? F.bl_tree[n * 2]++ : F.bl_tree[y * 2]++, cI = 0, II = WI, x === 0 ? (dI = 138, w = 3) : WI === x ? (dI = 6, w = 3) : (dI = 7, w = 4));
   }
   function uI(F, bI, yI) {
-    var HI, II = -1, nI, x = bI[1], oI = 0, cI = 7, w = 4;
-    for (x === 0 && (cI = 138, w = 3), HI = 0; HI <= yI; HI++)
-      if (nI = x, x = bI[(HI + 1) * 2 + 1], !(++oI < cI && nI === x)) {
-        if (oI < w)
+    var HI, II = -1, WI, x = bI[1], cI = 0, dI = 7, w = 4;
+    for (x === 0 && (dI = 138, w = 3), HI = 0; HI <= yI; HI++)
+      if (WI = x, x = bI[(HI + 1) * 2 + 1], !(++cI < dI && WI === x)) {
+        if (cI < w)
           do
-            Q(F, nI, F.bl_tree);
-          while (--oI !== 0);
-        else nI !== 0 ? (nI !== II && (Q(F, nI, F.bl_tree), oI--), Q(F, t, F.bl_tree), H(F, oI - 3, 2)) : oI <= 10 ? (Q(F, n, F.bl_tree), H(F, oI - 3, 3)) : (Q(F, y, F.bl_tree), H(F, oI - 11, 7));
-        oI = 0, II = nI, x === 0 ? (cI = 138, w = 3) : nI === x ? (cI = 6, w = 3) : (cI = 7, w = 4);
+            Q(F, WI, F.bl_tree);
+          while (--cI !== 0);
+        else WI !== 0 ? (WI !== II && (Q(F, WI, F.bl_tree), cI--), Q(F, t, F.bl_tree), H(F, cI - 3, 2)) : cI <= 10 ? (Q(F, n, F.bl_tree), H(F, cI - 3, 3)) : (Q(F, y, F.bl_tree), H(F, cI - 11, 7));
+        cI = 0, II = WI, x === 0 ? (dI = 138, w = 3) : WI === x ? (dI = 6, w = 3) : (dI = 7, w = 4);
       }
   }
   function RI(F) {
@@ -18785,7 +18792,7 @@ function requireTrees() {
   }
   var LI = !1;
   function KI(F) {
-    LI || (L(), LI = !0), F.l_desc = new BI(F.dyn_ltree, lI), F.d_desc = new BI(F.dyn_dtree, dI), F.bl_desc = new BI(F.bl_tree, wI), F.bi_buf = 0, F.bi_valid = 0, E(F);
+    LI || (L(), LI = !0), F.l_desc = new BI(F.dyn_ltree, lI), F.d_desc = new BI(F.dyn_dtree, oI), F.bl_desc = new BI(F.bl_tree, mI), F.bi_buf = 0, F.bi_valid = 0, E(F);
   }
   function PI(F, bI, yI, HI) {
     H(F, (d << 1) + (HI ? 1 : 0), 3), ZI(F, bI, yI);
@@ -18794,8 +18801,8 @@ function requireTrees() {
     H(F, c << 1, 3), Q(F, u, U), N(F);
   }
   function kI(F, bI, yI, HI) {
-    var II, nI, x = 0;
-    F.level > 0 ? (F.strm.data_type === l && (F.strm.data_type = MI(F)), hI(F, F.l_desc), hI(F, F.d_desc), x = RI(F), II = F.opt_len + 3 + 7 >>> 3, nI = F.static_len + 3 + 7 >>> 3, nI <= II && (II = nI)) : II = nI = yI + 5, yI + 4 <= II && bI !== -1 ? PI(F, bI, yI, HI) : F.strategy === g || nI === II ? (H(F, (c << 1) + (HI ? 1 : 0), 3), mI(F, U, $)) : (H(F, (Z << 1) + (HI ? 1 : 0), 3), pI(F, F.l_desc.max_code + 1, F.d_desc.max_code + 1, x + 1), mI(F, F.dyn_ltree, F.dyn_dtree)), E(F), HI && AI(F);
+    var II, WI, x = 0;
+    F.level > 0 ? (F.strm.data_type === l && (F.strm.data_type = MI(F)), hI(F, F.l_desc), hI(F, F.d_desc), x = RI(F), II = F.opt_len + 3 + 7 >>> 3, WI = F.static_len + 3 + 7 >>> 3, WI <= II && (II = WI)) : II = WI = yI + 5, yI + 4 <= II && bI !== -1 ? PI(F, bI, yI, HI) : F.strategy === g || WI === II ? (H(F, (c << 1) + (HI ? 1 : 0), 3), nI(F, U, $)) : (H(F, (Z << 1) + (HI ? 1 : 0), 3), pI(F, F.l_desc.max_code + 1, F.d_desc.max_code + 1, x + 1), nI(F, F.dyn_ltree, F.dyn_dtree)), E(F), HI && AI(F);
   }
   function DI(F, bI, yI) {
     return F.pending_buf[F.d_buf + F.last_lit * 2] = bI >>> 8 & 255, F.pending_buf[F.d_buf + F.last_lit * 2 + 1] = bI & 255, F.pending_buf[F.l_buf + F.last_lit] = yI & 255, F.last_lit++, bI === 0 ? F.dyn_ltree[yI * 2]++ : (F.matches++, bI--, F.dyn_ltree[(O[yI] + b + 1) * 2]++, F.dyn_dtree[gI(bI) * 2]++), F.last_lit === F.lit_bufsize - 1;
@@ -18868,7 +18875,7 @@ var hasRequiredDeflate$1;
 function requireDeflate$1() {
   if (hasRequiredDeflate$1) return deflate;
   hasRequiredDeflate$1 = 1;
-  var C = requireCommon(), g = requireTrees(), I = requireAdler32(), A = requireCrc32(), l = requireMessages(), s = 0, d = 1, c = 3, Z = 4, o = 5, a = 0, G = 1, b = -2, m = -3, V = -5, Y = -1, X = 1, r = 2, h = 3, B = 4, u = 0, t = 2, n = 8, y = 9, R = 15, M = 8, k = 29, S = 256, _ = S + 1 + k, U = 30, $ = 19, iI = 2 * _ + 1, O = 15, v = 3, j = 258, J = j + v + 1, lI = 32, dI = 42, wI = 69, BI = 73, gI = 91, K = 103, H = 113, Q = 666, T = 1, N = 2, p = 3, z = 4, L = 3;
+  var C = requireCommon(), g = requireTrees(), I = requireAdler32(), A = requireCrc32(), l = requireMessages(), s = 0, d = 1, c = 3, Z = 4, o = 5, a = 0, G = 1, b = -2, m = -3, V = -5, Y = -1, X = 1, r = 2, h = 3, B = 4, u = 0, t = 2, n = 8, y = 9, R = 15, M = 8, k = 29, S = 256, q = S + 1 + k, U = 30, $ = 19, iI = 2 * q + 1, O = 15, v = 3, j = 258, z = j + v + 1, lI = 32, oI = 42, mI = 69, BI = 73, gI = 91, p = 103, H = 113, Q = 666, T = 1, N = 2, K = 3, J = 4, L = 3;
   function E(w, sI) {
     return w.msg = l[sI], sI;
   }
@@ -18880,64 +18887,64 @@ function requireDeflate$1() {
       w[sI] = 0;
   }
   function aI(w) {
-    var sI = w.state, WI = sI.pending;
-    WI > w.avail_out && (WI = w.avail_out), WI !== 0 && (C.arraySet(w.output, sI.pending_buf, sI.pending_out, WI, w.next_out), w.next_out += WI, sI.pending_out += WI, w.total_out += WI, w.avail_out -= WI, sI.pending -= WI, sI.pending === 0 && (sI.pending_out = 0));
+    var sI = w.state, wI = sI.pending;
+    wI > w.avail_out && (wI = w.avail_out), wI !== 0 && (C.arraySet(w.output, sI.pending_buf, sI.pending_out, wI, w.next_out), w.next_out += wI, sI.pending_out += wI, w.total_out += wI, w.avail_out -= wI, sI.pending -= wI, sI.pending === 0 && (sI.pending_out = 0));
   }
   function GI(w, sI) {
     g._tr_flush_block(w, w.block_start >= 0 ? w.block_start : -1, w.strstart - w.block_start, sI), w.block_start = w.strstart, aI(w.strm);
   }
-  function mI(w, sI) {
+  function nI(w, sI) {
     w.pending_buf[w.pending++] = sI;
   }
   function hI(w, sI) {
     w.pending_buf[w.pending++] = sI >>> 8 & 255, w.pending_buf[w.pending++] = sI & 255;
   }
-  function YI(w, sI, WI, f) {
+  function YI(w, sI, wI, f) {
     var P = w.avail_in;
-    return P > f && (P = f), P === 0 ? 0 : (w.avail_in -= P, C.arraySet(sI, w.input, w.next_in, P, WI), w.state.wrap === 1 ? w.adler = I(w.adler, sI, P, WI) : w.state.wrap === 2 && (w.adler = A(w.adler, sI, P, WI)), w.next_in += P, w.total_in += P, P);
+    return P > f && (P = f), P === 0 ? 0 : (w.avail_in -= P, C.arraySet(sI, w.input, w.next_in, P, wI), w.state.wrap === 1 ? w.adler = I(w.adler, sI, P, wI) : w.state.wrap === 2 && (w.adler = A(w.adler, sI, P, wI)), w.next_in += P, w.total_in += P, P);
   }
   function uI(w, sI) {
-    var WI = w.max_chain_length, f = w.strstart, P, q, VI = w.prev_length, XI = w.nice_match, rI = w.strstart > w.w_size - J ? w.strstart - (w.w_size - J) : 0, zI = w.window, TI = w.w_mask, xI = w.prev, SI = w.strstart + j, fI = zI[f + VI - 1], $I = zI[f + VI];
-    w.prev_length >= w.good_match && (WI >>= 2), XI > w.lookahead && (XI = w.lookahead);
+    var wI = w.max_chain_length, f = w.strstart, P, _, VI = w.prev_length, XI = w.nice_match, rI = w.strstart > w.w_size - z ? w.strstart - (w.w_size - z) : 0, zI = w.window, TI = w.w_mask, xI = w.prev, SI = w.strstart + j, fI = zI[f + VI - 1], $I = zI[f + VI];
+    w.prev_length >= w.good_match && (wI >>= 2), XI > w.lookahead && (XI = w.lookahead);
     do
       if (P = sI, !(zI[P + VI] !== $I || zI[P + VI - 1] !== fI || zI[P] !== zI[f] || zI[++P] !== zI[f + 1])) {
         f += 2, P++;
         do
           ;
         while (zI[++f] === zI[++P] && zI[++f] === zI[++P] && zI[++f] === zI[++P] && zI[++f] === zI[++P] && zI[++f] === zI[++P] && zI[++f] === zI[++P] && zI[++f] === zI[++P] && zI[++f] === zI[++P] && f < SI);
-        if (q = j - (SI - f), f = SI - j, q > VI) {
-          if (w.match_start = sI, VI = q, q >= XI)
+        if (_ = j - (SI - f), f = SI - j, _ > VI) {
+          if (w.match_start = sI, VI = _, _ >= XI)
             break;
           fI = zI[f + VI - 1], $I = zI[f + VI];
         }
       }
-    while ((sI = xI[sI & TI]) > rI && --WI !== 0);
+    while ((sI = xI[sI & TI]) > rI && --wI !== 0);
     return VI <= w.lookahead ? VI : w.lookahead;
   }
   function RI(w) {
-    var sI = w.w_size, WI, f, P, q, VI;
+    var sI = w.w_size, wI, f, P, _, VI;
     do {
-      if (q = w.window_size - w.lookahead - w.strstart, w.strstart >= sI + (sI - J)) {
-        C.arraySet(w.window, w.window, sI, sI, 0), w.match_start -= sI, w.strstart -= sI, w.block_start -= sI, f = w.hash_size, WI = f;
+      if (_ = w.window_size - w.lookahead - w.strstart, w.strstart >= sI + (sI - z)) {
+        C.arraySet(w.window, w.window, sI, sI, 0), w.match_start -= sI, w.strstart -= sI, w.block_start -= sI, f = w.hash_size, wI = f;
         do
-          P = w.head[--WI], w.head[WI] = P >= sI ? P - sI : 0;
+          P = w.head[--wI], w.head[wI] = P >= sI ? P - sI : 0;
         while (--f);
-        f = sI, WI = f;
+        f = sI, wI = f;
         do
-          P = w.prev[--WI], w.prev[WI] = P >= sI ? P - sI : 0;
+          P = w.prev[--wI], w.prev[wI] = P >= sI ? P - sI : 0;
         while (--f);
-        q += sI;
+        _ += sI;
       }
       if (w.strm.avail_in === 0)
         break;
-      if (f = YI(w.strm, w.window, w.strstart + w.lookahead, q), w.lookahead += f, w.lookahead + w.insert >= v)
+      if (f = YI(w.strm, w.window, w.strstart + w.lookahead, _), w.lookahead += f, w.lookahead + w.insert >= v)
         for (VI = w.strstart - w.insert, w.ins_h = w.window[VI], w.ins_h = (w.ins_h << w.hash_shift ^ w.window[VI + 1]) & w.hash_mask; w.insert && (w.ins_h = (w.ins_h << w.hash_shift ^ w.window[VI + v - 1]) & w.hash_mask, w.prev[VI & w.w_mask] = w.head[w.ins_h], w.head[w.ins_h] = VI, VI++, w.insert--, !(w.lookahead + w.insert < v)); )
           ;
-    } while (w.lookahead < J && w.strm.avail_in !== 0);
+    } while (w.lookahead < z && w.strm.avail_in !== 0);
   }
   function pI(w, sI) {
-    var WI = 65535;
-    for (WI > w.pending_buf_size - 5 && (WI = w.pending_buf_size - 5); ; ) {
+    var wI = 65535;
+    for (wI > w.pending_buf_size - 5 && (wI = w.pending_buf_size - 5); ; ) {
       if (w.lookahead <= 1) {
         if (RI(w), w.lookahead === 0 && sI === s)
           return T;
@@ -18945,25 +18952,25 @@ function requireDeflate$1() {
           break;
       }
       w.strstart += w.lookahead, w.lookahead = 0;
-      var f = w.block_start + WI;
-      if ((w.strstart === 0 || w.strstart >= f) && (w.lookahead = w.strstart - f, w.strstart = f, GI(w, !1), w.strm.avail_out === 0) || w.strstart - w.block_start >= w.w_size - J && (GI(w, !1), w.strm.avail_out === 0))
+      var f = w.block_start + wI;
+      if ((w.strstart === 0 || w.strstart >= f) && (w.lookahead = w.strstart - f, w.strstart = f, GI(w, !1), w.strm.avail_out === 0) || w.strstart - w.block_start >= w.w_size - z && (GI(w, !1), w.strm.avail_out === 0))
         return T;
     }
-    return w.insert = 0, sI === Z ? (GI(w, !0), w.strm.avail_out === 0 ? p : z) : (w.strstart > w.block_start && (GI(w, !1), w.strm.avail_out === 0), T);
+    return w.insert = 0, sI === Z ? (GI(w, !0), w.strm.avail_out === 0 ? K : J) : (w.strstart > w.block_start && (GI(w, !1), w.strm.avail_out === 0), T);
   }
   function MI(w, sI) {
-    for (var WI, f; ; ) {
-      if (w.lookahead < J) {
-        if (RI(w), w.lookahead < J && sI === s)
+    for (var wI, f; ; ) {
+      if (w.lookahead < z) {
+        if (RI(w), w.lookahead < z && sI === s)
           return T;
         if (w.lookahead === 0)
           break;
       }
-      if (WI = 0, w.lookahead >= v && (w.ins_h = (w.ins_h << w.hash_shift ^ w.window[w.strstart + v - 1]) & w.hash_mask, WI = w.prev[w.strstart & w.w_mask] = w.head[w.ins_h], w.head[w.ins_h] = w.strstart), WI !== 0 && w.strstart - WI <= w.w_size - J && (w.match_length = uI(w, WI)), w.match_length >= v)
+      if (wI = 0, w.lookahead >= v && (w.ins_h = (w.ins_h << w.hash_shift ^ w.window[w.strstart + v - 1]) & w.hash_mask, wI = w.prev[w.strstart & w.w_mask] = w.head[w.ins_h], w.head[w.ins_h] = w.strstart), wI !== 0 && w.strstart - wI <= w.w_size - z && (w.match_length = uI(w, wI)), w.match_length >= v)
         if (f = g._tr_tally(w, w.strstart - w.match_start, w.match_length - v), w.lookahead -= w.match_length, w.match_length <= w.max_lazy_match && w.lookahead >= v) {
           w.match_length--;
           do
-            w.strstart++, w.ins_h = (w.ins_h << w.hash_shift ^ w.window[w.strstart + v - 1]) & w.hash_mask, WI = w.prev[w.strstart & w.w_mask] = w.head[w.ins_h], w.head[w.ins_h] = w.strstart;
+            w.strstart++, w.ins_h = (w.ins_h << w.hash_shift ^ w.window[w.strstart + v - 1]) & w.hash_mask, wI = w.prev[w.strstart & w.w_mask] = w.head[w.ins_h], w.head[w.ins_h] = w.strstart;
           while (--w.match_length !== 0);
           w.strstart++;
         } else
@@ -18973,20 +18980,20 @@ function requireDeflate$1() {
       if (f && (GI(w, !1), w.strm.avail_out === 0))
         return T;
     }
-    return w.insert = w.strstart < v - 1 ? w.strstart : v - 1, sI === Z ? (GI(w, !0), w.strm.avail_out === 0 ? p : z) : w.last_lit && (GI(w, !1), w.strm.avail_out === 0) ? T : N;
+    return w.insert = w.strstart < v - 1 ? w.strstart : v - 1, sI === Z ? (GI(w, !0), w.strm.avail_out === 0 ? K : J) : w.last_lit && (GI(w, !1), w.strm.avail_out === 0) ? T : N;
   }
   function LI(w, sI) {
-    for (var WI, f, P; ; ) {
-      if (w.lookahead < J) {
-        if (RI(w), w.lookahead < J && sI === s)
+    for (var wI, f, P; ; ) {
+      if (w.lookahead < z) {
+        if (RI(w), w.lookahead < z && sI === s)
           return T;
         if (w.lookahead === 0)
           break;
       }
-      if (WI = 0, w.lookahead >= v && (w.ins_h = (w.ins_h << w.hash_shift ^ w.window[w.strstart + v - 1]) & w.hash_mask, WI = w.prev[w.strstart & w.w_mask] = w.head[w.ins_h], w.head[w.ins_h] = w.strstart), w.prev_length = w.match_length, w.prev_match = w.match_start, w.match_length = v - 1, WI !== 0 && w.prev_length < w.max_lazy_match && w.strstart - WI <= w.w_size - J && (w.match_length = uI(w, WI), w.match_length <= 5 && (w.strategy === X || w.match_length === v && w.strstart - w.match_start > 4096) && (w.match_length = v - 1)), w.prev_length >= v && w.match_length <= w.prev_length) {
+      if (wI = 0, w.lookahead >= v && (w.ins_h = (w.ins_h << w.hash_shift ^ w.window[w.strstart + v - 1]) & w.hash_mask, wI = w.prev[w.strstart & w.w_mask] = w.head[w.ins_h], w.head[w.ins_h] = w.strstart), w.prev_length = w.match_length, w.prev_match = w.match_start, w.match_length = v - 1, wI !== 0 && w.prev_length < w.max_lazy_match && w.strstart - wI <= w.w_size - z && (w.match_length = uI(w, wI), w.match_length <= 5 && (w.strategy === X || w.match_length === v && w.strstart - w.match_start > 4096) && (w.match_length = v - 1)), w.prev_length >= v && w.match_length <= w.prev_length) {
         P = w.strstart + w.lookahead - v, f = g._tr_tally(w, w.strstart - 1 - w.prev_match, w.prev_length - v), w.lookahead -= w.prev_length - 1, w.prev_length -= 2;
         do
-          ++w.strstart <= P && (w.ins_h = (w.ins_h << w.hash_shift ^ w.window[w.strstart + v - 1]) & w.hash_mask, WI = w.prev[w.strstart & w.w_mask] = w.head[w.ins_h], w.head[w.ins_h] = w.strstart);
+          ++w.strstart <= P && (w.ins_h = (w.ins_h << w.hash_shift ^ w.window[w.strstart + v - 1]) & w.hash_mask, wI = w.prev[w.strstart & w.w_mask] = w.head[w.ins_h], w.head[w.ins_h] = w.strstart);
         while (--w.prev_length !== 0);
         if (w.match_available = 0, w.match_length = v - 1, w.strstart++, f && (GI(w, !1), w.strm.avail_out === 0))
           return T;
@@ -18996,10 +19003,10 @@ function requireDeflate$1() {
       } else
         w.match_available = 1, w.strstart++, w.lookahead--;
     }
-    return w.match_available && (f = g._tr_tally(w, 0, w.window[w.strstart - 1]), w.match_available = 0), w.insert = w.strstart < v - 1 ? w.strstart : v - 1, sI === Z ? (GI(w, !0), w.strm.avail_out === 0 ? p : z) : w.last_lit && (GI(w, !1), w.strm.avail_out === 0) ? T : N;
+    return w.match_available && (f = g._tr_tally(w, 0, w.window[w.strstart - 1]), w.match_available = 0), w.insert = w.strstart < v - 1 ? w.strstart : v - 1, sI === Z ? (GI(w, !0), w.strm.avail_out === 0 ? K : J) : w.last_lit && (GI(w, !1), w.strm.avail_out === 0) ? T : N;
   }
   function KI(w, sI) {
-    for (var WI, f, P, q, VI = w.window; ; ) {
+    for (var wI, f, P, _, VI = w.window; ; ) {
       if (w.lookahead <= j) {
         if (RI(w), w.lookahead <= j && sI === s)
           return T;
@@ -19007,31 +19014,31 @@ function requireDeflate$1() {
           break;
       }
       if (w.match_length = 0, w.lookahead >= v && w.strstart > 0 && (P = w.strstart - 1, f = VI[P], f === VI[++P] && f === VI[++P] && f === VI[++P])) {
-        q = w.strstart + j;
+        _ = w.strstart + j;
         do
           ;
-        while (f === VI[++P] && f === VI[++P] && f === VI[++P] && f === VI[++P] && f === VI[++P] && f === VI[++P] && f === VI[++P] && f === VI[++P] && P < q);
-        w.match_length = j - (q - P), w.match_length > w.lookahead && (w.match_length = w.lookahead);
+        while (f === VI[++P] && f === VI[++P] && f === VI[++P] && f === VI[++P] && f === VI[++P] && f === VI[++P] && f === VI[++P] && f === VI[++P] && P < _);
+        w.match_length = j - (_ - P), w.match_length > w.lookahead && (w.match_length = w.lookahead);
       }
-      if (w.match_length >= v ? (WI = g._tr_tally(w, 1, w.match_length - v), w.lookahead -= w.match_length, w.strstart += w.match_length, w.match_length = 0) : (WI = g._tr_tally(w, 0, w.window[w.strstart]), w.lookahead--, w.strstart++), WI && (GI(w, !1), w.strm.avail_out === 0))
+      if (w.match_length >= v ? (wI = g._tr_tally(w, 1, w.match_length - v), w.lookahead -= w.match_length, w.strstart += w.match_length, w.match_length = 0) : (wI = g._tr_tally(w, 0, w.window[w.strstart]), w.lookahead--, w.strstart++), wI && (GI(w, !1), w.strm.avail_out === 0))
         return T;
     }
-    return w.insert = 0, sI === Z ? (GI(w, !0), w.strm.avail_out === 0 ? p : z) : w.last_lit && (GI(w, !1), w.strm.avail_out === 0) ? T : N;
+    return w.insert = 0, sI === Z ? (GI(w, !0), w.strm.avail_out === 0 ? K : J) : w.last_lit && (GI(w, !1), w.strm.avail_out === 0) ? T : N;
   }
   function PI(w, sI) {
-    for (var WI; ; ) {
+    for (var wI; ; ) {
       if (w.lookahead === 0 && (RI(w), w.lookahead === 0)) {
         if (sI === s)
           return T;
         break;
       }
-      if (w.match_length = 0, WI = g._tr_tally(w, 0, w.window[w.strstart]), w.lookahead--, w.strstart++, WI && (GI(w, !1), w.strm.avail_out === 0))
+      if (w.match_length = 0, wI = g._tr_tally(w, 0, w.window[w.strstart]), w.lookahead--, w.strstart++, wI && (GI(w, !1), w.strm.avail_out === 0))
         return T;
     }
-    return w.insert = 0, sI === Z ? (GI(w, !0), w.strm.avail_out === 0 ? p : z) : w.last_lit && (GI(w, !1), w.strm.avail_out === 0) ? T : N;
+    return w.insert = 0, sI === Z ? (GI(w, !0), w.strm.avail_out === 0 ? K : J) : w.last_lit && (GI(w, !1), w.strm.avail_out === 0) ? T : N;
   }
-  function OI(w, sI, WI, f, P) {
-    this.good_length = w, this.max_lazy = sI, this.nice_length = WI, this.max_chain = f, this.func = P;
+  function OI(w, sI, wI, f, P) {
+    this.good_length = w, this.max_lazy = sI, this.nice_length = wI, this.max_chain = f, this.func = P;
   }
   var kI;
   kI = [
@@ -19061,11 +19068,11 @@ function requireDeflate$1() {
     w.window_size = 2 * w.w_size, ZI(w.head), w.max_lazy_match = kI[w.level].max_lazy, w.good_match = kI[w.level].good_length, w.nice_match = kI[w.level].nice_length, w.max_chain_length = kI[w.level].max_chain, w.strstart = 0, w.block_start = 0, w.lookahead = 0, w.insert = 0, w.match_length = w.prev_length = v - 1, w.match_available = 0, w.ins_h = 0;
   }
   function F() {
-    this.strm = null, this.status = 0, this.pending_buf = null, this.pending_buf_size = 0, this.pending_out = 0, this.pending = 0, this.wrap = 0, this.gzhead = null, this.gzindex = 0, this.method = n, this.last_flush = -1, this.w_size = 0, this.w_bits = 0, this.w_mask = 0, this.window = null, this.window_size = 0, this.prev = null, this.head = null, this.ins_h = 0, this.hash_size = 0, this.hash_bits = 0, this.hash_mask = 0, this.hash_shift = 0, this.block_start = 0, this.match_length = 0, this.prev_match = 0, this.match_available = 0, this.strstart = 0, this.match_start = 0, this.lookahead = 0, this.prev_length = 0, this.max_chain_length = 0, this.max_lazy_match = 0, this.level = 0, this.strategy = 0, this.good_match = 0, this.nice_match = 0, this.dyn_ltree = new C.Buf16(iI * 2), this.dyn_dtree = new C.Buf16((2 * U + 1) * 2), this.bl_tree = new C.Buf16((2 * $ + 1) * 2), ZI(this.dyn_ltree), ZI(this.dyn_dtree), ZI(this.bl_tree), this.l_desc = null, this.d_desc = null, this.bl_desc = null, this.bl_count = new C.Buf16(O + 1), this.heap = new C.Buf16(2 * _ + 1), ZI(this.heap), this.heap_len = 0, this.heap_max = 0, this.depth = new C.Buf16(2 * _ + 1), ZI(this.depth), this.l_buf = 0, this.lit_bufsize = 0, this.last_lit = 0, this.d_buf = 0, this.opt_len = 0, this.static_len = 0, this.matches = 0, this.insert = 0, this.bi_buf = 0, this.bi_valid = 0;
+    this.strm = null, this.status = 0, this.pending_buf = null, this.pending_buf_size = 0, this.pending_out = 0, this.pending = 0, this.wrap = 0, this.gzhead = null, this.gzindex = 0, this.method = n, this.last_flush = -1, this.w_size = 0, this.w_bits = 0, this.w_mask = 0, this.window = null, this.window_size = 0, this.prev = null, this.head = null, this.ins_h = 0, this.hash_size = 0, this.hash_bits = 0, this.hash_mask = 0, this.hash_shift = 0, this.block_start = 0, this.match_length = 0, this.prev_match = 0, this.match_available = 0, this.strstart = 0, this.match_start = 0, this.lookahead = 0, this.prev_length = 0, this.max_chain_length = 0, this.max_lazy_match = 0, this.level = 0, this.strategy = 0, this.good_match = 0, this.nice_match = 0, this.dyn_ltree = new C.Buf16(iI * 2), this.dyn_dtree = new C.Buf16((2 * U + 1) * 2), this.bl_tree = new C.Buf16((2 * $ + 1) * 2), ZI(this.dyn_ltree), ZI(this.dyn_dtree), ZI(this.bl_tree), this.l_desc = null, this.d_desc = null, this.bl_desc = null, this.bl_count = new C.Buf16(O + 1), this.heap = new C.Buf16(2 * q + 1), ZI(this.heap), this.heap_len = 0, this.heap_max = 0, this.depth = new C.Buf16(2 * q + 1), ZI(this.depth), this.l_buf = 0, this.lit_bufsize = 0, this.last_lit = 0, this.d_buf = 0, this.opt_len = 0, this.static_len = 0, this.matches = 0, this.insert = 0, this.bi_buf = 0, this.bi_valid = 0;
   }
   function bI(w) {
     var sI;
-    return !w || !w.state ? E(w, b) : (w.total_in = w.total_out = 0, w.data_type = t, sI = w.state, sI.pending = 0, sI.pending_out = 0, sI.wrap < 0 && (sI.wrap = -sI.wrap), sI.status = sI.wrap ? dI : H, w.adler = sI.wrap === 2 ? 0 : 1, sI.last_flush = s, g._tr_init(sI), a);
+    return !w || !w.state ? E(w, b) : (w.total_in = w.total_out = 0, w.data_type = t, sI = w.state, sI.pending = 0, sI.pending_out = 0, sI.wrap < 0 && (sI.wrap = -sI.wrap), sI.status = sI.wrap ? oI : H, w.adler = sI.wrap === 2 ? 0 : 1, sI.last_flush = s, g._tr_init(sI), a);
   }
   function yI(w) {
     var sI = bI(w);
@@ -19074,39 +19081,39 @@ function requireDeflate$1() {
   function HI(w, sI) {
     return !w || !w.state || w.state.wrap !== 2 ? b : (w.state.gzhead = sI, a);
   }
-  function II(w, sI, WI, f, P, q) {
+  function II(w, sI, wI, f, P, _) {
     if (!w)
       return b;
     var VI = 1;
-    if (sI === Y && (sI = 6), f < 0 ? (VI = 0, f = -f) : f > 15 && (VI = 2, f -= 16), P < 1 || P > y || WI !== n || f < 8 || f > 15 || sI < 0 || sI > 9 || q < 0 || q > B)
+    if (sI === Y && (sI = 6), f < 0 ? (VI = 0, f = -f) : f > 15 && (VI = 2, f -= 16), P < 1 || P > y || wI !== n || f < 8 || f > 15 || sI < 0 || sI > 9 || _ < 0 || _ > B)
       return E(w, b);
     f === 8 && (f = 9);
     var XI = new F();
-    return w.state = XI, XI.strm = w, XI.wrap = VI, XI.gzhead = null, XI.w_bits = f, XI.w_size = 1 << XI.w_bits, XI.w_mask = XI.w_size - 1, XI.hash_bits = P + 7, XI.hash_size = 1 << XI.hash_bits, XI.hash_mask = XI.hash_size - 1, XI.hash_shift = ~~((XI.hash_bits + v - 1) / v), XI.window = new C.Buf8(XI.w_size * 2), XI.head = new C.Buf16(XI.hash_size), XI.prev = new C.Buf16(XI.w_size), XI.lit_bufsize = 1 << P + 6, XI.pending_buf_size = XI.lit_bufsize * 4, XI.pending_buf = new C.Buf8(XI.pending_buf_size), XI.d_buf = 1 * XI.lit_bufsize, XI.l_buf = 3 * XI.lit_bufsize, XI.level = sI, XI.strategy = q, XI.method = WI, yI(w);
+    return w.state = XI, XI.strm = w, XI.wrap = VI, XI.gzhead = null, XI.w_bits = f, XI.w_size = 1 << XI.w_bits, XI.w_mask = XI.w_size - 1, XI.hash_bits = P + 7, XI.hash_size = 1 << XI.hash_bits, XI.hash_mask = XI.hash_size - 1, XI.hash_shift = ~~((XI.hash_bits + v - 1) / v), XI.window = new C.Buf8(XI.w_size * 2), XI.head = new C.Buf16(XI.hash_size), XI.prev = new C.Buf16(XI.w_size), XI.lit_bufsize = 1 << P + 6, XI.pending_buf_size = XI.lit_bufsize * 4, XI.pending_buf = new C.Buf8(XI.pending_buf_size), XI.d_buf = 1 * XI.lit_bufsize, XI.l_buf = 3 * XI.lit_bufsize, XI.level = sI, XI.strategy = _, XI.method = wI, yI(w);
   }
-  function nI(w, sI) {
+  function WI(w, sI) {
     return II(w, sI, n, R, M, u);
   }
   function x(w, sI) {
-    var WI, f, P, q;
+    var wI, f, P, _;
     if (!w || !w.state || sI > o || sI < 0)
       return w ? E(w, b) : b;
     if (f = w.state, !w.output || !w.input && w.avail_in !== 0 || f.status === Q && sI !== Z)
       return E(w, w.avail_out === 0 ? V : b);
-    if (f.strm = w, WI = f.last_flush, f.last_flush = sI, f.status === dI)
+    if (f.strm = w, wI = f.last_flush, f.last_flush = sI, f.status === oI)
       if (f.wrap === 2)
-        w.adler = 0, mI(f, 31), mI(f, 139), mI(f, 8), f.gzhead ? (mI(
+        w.adler = 0, nI(f, 31), nI(f, 139), nI(f, 8), f.gzhead ? (nI(
           f,
           (f.gzhead.text ? 1 : 0) + (f.gzhead.hcrc ? 2 : 0) + (f.gzhead.extra ? 4 : 0) + (f.gzhead.name ? 8 : 0) + (f.gzhead.comment ? 16 : 0)
-        ), mI(f, f.gzhead.time & 255), mI(f, f.gzhead.time >> 8 & 255), mI(f, f.gzhead.time >> 16 & 255), mI(f, f.gzhead.time >> 24 & 255), mI(f, f.level === 9 ? 2 : f.strategy >= r || f.level < 2 ? 4 : 0), mI(f, f.gzhead.os & 255), f.gzhead.extra && f.gzhead.extra.length && (mI(f, f.gzhead.extra.length & 255), mI(f, f.gzhead.extra.length >> 8 & 255)), f.gzhead.hcrc && (w.adler = A(w.adler, f.pending_buf, f.pending, 0)), f.gzindex = 0, f.status = wI) : (mI(f, 0), mI(f, 0), mI(f, 0), mI(f, 0), mI(f, 0), mI(f, f.level === 9 ? 2 : f.strategy >= r || f.level < 2 ? 4 : 0), mI(f, L), f.status = H);
+        ), nI(f, f.gzhead.time & 255), nI(f, f.gzhead.time >> 8 & 255), nI(f, f.gzhead.time >> 16 & 255), nI(f, f.gzhead.time >> 24 & 255), nI(f, f.level === 9 ? 2 : f.strategy >= r || f.level < 2 ? 4 : 0), nI(f, f.gzhead.os & 255), f.gzhead.extra && f.gzhead.extra.length && (nI(f, f.gzhead.extra.length & 255), nI(f, f.gzhead.extra.length >> 8 & 255)), f.gzhead.hcrc && (w.adler = A(w.adler, f.pending_buf, f.pending, 0)), f.gzindex = 0, f.status = mI) : (nI(f, 0), nI(f, 0), nI(f, 0), nI(f, 0), nI(f, 0), nI(f, f.level === 9 ? 2 : f.strategy >= r || f.level < 2 ? 4 : 0), nI(f, L), f.status = H);
       else {
         var VI = n + (f.w_bits - 8 << 4) << 8, XI = -1;
         f.strategy >= r || f.level < 2 ? XI = 0 : f.level < 6 ? XI = 1 : f.level === 6 ? XI = 2 : XI = 3, VI |= XI << 6, f.strstart !== 0 && (VI |= lI), VI += 31 - VI % 31, f.status = H, hI(f, VI), f.strstart !== 0 && (hI(f, w.adler >>> 16), hI(f, w.adler & 65535)), w.adler = 1;
       }
-    if (f.status === wI)
+    if (f.status === mI)
       if (f.gzhead.extra) {
         for (P = f.pending; f.gzindex < (f.gzhead.extra.length & 65535) && !(f.pending === f.pending_buf_size && (f.gzhead.hcrc && f.pending > P && (w.adler = A(w.adler, f.pending_buf, f.pending - P, P)), aI(w), P = f.pending, f.pending === f.pending_buf_size)); )
-          mI(f, f.gzhead.extra[f.gzindex] & 255), f.gzindex++;
+          nI(f, f.gzhead.extra[f.gzindex] & 255), f.gzindex++;
         f.gzhead.hcrc && f.pending > P && (w.adler = A(w.adler, f.pending_buf, f.pending - P, P)), f.gzindex === f.gzhead.extra.length && (f.gzindex = 0, f.status = BI);
       } else
         f.status = BI;
@@ -19115,12 +19122,12 @@ function requireDeflate$1() {
         P = f.pending;
         do {
           if (f.pending === f.pending_buf_size && (f.gzhead.hcrc && f.pending > P && (w.adler = A(w.adler, f.pending_buf, f.pending - P, P)), aI(w), P = f.pending, f.pending === f.pending_buf_size)) {
-            q = 1;
+            _ = 1;
             break;
           }
-          f.gzindex < f.gzhead.name.length ? q = f.gzhead.name.charCodeAt(f.gzindex++) & 255 : q = 0, mI(f, q);
-        } while (q !== 0);
-        f.gzhead.hcrc && f.pending > P && (w.adler = A(w.adler, f.pending_buf, f.pending - P, P)), q === 0 && (f.gzindex = 0, f.status = gI);
+          f.gzindex < f.gzhead.name.length ? _ = f.gzhead.name.charCodeAt(f.gzindex++) & 255 : _ = 0, nI(f, _);
+        } while (_ !== 0);
+        f.gzhead.hcrc && f.pending > P && (w.adler = A(w.adler, f.pending_buf, f.pending - P, P)), _ === 0 && (f.gzindex = 0, f.status = gI);
       } else
         f.status = gI;
     if (f.status === gI)
@@ -19128,48 +19135,48 @@ function requireDeflate$1() {
         P = f.pending;
         do {
           if (f.pending === f.pending_buf_size && (f.gzhead.hcrc && f.pending > P && (w.adler = A(w.adler, f.pending_buf, f.pending - P, P)), aI(w), P = f.pending, f.pending === f.pending_buf_size)) {
-            q = 1;
+            _ = 1;
             break;
           }
-          f.gzindex < f.gzhead.comment.length ? q = f.gzhead.comment.charCodeAt(f.gzindex++) & 255 : q = 0, mI(f, q);
-        } while (q !== 0);
-        f.gzhead.hcrc && f.pending > P && (w.adler = A(w.adler, f.pending_buf, f.pending - P, P)), q === 0 && (f.status = K);
+          f.gzindex < f.gzhead.comment.length ? _ = f.gzhead.comment.charCodeAt(f.gzindex++) & 255 : _ = 0, nI(f, _);
+        } while (_ !== 0);
+        f.gzhead.hcrc && f.pending > P && (w.adler = A(w.adler, f.pending_buf, f.pending - P, P)), _ === 0 && (f.status = p);
       } else
-        f.status = K;
-    if (f.status === K && (f.gzhead.hcrc ? (f.pending + 2 > f.pending_buf_size && aI(w), f.pending + 2 <= f.pending_buf_size && (mI(f, w.adler & 255), mI(f, w.adler >> 8 & 255), w.adler = 0, f.status = H)) : f.status = H), f.pending !== 0) {
+        f.status = p;
+    if (f.status === p && (f.gzhead.hcrc ? (f.pending + 2 > f.pending_buf_size && aI(w), f.pending + 2 <= f.pending_buf_size && (nI(f, w.adler & 255), nI(f, w.adler >> 8 & 255), w.adler = 0, f.status = H)) : f.status = H), f.pending !== 0) {
       if (aI(w), w.avail_out === 0)
         return f.last_flush = -1, a;
-    } else if (w.avail_in === 0 && AI(sI) <= AI(WI) && sI !== Z)
+    } else if (w.avail_in === 0 && AI(sI) <= AI(wI) && sI !== Z)
       return E(w, V);
     if (f.status === Q && w.avail_in !== 0)
       return E(w, V);
     if (w.avail_in !== 0 || f.lookahead !== 0 || sI !== s && f.status !== Q) {
       var rI = f.strategy === r ? PI(f, sI) : f.strategy === h ? KI(f, sI) : kI[f.level].func(f, sI);
-      if ((rI === p || rI === z) && (f.status = Q), rI === T || rI === p)
+      if ((rI === K || rI === J) && (f.status = Q), rI === T || rI === K)
         return w.avail_out === 0 && (f.last_flush = -1), a;
       if (rI === N && (sI === d ? g._tr_align(f) : sI !== o && (g._tr_stored_block(f, 0, 0, !1), sI === c && (ZI(f.head), f.lookahead === 0 && (f.strstart = 0, f.block_start = 0, f.insert = 0))), aI(w), w.avail_out === 0))
         return f.last_flush = -1, a;
     }
-    return sI !== Z ? a : f.wrap <= 0 ? G : (f.wrap === 2 ? (mI(f, w.adler & 255), mI(f, w.adler >> 8 & 255), mI(f, w.adler >> 16 & 255), mI(f, w.adler >> 24 & 255), mI(f, w.total_in & 255), mI(f, w.total_in >> 8 & 255), mI(f, w.total_in >> 16 & 255), mI(f, w.total_in >> 24 & 255)) : (hI(f, w.adler >>> 16), hI(f, w.adler & 65535)), aI(w), f.wrap > 0 && (f.wrap = -f.wrap), f.pending !== 0 ? a : G);
+    return sI !== Z ? a : f.wrap <= 0 ? G : (f.wrap === 2 ? (nI(f, w.adler & 255), nI(f, w.adler >> 8 & 255), nI(f, w.adler >> 16 & 255), nI(f, w.adler >> 24 & 255), nI(f, w.total_in & 255), nI(f, w.total_in >> 8 & 255), nI(f, w.total_in >> 16 & 255), nI(f, w.total_in >> 24 & 255)) : (hI(f, w.adler >>> 16), hI(f, w.adler & 65535)), aI(w), f.wrap > 0 && (f.wrap = -f.wrap), f.pending !== 0 ? a : G);
   }
-  function oI(w) {
+  function cI(w) {
     var sI;
-    return !w || !w.state ? b : (sI = w.state.status, sI !== dI && sI !== wI && sI !== BI && sI !== gI && sI !== K && sI !== H && sI !== Q ? E(w, b) : (w.state = null, sI === H ? E(w, m) : a));
+    return !w || !w.state ? b : (sI = w.state.status, sI !== oI && sI !== mI && sI !== BI && sI !== gI && sI !== p && sI !== H && sI !== Q ? E(w, b) : (w.state = null, sI === H ? E(w, m) : a));
   }
-  function cI(w, sI) {
-    var WI = sI.length, f, P, q, VI, XI, rI, zI, TI;
-    if (!w || !w.state || (f = w.state, VI = f.wrap, VI === 2 || VI === 1 && f.status !== dI || f.lookahead))
+  function dI(w, sI) {
+    var wI = sI.length, f, P, _, VI, XI, rI, zI, TI;
+    if (!w || !w.state || (f = w.state, VI = f.wrap, VI === 2 || VI === 1 && f.status !== oI || f.lookahead))
       return b;
-    for (VI === 1 && (w.adler = I(w.adler, sI, WI, 0)), f.wrap = 0, WI >= f.w_size && (VI === 0 && (ZI(f.head), f.strstart = 0, f.block_start = 0, f.insert = 0), TI = new C.Buf8(f.w_size), C.arraySet(TI, sI, WI - f.w_size, f.w_size, 0), sI = TI, WI = f.w_size), XI = w.avail_in, rI = w.next_in, zI = w.input, w.avail_in = WI, w.next_in = 0, w.input = sI, RI(f); f.lookahead >= v; ) {
-      P = f.strstart, q = f.lookahead - (v - 1);
+    for (VI === 1 && (w.adler = I(w.adler, sI, wI, 0)), f.wrap = 0, wI >= f.w_size && (VI === 0 && (ZI(f.head), f.strstart = 0, f.block_start = 0, f.insert = 0), TI = new C.Buf8(f.w_size), C.arraySet(TI, sI, wI - f.w_size, f.w_size, 0), sI = TI, wI = f.w_size), XI = w.avail_in, rI = w.next_in, zI = w.input, w.avail_in = wI, w.next_in = 0, w.input = sI, RI(f); f.lookahead >= v; ) {
+      P = f.strstart, _ = f.lookahead - (v - 1);
       do
         f.ins_h = (f.ins_h << f.hash_shift ^ f.window[P + v - 1]) & f.hash_mask, f.prev[P & f.w_mask] = f.head[f.ins_h], f.head[f.ins_h] = P, P++;
-      while (--q);
+      while (--_);
       f.strstart = P, f.lookahead = v - 1, RI(f);
     }
     return f.strstart += f.lookahead, f.block_start = f.strstart, f.insert = f.lookahead, f.lookahead = 0, f.match_length = f.prev_length = v - 1, f.match_available = 0, w.next_in = rI, w.input = zI, w.avail_in = XI, f.wrap = VI, a;
   }
-  return deflate.deflateInit = nI, deflate.deflateInit2 = II, deflate.deflateReset = yI, deflate.deflateResetKeep = bI, deflate.deflateSetHeader = HI, deflate.deflate = x, deflate.deflateEnd = oI, deflate.deflateSetDictionary = cI, deflate.deflateInfo = "pako deflate (from Nodeca project)", deflate;
+  return deflate.deflateInit = WI, deflate.deflateInit2 = II, deflate.deflateReset = yI, deflate.deflateResetKeep = bI, deflate.deflateSetHeader = HI, deflate.deflate = x, deflate.deflateEnd = cI, deflate.deflateSetDictionary = dI, deflate.deflateInfo = "pako deflate (from Nodeca project)", deflate;
 }
 var strings = {}, hasRequiredStrings;
 function requireStrings() {
@@ -19316,21 +19323,21 @@ function requireInffast() {
   hasRequiredInffast = 1;
   var C = 30, g = 12;
   return inffast = function(A, l) {
-    var s, d, c, Z, o, a, G, b, m, V, Y, X, r, h, B, u, t, n, y, R, M, k, S, _, U;
-    s = A.state, d = A.next_in, _ = A.input, c = d + (A.avail_in - 5), Z = A.next_out, U = A.output, o = Z - (l - A.avail_out), a = Z + (A.avail_out - 257), G = s.dmax, b = s.wsize, m = s.whave, V = s.wnext, Y = s.window, X = s.hold, r = s.bits, h = s.lencode, B = s.distcode, u = (1 << s.lenbits) - 1, t = (1 << s.distbits) - 1;
+    var s, d, c, Z, o, a, G, b, m, V, Y, X, r, h, B, u, t, n, y, R, M, k, S, q, U;
+    s = A.state, d = A.next_in, q = A.input, c = d + (A.avail_in - 5), Z = A.next_out, U = A.output, o = Z - (l - A.avail_out), a = Z + (A.avail_out - 257), G = s.dmax, b = s.wsize, m = s.whave, V = s.wnext, Y = s.window, X = s.hold, r = s.bits, h = s.lencode, B = s.distcode, u = (1 << s.lenbits) - 1, t = (1 << s.distbits) - 1;
     I:
       do {
-        r < 15 && (X += _[d++] << r, r += 8, X += _[d++] << r, r += 8), n = h[X & u];
+        r < 15 && (X += q[d++] << r, r += 8, X += q[d++] << r, r += 8), n = h[X & u];
         g:
           for (; ; ) {
             if (y = n >>> 24, X >>>= y, r -= y, y = n >>> 16 & 255, y === 0)
               U[Z++] = n & 65535;
             else if (y & 16) {
-              R = n & 65535, y &= 15, y && (r < y && (X += _[d++] << r, r += 8), R += X & (1 << y) - 1, X >>>= y, r -= y), r < 15 && (X += _[d++] << r, r += 8, X += _[d++] << r, r += 8), n = B[X & t];
+              R = n & 65535, y &= 15, y && (r < y && (X += q[d++] << r, r += 8), R += X & (1 << y) - 1, X >>>= y, r -= y), r < 15 && (X += q[d++] << r, r += 8, X += q[d++] << r, r += 8), n = B[X & t];
               C:
                 for (; ; ) {
                   if (y = n >>> 24, X >>>= y, r -= y, y = n >>> 16 & 255, y & 16) {
-                    if (M = n & 65535, y &= 15, r < y && (X += _[d++] << r, r += 8, r < y && (X += _[d++] << r, r += 8)), M += X & (1 << y) - 1, M > G) {
+                    if (M = n & 65535, y &= 15, r < y && (X += q[d++] << r, r += 8, r < y && (X += q[d++] << r, r += 8)), M += X & (1 << y) - 1, M > G) {
                       A.msg = "invalid distance too far back", s.mode = C;
                       break I;
                     }
@@ -19543,7 +19550,7 @@ function requireInftrees() {
     64
   ];
   return inftrees = function(b, m, V, Y, X, r, h, B) {
-    var u = B.bits, t = 0, n = 0, y = 0, R = 0, M = 0, k = 0, S = 0, _ = 0, U = 0, $ = 0, iI, O, v, j, J, lI = null, dI = 0, wI, BI = new C.Buf16(g + 1), gI = new C.Buf16(g + 1), K = null, H = 0, Q, T, N;
+    var u = B.bits, t = 0, n = 0, y = 0, R = 0, M = 0, k = 0, S = 0, q = 0, U = 0, $ = 0, iI, O, v, j, z, lI = null, oI = 0, mI, BI = new C.Buf16(g + 1), gI = new C.Buf16(g + 1), p = null, H = 0, Q, T, N;
     for (t = 0; t <= g; t++)
       BI[t] = 0;
     for (n = 0; n < Y; n++)
@@ -19554,21 +19561,21 @@ function requireInftrees() {
       return X[r++] = 1 << 24 | 64 << 16 | 0, X[r++] = 1 << 24 | 64 << 16 | 0, B.bits = 1, 0;
     for (y = 1; y < R && BI[y] === 0; y++)
       ;
-    for (M < y && (M = y), _ = 1, t = 1; t <= g; t++)
-      if (_ <<= 1, _ -= BI[t], _ < 0)
+    for (M < y && (M = y), q = 1, t = 1; t <= g; t++)
+      if (q <<= 1, q -= BI[t], q < 0)
         return -1;
-    if (_ > 0 && (b === l || R !== 1))
+    if (q > 0 && (b === l || R !== 1))
       return -1;
     for (gI[1] = 0, t = 1; t < g; t++)
       gI[t + 1] = gI[t] + BI[t];
     for (n = 0; n < Y; n++)
       m[V + n] !== 0 && (h[gI[m[V + n]]++] = n);
-    if (b === l ? (lI = K = h, wI = 19) : b === s ? (lI = c, dI -= 257, K = Z, H -= 257, wI = 256) : (lI = o, K = a, wI = -1), $ = 0, n = 0, t = y, J = r, k = M, S = 0, v = -1, U = 1 << M, j = U - 1, b === s && U > I || b === d && U > A)
+    if (b === l ? (lI = p = h, mI = 19) : b === s ? (lI = c, oI -= 257, p = Z, H -= 257, mI = 256) : (lI = o, p = a, mI = -1), $ = 0, n = 0, t = y, z = r, k = M, S = 0, v = -1, U = 1 << M, j = U - 1, b === s && U > I || b === d && U > A)
       return 1;
     for (; ; ) {
-      Q = t - S, h[n] < wI ? (T = 0, N = h[n]) : h[n] > wI ? (T = K[H + h[n]], N = lI[dI + h[n]]) : (T = 96, N = 0), iI = 1 << t - S, O = 1 << k, y = O;
+      Q = t - S, h[n] < mI ? (T = 0, N = h[n]) : h[n] > mI ? (T = p[H + h[n]], N = lI[oI + h[n]]) : (T = 96, N = 0), iI = 1 << t - S, O = 1 << k, y = O;
       do
-        O -= iI, X[J + ($ >> S) + O] = Q << 24 | T << 16 | N | 0;
+        O -= iI, X[z + ($ >> S) + O] = Q << 24 | T << 16 | N | 0;
       while (O !== 0);
       for (iI = 1 << t - 1; $ & iI; )
         iI >>= 1;
@@ -19578,21 +19585,21 @@ function requireInftrees() {
         t = m[V + h[n]];
       }
       if (t > M && ($ & j) !== v) {
-        for (S === 0 && (S = M), J += y, k = t - S, _ = 1 << k; k + S < R && (_ -= BI[k + S], !(_ <= 0)); )
-          k++, _ <<= 1;
+        for (S === 0 && (S = M), z += y, k = t - S, q = 1 << k; k + S < R && (q -= BI[k + S], !(q <= 0)); )
+          k++, q <<= 1;
         if (U += 1 << k, b === s && U > I || b === d && U > A)
           return 1;
-        v = $ & j, X[v] = M << 24 | k << 16 | J - r | 0;
+        v = $ & j, X[v] = M << 24 | k << 16 | z - r | 0;
       }
     }
-    return $ !== 0 && (X[J + $] = t - S << 24 | 64 << 16 | 0), B.bits = M, 0;
+    return $ !== 0 && (X[z + $] = t - S << 24 | 64 << 16 | 0), B.bits = M, 0;
   }, inftrees;
 }
 var hasRequiredInflate$1;
 function requireInflate$1() {
   if (hasRequiredInflate$1) return inflate;
   hasRequiredInflate$1 = 1;
-  var C = requireCommon(), g = requireAdler32(), I = requireCrc32(), A = requireInffast(), l = requireInftrees(), s = 0, d = 1, c = 2, Z = 4, o = 5, a = 6, G = 0, b = 1, m = 2, V = -2, Y = -3, X = -4, r = -5, h = 8, B = 1, u = 2, t = 3, n = 4, y = 5, R = 6, M = 7, k = 8, S = 9, _ = 10, U = 11, $ = 12, iI = 13, O = 14, v = 15, j = 16, J = 17, lI = 18, dI = 19, wI = 20, BI = 21, gI = 22, K = 23, H = 24, Q = 25, T = 26, N = 27, p = 28, z = 29, L = 30, E = 31, AI = 32, ZI = 852, aI = 592, GI = 15, mI = GI;
+  var C = requireCommon(), g = requireAdler32(), I = requireCrc32(), A = requireInffast(), l = requireInftrees(), s = 0, d = 1, c = 2, Z = 4, o = 5, a = 6, G = 0, b = 1, m = 2, V = -2, Y = -3, X = -4, r = -5, h = 8, B = 1, u = 2, t = 3, n = 4, y = 5, R = 6, M = 7, k = 8, S = 9, q = 10, U = 11, $ = 12, iI = 13, O = 14, v = 15, j = 16, z = 17, lI = 18, oI = 19, mI = 20, BI = 21, gI = 22, p = 23, H = 24, Q = 25, T = 26, N = 27, K = 28, J = 29, L = 30, E = 31, AI = 32, ZI = 852, aI = 592, GI = 15, nI = GI;
   function hI(II) {
     return (II >>> 24 & 255) + (II >>> 8 & 65280) + ((II & 65280) << 8) + ((II & 255) << 24);
   }
@@ -19600,54 +19607,54 @@ function requireInflate$1() {
     this.mode = 0, this.last = !1, this.wrap = 0, this.havedict = !1, this.flags = 0, this.dmax = 0, this.check = 0, this.total = 0, this.head = null, this.wbits = 0, this.wsize = 0, this.whave = 0, this.wnext = 0, this.window = null, this.hold = 0, this.bits = 0, this.length = 0, this.offset = 0, this.extra = 0, this.lencode = null, this.distcode = null, this.lenbits = 0, this.distbits = 0, this.ncode = 0, this.nlen = 0, this.ndist = 0, this.have = 0, this.next = null, this.lens = new C.Buf16(320), this.work = new C.Buf16(288), this.lendyn = null, this.distdyn = null, this.sane = 0, this.back = 0, this.was = 0;
   }
   function uI(II) {
-    var nI;
-    return !II || !II.state ? V : (nI = II.state, II.total_in = II.total_out = nI.total = 0, II.msg = "", nI.wrap && (II.adler = nI.wrap & 1), nI.mode = B, nI.last = 0, nI.havedict = 0, nI.dmax = 32768, nI.head = null, nI.hold = 0, nI.bits = 0, nI.lencode = nI.lendyn = new C.Buf32(ZI), nI.distcode = nI.distdyn = new C.Buf32(aI), nI.sane = 1, nI.back = -1, G);
+    var WI;
+    return !II || !II.state ? V : (WI = II.state, II.total_in = II.total_out = WI.total = 0, II.msg = "", WI.wrap && (II.adler = WI.wrap & 1), WI.mode = B, WI.last = 0, WI.havedict = 0, WI.dmax = 32768, WI.head = null, WI.hold = 0, WI.bits = 0, WI.lencode = WI.lendyn = new C.Buf32(ZI), WI.distcode = WI.distdyn = new C.Buf32(aI), WI.sane = 1, WI.back = -1, G);
   }
   function RI(II) {
-    var nI;
-    return !II || !II.state ? V : (nI = II.state, nI.wsize = 0, nI.whave = 0, nI.wnext = 0, uI(II));
+    var WI;
+    return !II || !II.state ? V : (WI = II.state, WI.wsize = 0, WI.whave = 0, WI.wnext = 0, uI(II));
   }
-  function pI(II, nI) {
-    var x, oI;
-    return !II || !II.state || (oI = II.state, nI < 0 ? (x = 0, nI = -nI) : (x = (nI >> 4) + 1, nI < 48 && (nI &= 15)), nI && (nI < 8 || nI > 15)) ? V : (oI.window !== null && oI.wbits !== nI && (oI.window = null), oI.wrap = x, oI.wbits = nI, RI(II));
+  function pI(II, WI) {
+    var x, cI;
+    return !II || !II.state || (cI = II.state, WI < 0 ? (x = 0, WI = -WI) : (x = (WI >> 4) + 1, WI < 48 && (WI &= 15)), WI && (WI < 8 || WI > 15)) ? V : (cI.window !== null && cI.wbits !== WI && (cI.window = null), cI.wrap = x, cI.wbits = WI, RI(II));
   }
-  function MI(II, nI) {
-    var x, oI;
-    return II ? (oI = new YI(), II.state = oI, oI.window = null, x = pI(II, nI), x !== G && (II.state = null), x) : V;
+  function MI(II, WI) {
+    var x, cI;
+    return II ? (cI = new YI(), II.state = cI, cI.window = null, x = pI(II, WI), x !== G && (II.state = null), x) : V;
   }
   function LI(II) {
-    return MI(II, mI);
+    return MI(II, nI);
   }
   var KI = !0, PI, OI;
   function kI(II) {
     if (KI) {
-      var nI;
-      for (PI = new C.Buf32(512), OI = new C.Buf32(32), nI = 0; nI < 144; )
-        II.lens[nI++] = 8;
-      for (; nI < 256; )
-        II.lens[nI++] = 9;
-      for (; nI < 280; )
-        II.lens[nI++] = 7;
-      for (; nI < 288; )
-        II.lens[nI++] = 8;
-      for (l(d, II.lens, 0, 288, PI, 0, II.work, { bits: 9 }), nI = 0; nI < 32; )
-        II.lens[nI++] = 5;
+      var WI;
+      for (PI = new C.Buf32(512), OI = new C.Buf32(32), WI = 0; WI < 144; )
+        II.lens[WI++] = 8;
+      for (; WI < 256; )
+        II.lens[WI++] = 9;
+      for (; WI < 280; )
+        II.lens[WI++] = 7;
+      for (; WI < 288; )
+        II.lens[WI++] = 8;
+      for (l(d, II.lens, 0, 288, PI, 0, II.work, { bits: 9 }), WI = 0; WI < 32; )
+        II.lens[WI++] = 5;
       l(c, II.lens, 0, 32, OI, 0, II.work, { bits: 5 }), KI = !1;
     }
     II.lencode = PI, II.lenbits = 9, II.distcode = OI, II.distbits = 5;
   }
-  function DI(II, nI, x, oI) {
-    var cI, w = II.state;
-    return w.window === null && (w.wsize = 1 << w.wbits, w.wnext = 0, w.whave = 0, w.window = new C.Buf8(w.wsize)), oI >= w.wsize ? (C.arraySet(w.window, nI, x - w.wsize, w.wsize, 0), w.wnext = 0, w.whave = w.wsize) : (cI = w.wsize - w.wnext, cI > oI && (cI = oI), C.arraySet(w.window, nI, x - oI, cI, w.wnext), oI -= cI, oI ? (C.arraySet(w.window, nI, x - oI, oI, 0), w.wnext = oI, w.whave = w.wsize) : (w.wnext += cI, w.wnext === w.wsize && (w.wnext = 0), w.whave < w.wsize && (w.whave += cI))), 0;
+  function DI(II, WI, x, cI) {
+    var dI, w = II.state;
+    return w.window === null && (w.wsize = 1 << w.wbits, w.wnext = 0, w.whave = 0, w.window = new C.Buf8(w.wsize)), cI >= w.wsize ? (C.arraySet(w.window, WI, x - w.wsize, w.wsize, 0), w.wnext = 0, w.whave = w.wsize) : (dI = w.wsize - w.wnext, dI > cI && (dI = cI), C.arraySet(w.window, WI, x - cI, dI, w.wnext), cI -= dI, cI ? (C.arraySet(w.window, WI, x - cI, cI, 0), w.wnext = cI, w.whave = w.wsize) : (w.wnext += dI, w.wnext === w.wsize && (w.wnext = 0), w.whave < w.wsize && (w.whave += dI))), 0;
   }
-  function F(II, nI) {
-    var x, oI, cI, w, sI, WI, f, P, q, VI, XI, rI, zI, TI, xI = 0, SI, fI, $I, jI, gg, lg, UI, Cg, qI = new C.Buf8(4), cg, Zg, ag = (
+  function F(II, WI) {
+    var x, cI, dI, w, sI, wI, f, P, _, VI, XI, rI, zI, TI, xI = 0, SI, fI, $I, jI, gg, lg, UI, Cg, qI = new C.Buf8(4), cg, Zg, ag = (
       /* permutation of code lengths */
       [16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15]
     );
     if (!II || !II.state || !II.output || !II.input && II.avail_in !== 0)
       return V;
-    x = II.state, x.mode === $ && (x.mode = iI), sI = II.next_out, cI = II.output, f = II.avail_out, w = II.next_in, oI = II.input, WI = II.avail_in, P = x.hold, q = x.bits, VI = WI, XI = f, Cg = G;
+    x = II.state, x.mode === $ && (x.mode = iI), sI = II.next_out, dI = II.output, f = II.avail_out, w = II.next_in, cI = II.input, wI = II.avail_in, P = x.hold, _ = x.bits, VI = wI, XI = f, Cg = G;
     I:
       for (; ; )
         switch (x.mode) {
@@ -19656,13 +19663,13 @@ function requireInflate$1() {
               x.mode = iI;
               break;
             }
-            for (; q < 16; ) {
-              if (WI === 0)
+            for (; _ < 16; ) {
+              if (wI === 0)
                 break I;
-              WI--, P += oI[w++] << q, q += 8;
+              wI--, P += cI[w++] << _, _ += 8;
             }
             if (x.wrap & 2 && P === 35615) {
-              x.check = 0, qI[0] = P & 255, qI[1] = P >>> 8 & 255, x.check = I(x.check, qI, 2, 0), P = 0, q = 0, x.mode = u;
+              x.check = 0, qI[0] = P & 255, qI[1] = P >>> 8 & 255, x.check = I(x.check, qI, 2, 0), P = 0, _ = 0, x.mode = u;
               break;
             }
             if (x.flags = 0, x.head && (x.head.done = !1), !(x.wrap & 1) || /* check if zlib header allowed */
@@ -19674,19 +19681,19 @@ function requireInflate$1() {
               II.msg = "unknown compression method", x.mode = L;
               break;
             }
-            if (P >>>= 4, q -= 4, UI = (P & 15) + 8, x.wbits === 0)
+            if (P >>>= 4, _ -= 4, UI = (P & 15) + 8, x.wbits === 0)
               x.wbits = UI;
             else if (UI > x.wbits) {
               II.msg = "invalid window size", x.mode = L;
               break;
             }
-            x.dmax = 1 << UI, II.adler = x.check = 1, x.mode = P & 512 ? _ : $, P = 0, q = 0;
+            x.dmax = 1 << UI, II.adler = x.check = 1, x.mode = P & 512 ? q : $, P = 0, _ = 0;
             break;
           case u:
-            for (; q < 16; ) {
-              if (WI === 0)
+            for (; _ < 16; ) {
+              if (wI === 0)
                 break I;
-              WI--, P += oI[w++] << q, q += 8;
+              wI--, P += cI[w++] << _, _ += 8;
             }
             if (x.flags = P, (x.flags & 255) !== h) {
               II.msg = "unknown compression method", x.mode = L;
@@ -19696,146 +19703,146 @@ function requireInflate$1() {
               II.msg = "unknown header flags set", x.mode = L;
               break;
             }
-            x.head && (x.head.text = P >> 8 & 1), x.flags & 512 && (qI[0] = P & 255, qI[1] = P >>> 8 & 255, x.check = I(x.check, qI, 2, 0)), P = 0, q = 0, x.mode = t;
+            x.head && (x.head.text = P >> 8 & 1), x.flags & 512 && (qI[0] = P & 255, qI[1] = P >>> 8 & 255, x.check = I(x.check, qI, 2, 0)), P = 0, _ = 0, x.mode = t;
           /* falls through */
           case t:
-            for (; q < 32; ) {
-              if (WI === 0)
+            for (; _ < 32; ) {
+              if (wI === 0)
                 break I;
-              WI--, P += oI[w++] << q, q += 8;
+              wI--, P += cI[w++] << _, _ += 8;
             }
-            x.head && (x.head.time = P), x.flags & 512 && (qI[0] = P & 255, qI[1] = P >>> 8 & 255, qI[2] = P >>> 16 & 255, qI[3] = P >>> 24 & 255, x.check = I(x.check, qI, 4, 0)), P = 0, q = 0, x.mode = n;
+            x.head && (x.head.time = P), x.flags & 512 && (qI[0] = P & 255, qI[1] = P >>> 8 & 255, qI[2] = P >>> 16 & 255, qI[3] = P >>> 24 & 255, x.check = I(x.check, qI, 4, 0)), P = 0, _ = 0, x.mode = n;
           /* falls through */
           case n:
-            for (; q < 16; ) {
-              if (WI === 0)
+            for (; _ < 16; ) {
+              if (wI === 0)
                 break I;
-              WI--, P += oI[w++] << q, q += 8;
+              wI--, P += cI[w++] << _, _ += 8;
             }
-            x.head && (x.head.xflags = P & 255, x.head.os = P >> 8), x.flags & 512 && (qI[0] = P & 255, qI[1] = P >>> 8 & 255, x.check = I(x.check, qI, 2, 0)), P = 0, q = 0, x.mode = y;
+            x.head && (x.head.xflags = P & 255, x.head.os = P >> 8), x.flags & 512 && (qI[0] = P & 255, qI[1] = P >>> 8 & 255, x.check = I(x.check, qI, 2, 0)), P = 0, _ = 0, x.mode = y;
           /* falls through */
           case y:
             if (x.flags & 1024) {
-              for (; q < 16; ) {
-                if (WI === 0)
+              for (; _ < 16; ) {
+                if (wI === 0)
                   break I;
-                WI--, P += oI[w++] << q, q += 8;
+                wI--, P += cI[w++] << _, _ += 8;
               }
-              x.length = P, x.head && (x.head.extra_len = P), x.flags & 512 && (qI[0] = P & 255, qI[1] = P >>> 8 & 255, x.check = I(x.check, qI, 2, 0)), P = 0, q = 0;
+              x.length = P, x.head && (x.head.extra_len = P), x.flags & 512 && (qI[0] = P & 255, qI[1] = P >>> 8 & 255, x.check = I(x.check, qI, 2, 0)), P = 0, _ = 0;
             } else x.head && (x.head.extra = null);
             x.mode = R;
           /* falls through */
           case R:
-            if (x.flags & 1024 && (rI = x.length, rI > WI && (rI = WI), rI && (x.head && (UI = x.head.extra_len - x.length, x.head.extra || (x.head.extra = new Array(x.head.extra_len)), C.arraySet(
+            if (x.flags & 1024 && (rI = x.length, rI > wI && (rI = wI), rI && (x.head && (UI = x.head.extra_len - x.length, x.head.extra || (x.head.extra = new Array(x.head.extra_len)), C.arraySet(
               x.head.extra,
-              oI,
+              cI,
               w,
               // extra field is limited to 65536 bytes
               // - no need for additional size check
               rI,
               /*len + copy > state.head.extra_max - len ? state.head.extra_max : copy,*/
               UI
-            )), x.flags & 512 && (x.check = I(x.check, oI, rI, w)), WI -= rI, w += rI, x.length -= rI), x.length))
+            )), x.flags & 512 && (x.check = I(x.check, cI, rI, w)), wI -= rI, w += rI, x.length -= rI), x.length))
               break I;
             x.length = 0, x.mode = M;
           /* falls through */
           case M:
             if (x.flags & 2048) {
-              if (WI === 0)
+              if (wI === 0)
                 break I;
               rI = 0;
               do
-                UI = oI[w + rI++], x.head && UI && x.length < 65536 && (x.head.name += String.fromCharCode(UI));
-              while (UI && rI < WI);
-              if (x.flags & 512 && (x.check = I(x.check, oI, rI, w)), WI -= rI, w += rI, UI)
+                UI = cI[w + rI++], x.head && UI && x.length < 65536 && (x.head.name += String.fromCharCode(UI));
+              while (UI && rI < wI);
+              if (x.flags & 512 && (x.check = I(x.check, cI, rI, w)), wI -= rI, w += rI, UI)
                 break I;
             } else x.head && (x.head.name = null);
             x.length = 0, x.mode = k;
           /* falls through */
           case k:
             if (x.flags & 4096) {
-              if (WI === 0)
+              if (wI === 0)
                 break I;
               rI = 0;
               do
-                UI = oI[w + rI++], x.head && UI && x.length < 65536 && (x.head.comment += String.fromCharCode(UI));
-              while (UI && rI < WI);
-              if (x.flags & 512 && (x.check = I(x.check, oI, rI, w)), WI -= rI, w += rI, UI)
+                UI = cI[w + rI++], x.head && UI && x.length < 65536 && (x.head.comment += String.fromCharCode(UI));
+              while (UI && rI < wI);
+              if (x.flags & 512 && (x.check = I(x.check, cI, rI, w)), wI -= rI, w += rI, UI)
                 break I;
             } else x.head && (x.head.comment = null);
             x.mode = S;
           /* falls through */
           case S:
             if (x.flags & 512) {
-              for (; q < 16; ) {
-                if (WI === 0)
+              for (; _ < 16; ) {
+                if (wI === 0)
                   break I;
-                WI--, P += oI[w++] << q, q += 8;
+                wI--, P += cI[w++] << _, _ += 8;
               }
               if (P !== (x.check & 65535)) {
                 II.msg = "header crc mismatch", x.mode = L;
                 break;
               }
-              P = 0, q = 0;
+              P = 0, _ = 0;
             }
             x.head && (x.head.hcrc = x.flags >> 9 & 1, x.head.done = !0), II.adler = x.check = 0, x.mode = $;
             break;
-          case _:
-            for (; q < 32; ) {
-              if (WI === 0)
+          case q:
+            for (; _ < 32; ) {
+              if (wI === 0)
                 break I;
-              WI--, P += oI[w++] << q, q += 8;
+              wI--, P += cI[w++] << _, _ += 8;
             }
-            II.adler = x.check = hI(P), P = 0, q = 0, x.mode = U;
+            II.adler = x.check = hI(P), P = 0, _ = 0, x.mode = U;
           /* falls through */
           case U:
             if (x.havedict === 0)
-              return II.next_out = sI, II.avail_out = f, II.next_in = w, II.avail_in = WI, x.hold = P, x.bits = q, m;
+              return II.next_out = sI, II.avail_out = f, II.next_in = w, II.avail_in = wI, x.hold = P, x.bits = _, m;
             II.adler = x.check = 1, x.mode = $;
           /* falls through */
           case $:
-            if (nI === o || nI === a)
+            if (WI === o || WI === a)
               break I;
           /* falls through */
           case iI:
             if (x.last) {
-              P >>>= q & 7, q -= q & 7, x.mode = N;
+              P >>>= _ & 7, _ -= _ & 7, x.mode = N;
               break;
             }
-            for (; q < 3; ) {
-              if (WI === 0)
+            for (; _ < 3; ) {
+              if (wI === 0)
                 break I;
-              WI--, P += oI[w++] << q, q += 8;
+              wI--, P += cI[w++] << _, _ += 8;
             }
-            switch (x.last = P & 1, P >>>= 1, q -= 1, P & 3) {
+            switch (x.last = P & 1, P >>>= 1, _ -= 1, P & 3) {
               case 0:
                 x.mode = O;
                 break;
               case 1:
-                if (kI(x), x.mode = wI, nI === a) {
-                  P >>>= 2, q -= 2;
+                if (kI(x), x.mode = mI, WI === a) {
+                  P >>>= 2, _ -= 2;
                   break I;
                 }
                 break;
               case 2:
-                x.mode = J;
+                x.mode = z;
                 break;
               case 3:
                 II.msg = "invalid block type", x.mode = L;
             }
-            P >>>= 2, q -= 2;
+            P >>>= 2, _ -= 2;
             break;
           case O:
-            for (P >>>= q & 7, q -= q & 7; q < 32; ) {
-              if (WI === 0)
+            for (P >>>= _ & 7, _ -= _ & 7; _ < 32; ) {
+              if (wI === 0)
                 break I;
-              WI--, P += oI[w++] << q, q += 8;
+              wI--, P += cI[w++] << _, _ += 8;
             }
             if ((P & 65535) !== (P >>> 16 ^ 65535)) {
               II.msg = "invalid stored block lengths", x.mode = L;
               break;
             }
-            if (x.length = P & 65535, P = 0, q = 0, x.mode = v, nI === a)
+            if (x.length = P & 65535, P = 0, _ = 0, x.mode = v, WI === a)
               break I;
           /* falls through */
           case v:
@@ -19843,20 +19850,20 @@ function requireInflate$1() {
           /* falls through */
           case j:
             if (rI = x.length, rI) {
-              if (rI > WI && (rI = WI), rI > f && (rI = f), rI === 0)
+              if (rI > wI && (rI = wI), rI > f && (rI = f), rI === 0)
                 break I;
-              C.arraySet(cI, oI, w, rI, sI), WI -= rI, w += rI, f -= rI, sI += rI, x.length -= rI;
+              C.arraySet(dI, cI, w, rI, sI), wI -= rI, w += rI, f -= rI, sI += rI, x.length -= rI;
               break;
             }
             x.mode = $;
             break;
-          case J:
-            for (; q < 14; ) {
-              if (WI === 0)
+          case z:
+            for (; _ < 14; ) {
+              if (wI === 0)
                 break I;
-              WI--, P += oI[w++] << q, q += 8;
+              wI--, P += cI[w++] << _, _ += 8;
             }
-            if (x.nlen = (P & 31) + 257, P >>>= 5, q -= 5, x.ndist = (P & 31) + 1, P >>>= 5, q -= 5, x.ncode = (P & 15) + 4, P >>>= 4, q -= 4, x.nlen > 286 || x.ndist > 30) {
+            if (x.nlen = (P & 31) + 257, P >>>= 5, _ -= 5, x.ndist = (P & 31) + 1, P >>>= 5, _ -= 5, x.ncode = (P & 15) + 4, P >>>= 4, _ -= 4, x.nlen > 286 || x.ndist > 30) {
               II.msg = "too many length or distance symbols", x.mode = L;
               break;
             }
@@ -19864,12 +19871,12 @@ function requireInflate$1() {
           /* falls through */
           case lI:
             for (; x.have < x.ncode; ) {
-              for (; q < 3; ) {
-                if (WI === 0)
+              for (; _ < 3; ) {
+                if (wI === 0)
                   break I;
-                WI--, P += oI[w++] << q, q += 8;
+                wI--, P += cI[w++] << _, _ += 8;
               }
-              x.lens[ag[x.have++]] = P & 7, P >>>= 3, q -= 3;
+              x.lens[ag[x.have++]] = P & 7, P >>>= 3, _ -= 3;
             }
             for (; x.have < 19; )
               x.lens[ag[x.have++]] = 0;
@@ -19877,43 +19884,43 @@ function requireInflate$1() {
               II.msg = "invalid code lengths set", x.mode = L;
               break;
             }
-            x.have = 0, x.mode = dI;
+            x.have = 0, x.mode = oI;
           /* falls through */
-          case dI:
+          case oI:
             for (; x.have < x.nlen + x.ndist; ) {
-              for (; xI = x.lencode[P & (1 << x.lenbits) - 1], SI = xI >>> 24, fI = xI >>> 16 & 255, $I = xI & 65535, !(SI <= q); ) {
-                if (WI === 0)
+              for (; xI = x.lencode[P & (1 << x.lenbits) - 1], SI = xI >>> 24, fI = xI >>> 16 & 255, $I = xI & 65535, !(SI <= _); ) {
+                if (wI === 0)
                   break I;
-                WI--, P += oI[w++] << q, q += 8;
+                wI--, P += cI[w++] << _, _ += 8;
               }
               if ($I < 16)
-                P >>>= SI, q -= SI, x.lens[x.have++] = $I;
+                P >>>= SI, _ -= SI, x.lens[x.have++] = $I;
               else {
                 if ($I === 16) {
-                  for (Zg = SI + 2; q < Zg; ) {
-                    if (WI === 0)
+                  for (Zg = SI + 2; _ < Zg; ) {
+                    if (wI === 0)
                       break I;
-                    WI--, P += oI[w++] << q, q += 8;
+                    wI--, P += cI[w++] << _, _ += 8;
                   }
-                  if (P >>>= SI, q -= SI, x.have === 0) {
+                  if (P >>>= SI, _ -= SI, x.have === 0) {
                     II.msg = "invalid bit length repeat", x.mode = L;
                     break;
                   }
-                  UI = x.lens[x.have - 1], rI = 3 + (P & 3), P >>>= 2, q -= 2;
+                  UI = x.lens[x.have - 1], rI = 3 + (P & 3), P >>>= 2, _ -= 2;
                 } else if ($I === 17) {
-                  for (Zg = SI + 3; q < Zg; ) {
-                    if (WI === 0)
+                  for (Zg = SI + 3; _ < Zg; ) {
+                    if (wI === 0)
                       break I;
-                    WI--, P += oI[w++] << q, q += 8;
+                    wI--, P += cI[w++] << _, _ += 8;
                   }
-                  P >>>= SI, q -= SI, UI = 0, rI = 3 + (P & 7), P >>>= 3, q -= 3;
+                  P >>>= SI, _ -= SI, UI = 0, rI = 3 + (P & 7), P >>>= 3, _ -= 3;
                 } else {
-                  for (Zg = SI + 7; q < Zg; ) {
-                    if (WI === 0)
+                  for (Zg = SI + 7; _ < Zg; ) {
+                    if (wI === 0)
                       break I;
-                    WI--, P += oI[w++] << q, q += 8;
+                    wI--, P += cI[w++] << _, _ += 8;
                   }
-                  P >>>= SI, q -= SI, UI = 0, rI = 11 + (P & 127), P >>>= 7, q -= 7;
+                  P >>>= SI, _ -= SI, UI = 0, rI = 11 + (P & 127), P >>>= 7, _ -= 7;
                 }
                 if (x.have + rI > x.nlen + x.ndist) {
                   II.msg = "invalid bit length repeat", x.mode = L;
@@ -19937,31 +19944,31 @@ function requireInflate$1() {
               II.msg = "invalid distances set", x.mode = L;
               break;
             }
-            if (x.mode = wI, nI === a)
+            if (x.mode = mI, WI === a)
               break I;
           /* falls through */
-          case wI:
+          case mI:
             x.mode = BI;
           /* falls through */
           case BI:
-            if (WI >= 6 && f >= 258) {
-              II.next_out = sI, II.avail_out = f, II.next_in = w, II.avail_in = WI, x.hold = P, x.bits = q, A(II, XI), sI = II.next_out, cI = II.output, f = II.avail_out, w = II.next_in, oI = II.input, WI = II.avail_in, P = x.hold, q = x.bits, x.mode === $ && (x.back = -1);
+            if (wI >= 6 && f >= 258) {
+              II.next_out = sI, II.avail_out = f, II.next_in = w, II.avail_in = wI, x.hold = P, x.bits = _, A(II, XI), sI = II.next_out, dI = II.output, f = II.avail_out, w = II.next_in, cI = II.input, wI = II.avail_in, P = x.hold, _ = x.bits, x.mode === $ && (x.back = -1);
               break;
             }
-            for (x.back = 0; xI = x.lencode[P & (1 << x.lenbits) - 1], SI = xI >>> 24, fI = xI >>> 16 & 255, $I = xI & 65535, !(SI <= q); ) {
-              if (WI === 0)
+            for (x.back = 0; xI = x.lencode[P & (1 << x.lenbits) - 1], SI = xI >>> 24, fI = xI >>> 16 & 255, $I = xI & 65535, !(SI <= _); ) {
+              if (wI === 0)
                 break I;
-              WI--, P += oI[w++] << q, q += 8;
+              wI--, P += cI[w++] << _, _ += 8;
             }
             if (fI && (fI & 240) === 0) {
-              for (jI = SI, gg = fI, lg = $I; xI = x.lencode[lg + ((P & (1 << jI + gg) - 1) >> jI)], SI = xI >>> 24, fI = xI >>> 16 & 255, $I = xI & 65535, !(jI + SI <= q); ) {
-                if (WI === 0)
+              for (jI = SI, gg = fI, lg = $I; xI = x.lencode[lg + ((P & (1 << jI + gg) - 1) >> jI)], SI = xI >>> 24, fI = xI >>> 16 & 255, $I = xI & 65535, !(jI + SI <= _); ) {
+                if (wI === 0)
                   break I;
-                WI--, P += oI[w++] << q, q += 8;
+                wI--, P += cI[w++] << _, _ += 8;
               }
-              P >>>= jI, q -= jI, x.back += jI;
+              P >>>= jI, _ -= jI, x.back += jI;
             }
-            if (P >>>= SI, q -= SI, x.back += SI, x.length = $I, fI === 0) {
+            if (P >>>= SI, _ -= SI, x.back += SI, x.length = $I, fI === 0) {
               x.mode = T;
               break;
             }
@@ -19977,30 +19984,30 @@ function requireInflate$1() {
           /* falls through */
           case gI:
             if (x.extra) {
-              for (Zg = x.extra; q < Zg; ) {
-                if (WI === 0)
+              for (Zg = x.extra; _ < Zg; ) {
+                if (wI === 0)
                   break I;
-                WI--, P += oI[w++] << q, q += 8;
+                wI--, P += cI[w++] << _, _ += 8;
               }
-              x.length += P & (1 << x.extra) - 1, P >>>= x.extra, q -= x.extra, x.back += x.extra;
+              x.length += P & (1 << x.extra) - 1, P >>>= x.extra, _ -= x.extra, x.back += x.extra;
             }
-            x.was = x.length, x.mode = K;
+            x.was = x.length, x.mode = p;
           /* falls through */
-          case K:
-            for (; xI = x.distcode[P & (1 << x.distbits) - 1], SI = xI >>> 24, fI = xI >>> 16 & 255, $I = xI & 65535, !(SI <= q); ) {
-              if (WI === 0)
+          case p:
+            for (; xI = x.distcode[P & (1 << x.distbits) - 1], SI = xI >>> 24, fI = xI >>> 16 & 255, $I = xI & 65535, !(SI <= _); ) {
+              if (wI === 0)
                 break I;
-              WI--, P += oI[w++] << q, q += 8;
+              wI--, P += cI[w++] << _, _ += 8;
             }
             if ((fI & 240) === 0) {
-              for (jI = SI, gg = fI, lg = $I; xI = x.distcode[lg + ((P & (1 << jI + gg) - 1) >> jI)], SI = xI >>> 24, fI = xI >>> 16 & 255, $I = xI & 65535, !(jI + SI <= q); ) {
-                if (WI === 0)
+              for (jI = SI, gg = fI, lg = $I; xI = x.distcode[lg + ((P & (1 << jI + gg) - 1) >> jI)], SI = xI >>> 24, fI = xI >>> 16 & 255, $I = xI & 65535, !(jI + SI <= _); ) {
+                if (wI === 0)
                   break I;
-                WI--, P += oI[w++] << q, q += 8;
+                wI--, P += cI[w++] << _, _ += 8;
               }
-              P >>>= jI, q -= jI, x.back += jI;
+              P >>>= jI, _ -= jI, x.back += jI;
             }
-            if (P >>>= SI, q -= SI, x.back += SI, fI & 64) {
+            if (P >>>= SI, _ -= SI, x.back += SI, fI & 64) {
               II.msg = "invalid distance code", x.mode = L;
               break;
             }
@@ -20008,12 +20015,12 @@ function requireInflate$1() {
           /* falls through */
           case H:
             if (x.extra) {
-              for (Zg = x.extra; q < Zg; ) {
-                if (WI === 0)
+              for (Zg = x.extra; _ < Zg; ) {
+                if (wI === 0)
                   break I;
-                WI--, P += oI[w++] << q, q += 8;
+                wI--, P += cI[w++] << _, _ += 8;
               }
-              x.offset += P & (1 << x.extra) - 1, P >>>= x.extra, q -= x.extra, x.back += x.extra;
+              x.offset += P & (1 << x.extra) - 1, P >>>= x.extra, _ -= x.extra, x.back += x.extra;
             }
             if (x.offset > x.dmax) {
               II.msg = "invalid distance too far back", x.mode = L;
@@ -20031,50 +20038,50 @@ function requireInflate$1() {
               }
               rI > x.wnext ? (rI -= x.wnext, zI = x.wsize - rI) : zI = x.wnext - rI, rI > x.length && (rI = x.length), TI = x.window;
             } else
-              TI = cI, zI = sI - x.offset, rI = x.length;
+              TI = dI, zI = sI - x.offset, rI = x.length;
             rI > f && (rI = f), f -= rI, x.length -= rI;
             do
-              cI[sI++] = TI[zI++];
+              dI[sI++] = TI[zI++];
             while (--rI);
             x.length === 0 && (x.mode = BI);
             break;
           case T:
             if (f === 0)
               break I;
-            cI[sI++] = x.length, f--, x.mode = BI;
+            dI[sI++] = x.length, f--, x.mode = BI;
             break;
           case N:
             if (x.wrap) {
-              for (; q < 32; ) {
-                if (WI === 0)
+              for (; _ < 32; ) {
+                if (wI === 0)
                   break I;
-                WI--, P |= oI[w++] << q, q += 8;
+                wI--, P |= cI[w++] << _, _ += 8;
               }
               if (XI -= f, II.total_out += XI, x.total += XI, XI && (II.adler = x.check = /*UPDATE(state.check, put - _out, _out);*/
-              x.flags ? I(x.check, cI, XI, sI - XI) : g(x.check, cI, XI, sI - XI)), XI = f, (x.flags ? P : hI(P)) !== x.check) {
+              x.flags ? I(x.check, dI, XI, sI - XI) : g(x.check, dI, XI, sI - XI)), XI = f, (x.flags ? P : hI(P)) !== x.check) {
                 II.msg = "incorrect data check", x.mode = L;
                 break;
               }
-              P = 0, q = 0;
+              P = 0, _ = 0;
             }
-            x.mode = p;
+            x.mode = K;
           /* falls through */
-          case p:
+          case K:
             if (x.wrap && x.flags) {
-              for (; q < 32; ) {
-                if (WI === 0)
+              for (; _ < 32; ) {
+                if (wI === 0)
                   break I;
-                WI--, P += oI[w++] << q, q += 8;
+                wI--, P += cI[w++] << _, _ += 8;
               }
               if (P !== (x.total & 4294967295)) {
                 II.msg = "incorrect length check", x.mode = L;
                 break;
               }
-              P = 0, q = 0;
+              P = 0, _ = 0;
             }
-            x.mode = z;
+            x.mode = J;
           /* falls through */
-          case z:
+          case J:
             Cg = b;
             break I;
           case L:
@@ -20087,22 +20094,22 @@ function requireInflate$1() {
           default:
             return V;
         }
-    return II.next_out = sI, II.avail_out = f, II.next_in = w, II.avail_in = WI, x.hold = P, x.bits = q, (x.wsize || XI !== II.avail_out && x.mode < L && (x.mode < N || nI !== Z)) && DI(II, II.output, II.next_out, XI - II.avail_out), VI -= II.avail_in, XI -= II.avail_out, II.total_in += VI, II.total_out += XI, x.total += XI, x.wrap && XI && (II.adler = x.check = /*UPDATE(state.check, strm.next_out - _out, _out);*/
-    x.flags ? I(x.check, cI, XI, II.next_out - XI) : g(x.check, cI, XI, II.next_out - XI)), II.data_type = x.bits + (x.last ? 64 : 0) + (x.mode === $ ? 128 : 0) + (x.mode === wI || x.mode === v ? 256 : 0), (VI === 0 && XI === 0 || nI === Z) && Cg === G && (Cg = r), Cg;
+    return II.next_out = sI, II.avail_out = f, II.next_in = w, II.avail_in = wI, x.hold = P, x.bits = _, (x.wsize || XI !== II.avail_out && x.mode < L && (x.mode < N || WI !== Z)) && DI(II, II.output, II.next_out, XI - II.avail_out), VI -= II.avail_in, XI -= II.avail_out, II.total_in += VI, II.total_out += XI, x.total += XI, x.wrap && XI && (II.adler = x.check = /*UPDATE(state.check, strm.next_out - _out, _out);*/
+    x.flags ? I(x.check, dI, XI, II.next_out - XI) : g(x.check, dI, XI, II.next_out - XI)), II.data_type = x.bits + (x.last ? 64 : 0) + (x.mode === $ ? 128 : 0) + (x.mode === mI || x.mode === v ? 256 : 0), (VI === 0 && XI === 0 || WI === Z) && Cg === G && (Cg = r), Cg;
   }
   function bI(II) {
     if (!II || !II.state)
       return V;
-    var nI = II.state;
-    return nI.window && (nI.window = null), II.state = null, G;
+    var WI = II.state;
+    return WI.window && (WI.window = null), II.state = null, G;
   }
-  function yI(II, nI) {
+  function yI(II, WI) {
     var x;
-    return !II || !II.state || (x = II.state, (x.wrap & 2) === 0) ? V : (x.head = nI, nI.done = !1, G);
+    return !II || !II.state || (x = II.state, (x.wrap & 2) === 0) ? V : (x.head = WI, WI.done = !1, G);
   }
-  function HI(II, nI) {
-    var x = nI.length, oI, cI, w;
-    return !II || !II.state || (oI = II.state, oI.wrap !== 0 && oI.mode !== U) ? V : oI.mode === U && (cI = 1, cI = g(cI, nI, x, 0), cI !== oI.check) ? Y : (w = DI(II, nI, x, x), w ? (oI.mode = E, X) : (oI.havedict = 1, G));
+  function HI(II, WI) {
+    var x = WI.length, cI, dI, w;
+    return !II || !II.state || (cI = II.state, cI.wrap !== 0 && cI.mode !== U) ? V : cI.mode === U && (dI = 1, dI = g(dI, WI, x, 0), dI !== cI.check) ? Y : (w = DI(II, WI, x, x), w ? (cI.mode = E, X) : (cI.havedict = 1, G));
   }
   return inflate.inflateReset = RI, inflate.inflateReset2 = pI, inflate.inflateResetKeep = uI, inflate.inflateInit = LI, inflate.inflateInit2 = MI, inflate.inflate = F, inflate.inflateEnd = bI, inflate.inflateGetHeader = yI, inflate.inflateSetDictionary = HI, inflate.inflateInfo = "pako inflate (from Nodeca project)", inflate;
 }
@@ -22442,12 +22449,12 @@ UPNG.toRGBA8.decodeImage = function(C, g, I, A) {
     }
   } else if (o == 4) {
     if (a == 8) for (var m = 0; m < l; m++) {
-      var B = m << 2, _ = m << 1, U = C[_];
-      c[B] = U, c[B + 1] = U, c[B + 2] = U, c[B + 3] = C[_ + 1];
+      var B = m << 2, q = m << 1, U = C[q];
+      c[B] = U, c[B + 1] = U, c[B + 2] = U, c[B + 3] = C[q + 1];
     }
     if (a == 16) for (var m = 0; m < l; m++) {
-      var B = m << 2, _ = m << 2, U = C[_];
-      c[B] = U, c[B + 1] = U, c[B + 2] = U, c[B + 3] = C[_ + 2];
+      var B = m << 2, q = m << 2, U = C[q];
+      c[B] = U, c[B + 1] = U, c[B + 2] = U, c[B + 3] = C[q + 2];
     }
   } else if (o == 0)
     for (var X = A.tabs.tRNS ? A.tabs.tRNS : -1, y = 0; y < I; y++) {
@@ -22565,8 +22572,8 @@ UPNG.inflateRaw = (function() {
         for (var k = 1, S = 0; S < 38; S += 2)
           n.Q[S] = 0, n.Q[S + 1] = 0;
         for (var S = 0; S < Z; S++) {
-          var _ = r(g, b + S * 3, 3);
-          n.Q[(n.X[S] << 1) + 1] = _, _ > k && (k = _);
+          var q = r(g, b + S * 3, 3);
+          n.Q[(n.X[S] << 1) + 1] = q, q > k && (k = q);
         }
         b += 3 * Z, B(n.Q, k), u(n.Q, k, n.u), m = n.w, V = n.d, b = h(n.u, (1 << k) - 1, d + c, g, b, n.v);
         var U = Y.V(n.v, 0, d, n.C);
@@ -22588,11 +22595,11 @@ UPNG.inflateRaw = (function() {
             var j = n.q[O - 257];
             v = G + (j >>> 3) + r(g, b, j & 7), b += j & 7;
           }
-          var J = V[t(g, b) & a];
-          b += J & 15;
-          var lI = J >>> 4, dI = n.c[lI], wI = (dI >>> 4) + X(g, b, dI & 15);
-          for (b += dI & 15; G < v; )
-            I[G] = I[G++ - wI], I[G] = I[G++ - wI], I[G] = I[G++ - wI], I[G] = I[G++ - wI];
+          var z = V[t(g, b) & a];
+          b += z & 15;
+          var lI = z >>> 4, oI = n.c[lI], mI = (oI >>> 4) + X(g, b, oI & 15);
+          for (b += oI & 15; G < v; )
+            I[G] = I[G++ - mI], I[G] = I[G++ - mI], I[G] = I[G++ - mI], I[G] = I[G++ - mI];
           G = v;
         }
       }
@@ -22864,11 +22871,11 @@ UPNG.encode.compress = function(C, g, I, A, l) {
   if (A != 0) {
     for (var n = [], X = 0; X < h.length; X++) n.push(h[X].img.buffer);
     for (var y = UPNG.encode.concatRGBA(n), R = UPNG.quantize(y, A), M = 0, k = new Uint8Array(R.abuf), X = 0; X < h.length; X++) {
-      var S = h[X].img, _ = S.length;
-      t.push(new Uint8Array(R.inds.buffer, M >> 2, _ >> 2));
-      for (var m = 0; m < _; m += 4)
+      var S = h[X].img, q = S.length;
+      t.push(new Uint8Array(R.inds.buffer, M >> 2, q >> 2));
+      for (var m = 0; m < q; m += 4)
         S[m] = k[M + m], S[m + 1] = k[M + m + 1], S[m + 2] = k[M + m + 2], S[m + 3] = k[M + m + 3];
-      M += _;
+      M += q;
     }
     for (var X = 0; X < R.plte.length; X++) u.push(R.plte[X].est.rgba);
   } else
@@ -22887,32 +22894,32 @@ UPNG.encode.compress = function(C, g, I, A, l) {
         }
       }
     }
-  var J = u.length;
-  J <= 256 && o == !1 && (J <= 2 ? G = 1 : J <= 4 ? G = 2 : J <= 16 ? G = 4 : G = 8, G = Math.max(G, Z));
+  var z = u.length;
+  z <= 256 && o == !1 && (z <= 2 ? G = 1 : z <= 4 ? G = 2 : z <= 16 ? G = 4 : G = 8, G = Math.max(G, Z));
   for (var m = 0; m < h.length; m++) {
     var U = h[m];
     U.rect.x, U.rect.y;
-    var iI = U.rect.width, lI = U.rect.height, dI = U.img;
-    new Uint32Array(dI.buffer);
-    var wI = 4 * iI, BI = 4;
-    if (J <= 256 && o == !1) {
-      wI = Math.ceil(G * iI / 8);
-      for (var gI = new Uint8Array(wI * lI), K = t[m], H = 0; H < lI; H++) {
-        var X = H * wI, Q = H * iI;
-        if (G == 8) for (var T = 0; T < iI; T++) gI[X + T] = K[Q + T];
-        else if (G == 4) for (var T = 0; T < iI; T++) gI[X + (T >> 1)] |= K[Q + T] << 4 - (T & 1) * 4;
-        else if (G == 2) for (var T = 0; T < iI; T++) gI[X + (T >> 2)] |= K[Q + T] << 6 - (T & 3) * 2;
-        else if (G == 1) for (var T = 0; T < iI; T++) gI[X + (T >> 3)] |= K[Q + T] << 7 - (T & 7) * 1;
+    var iI = U.rect.width, lI = U.rect.height, oI = U.img;
+    new Uint32Array(oI.buffer);
+    var mI = 4 * iI, BI = 4;
+    if (z <= 256 && o == !1) {
+      mI = Math.ceil(G * iI / 8);
+      for (var gI = new Uint8Array(mI * lI), p = t[m], H = 0; H < lI; H++) {
+        var X = H * mI, Q = H * iI;
+        if (G == 8) for (var T = 0; T < iI; T++) gI[X + T] = p[Q + T];
+        else if (G == 4) for (var T = 0; T < iI; T++) gI[X + (T >> 1)] |= p[Q + T] << 4 - (T & 1) * 4;
+        else if (G == 2) for (var T = 0; T < iI; T++) gI[X + (T >> 2)] |= p[Q + T] << 6 - (T & 3) * 2;
+        else if (G == 1) for (var T = 0; T < iI; T++) gI[X + (T >> 3)] |= p[Q + T] << 7 - (T & 7) * 1;
       }
-      dI = gI, a = 3, BI = 1;
+      oI = gI, a = 3, BI = 1;
     } else if (r == !1 && h.length == 1) {
       for (var gI = new Uint8Array(iI * lI * 3), N = iI * lI, X = 0; X < N; X++) {
-        var S = X * 3, p = X * 4;
-        gI[S] = dI[p], gI[S + 1] = dI[p + 1], gI[S + 2] = dI[p + 2];
+        var S = X * 3, K = X * 4;
+        gI[S] = oI[K], gI[S + 1] = oI[K + 1], gI[S + 2] = oI[K + 2];
       }
-      dI = gI, a = 2, BI = 3, wI = 3 * iI;
+      oI = gI, a = 2, BI = 3, mI = 3 * iI;
     }
-    U.img = dI, U.bpl = wI, U.bpp = BI;
+    U.img = oI, U.bpl = mI, U.bpp = BI;
   }
   return { ctype: a, depth: G, plte: u, frames: h };
 };
@@ -22926,8 +22933,8 @@ UPNG.encode.framize = function(C, g, I, A, l, s) {
           o[S] != u[S] && (k < t && (t = k), k > y && (y = k), M < n && (n = M), M > R && (R = M));
         }
         y == -1 && (t = n = y = R = 0), l && ((t & 1) == 1 && t--, (n & 1) == 1 && n--);
-        var _ = (y - t + 1) * (R - n + 1);
-        _ < h && (h = _, r = B, G = t, b = n, m = y - t + 1, V = R - n + 1);
+        var q = (y - t + 1) * (R - n + 1);
+        q < h && (h = q, r = B, G = t, b = n, m = y - t + 1, V = R - n + 1);
       }
       var U = new Uint8Array(C[c - 1 - r]);
       r == 1 && (d[c - 1].dispose = 2), a = new Uint8Array(m * V * 4), UPNG._copyTile(U, g, I, a, m, V, -G, -b, 0), Y = UPNG._copyTile(Z, g, I, a, m, V, -G, -b, 3) ? 1 : 0, Y == 1 ? UPNG.encode._prepareDiff(Z, g, I, a, { x: G, y: b, width: m, height: V }) : UPNG._copyTile(Z, g, I, a, m, V, -G, -b, 0);
@@ -22937,14 +22944,14 @@ UPNG.encode.framize = function(C, g, I, A, l, s) {
   if (A) for (var c = 0; c < d.length; c++) {
     var $ = d[c];
     if ($.blend != 1) {
-      var iI = $.rect, O = d[c - 1].rect, v = Math.min(iI.x, O.x), j = Math.min(iI.y, O.y), J = Math.max(iI.x + iI.width, O.x + O.width), lI = Math.max(iI.y + iI.height, O.y + O.height), dI = { x: v, y: j, width: J - v, height: lI - j };
-      d[c - 1].dispose = 1, c - 1 != 0 && UPNG.encode._updateFrame(C, g, I, d, c - 1, dI, l), UPNG.encode._updateFrame(C, g, I, d, c, dI, l);
+      var iI = $.rect, O = d[c - 1].rect, v = Math.min(iI.x, O.x), j = Math.min(iI.y, O.y), z = Math.max(iI.x + iI.width, O.x + O.width), lI = Math.max(iI.y + iI.height, O.y + O.height), oI = { x: v, y: j, width: z - v, height: lI - j };
+      d[c - 1].dispose = 1, c - 1 != 0 && UPNG.encode._updateFrame(C, g, I, d, c - 1, oI, l), UPNG.encode._updateFrame(C, g, I, d, c, oI, l);
     }
   }
-  var wI = 0;
+  var mI = 0;
   if (C.length != 1) for (var S = 0; S < d.length; S++) {
     var $ = d[S];
-    wI += $.rect.width * $.rect.height;
+    mI += $.rect.width * $.rect.height;
   }
   return d;
 };
@@ -24149,23 +24156,23 @@ var PNG = (
       } else
         throw new Error("Unknown block type in flate stream");
       I = this.buffer;
-      for (var S = I ? I.length : 0, _ = this.bufferLength; ; ) {
+      for (var S = I ? I.length : 0, q = this.bufferLength; ; ) {
         var U = this.getCode(b);
         if (U < 256) {
-          _ + 1 >= S && (I = this.ensureBuffer(_ + 1), S = I.length), I[_++] = U;
+          q + 1 >= S && (I = this.ensureBuffer(q + 1), S = I.length), I[q++] = U;
           continue;
         }
         if (U === 256) {
-          this.bufferLength = _;
+          this.bufferLength = q;
           return;
         }
         U -= 257, U = lengthDecode[U];
         var $ = U >> 16;
         $ > 0 && ($ = this.getBits($)), A = (U & 65535) + $, U = this.getCode(m), U = distDecode[U], $ = U >> 16, $ > 0 && ($ = this.getBits($));
         var iI = (U & 65535) + $;
-        _ + A >= S && (I = this.ensureBuffer(_ + A), S = I.length);
-        for (var O = 0; O < A; ++O, ++_)
-          I[_] = I[_ - iI];
+        q + A >= S && (I = this.ensureBuffer(q + A), S = I.length);
+        for (var O = 0; O < A; ++O, ++q)
+          I[q] = I[q - iI];
       }
     }, g.prototype.getBits = function(I) {
       for (var A = this.stream, l = this.codeSize, s = this.codeBuf, d; l < I; ) {
@@ -26397,10 +26404,10 @@ var grayscale = function(C) {
   n < 0 && (n = 0);
   var y = Math.sqrt(n);
   s === l && (y = -y);
-  var R = 0.5 * (r + B) - y * (u - h), M = 0.5 * (h + u) + y * (B - r), k = Math.atan2(h - M, r - R), S = Math.atan2(u - M, B - R), _ = S - k;
-  _ < 0 && s === 1 ? _ += 2 * Math.PI : _ > 0 && s === 0 && (_ -= 2 * Math.PI);
-  for (var U = Math.ceil(Math.abs(_ / (Math.PI * 0.5 + 1e-3))), $ = [], iI = 0; iI < U; iI++) {
-    var O = k + iI * _ / U, v = k + (iI + 1) * _ / U;
+  var R = 0.5 * (r + B) - y * (u - h), M = 0.5 * (h + u) + y * (B - r), k = Math.atan2(h - M, r - R), S = Math.atan2(u - M, B - R), q = S - k;
+  q < 0 && s === 1 ? q += 2 * Math.PI : q > 0 && s === 0 && (q -= 2 * Math.PI);
+  for (var U = Math.ceil(Math.abs(q / (Math.PI * 0.5 + 1e-3))), $ = [], iI = 0; iI < U; iI++) {
+    var O = k + iI * q / U, v = k + (iI + 1) * q / U;
     $[iI] = [R, M, O, v, I, A, a, G];
   }
   return $;
@@ -27059,7 +27066,7 @@ var MIN_FONT_SIZE = 4, MAX_FONT_SIZE = 500, computeFontSize = function(C, g, I, 
     }
   };
 }, defaultButtonAppearanceProvider = function(C, g, I) {
-  var A, l, s, d, c, Z = getDefaultColor(g), o = getDefaultColor(C.acroField), a = getDefaultFontSize(g), G = getDefaultFontSize(C.acroField), b = g.getRectangle(), m = g.getAppearanceCharacteristics(), V = g.getBorderStyle(), Y = m == null ? void 0 : m.getCaptions(), X = (A = Y == null ? void 0 : Y.normal) !== null && A !== void 0 ? A : "", r = (s = (l = Y == null ? void 0 : Y.down) !== null && l !== void 0 ? l : X) !== null && s !== void 0 ? s : "", h = (d = V == null ? void 0 : V.getWidth()) !== null && d !== void 0 ? d : 0, B = reduceRotation(m == null ? void 0 : m.getRotation()), u = adjustDimsForRotation(b, B), t = u.width, n = u.height, y = rotateInPlace(__assign(__assign({}, b), { rotation: B })), R = rgb(0, 0, 0), M = componentsToColor(m == null ? void 0 : m.getBorderColor()), k = componentsToColor(m == null ? void 0 : m.getBackgroundColor()), S = componentsToColor(m == null ? void 0 : m.getBackgroundColor(), 0.8), _ = {
+  var A, l, s, d, c, Z = getDefaultColor(g), o = getDefaultColor(C.acroField), a = getDefaultFontSize(g), G = getDefaultFontSize(C.acroField), b = g.getRectangle(), m = g.getAppearanceCharacteristics(), V = g.getBorderStyle(), Y = m == null ? void 0 : m.getCaptions(), X = (A = Y == null ? void 0 : Y.normal) !== null && A !== void 0 ? A : "", r = (s = (l = Y == null ? void 0 : Y.down) !== null && l !== void 0 ? l : X) !== null && s !== void 0 ? s : "", h = (d = V == null ? void 0 : V.getWidth()) !== null && d !== void 0 ? d : 0, B = reduceRotation(m == null ? void 0 : m.getRotation()), u = adjustDimsForRotation(b, B), t = u.width, n = u.height, y = rotateInPlace(__assign(__assign({}, b), { rotation: B })), R = rgb(0, 0, 0), M = componentsToColor(m == null ? void 0 : m.getBorderColor()), k = componentsToColor(m == null ? void 0 : m.getBackgroundColor()), S = componentsToColor(m == null ? void 0 : m.getBackgroundColor(), 0.8), q = {
     x: h,
     y: h,
     width: t - h * 2,
@@ -27068,12 +27075,12 @@ var MIN_FONT_SIZE = 4, MAX_FONT_SIZE = 500, computeFontSize = function(C, g, I, 
     alignment: TextAlignment.Center,
     fontSize: a != null ? a : G,
     font: I,
-    bounds: _
+    bounds: q
   }), $ = layoutSinglelineText(r, {
     alignment: TextAlignment.Center,
     fontSize: a != null ? a : G,
     font: I,
-    bounds: _
+    bounds: q
   }), iI = Math.min(U.fontSize, $.fontSize), O = (c = Z != null ? Z : o) !== null && c !== void 0 ? c : R;
   updateDefaultAppearance(Z || a !== void 0 ? g : C.acroField, O, I, iI);
   var v = {
@@ -27099,29 +27106,29 @@ var MIN_FONT_SIZE = 4, MAX_FONT_SIZE = 500, computeFontSize = function(C, g, I, 
     height: B - (Y + k) * 2
   };
   if (C.isMultiline()) {
-    var _ = layoutMultilineText(V, {
+    var q = layoutMultilineText(V, {
       alignment: C.getAlignment(),
       fontSize: o != null ? o : a,
       font: I,
       bounds: S
     });
-    R = _.lines, M = _.fontSize;
+    R = q.lines, M = q.fontSize;
   } else if (C.isCombed()) {
-    var _ = layoutCombedText(V, {
+    var q = layoutCombedText(V, {
       fontSize: o != null ? o : a,
       font: I,
       bounds: S,
       cellCount: (s = C.getMaxLength()) !== null && s !== void 0 ? s : 0
     });
-    R = _.cells, M = _.fontSize;
+    R = q.cells, M = q.fontSize;
   } else {
-    var _ = layoutSinglelineText(V, {
+    var q = layoutSinglelineText(V, {
       alignment: C.getAlignment(),
       fontSize: o != null ? o : a,
       font: I,
       bounds: S
     });
-    R = [_.line], M = _.fontSize;
+    R = [q.line], M = q.fontSize;
   }
   var U = (d = c != null ? c : Z) !== null && d !== void 0 ? d : t;
   updateDefaultAppearance(c || o !== void 0 ? g : C.acroField, U, I, M);
@@ -27151,8 +27158,8 @@ var MIN_FONT_SIZE = 4, MAX_FONT_SIZE = 500, computeFontSize = function(C, g, I, 
     fontSize: Z != null ? Z : o,
     font: I,
     bounds: R
-  }), k = M.line, S = M.fontSize, _ = (s = d != null ? d : c) !== null && s !== void 0 ? s : u;
-  updateDefaultAppearance(d || Z !== void 0 ? g : C.acroField, _, I, S);
+  }), k = M.line, S = M.fontSize, q = (s = d != null ? d : c) !== null && s !== void 0 ? s : u;
+  updateDefaultAppearance(d || Z !== void 0 ? g : C.acroField, q, I, S);
   var U = {
     x: 0 + V / 2,
     y: 0 + V / 2,
@@ -27160,7 +27167,7 @@ var MIN_FONT_SIZE = 4, MAX_FONT_SIZE = 500, computeFontSize = function(C, g, I, 
     height: h - V,
     borderWidth: V != null ? V : 0,
     borderColor: t,
-    textColor: _,
+    textColor: q,
     font: I.name,
     fontSize: S,
     color: n,
@@ -27179,24 +27186,24 @@ var MIN_FONT_SIZE = 4, MAX_FONT_SIZE = 500, computeFontSize = function(C, g, I, 
     y: b + k,
     width: Y - (b + k) * 2,
     height: X - (b + k) * 2
-  }, _ = layoutMultilineText(y, {
+  }, q = layoutMultilineText(y, {
     alignment: TextAlignment.Left,
     fontSize: c != null ? c : Z,
     font: I,
     bounds: S
-  }), U = _.lines, $ = _.fontSize, iI = _.lineHeight, O = [], R = 0, M = U.length; R < M; R++) {
+  }), U = q.lines, $ = q.fontSize, iI = q.lineHeight, O = [], R = 0, M = U.length; R < M; R++) {
     var v = U[R];
     n.includes(v.text) && O.push(R);
   }
-  var j = rgb(153 / 255, 193 / 255, 218 / 255), J = (l = s != null ? s : d) !== null && l !== void 0 ? l : h;
-  return updateDefaultAppearance(s || c !== void 0 ? g : C.acroField, J, I, $), __spreadArrays(r, drawOptionList({
+  var j = rgb(153 / 255, 193 / 255, 218 / 255), z = (l = s != null ? s : d) !== null && l !== void 0 ? l : h;
+  return updateDefaultAppearance(s || c !== void 0 ? g : C.acroField, z, I, $), __spreadArrays(r, drawOptionList({
     x: 0 + b / 2,
     y: 0 + b / 2,
     width: Y - b,
     height: X - b,
     borderWidth: b != null ? b : 0,
     borderColor: B,
-    textColor: J,
+    textColor: z,
     font: I.name,
     fontSize: $,
     color: u,
@@ -29123,18 +29130,18 @@ function usePdfDocument(C, g, I, A, l) {
             continue;
           }
           const k = B.getPage(M), { height: S } = k.getSize();
-          let _ = 1;
+          let q = 1;
           const U = k.node.get(PDFName.of("UserUnit"));
           if (U) {
             const H = B.context.lookup(U, PDFNumber);
-            H && (_ = asNumber(H) || 1);
+            H && (q = asNumber(H) || 1);
           }
-          const $ = t / _, iI = R.width * $, O = R.height * $, v = R.left * $, j = S - R.top * $ - O, J = X, lI = r;
-          if (!J || !lI) {
+          const $ = t / q, iI = R.width * $, O = R.height * $, v = R.left * $, j = S - R.top * $ - O, z = X, lI = r;
+          if (!z || !lI) {
             logger.warn("Zero-sized source box; skipping placement");
             continue;
           }
-          const dI = Math.min(iI / J, O / lI), wI = J * dI, BI = lI * dI, gI = v + (iI - wI) / 2, K = j + (O - BI) / 2;
+          const oI = Math.min(iI / z, O / lI), mI = z * oI, BI = lI * oI, gI = v + (iI - mI) / 2, p = j + (O - BI) / 2;
           k.pushOperators(
             pushGraphicsState(),
             rectangle(v, j, iI, O),
@@ -29143,14 +29150,14 @@ function usePdfDocument(C, g, I, A, l) {
           ), b.forEach((H) => {
             const Q = H.getAttribute("d") || "";
             if (!Q) return;
-            const T = H.getAttribute("stroke") || "#000080", N = parseFloat(H.getAttribute("stroke-width") || "2"), p = H.getAttribute("stroke-linecap") || "round", z = V, L = Y, E = gI - z * dI, AI = K + BI + L * dI;
+            const T = H.getAttribute("stroke") || "#000080", N = parseFloat(H.getAttribute("stroke-width") || "2"), K = H.getAttribute("stroke-linecap") || "round", J = V, L = Y, E = gI - J * oI, AI = p + BI + L * oI;
             k.drawSvgPath(Q, {
               x: E,
               y: AI,
-              scale: dI,
+              scale: oI,
               borderColor: hexToPdfRgb(T),
-              borderWidth: N * dI * _,
-              borderLineCap: toCap(p)
+              borderWidth: N * oI * q,
+              borderLineCap: toCap(K)
             });
           }), k.pushOperators(popGraphicsState());
         }
@@ -29284,10 +29291,10 @@ const _hoisted_1 = {
     watch(
       () => I.documents,
       (Q) => {
-        var T, N, p;
+        var T, N, K;
         l.value.clear(), s.value.clear();
-        const z = Q.find((L) => !L.signed);
-        A.value = (p = (N = z == null ? void 0 : z.key) != null ? N : (T = Q[0]) == null ? void 0 : T.key) != null ? p : null;
+        const J = Q.find((L) => !L.signed);
+        A.value = (K = (N = J == null ? void 0 : J.key) != null ? N : (T = Q[0]) == null ? void 0 : T.key) != null ? K : null;
       },
       { immediate: !0 }
     );
@@ -29301,7 +29308,7 @@ const _hoisted_1 = {
     } = usePdfRenderer(V, X), { zoomPercentage: y, initPanzoom: R, destroyPanzoom: M, zoomIn: k, zoomOut: S } = usePanZoom(
       Y,
       X
-    ), { isSignaturePadOpen: _, openSignaturePad: U, closeSignaturePad: $ } = useSignaturePad();
+    ), { isSignaturePadOpen: q, openSignaturePad: U, closeSignaturePad: $ } = useSignaturePad();
     function iI(Q) {
       const T = processSignatureSVG(Q.svg);
       T && A.value && (s.value.set(A.value, {
@@ -29317,23 +29324,23 @@ const _hoisted_1 = {
       () => {
         d.value = !0, statsSignStep("finished");
       }
-    ), { t: j } = useTranslations(I, O, b, Z), { showSignatureBounds: J } = toRefs(I), { signatureStyles: lI } = useSignatureOverlay(
+    ), { t: j } = useTranslations(I, O, b, Z), { showSignatureBounds: z } = toRefs(I), { signatureStyles: lI } = useSignatureOverlay(
       B,
       V,
       a,
-      J
+      z
     );
     statsEnabled() && (watch(A, (Q) => {
       statsSignStep("doc-switch", Q != null ? Q : void 0);
     }), watch(O, (Q) => {
       statsSignStep(Q ? "save-start" : "save-end");
     }));
-    const { log: dI, clearLogs: wI } = useDebugLogger();
+    const { log: oI, clearLogs: mI } = useDebugLogger();
     function BI() {
-      isDebug.value && (wI(), dI("Debug session started"), typeof navigator != "undefined" && dI("navigator.userAgent", navigator.userAgent), typeof window != "undefined" && (dI("Viewport dimensions", {
+      isDebug.value && (mI(), oI("Debug session started"), typeof navigator != "undefined" && oI("navigator.userAgent", navigator.userAgent), typeof window != "undefined" && (oI("Viewport dimensions", {
         innerWidth: window.innerWidth,
         innerHeight: window.innerHeight
-      }), dI("window.devicePixelRatio", window.devicePixelRatio)));
+      }), oI("window.devicePixelRatio", window.devicePixelRatio)));
     }
     async function gI() {
       if (!(u.value <= 1)) {
@@ -29345,7 +29352,7 @@ const _hoisted_1 = {
         }
       }
     }
-    async function K() {
+    async function p() {
       if (!(u.value >= t.value)) {
         M();
         try {
@@ -29396,7 +29403,7 @@ const _hoisted_1 = {
         createElementVNode("div", _hoisted_5, [
           (openBlock(!0), createElementBlock(Fragment, null, renderList(Q.documents, (N) => (openBlock(), createElementBlock("button", {
             key: N.key,
-            onClick: (p) => A.value = N.key,
+            onClick: (K) => A.value = N.key,
             class: normalizeClass(["doc-tab", { active: A.value === N.key }]),
             disabled: unref(O) || d.value,
             "data-cy": `doc-tab-${N.key}`
@@ -29429,7 +29436,7 @@ const _hoisted_1 = {
             ]), 8, _hoisted_11),
             createElementVNode("span", _hoisted_12, toDisplayString(unref(j).pageIndicator.replace("{currentPage}", String(unref(u))).replace("{totalPages}", String(unref(t)))), 1),
             createElementVNode("button", {
-              onClick: K,
+              onClick: p,
               type: "button",
               class: "btn btn-icon pagination-button",
               "aria-label": unref(j).nextPage,
@@ -29477,8 +29484,8 @@ const _hoisted_1 = {
             class: "pdf-render-view"
           }, null, 512),
           b.value ? (openBlock(), createElementBlock("div", _hoisted_18, [
-            (openBlock(!0), createElementBlock(Fragment, null, renderList(unref(lI), (N, p) => (openBlock(), createElementBlock("div", {
-              key: p,
+            (openBlock(!0), createElementBlock(Fragment, null, renderList(unref(lI), (N, K) => (openBlock(), createElementBlock("div", {
+              key: K,
               style: normalizeStyle(N),
               class: "signature-wrapper",
               innerHTML: b.value
@@ -29486,7 +29493,7 @@ const _hoisted_1 = {
           ])) : createCommentVNode("", !0)
         ], 512)
       ], 512),
-      unref(_) ? (openBlock(), createBlock(SignaturePadModal, {
+      unref(q) ? (openBlock(), createBlock(SignaturePadModal, {
         key: 0,
         onClose: unref($),
         onSave: iI,
