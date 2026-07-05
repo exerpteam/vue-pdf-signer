@@ -1,4 +1,4 @@
-import { ref, markRaw, type Ref, watch, onScopeDispose } from 'vue'
+import { ref, markRaw, type Ref, watch, onBeforeUnmount, onScopeDispose } from 'vue'
 import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf.js'
 import { logger, isDebug } from '../utils/debug'
 import { getIosMajorVersion } from '../utils/device-detection'
@@ -6,6 +6,8 @@ import { useDebugLogger } from './useDebugLogger'
 import {
   statsCanvasCreated,
   statsDocCreated,
+  statsDocDestroyed,
+  statsLoadingTaskDestroyed,
   statsLoadingTaskStarted,
   statsRenderTaskCancelled,
   statsRenderTaskCompleted,
@@ -17,6 +19,20 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker
 
 const DPR = Math.min(window.devicePixelRatio || 1, 2)
 const HIGH_RES_SCALE_FACTOR = DPR > 1 ? 2 : 4
+
+// Cap on the canvas backing store, in pixels, scaled linearly by DPR.
+// 8_388_608 px (2^23) ≈ 32 MiB of RGBA per canvas at DPR 1. Uncapped, a fitted
+// A4 page at the fixed 4x factor allocated 22-27M px (~90-103 MiB of native,
+// off-JS-heap memory) per render. At DPR 1 the cap still leaves ~2.5x
+// supersampling over the displayed size. The render scale never drops below
+// display resolution: for documents whose display size alone exceeds the budget
+// (very tall/wide pages) the display-resolution floor intentionally wins — this
+// is a supersampling cap, not an absolute one.
+const MAX_CANVAS_AREA = 8_388_608 * DPR
+
+function isRenderingCancelled(error: unknown): boolean {
+  return (error as { name?: string } | null)?.name === 'RenderingCancelledException'
+}
 
 /**
  * interface to create a clear data structure
@@ -50,6 +66,49 @@ export function usePdfRenderer(
   // --- END: Reactive State ---
   const { log } = useDebugLogger()
   let resizeObserver: ResizeObserver | null = null
+
+  // pdf.js resources owned by the current load; torn down on doc switch and
+  // unmount. The generation counter invalidates async completions of a
+  // superseded load so they cannot resurrect state after teardown.
+  let activeLoadingTask: pdfjsLib.PDFDocumentLoadingTask | null = null
+  let activeRenderTask: pdfjsLib.RenderTask | null = null
+  let loadGeneration = 0
+
+  /**
+   * Zeroing the dimensions releases each canvas's native backing store
+   * immediately instead of waiting for GC of the detached element.
+   */
+  function releaseRenderedCanvases() {
+    for (const renderedPage of renderedPages.value) {
+      renderedPage.canvas.width = 0
+      renderedPage.canvas.height = 0
+    }
+    renderedPages.value = []
+    firstCanvasRef.value = null
+  }
+
+  /** Destroys the pdf.js loading task + document and cancels in-flight rendering. */
+  function teardownPdfResources() {
+    loadGeneration++
+    if (activeRenderTask) {
+      activeRenderTask.cancel()
+      activeRenderTask = null
+    }
+    const loadingTask = activeLoadingTask
+    const hadDocument = pdfDocumentRef.value !== null
+    activeLoadingTask = null
+    pdfDocumentRef.value = null
+    if (loadingTask) {
+      // destroy() also tears down the document proxy and its worker transport;
+      // the returned promise only signals completion.
+      loadingTask.destroy().catch(() => {})
+      statsLoadingTaskDestroyed()
+      if (hadDocument) {
+        statsDocDestroyed()
+      }
+    }
+    releaseRenderedCanvases()
+  }
 
   function teardownResizeObserver() {
     if (resizeObserver) {
@@ -96,30 +155,52 @@ export function usePdfRenderer(
       return
     }
 
+    // pdf.js promises can RESOLVE after a teardown (destroy/cancel racing a
+    // completion), so every await below is followed by a generation re-check
+    // before any DOM or state mutation.
+    const generation = loadGeneration
     const page = await pdf.getPage(pageNumber)
+    if (generation !== loadGeneration) return
+
     const unscaledViewport = page.getViewport({ scale: 1 })
     const scale = initialPdfScale.value || 1
     const iosMajorVersion = getIosMajorVersion()
     const dynamicScaleFactor =
       iosMajorVersion !== null && iosMajorVersion <= 16 ? 1.5 : HIGH_RES_SCALE_FACTOR
 
-    console.log(
-      `[DEBUG] iOS Version: ${iosMajorVersion}, Using Scale Factor: ${dynamicScaleFactor}`,
-    )
+    // DPR is folded into the render scale (instead of a canvas transform) so the
+    // pixel budget can bound the true backing-store size in one place. The scale
+    // never exceeds the requested supersampling and never drops below display
+    // resolution, even for page sizes where the budget would imply it.
+    const requestedRenderScale = scale * dynamicScaleFactor * DPR
+    const displayRenderScale = scale * DPR
+    const pageArea = unscaledViewport.width * unscaledViewport.height
+    const budgetScale = Math.sqrt(MAX_CANVAS_AREA / pageArea)
+    const renderScale = Math.min(requestedRenderScale, Math.max(budgetScale, displayRenderScale))
 
-    const highResViewport = page.getViewport({ scale: scale * dynamicScaleFactor })
+    const renderViewport = page.getViewport({ scale: renderScale })
     const displayViewport = page.getViewport({ scale })
 
+    // A superseded in-flight render (rapid pagination) must be cancelled and its
+    // never-tracked canvas released before this render takes over the container.
+    if (activeRenderTask) {
+      activeRenderTask.cancel()
+      activeRenderTask = null
+    }
+    releaseRenderedCanvases()
+    for (const staleCanvas of pdfContainer.value.querySelectorAll('canvas')) {
+      staleCanvas.width = 0
+      staleCanvas.height = 0
+    }
     pdfContainer.value.innerHTML = ''
-    renderedPages.value = []
 
     const canvas = document.createElement('canvas')
     const context = canvas.getContext('2d')!
 
     canvas.style.display = 'block'
     canvas.style.margin = '0 auto 1rem auto'
-    canvas.width = Math.floor(highResViewport.width * DPR)
-    canvas.height = Math.floor(highResViewport.height * DPR)
+    canvas.width = Math.floor(renderViewport.width)
+    canvas.height = Math.floor(renderViewport.height)
     canvas.style.width = `${Math.floor(displayViewport.width)}px`
     canvas.style.height = `${Math.floor(displayViewport.height)}px`
     statsCanvasCreated(canvas.width, canvas.height)
@@ -132,20 +213,44 @@ export function usePdfRenderer(
 
     const renderContext = {
       canvasContext: context,
-      viewport: highResViewport,
-      transform: DPR !== 1 ? [DPR, 0, 0, DPR, 0, 0] : undefined,
+      viewport: renderViewport,
       canvas,
     }
 
+    const renderTask = page.render(renderContext)
+    activeRenderTask = renderTask
     statsRenderTaskStarted()
     try {
-      await page.render(renderContext).promise
+      await renderTask.promise
       statsRenderTaskCompleted()
     } catch (error) {
-      if ((error as { name?: string } | null)?.name === 'RenderingCancelledException') {
+      if (isRenderingCancelled(error)) {
         statsRenderTaskCancelled()
+        // A cancelled render's canvas never reaches renderedPages, so release
+        // its backing store here instead of leaving it to GC.
+        canvas.width = 0
+        canvas.height = 0
+        if (firstCanvasRef.value === canvas) {
+          firstCanvasRef.value = null
+        }
       }
       throw error
+    } finally {
+      if (activeRenderTask === renderTask) {
+        activeRenderTask = null
+      }
+    }
+
+    if (generation !== loadGeneration) {
+      // The render completed for a document that was torn down mid-flight —
+      // discard the orphan canvas (it never enters renderedPages) instead of
+      // letting a stale page reappear.
+      canvas.width = 0
+      canvas.height = 0
+      if (firstCanvasRef.value === canvas) {
+        firstCanvasRef.value = null
+      }
+      return
     }
 
     originalPdfDimensions.value = {
@@ -167,16 +272,23 @@ export function usePdfRenderer(
    * Main function to load a PDF from base64 data, render it, and set up interactions.
    */
   async function loadAndRenderPdf(pdfData: string) {
-    if (!pdfData || !pdfContainer.value || !viewportRef.value) return
+    // Tear down the previous document's resources before loading the new one,
+    // and pin the generation so completions of a superseded load are dropped.
+    // This runs ahead of the guard so a switch to a document with empty data
+    // still frees the previous document instead of keeping it alive.
+    teardownPdfResources()
+    const generation = loadGeneration
 
     // Reset state before rendering a new PDF
-    pdfContainer.value.innerHTML = ''
-    renderedPages.value = []
+    if (pdfContainer.value) {
+      pdfContainer.value.innerHTML = ''
+    }
     isPdfRendered.value = false
-    pdfDocumentRef.value = null
     totalPages.value = 0
     currentPageNumber.value = 1
     teardownResizeObserver()
+
+    if (!pdfData || !pdfContainer.value || !viewportRef.value) return
 
     try {
       const pdfBinary = atob(pdfData)
@@ -187,11 +299,14 @@ export function usePdfRenderer(
 
       const loadingTask = pdfjsLib.getDocument({ data: pdfBytes, isEvalSupported: false })
       statsLoadingTaskStarted()
+      activeLoadingTask = loadingTask
       const pdf = await loadingTask.promise
+      if (generation !== loadGeneration) return
       statsDocCreated()
       pdfDocumentRef.value = markRaw(pdf)
       totalPages.value = pdf.numPages
       const firstPage = await pdf.getPage(1)
+      if (generation !== loadGeneration) return
 
       const viewportRect = viewportRef.value.getBoundingClientRect()
       const availableWidth = viewportRect.width
@@ -201,8 +316,13 @@ export function usePdfRenderer(
 
       initialPdfScale.value = scale
       await renderPage(1)
+      if (generation !== loadGeneration) return
       isPdfRendered.value = true
     } catch (error) {
+      if (generation !== loadGeneration || isRenderingCancelled(error)) {
+        // Intentional teardown or supersession mid-flight — not an error.
+        return
+      }
       logger.error('Failed to render PDF', error)
       if (pdfContainer.value) {
         pdfContainer.value.innerHTML = '<p style="color: red;">Error: Failed to load PDF.</p>'
@@ -243,7 +363,12 @@ export function usePdfRenderer(
     },
   )
 
+  // Registered at composable-call time, so this runs before the component's own
+  // unmount hooks; onScopeDispose is the safety net for non-component scopes.
+  onBeforeUnmount(teardownPdfResources)
+
   onScopeDispose(() => {
+    teardownPdfResources()
     teardownResizeObserver()
   })
 
@@ -255,10 +380,16 @@ export function usePdfRenderer(
       return
     }
 
+    const generation = loadGeneration
     try {
       await renderPage(pageNumber)
+      if (generation !== loadGeneration) return
       currentPageNumber.value = pageNumber
     } catch (error) {
+      if (generation !== loadGeneration || isRenderingCancelled(error)) {
+        // Intentional teardown or supersession mid-flight — not an error.
+        return
+      }
       logger.error(`Failed to render page ${pageNumber}`, error)
     }
   }

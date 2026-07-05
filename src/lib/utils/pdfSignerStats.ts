@@ -13,13 +13,13 @@
 // breadcrumbs (mount/unmount/sign-step), so the instrumentation cannot perturb
 // render or listener hot paths.
 //
-// Counter semantics: counters observe the library's EXPLICIT calls only. Element-
-// target listeners (viewport:*, panzoomContainer:*) are add-only in this lineage —
-// nothing removes them, and listeners reclaimed by GC when their element is
-// discarded at unmount do NOT decrement activeListeners. pdfDocsDestroyed and
-// loadingTasksDestroyed have no call sites here because the library never destroys
-// them. Consumers must therefore assert per-cycle deltas, never
-// return-to-baseline.
+// Counter semantics: counters observe the library's EXPLICIT calls only.
+// Listeners reclaimed by GC without a removeEventListener call do NOT decrement
+// activeListeners — activeListeners/activeDocs mean "explicit adds minus explicit
+// removes", not a live-resource gauge. With teardown in place the healthy at-rest
+// invariants are: activeListeners == 0, activeDocs == 0, created == destroyed,
+// and renderTasksStarted == renderTasksCompleted + renderTasksCancelled
+// (cancellations are legitimate under supersession/teardown churn).
 
 export interface PdfSignerStatsCounters {
   componentMounts: number

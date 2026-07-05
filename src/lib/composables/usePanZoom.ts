@@ -1,7 +1,7 @@
 import { ref, computed, onBeforeUnmount, type Ref } from 'vue'
 import Panzoom from '@panzoom/panzoom'
 import type { PanzoomObject } from '@panzoom/panzoom'
-import { statsListenerAdded } from '../utils/pdfSignerStats'
+import { statsListenerAdded, statsListenerRemoved } from '../utils/pdfSignerStats'
 
 interface PanzoomEventDetail {
   scale: number
@@ -30,6 +30,12 @@ export function usePanZoom(
   const currentZoom = ref(1)
   const zoomPercentage = computed(() => Math.round(currentZoom.value * 100))
   // --- END: Reactive State ---
+
+  // Removes the listeners attached by the most recent initPanzoom() call.
+  // panzoom.destroy() only unbinds panzoom's own internal handlers, so the
+  // listeners we attach ourselves must be removed explicitly or they stack up
+  // on every re-init (page change, re-render) and leak on unmount.
+  let detachListeners: (() => void) | null = null
 
   /**
    * Checks if the content is overflowing the viewport and enables/disables panning.
@@ -83,9 +89,12 @@ export function usePanZoom(
   /** Initializes Panzoom and attaches event listeners. */
   function initPanzoom() {
     if (!panzoomContainer.value || !viewportRef.value) return
-    panzoom.value?.destroy()
+    destroyPanzoom()
 
-    const pz = Panzoom(panzoomContainer.value, {
+    const viewport = viewportRef.value
+    const container = panzoomContainer.value
+
+    const pz = Panzoom(container, {
       excludeClass: 'panzoom-exclude', // Let signature pad handle its own gestures.
       maxScale: MAX_ZOOM_LEVEL,
       minScale: 0.1,
@@ -95,24 +104,41 @@ export function usePanZoom(
       startScale: 1,
     })
 
-    viewportRef.value.addEventListener('wheel', pz.zoomWithWheel, { passive: false })
-    statsListenerAdded('viewport', 'wheel')
-
-    panzoomContainer.value.addEventListener('panzoomstart', (e) => {
+    const onWheel = pz.zoomWithWheel
+    const onPanzoomStart = (e: Event) => {
       e.preventDefault()
-    })
-    statsListenerAdded('panzoomContainer', 'panzoomstart')
-
-    panzoomContainer.value.addEventListener('panzoomzoom', (e) => {
+    }
+    const onPanzoomZoom = (e: Event) => {
       const event = e as PanzoomEvent
       currentZoom.value = event.detail.scale
-    })
+    }
+    const onPanzoomEnd = () => {
+      updatePanState()
+    }
+
+    viewport.addEventListener('wheel', onWheel, { passive: false })
+    statsListenerAdded('viewport', 'wheel')
+
+    container.addEventListener('panzoomstart', onPanzoomStart)
+    statsListenerAdded('panzoomContainer', 'panzoomstart')
+
+    container.addEventListener('panzoomzoom', onPanzoomZoom)
     statsListenerAdded('panzoomContainer', 'panzoomzoom')
 
-    panzoomContainer.value.addEventListener('panzoomend', () => {
-      updatePanState()
-    })
+    container.addEventListener('panzoomend', onPanzoomEnd)
     statsListenerAdded('panzoomContainer', 'panzoomend')
+
+    detachListeners = () => {
+      viewport.removeEventListener('wheel', onWheel)
+      statsListenerRemoved('viewport', 'wheel')
+      container.removeEventListener('panzoomstart', onPanzoomStart)
+      statsListenerRemoved('panzoomContainer', 'panzoomstart')
+      container.removeEventListener('panzoomzoom', onPanzoomZoom)
+      statsListenerRemoved('panzoomContainer', 'panzoomzoom')
+      container.removeEventListener('panzoomend', onPanzoomEnd)
+      statsListenerRemoved('panzoomContainer', 'panzoomend')
+      detachListeners = null
+    }
 
     panzoom.value = pz
     updatePanState() // Call this immediately after init
@@ -120,6 +146,7 @@ export function usePanZoom(
 
   /** Destroys the Panzoom instance and cleans up listeners. */
   function destroyPanzoom() {
+    detachListeners?.()
     if (panzoom.value) {
       panzoom.value.destroy()
       panzoom.value = null
