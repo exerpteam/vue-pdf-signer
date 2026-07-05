@@ -3,6 +3,15 @@ import PdfSigner from './components/PdfSigner.vue'
 
 export * from './types'
 
+// Shape of the flag-gated runtime diagnostics exposed on window.__pdfSignerStats.
+export type {
+  PdfSignerStats,
+  PdfSignerStatsCounters,
+  PdfSignerStatsEvent,
+  PdfSignerStatsMemory,
+  PdfSignerStatsSnapshot,
+} from './utils/pdfSignerStats'
+
 // Named export for individual component import.
 export { PdfSigner }
 
