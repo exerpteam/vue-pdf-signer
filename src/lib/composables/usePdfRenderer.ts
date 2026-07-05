@@ -23,8 +23,11 @@ const HIGH_RES_SCALE_FACTOR = DPR > 1 ? 2 : 4
 // Cap on the canvas backing store, in pixels, scaled linearly by DPR.
 // 8_388_608 px (2^23) ≈ 32 MiB of RGBA per canvas at DPR 1. Uncapped, a fitted
 // A4 page at the fixed 4x factor allocated 22-27M px (~90-103 MiB of native,
-// off-JS-heap memory) per render. The cap still leaves ~2.5x supersampling over
-// the displayed size, and the render scale never drops below display resolution.
+// off-JS-heap memory) per render. At DPR 1 the cap still leaves ~2.5x
+// supersampling over the displayed size. The render scale never drops below
+// display resolution: for documents whose display size alone exceeds the budget
+// (very tall/wide pages) the display-resolution floor intentionally wins — this
+// is a supersampling cap, not an absolute one.
 const MAX_CANVAS_AREA = 8_388_608 * DPR
 
 function isRenderingCancelled(error: unknown): boolean {
@@ -152,7 +155,13 @@ export function usePdfRenderer(
       return
     }
 
+    // pdf.js promises can RESOLVE after a teardown (destroy/cancel racing a
+    // completion), so every await below is followed by a generation re-check
+    // before any DOM or state mutation.
+    const generation = loadGeneration
     const page = await pdf.getPage(pageNumber)
+    if (generation !== loadGeneration) return
+
     const unscaledViewport = page.getViewport({ scale: 1 })
     const scale = initialPdfScale.value || 1
     const iosMajorVersion = getIosMajorVersion()
@@ -230,6 +239,18 @@ export function usePdfRenderer(
       if (activeRenderTask === renderTask) {
         activeRenderTask = null
       }
+    }
+
+    if (generation !== loadGeneration) {
+      // The render completed for a document that was torn down mid-flight —
+      // discard the orphan canvas (it never enters renderedPages) instead of
+      // letting a stale page reappear.
+      canvas.width = 0
+      canvas.height = 0
+      if (firstCanvasRef.value === canvas) {
+        firstCanvasRef.value = null
+      }
+      return
     }
 
     originalPdfDimensions.value = {
@@ -362,6 +383,7 @@ export function usePdfRenderer(
     const generation = loadGeneration
     try {
       await renderPage(pageNumber)
+      if (generation !== loadGeneration) return
       currentPageNumber.value = pageNumber
     } catch (error) {
       if (generation !== loadGeneration || isRenderingCancelled(error)) {
